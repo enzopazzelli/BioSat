@@ -11,6 +11,7 @@
 <link rel="stylesheet" href="vendor/leaflet.css">
 <link rel="stylesheet" href="estilos.css">
 <script src="vendor/leaflet.js"></script>
+<script src="../arduino/lector-web-serial.js" defer onerror="this.remove()"></script>
 <script src="app.js" defer></script>
 </head>
 <body>
@@ -126,6 +127,7 @@
             <input type="range" id="cortina" min="0" max="100" value="50">
             <div class="range-ends"><span id="cortIzq"></span><span id="cortDer"></span></div>
           </div>
+          <div id="zonifBox"></div>
           <div id="rampa" hidden><div class="ramp"></div><div class="ramp-lbl"><span>Suelo pelado o seco</span><span>Cultivo o monte verde</span></div></div>
           <p class="gis-note" id="celdaNota"></p>
           <p class="gis-note mono" id="escena"></p>
@@ -160,9 +162,29 @@
           <div class="read" id="read"></div>
           <div class="semaforo" id="semaforo"></div>
           <div class="vs" id="vs"></div>
-          <button type="button" class="btn-off" disabled title="Llega con el lector de Sara (arduino/lector-web-serial.js)">Conectar Arduino por USB</button>
+          <button type="button" class="btn-off" id="btnArduino" disabled title="Llega con el lector de Sara (arduino/lector-web-serial.js)">Conectar Arduino por USB</button>
           <p class="pending" id="sensorNota"></p>
         </article>
+      </div>
+
+      <div class="card desmonte" id="panelDesmonte">
+        <div class="desmonte-col">
+          <div class="panel-h"><h3>Presión de desmonte en tu zona</h3><span class="src">Modelo predictivo · D-25</span></div>
+          <div class="desmonte-nivel" id="desmonteNivel"></div>
+          <p class="hint" id="desmonteTexto"></p>
+        </div>
+        <div class="desmonte-col">
+          <span class="visor-t">Hectáreas desmontadas por año</span>
+          <svg class="spark-d" id="desmonteSerie" viewBox="0 0 320 90" preserveAspectRatio="none" role="img" aria-label="Desmonte anual de la zona"></svg>
+          <p class="hint" id="desmonteSerieNota"></p>
+        </div>
+        <div class="desmonte-col">
+          <div class="tabla-scroll"><table>
+            <thead><tr><th>Modelo</th><th>AUC</th><th>F1 o error</th></tr></thead>
+            <tbody id="desmonteMetodos"></tbody>
+          </table></div>
+          <p class="pending" id="desmonteNota"></p>
+        </div>
       </div>
     </div>
   </section>

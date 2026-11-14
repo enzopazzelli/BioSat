@@ -1,5 +1,5 @@
 /* BioSat · app web v1. Lee los JSON de data/ (ver docs/contratos-de-datos.md). */
-let CLIMA = {}, IMG = {}, ROT = {}, FUENTE_ROT = {}, SUELO_Z = {}, DIAG = {}, ARDUINO = null, FUENTE_IMG = '';
+let CLIMA = {}, IMG = {}, ROT = {}, FUENTE_ROT = {}, SUELO_Z = {}, DIAG = {}, ARDUINO = null, FUENTE_IMG = '', ZONIF = {}, DESMONTE = {};
 
 const MES = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
 const MES_L = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
@@ -42,7 +42,7 @@ const BANDEJAS = {
 };
 
 const state = {zona:'zona_2_secano_este', prio:new Set(['agua','suelo']), riego:false, ganado:true, maq:false,
-  periodo:'normal', dT:0, dP:0, elegida:null, bandeja:'A'};
+  periodo:'normal', dT:0, dP:0, elegida:null, bandeja:'A', vivo:null};
 
 const $ = s => document.querySelector(s);
 const nf = (n, d=0) => Number(n).toLocaleString('es-AR', {minimumFractionDigits:d, maximumFractionDigits:d});
@@ -238,6 +238,11 @@ function renderVisor(){
   }
   visor.layers.forEach(l => l.remove());
   visor.layers = mostrar.map(id => L.imageOverlay(im.img[id], bounds, {alt:'Imagen Landsat'}).addTo(visor.map));
+  const zi = zonifImagen();
+  $('#zonifBox').innerHTML = zi
+    ? `<button type="button" class="capa" data-zonif aria-pressed="${!!visor.zonif}">Zonas AIZAL (k-means)<small>D-25</small></button>`
+    : '<p class="hint">La capa de zonas AIZAL aparece cuando Santi la exporte.</p>';
+  if (zi && visor.zonif) visor.layers.push(L.imageOverlay(zi.url, zi.bounds, {opacity:0.55, alt:'Zonas AIZAL'}).addTo(visor.map));
   visor.layers.push(L.rectangle([[lat - 0.25, lon - 0.3125], [lat + 0.25, lon + 0.3125]], {color:acento, weight:2, dashArray:'6 5', fill:false, interactive:false}).addTo(visor.map));
   visor.layers.push(L.circleMarker([lat, lon], {radius:6, color:'#ffffff', weight:2, fillColor:acento, fillOpacity:1}).bindTooltip('Punto de NASA POWER de la zona').addTo(visor.map));
   if (visor.zonaVista !== state.zona){
@@ -248,6 +253,79 @@ function renderVisor(){
     visor.zonaVista = state.zona;
   }
   aplicarCortina();
+}
+
+/* ---------- Zonificación AIZAL y presión de desmonte (D-25) ---------- */
+function zonifTexto(){
+  const c = ((ZONIF.comparacion_biosat || {})[state.zona]) || {};
+  if (c.grupo_mayoritario === null || c.grupo_mayoritario === undefined) return '';
+  const g = (ZONIF.grupos || []).find(x => x.id === c.grupo_mayoritario) || {};
+  return `<span class="mono">Zonificación AIZAL: grupo ${esc(g.nombre || c.grupo_mayoritario)}${c.coincidencia_pct != null ? ` (${nf(c.coincidencia_pct)} % de la celda)` : ''}</span>`;
+}
+function zonifImagen(){
+  const im = ZONIF.meta && ZONIF.meta.imagen;
+  if (!im || !im.archivo || !Array.isArray(im.bbox) || im.bbox.length !== 4) return null;
+  const [w, s, e, n] = im.bbox;
+  return {url:'../' + im.archivo, bounds:[[s, w], [n, e]]};
+}
+function nivelDesmonte(){
+  const zs = DESMONTE.zonas || {};
+  const r = (zs[state.zona] || {}).riesgo_medio_0_1;
+  if (r === null || r === undefined) return {r:null, nivel:null};
+  const orden = Object.entries(zs).map(([id, z]) => [id, z.riesgo_medio_0_1])
+    .filter(([, v]) => v !== null && v !== undefined).sort((a, b) => b[1] - a[1]);
+  const puesto = orden.findIndex(([id]) => id === state.zona) + 1, n = orden.length, tramo = Math.ceil(n * 0.4);
+  return {r, puesto, n, nivel: puesto <= tramo ? 'alta' : puesto > n - tramo ? 'baja' : 'media'};
+}
+function renderDesmonte(){
+  const dz = (DESMONTE.zonas || {})[state.zona] || {};
+  const nd = nivelDesmonte();
+  $('#desmonteNivel').innerHTML = nd.nivel
+    ? `<b>${nf(nd.r * 100)} %</b><span class="nivel ${nd.nivel}">${nd.nivel}</span><span class="hint">${nd.puesto}.ª de ${nd.n} zonas</span>`
+    : '<b>—</b><span class="hint">sin dato</span>';
+  $('#desmonteTexto').textContent = nd.nivel
+    ? 'Probabilidad media de que se desmonte el monte que queda en tu zona, según el modelo.' + (nd.nivel === 'alta' ? ' Es de las zonas con más presión: conviene priorizar rotaciones que conserven el monte.' : '')
+    : 'Sin datos todavía. Lo calcula Santi con el modelo predictivo de desmontes (propuesta de la profesora).';
+
+  const s = dz.desmonte_ha_por_anio || {}, vals = Array.isArray(s.valores) ? s.valores : null;
+  const p = dz.proyeccion_ha || {}, pv = Array.isArray(p.valores) ? p.valores : [];
+  if (vals && vals.length){
+    const W = 320, H = 90, todos = vals.concat(pv), max = Math.max(...todos, 1), bw = W / todos.length;
+    const y = v => H - 12 - v / max * (H - 16);
+    let g = vals.map((v, i) => `<rect class="b" x="${(i * bw + 0.5).toFixed(1)}" y="${y(v).toFixed(1)}" width="${Math.max(1, bw - 1).toFixed(1)}" height="${(H - 12 - y(v)).toFixed(1)}" rx="1" data-tip="${(s.desde || 0) + i}: ${nf(v)} ha"/>`).join('');
+    if (pv.length) g += `<polyline class="p" points="${pv.map((v, j) => `${((vals.length + j + 0.5) * bw).toFixed(1)},${y(v).toFixed(1)}`).join(' ')}"/>`;
+    const fin = (p.anios && p.anios.length) ? p.anios[p.anios.length - 1] : (s.desde || 0) + vals.length - 1;
+    g += `<text class="ax" x="0" y="${H}">${s.desde ?? ''}</text><text class="ax" x="${W}" y="${H}" text-anchor="end">${fin}</text>`;
+    $('#desmonteSerie').innerHTML = g;
+    $('#desmonteSerieNota').textContent = pv.length ? 'Barras: historia. Línea punteada: proyección del modelo temporal.' : 'Historia de desmontes de la zona.';
+  } else {
+    $('#desmonteSerie').innerHTML = '<text class="ax" x="160" y="48" text-anchor="middle">sin dato</text>';
+    $('#desmonteSerieNota').textContent = 'La serie anual sale del mapa de desmontes (LART, MapBiomas o Hansen).';
+  }
+
+  const ev = DESMONTE.evaluacion || {}, met = ev.metodos || {};
+  const NOM = {regresion_logistica:'Regresión logística', random_forest:'Random forest', temporal_lstm_o_transformer:'LSTM o Transformer'};
+  const num = v => v === null || v === undefined ? '—' : nf(v, 2);
+  $('#desmonteMetodos').innerHTML = Object.entries(NOM).map(([k, nom]) => {
+    const x = met[k] || {};
+    const ultima = k === 'temporal_lstm_o_transformer' ? (x.error_ha_pct == null ? '—' : `error ${nf(x.error_ha_pct)} %`) : num(x.f1);
+    return `<tr><td>${nom}${k === ev.metodo_elegido ? ' ✓' : ''}</td><td>${num(x.auc)}</td><td>${ultima}</td></tr>`;
+  }).join('');
+  $('#desmonteNota').textContent = DESMONTE.meta && DESMONTE.meta.validacion
+    ? `Validación: ${DESMONTE.meta.validacion}. Historia: ${DESMONTE.meta.historia || 'sin dato'}.`
+    : 'Validación prevista: entrenar con la historia hasta 2015 y probar con 2016-2023.';
+}
+
+/* ---------- Lector del Arduino (lo aporta Sara: arduino/lector-web-serial.js) ---------- */
+function botonArduino(){
+  const lector = window.BioSatArduino, btn = $('#btnArduino');
+  if (lector && typeof lector.soportado === 'function' && lector.soportado()){
+    btn.disabled = false; btn.className = 'btn'; btn.title = '';
+    btn.textContent = state.vivo ? 'Arduino conectado' : 'Conectar Arduino por USB';
+  } else {
+    btn.disabled = true; btn.className = 'btn-off';
+    btn.title = lector ? 'Este navegador no permite leer el puerto USB: usá Chrome o Edge' : 'Llega con el lector de Sara (arduino/lector-web-serial.js)';
+  }
 }
 
 /* ---------- Paso 1 ---------- */
@@ -271,7 +349,7 @@ function renderZonas(){
       <span class="zn">${z.num}</span><strong>${esc(z.nombre)}</strong><span>${esc(z.zona)}</span></button>`).join('') + ZONA5;
   const z = ZONAS[state.zona], c = CLIMA[state.zona];
   $('#zonaFicha').innerHTML = `<strong>Zona ${z.num} · ${esc(z.nombre)}</strong><p>${esc(z.problema)}</p>
-    <span class="mono">Departamentos: ${esc(z.deptos)} · punto NASA POWER ${nf(c.lat,2)}°, ${nf(c.lon,2)}°</span>`;
+    <span class="mono">Departamentos: ${esc(z.deptos)} · punto NASA POWER ${nf(c.lat,2)}°, ${nf(c.lon,2)}°</span>` + zonifTexto();
   renderMapa();
 }
 function renderPrefs(){
@@ -402,7 +480,7 @@ function renderPaneles(){
     `<button type="button" aria-pressed="${k === state.bandeja}" data-bandeja="${k}">${b.nombre}</button>`).join('');
   const b = BANDEJAS[state.bandeja];
   const lect = (ARDUINO && ARDUINO.bandejas && ARDUINO.bandejas[b.clave]) || [];
-  const u = lect.length ? lect[lect.length - 1] : null;
+  const u = state.vivo || (lect.length ? lect[lect.length - 1] : null);
   const val = (v, suf = '') => v === null || v === undefined ? '—' : (typeof v === 'number' ? nf(v, Number.isInteger(v) ? 0 : 1) : esc(v)) + suf;
   $('#read').innerHTML = `<div><b>${val(u && u.temp_suelo_c, ' °C')}</b><span>Temperatura del suelo (LM35)</span></div>
     <div><b>${val(u && u.agua_raw)}</b><span>Humedad y conductividad (0 a 1023)</span></div>
@@ -415,7 +493,8 @@ function renderPaneles(){
   $('#vs').innerHTML = `<strong>Espacio contra tierra</strong>
     <span>NASA POWER ve tu zona en celdas de 50 km: en enero la máxima media del aire es ${nf(c[0].tmax, 1)} °C.</span>
     <span>El sensor mide un metro cuadrado${u && u.temp_suelo_c != null ? `: la bandeja marca ${val(u.temp_suelo_c, ' °C')} en el suelo` : ''}. Juntos dicen cuánto pesa la cobertura.</span>`;
-  $('#sensorNota').textContent = lect.length
+  botonArduino();
+  $('#sensorNota').textContent = state.vivo ? 'En vivo desde el Arduino (Web Serial).' : lect.length
     ? `Lecturas grabadas del kit (${(ARDUINO.meta && ARDUINO.meta.fecha) || 'sin fecha'}).`
     : 'Sin lecturas grabadas todavía: las carga Sara. En la demo se leen en vivo por Web Serial.';
 }
@@ -429,6 +508,7 @@ function renderCards(){
     ? `Zona ${z.num}. Ordenadas según lo que marcaste: ${prios.join(', ')}.`
     : `Zona ${z.num}. Marcá al menos una prioridad en el paso 1 para ordenarlas.`;
   $('#cmpLede').textContent += ' ' + (FUENTE_ROT[state.zona] || '');
+  if (nivelDesmonte().nivel === 'alta') $('#cmpLede').textContent += ' Tu zona tiene presión de desmonte alta: conviene priorizar las rotaciones que conservan el monte.';
   $('#cards').innerHTML = rk.map(({r, p}, idx) => {
     const m = metricas(r, c);
     const t = trade(r, c), fq = frecuencia(r);
@@ -529,7 +609,7 @@ function renderDecidir(){
 }
 
 /* ---------- Render general y eventos ---------- */
-function renderTodo(){ renderZonas(); renderPrefs(); renderStats(); renderCalendario(); renderPaneles(); renderTrade(); renderCards(); renderSim(); renderDecidir(); renderVisor(); }
+function renderTodo(){ renderZonas(); renderPrefs(); renderStats(); renderCalendario(); renderPaneles(); renderDesmonte(); renderTrade(); renderCards(); renderSim(); renderDecidir(); renderVisor(); }
 function renderClima(){ renderStats(); renderCalendario(); renderPaneles(); renderTrade(); renderCards(); renderSim(); }
 document.addEventListener('click', e => {
   const cb = e.target.closest('[data-capa]');
@@ -538,6 +618,16 @@ document.addEventListener('click', e => {
   if (mb){ visor.cmp = mb.dataset.cmp; renderVisor(); }
 });
 $('#cortina').addEventListener('input', e => { visor.cortina = Number(e.target.value); aplicarCortina(); });
+document.addEventListener('click', e => {
+  if (e.target.closest('[data-zonif]')){ visor.zonif = !visor.zonif; renderVisor(); }
+});
+$('#btnArduino').addEventListener('click', async () => {
+  try {
+    await window.BioSatArduino.conectar(lectura => { state.vivo = lectura; renderPaneles(); });
+  } catch (err) {
+    $('#sensorNota').textContent = 'No se pudo conectar el Arduino: ' + err.message;
+  }
+});
 
 
 document.addEventListener('click', e => {
@@ -670,16 +760,18 @@ async function cargarImagenes(){
 }
 
 async function cargarDatos(){
-  const [clima, rotVale, rotBorrador, suelo, diag, arduino] = await Promise.all([
+  const [clima, rotVale, rotBorrador, suelo, diag, arduino, zonif, desmonte] = await Promise.all([
     cargarJSON('../data/clima_zonas.json'),
     cargarJSON('../data/rotaciones_santiago.json').catch(() => ({zonas:{}})),
     cargarJSON('datos-borrador/rotaciones_borrador.json'),
     cargarJSON('../data/suelo_zonas.json').catch(() => ({})),
     cargarJSON('../data/diagnostico_landsat_ia.json').catch(() => ({})),
-    cargarJSON('../data/arduino_bandejas_demo.json').catch(() => null)
+    cargarJSON('../data/arduino_bandejas_demo.json').catch(() => null),
+    cargarJSON('../data/zonificacion_aizal.json').catch(() => ({})),
+    cargarJSON('../data/desmonte_zonas.json').catch(() => ({}))
   ]);
   CLIMA = adaptarClima(clima);
-  SUELO_Z = suelo; DIAG = diag; ARDUINO = arduino;
+  SUELO_Z = suelo; DIAG = diag; ARDUINO = arduino; ZONIF = zonif; DESMONTE = desmonte;
   for (const z of Object.keys(ZONAS)){
     const v = (rotVale.zonas || {})[z], b = (rotBorrador.zonas || {})[z];
     const deVale = v && Array.isArray(v.rotaciones) && v.rotaciones.length >= 3;

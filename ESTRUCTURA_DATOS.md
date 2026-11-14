@@ -12,7 +12,7 @@ Este documento describe la organización de las carpetas de datos del proyecto *
 ## 1. Visión General de la Estructura de Datos
 
 El repositorio organiza los datos en dos niveles complementarios dentro de `data/`:
-1. **Series Temporales Climáticas:** Registros diarios y resúmenes mensuales derivados de **NASA POWER** (`data/raw_nasa_power/`, `data/resumen_mensual_santiago.csv`).
+1. **Series Temporales Climáticas:** Registros diarios y resúmenes mensuales derivados de **NASA POWER** (`data/clima_zonas.json`, `data/resumen_mensual_santiago.csv`).
 2. **Cubo Biofísico y Paisajístico (AIZAL V4):** Conjunto normalizado de 38 variables raster y embeddings de IA estructurados en **6 módulos temáticos** dentro de `data/datos_cruzados_aizal/`.
 
 ```text
@@ -22,8 +22,8 @@ BioSat/
 ├── CONTEXTO.md                            <-- Bitácora y contexto del desafío
 ├── data/
 │   ├── resumen_mensual_santiago.csv       <-- Resumen climático mensual por zona
-│   ├── nasa_power_santiago_zonas.json     <-- Series diarias NASA POWER (2020-2025)
-│   ├── raw_nasa_power/                    <-- JSONs crudos de NASA POWER por zona
+│   ├── clima_zonas.json                   <-- Clima NASA POWER 1981-2025 de las 5 zonas
+│   ├── raw_nasa_power/                    <-- Caché local de NASA POWER (no se sube al repo)
 │   └── datos_cruzados_aizal/              <-- Cubo de datos cruzados AIZAL V4
 │       ├── CATALOGO_MAESTRO_VARIABLES.md  <-- Índice detallado de las 38 bandas
 │       ├── 01_Clima_y_Balance_Hidrico/    <-- B01 a B08 (ET, Lluvia, PDSI, Tmin, Tmax, Albedo)

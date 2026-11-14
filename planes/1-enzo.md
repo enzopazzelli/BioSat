@@ -41,15 +41,15 @@ Que un productor recorra los 5 pasos de la app sin ayuda, con números de clima 
 - [x] Etiquetas de confianza en cada dato
 - [x] Visor GIS del lote con las imágenes de `data/imagenes/` (de Santi)
 - [x] Las 5 zonas cargadas con suelo y diagnóstico de IA (lo que haya; el resto, "sin dato")
-- [ ] Panel "presión de desmonte en tu zona" (lee `data/desmonte_zonas.json`) y zonificación AIZAL como capa del visor
+- [x] Panel "presión de desmonte en tu zona" (lee `data/desmonte_zonas.json`) y zonificación AIZAL como capa del visor
 - [ ] Integrar en `main` y pasar decisiones a la bitácora
 
 ### Congelamiento · Dom 15:00
 - [x] Paso 4 (simulador de lluvia y temperatura) y paso 5 (lista para el agrónomo)
-- [ ] Sumar el lector del Arduino de Sara (`arduino/lector-web-serial.js`) con respaldo de lecturas grabadas
+- [ ] Sumar el lector del Arduino de Sara (`arduino/lector-web-serial.js`) con respaldo de lecturas grabadas *(la app ya lo carga y habilita el botón; falta el archivo de Sara)*
 - [x] "Apoya, no reemplaza" y fuente de cada dato visibles en toda la app
-- [ ] Probar en celular y sin internet
-- [ ] Corregir `docs/analisis-datos-nasa-santiago.md` con los datos nuevos
+- [x] Probar en celular y sin internet
+- [x] Corregir `docs/analisis-datos-nasa-santiago.md` con los datos nuevos
 - [ ] Último merge de funciones a `main`
 
 ### Entrega · Dom 19:00
@@ -79,4 +79,8 @@ Que un productor recorra los 5 pasos de la app sin ayuda, con números de clima 
 - **Sin internet:** Leaflet y las imágenes van dentro de `web/`. Las fuentes tipográficas caen a las del sistema.
 - **Caché de NASA POWER 1981-2025:** no se sube (está en `.gitignore`); el script la vuelve a bajar en segundos.
 - **App publicada (Checkpoint 1):** https://enzopazzelli.github.io/BioSat/web/
-- **Pendiente:** `data/nasa_power_santiago_zonas.json` queda como versión vieja (2020-2025, con errores) hasta corregir el informe de análisis.
+- **Presión de desmonte (D-26):** la app muestra el riesgo medio de la zona, la serie anual y las métricas de los 3 modelos. El nivel (alta, media o baja) es relativo: compara la zona con las otras 4, sin umbrales fijos. Si es alta, el paso 3 lo avisa.
+- **Zonificación AIZAL:** la ficha de la zona muestra el grupo AIZAL y el visor suma la capa si Santi exporta la imagen (contratos §7, `meta.imagen`).
+- **Arduino:** definí en contratos §6 la interfaz `window.BioSatArduino` (`soportado`, `conectar`, `desconectar`). La app carga `arduino/lector-web-serial.js` si existe; si no, usa las lecturas grabadas.
+- **Pruebas:** en Chrome headless, a 390 px de ancho no hay desbordes. Sin internet (todo lo externo bloqueado) se dibuja completa. Con datos de prueba, el panel de desmonte, el grupo AIZAL y el botón del Arduino funcionan.
+- **Informe de clima (D-26):** `docs/analisis-datos-nasa-santiago.md` se regeneró desde los datos 1981-2025. Se borraron el JSON viejo (2020-2025, con errores) y sus descargas crudas.

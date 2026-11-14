@@ -32,8 +32,7 @@ De los **26 enlaces oficiales** que da la NASA en la pestaña *Resources*:
   - **Evapotranspiración (`EVPTRNS`):** viene como **flujo de energía (MJ/m²/día), no en milímetros** (D-16). Para la demanda de agua en mm usamos la ET0 (Hargreaves) calculada con `T2M_MAX` y `T2M_MIN`.
   - **Radiación solar (`ALLSKY_SFC_SW_DWN`) y Humedad Relativa (`RH2M`).**
 - **Estado en BioSat:**
-  - ✅ **Descargado** para las 4 zonas (`2020–2025`) en [`data/nasa_power_santiago_zonas.json`](../data/nasa_power_santiago_zonas.json) y [`data/resumen_mensual_santiago.csv`](../data/resumen_mensual_santiago.csv).
-  - ⏳ **Por ampliar** a 1981-2025 y a la Zona 5, con el balance de agua corregido (Frente 1 del [PLAN](../PLAN.md)).
+  - ✅ **Descargado y procesado:** 1981-2025, las 5 zonas, en [`data/clima_zonas.json`](../data/clima_zonas.json). Trae normal 1991-2020 y reciente 2021-2025, ET0 y balance de agua. El resumen mensual está en [`data/resumen_mensual_santiago.csv`](../data/resumen_mensual_santiago.csv) (D-24, D-26).
 
 ---
 
