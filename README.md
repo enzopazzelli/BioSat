@@ -52,9 +52,9 @@ Avance de cada integrante, contado desde las casillas de su plan en [`planes/`](
 |---|---|---|---|
 | [Enzo · Integración y app](planes/1-enzo.md) | `enzo-app` | `▓▓▓▓▓▓▓▓░░` 75% | 30/40 |
 | [Santi · Suelo, satélite e IA](planes/2-santi.md) | `santi-datos-ia` | `▓▓▓▓░░░░░░` 44% | 12/27 |
-| [Vale · Campo y agronomía](planes/3-vale.md) | `vale-rotaciones` | `▓▓▓▓▓▓░░░░` 64% | 14/22 |
+| [Vale · Campo y agronomía](planes/3-vale.md) | `vale-rotaciones` | `▓▓▓▓▓▓▓▓░░` 77% | 17/22 |
 | [Sara · Kit Arduino y relato](planes/4-sara.md) | `sara-arduino-entrega` | `▓▓░░░░░░░░` 20% | 5/25 |
-| **Total** | | `▓▓▓▓▓░░░░░` **54%** | **61/114** |
+| **Total** | | `▓▓▓▓▓▓░░░░` **56%** | **64/114** |
 <!-- AUTO:AVANCE:FIN -->
 
 ### Lo más urgente
@@ -108,11 +108,8 @@ Sale solo de las casillas sin tildar de cada plan. Panorama completo y riesgos: 
 </details>
 
 <details>
-<summary><b>Vale</b>: 8 pendientes (<a href="planes/3-vale.md">plan completo</a>)</summary>
+<summary><b>Vale</b>: 5 pendientes (<a href="planes/3-vale.md">plan completo</a>)</summary>
 
-- Revisar los textos agronómicos de la app: que no haya errores ni promesas de más _(Congelamiento)_
-- Revisar "qué falta saber" y los riesgos de cada rotación (arman la lista del paso 5) _(Congelamiento)_
-- Sumar al glosario los términos agronómicos nuevos _(Congelamiento)_
 - Revisar la parte agronómica del guion y participar del ensayo _(Entrega)_
 - Confirmar los 7 `requiere_hacienda` que completó Enzo en `data/rotaciones_santiago.json` (Zona 3 las 3, Zona 4 alternativa 2, Zona 5 las 3) _(Agregadas por Enzo)_
 - Conseguir por escrito el permiso del productor para nombrar el campo y usar sus frases (la entrevista lo deja pendiente) _(Agregadas por Enzo)_
