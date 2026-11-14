@@ -139,7 +139,7 @@
   - 27 departamentos, nombres únicos y `zona` entre 1 y 5.
   - Cada zona tiene al menos un departamento.
   - **El punto de cada zona cae dentro de un departamento de esa misma zona**, y el departamento de la Zona 4 que lo contiene es *General Taboada*. (La prueba hace punto-en-polígono sobre los trazos `d`.)
-  - `origen` es uno de los tres valores permitidos; hay 5 `'punto'`, 14 `'lista'` y 8 `'cercana'`.
+  - `origen` es uno de los tres valores permitidos; hay 5 `'punto'`, 15 `'lista'` y 7 `'cercana'`.
   - El archivo pesa menos de 80 KB y `meta` cita al IGN, geoBoundaries y la licencia CC BY 3.0 IGO.
 - [ ] **Step 2: correr** esa prueba. Esperado: falla porque el archivo no existe.
 - [ ] **Step 3: `scripts/generar_mapa_santiago.py`** (solo biblioteca estándar):

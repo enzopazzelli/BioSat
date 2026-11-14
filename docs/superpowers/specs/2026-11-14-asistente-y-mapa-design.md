@@ -80,8 +80,8 @@ Se elige tocando el color del mapa o el botón: las dos formas hacen lo mismo y 
 **Cómo se asigna cada departamento a una zona** (decisión de este diseño, a documentar en el contrato). Se aplica la primera regla que corresponda:
 
 1. **El departamento que contiene el punto de NASA POWER de una zona es de esa zona** (5 departamentos). Así el pueblo del botón siempre cae sobre un departamento de su mismo color. Esto **corrige un error de la lista actual**: `ZONAS` pone a *General Taboada* en la Zona 2, pero el punto de la Zona 4 (Añatuya, su cabecera) cae dentro de General Taboada. Pasa a la **Zona 4**, y se corrige el texto de `deptos` en `app.js`.
-2. Si no, el departamento va a la zona que ya lo nombra en `ZONAS[...].deptos` (14 departamentos).
-3. Si no, va a la **zona cuyo punto de NASA POWER esté más cerca** del centro del departamento (8 departamentos: Jiménez, Loreto y Río Hondo → Zona 1; Avellaneda, Salavina y Sarmiento → Zona 4; Atamisqui y Quebrachos → Zona 5). *Quebrachos* figura hoy en las zonas 4 y 5 a la vez y queda en la 5.
+2. Si no, el departamento va a la zona que ya lo nombra en `ZONAS[...].deptos` (15 departamentos).
+3. Si no, va a la **zona cuyo punto de NASA POWER esté más cerca** del centro del departamento (7 departamentos: Jiménez, Loreto y Río Hondo → Zona 1; Avellaneda, Salavina y Sarmiento → Zona 4; Atamisqui → Zona 5). *Quebrachos* figuraba en las zonas 4 y 5 a la vez; se saca de la lista de la Zona 4 y queda en la 5 por lista.
 
 Cada departamento guarda de dónde salió su asignación (`"punto"`, `"lista"` o `"cercana"`). El centro se calcula en plano (longitud y latitud), sin librerías.
 - **El mapa es una aproximación y lo dice:** "Las zonas se dibujan por departamento, en forma aproximada. El clima de cada una sale de un punto de NASA POWER." El dato de clima no cambia: sigue saliendo del punto de cada zona.
