@@ -49,22 +49,22 @@ Avance de cada integrante, contado desde las casillas de su plan en [`planes/`](
 <!-- AUTO:AVANCE:INICIO -->
 | Persona | Rama | Avance | Tareas |
 |---|---|---|---|
-| [Enzo · Integración y app](planes/1-enzo.md) | `enzo-app` | `░░░░░░░░░░` 0% | 0/27 |
+| [Enzo · Integración y app](planes/1-enzo.md) | `enzo-app` | `▓▓▓▓▓▓▓░░░` 70% | 19/27 |
 | [Santi · Suelo, satélite e IA](planes/2-santi.md) | `santi-datos-ia` | `░░░░░░░░░░` 0% | 0/22 |
 | [Vale · Campo y agronomía](planes/3-vale.md) | `vale-rotaciones` | `░░░░░░░░░░` 0% | 0/18 |
 | [Sara · Kit Arduino y relato](planes/4-sara.md) | `sara-arduino-entrega` | `▓░░░░░░░░░` 5% | 1/19 |
-| **Total** | | `░░░░░░░░░░` **1%** | **1/86** |
+| **Total** | | `▓▓░░░░░░░░` **23%** | **20/86** |
 <!-- AUTO:AVANCE:FIN -->
 
 **Últimas decisiones:**
 
 <!-- AUTO:DECISIONES:INICIO -->
+- **D-24**: Checkpoint 1: clima 1981-2025 y app v1 publicada
 - **D-23**: Trabajo en paralelo con ramas y planes individuales
 - **D-22**: Equipo de 4 integrantes
 - **D-21**: Zona 5 confirmada
 - **D-20**: Zona 5 operativa y revisión de la documentación
 - **D-19**: Visor GIS con Google Earth Engine
-- **D-18**: Análisis de zonas
 
 Todas las decisiones están en la [bitácora](docs/reglas-y-bitacora.md).
 <!-- AUTO:DECISIONES:FIN -->
@@ -100,9 +100,10 @@ BioSat/
 ├── README.md                                                 <-- Portada del proyecto (se actualiza sola)
 ├── data/                                                     <-- Datos y contratos JSON que lee la app
 │   ├── arduino_bandejas_demo.json                            <-- Lecturas grabadas del kit (Sara) · plantilla hasta tener datos
+│   ├── clima_zonas.json                                      <-- Clima NASA POWER 1981-2025 de las 5 zonas (lo lee la app)
 │   ├── diagnostico_landsat_ia.json                           <-- Diagnóstico IA Landsat (Santi) · plantilla hasta tener datos
-│   ├── nasa_power_santiago_zonas.json                        <-- Clima NASA POWER 2020-2025 (se reemplaza, ver PLAN F1)
-│   ├── resumen_mensual_santiago.csv                          <-- Resumen climático mensual por zona
+│   ├── nasa_power_santiago_zonas.json                        <-- Versión vieja 2020-2025, con errores: usar clima_zonas.json
+│   ├── resumen_mensual_santiago.csv                          <-- Normal 1991-2020 por mes y zona, para planilla
 │   ├── rotaciones_santiago.json                              <-- Rotaciones de las 5 zonas (Vale) · plantilla hasta tener datos
 │   ├── suelo_zonas.json                                      <-- Suelo por zona (Santi) · plantilla hasta tener datos
 │   ├── datos_cruzados_aizal/                                 <-- Catálogo AIZAL V4: 38 variables de suelo, clima y paisaje
@@ -134,12 +135,22 @@ BioSat/
 │   ├── 3-vale.md                                             <-- Plan de Vale · campo y agronomía (rama vale-rotaciones)
 │   ├── 4-sara.md                                             <-- Plan de Sara · Arduino y relato (rama sara-arduino-entrega)
 │   └── README.md                                             <-- Objetivo común, ramas, reglas e hitos de integración
-└── scripts/                                                  <-- Herramientas para bajar y procesar datos
-    ├── actualizar_readme.py                                  <-- Regenera las secciones automáticas del README
-    ├── descargar_nasa_power.py                               <-- Descarga y resume NASA POWER por zona
-    ├── earth_engine_embeddings.js                            <-- Ejemplo GEE de embeddings (falta adaptar a SdE)
-    ├── gee_exportar_zonas.js                                 <-- Earth Engine: estadísticas e imágenes por zona para la app
-    └── gee_visor_biosat.js                                   <-- Visor GIS en Earth Engine: 2000 vs 2025, NDVI, desmonte, zonas IA
+├── scripts/                                                  <-- Herramientas para bajar y procesar datos
+│   ├── actualizar_readme.py                                  <-- Regenera las secciones automáticas del README
+│   ├── descargar_nasa_power.py                               <-- Descarga y resume NASA POWER por zona
+│   ├── earth_engine_embeddings.js                            <-- Ejemplo GEE de embeddings (falta adaptar a SdE)
+│   ├── gee_exportar_zonas.js                                 <-- Earth Engine: estadísticas e imágenes por zona para la app
+│   └── gee_visor_biosat.js                                   <-- Visor GIS en Earth Engine: 2000 vs 2025, NDVI, desmonte, zonas IA
+└── web/                                                      <-- App web BioSat (abrir con un servidor: ver Inicio rápido)
+    ├── app.js                                                <-- Lógica de la app: datos, motor, calendario, simulador y visor
+    ├── estilos.css                                           <-- Estilos de la app
+    ├── index.html                                            <-- Página de la app
+    ├── datos-borrador/                                       <-- Rotaciones borrador hasta que Vale cargue las validadas
+    │   └── rotaciones_borrador.json
+    ├── img/ (22 archivos)                                    <-- Imágenes Landsat de vista previa (Planetary Computer)
+    └── vendor/                                               <-- Leaflet, para el mapa sin internet
+        ├── leaflet.css
+        └── leaflet.js
 ```
 <!-- AUTO:ESTRUCTURA:FIN -->
 
