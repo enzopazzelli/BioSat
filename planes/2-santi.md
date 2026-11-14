@@ -56,7 +56,7 @@ Sumar la información local de suelo que pide el desafío y **predecir dónde y 
 
 ### Agregadas por Enzo · 14/11 noche (a revisar con cada uno)
 _Salen del repaso del repo. Cada uno decide cómo abordarlas; si no corresponden, se borran._
-- [ ] **Urgente:** cambiar la contraseña de Meteomatics y leerla de una variable de entorno (está escrita en `scripts/descargar_meteomatics.py` y el repo es público)
+- [ ] **Urgente:** cambiar la contraseña de Meteomatics en el sitio de Meteomatics. *El script ya la lee de `METEOMATICS_PASSWORD` y no está en el código (se tomó del PR #7), pero la clave vieja sigue en el historial público de Git.*
 - [ ] Crear `data/imagenes/escenas.json` con las imágenes exportadas de Earth Engine (sin ese archivo la app no las usa; formato en contratos §5)
 - [ ] Confirmar de dónde salen los números de `ia_desmonte/data/zonas_bioclima_suelo.csv`: no coinciden con `data/clima_zonas.json`. Si fueron estimaciones, no usarlos para `data/suelo_zonas.json`
 - [ ] Dejar un solo juego de métricas: el plan dice AUC 0,986 y 0,973; `data/desmonte_zonas.json` dice 0,984 y 0,971. Completar también la silueta de `data/zonificacion_aizal.json`

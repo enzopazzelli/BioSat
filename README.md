@@ -59,7 +59,7 @@ Avance de cada integrante, contado desde las casillas de su plan en [`planes/`](
 
 ### Lo más urgente
 
-1. **Santi: cambiar la contraseña de Meteomatics.** Está escrita en `scripts/descargar_meteomatics.py` y este repo es público. Hay que cambiarla en Meteomatics y leerla de una variable de entorno.
+1. **Santi: cambiar la contraseña de Meteomatics en el sitio de Meteomatics.** El script ya la lee de una variable de entorno (`METEOMATICS_PASSWORD`) y no está más en el código, pero **la clave vieja sigue en el historial público de Git**: hay que cambiarla igual.
 2. **Kit Arduino: está programado, falta armarlo y probarlo.** El sketch, el lector Web Serial y el esquema están en [`arduino/`](arduino/README.md) (Enzo se hizo cargo). Falta armar el kit, sellar el LM35, calibrar y grabar lecturas reales. **La entrega** (guion, video y página del proyecto) sigue sin empezar.
 3. **Santi: suelo y suelo pelado vacíos.** `data/suelo_zonas.json` y `data/diagnostico_landsat_ia.json` son plantillas sin ninguna medición, y el visor de Earth Engine está sin publicar. Los pasos están en [su plan](planes/2-santi.md).
 4. **Vale: confirmar `requiere_hacienda` y el permiso del productor.** Enzo completó 7 valores según el texto de cada rotación, y la entrevista deja pendiente el permiso por escrito para usar sus frases.
@@ -98,7 +98,7 @@ Sale solo de las casillas sin tildar de cada plan. Panorama completo y riesgos: 
 - Pasarle a Sara las métricas, el mapa de riesgo, una captura del visor y la comparación 2000 contra 2025 _(Congelamiento)_
 - Opcional: usar los embeddings AlphaEarth como variable extra del modelo o de la zonificación _(Congelamiento)_
 - Ayudar con el video y la página: explicar el modelo en 20 segundos _(Entrega)_
-- **Urgente:** cambiar la contraseña de Meteomatics y leerla de una variable de entorno (está escrita en `scripts/descargar_meteomatics.py` y el repo es público) _(Agregadas por Enzo)_
+- **Urgente:** cambiar la contraseña de Meteomatics en el sitio de Meteomatics. *El script ya la lee de `METEOMATICS_PASSWORD` y no está en el código (se tomó del PR #7), pero la clave viej... _(Agregadas por Enzo)_
 - Crear `data/imagenes/escenas.json` con las imágenes exportadas de Earth Engine (sin ese archivo la app no las usa; formato en contratos §5) _(Agregadas por Enzo)_
 - Confirmar de dónde salen los números de `ia_desmonte/data/zonas_bioclima_suelo.csv`: no coinciden con `data/clima_zonas.json`. Si fueron estimaciones, no usarlos para `data/suelo_zonas.json` _(Agregadas por Enzo)_
 - Dejar un solo juego de métricas: el plan dice AUC 0,986 y 0,973; `data/desmonte_zonas.json` dice 0,984 y 0,971. Completar también la silueta de `data/zonificacion_aizal.json` _(Agregadas por Enzo)_

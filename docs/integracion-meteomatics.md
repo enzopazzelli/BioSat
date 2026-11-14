@@ -108,9 +108,21 @@ El script genera el archivo [`data/meteomatics_santiago_zonas.json`](../data/met
 
 ---
 
-## 5. Próximos Pasos en el Repositorio
+## 5. Estado Actual y Qué Falta para su Integración en la App
 
-1. **Vincular en el contrato de datos (`docs/contratos-de-datos.md`):**  
-   Registrar `meteomatics_santiago_zonas.json` como insumo del Paso 4 del simulador ("¿Y si el clima viene peor?").
-2. **Conectar con la app web de Enzo (`web/`):**  
-   Mostrar en una tarjeta el semáforo de los próximos 7 días para la zona seleccionada por el agricultor.
+### ¿Cómo se usa hoy en BioSat?
+* **Datos ya disponibles:** Se generó [`data/meteomatics_santiago_zonas.json`](../data/meteomatics_santiago_zonas.json) con los pronósticos a 7 días para las 5 zonas agroecológicas, cubriendo los 10 parámetros críticos (déficit hídrico, evapotranspiración, riesgo de helada, mojamiento foliar, viento, Tmax, Tmin, etc.).
+* **Complementariedad:** Funciona como el eslabón de **alta resolución (9 km ECMWF)** y **tiempo real** que complementa la base climática histórica multidecadal de NASA POWER (1981–2025, 50 km).
+* **Seguridad:** El script de descarga [`scripts/descargar_meteomatics.py`](../scripts/descargar_meteomatics.py) lee las credenciales desde variables de entorno (`METEOMATICS_USERNAME` y `METEOMATICS_PASSWORD`), manteniendo el repositorio público 100% seguro y libre de secretos en texto plano.
+
+### ¿Qué falta para integrarlo en la Web (`web/app.js`)?
+Para que el usuario de la app web vea este pronóstico en vivo:
+1. **Carga en `web/app.js`:** Agregar `cargarJSON('../data/meteomatics_santiago_zonas.json')` dentro de `cargarDatos()`.
+2. **Tarjeta de Alertas de Corto Plazo (7 Días):** Renderizar en la pestaña "Tu campo" una caja con:
+   * Alerta de helada en 24–48 h (índice 0/1).
+   * Alerta de estrés térmico (días previstos con Tmax > 38 °C).
+   * Alerta de mojamiento foliar / fitopatógenos (riesgo fúngico en leguminosas).
+   * Viento medio para ventana de pulverización y deriva (< 15 km/h).
+3. **Decisión del equipo para la Demo del Jurado:**
+   * **Opción A (Activa en la demo):** Mostrar una tarjeta informativa compacta "Pronóstico a 7 días (Meteomatics / ECMWF 9 km)" en la app.
+   * **Opción B (Documentada para la entrega):** Mantener la demo enfocada en el pilar satelital NASA + kit Arduino, y presentar Meteomatics en el informe/video como la extensión operacional inmediata para el productor cuando la app pase a despliegue en campo.

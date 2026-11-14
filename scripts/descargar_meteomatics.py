@@ -12,8 +12,8 @@ import urllib.request
 import base64
 from datetime import datetime, timezone, timedelta
 
-USER = "hackathon_nasa_space_apps_gallardo_santiagoignacio"
-PASS = "qH11OnbXkAgkCv2R9e2H"
+USER = os.getenv("METEOMATICS_USERNAME", "hackathon_nasa_space_apps_gallardo_santiagoignacio")
+PASS = os.getenv("METEOMATICS_PASSWORD", "")
 
 ZONAS = [
     {
@@ -83,6 +83,12 @@ def descargar_pronostico_zona(zona):
         return None
 
 def main():
+    if not PASS:
+        print("Aviso de Seguridad: La variable de entorno METEOMATICS_PASSWORD no está definida.")
+        print("Uso: export METEOMATICS_PASSWORD='tu_clave_de_meteomatics'")
+        print("El archivo existente data/meteomatics_santiago_zonas.json se conserva intacto.")
+        return
+
     base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     data_dir = os.path.join(base_dir, "data")
     os.makedirs(data_dir, exist_ok=True)
