@@ -1,0 +1,1005 @@
+{
+ "meta": {
+  "fuente": "Borrador del equipo a partir de docs/zonas-santiago-y-kit-arduino.md",
+  "generado_por": "web/datos-borrador (lo usa la app hasta que Vale cargue data/rotaciones_santiago.json)",
+  "fecha": "2026-11-14",
+  "notas": "Sin validar. Los atributos son estimaciones del equipo; la evidencia climática la calcula la app con NASA POWER."
+ },
+ "zonas": {
+  "zona_1_riego_salitre": {
+   "zona_protagonista": false,
+   "validado_por": "borrador del equipo (sin validar)",
+   "rotaciones": [
+    {
+     "id": "z1a",
+     "tipo": "actual",
+     "nombre": "Algodón con barbecho de invierno",
+     "secuencia": [
+      {
+       "cultivo": "Algodón",
+       "seccion": "C",
+       "siembra_mes": null,
+       "cosecha_mes": null
+      }
+     ],
+     "calendario": [
+      "cultivo",
+      "cultivo",
+      "cultivo",
+      "cultivo",
+      "rastrojo",
+      "desnudo",
+      "desnudo",
+      "desnudo",
+      "desnudo",
+      "desnudo",
+      "cultivo",
+      "cultivo"
+     ],
+     "por_que": "Es lo que se hace hoy en el área de riego. Sirve de punto de comparación.",
+     "evidencia": [
+      {
+       "texto": "El riego por manto sube la napa; con el suelo pelado la sal asciende por capilaridad.",
+       "dato": null,
+       "fuente": null
+      }
+     ],
+     "beneficios": [
+      "Maquinaria y venta del algodón ya conocidas",
+      "Sin costo de semilla de cobertura"
+     ],
+     "que_falta_saber": [
+      "Conductividad eléctrica del suelo y del agua de riego",
+      "Profundidad de la napa en el lote"
+     ],
+     "riesgos_revision_local": [
+      "Cinco meses de suelo pelado con mucha evaporación: sube el salitre",
+      "No corta el ciclo del picudo del algodonero"
+     ],
+     "atributos": {
+      "demanda_agua": "alta",
+      "aporte_nitrogeno": "neutro",
+      "meses_suelo_desnudo": 5,
+      "forraje": false,
+      "ingreso": "medio",
+      "requiere_riego": true,
+      "requiere_hacienda": false,
+      "maquinaria_especial": "ninguna"
+     },
+     "fuentes": []
+    },
+    {
+     "id": "z1b",
+     "tipo": "alternativa",
+     "nombre": "Escudo antisalitre de invierno",
+     "secuencia": [
+      {
+       "cultivo": "Algodón",
+       "seccion": "C",
+       "siembra_mes": null,
+       "cosecha_mes": null
+      },
+      {
+       "cultivo": "Cebada + melilotus",
+       "seccion": "D",
+       "siembra_mes": null,
+       "cosecha_mes": null
+      },
+      {
+       "cultivo": "Maíz",
+       "seccion": "A",
+       "siembra_mes": null,
+       "cosecha_mes": null
+      }
+     ],
+     "calendario": [
+      "cultivo",
+      "cultivo",
+      "cultivo",
+      "cultivo",
+      "cobertura",
+      "cobertura",
+      "cobertura",
+      "cobertura",
+      "cobertura",
+      "rastrojo",
+      "cultivo",
+      "cultivo"
+     ],
+     "por_que": "Tapa el suelo en otoño e invierno: con sombra evapora menos y la sal no sube. El melilotus fija nitrógeno y tolera suelos salinos.",
+     "evidencia": [
+      {
+       "texto": "El melilotus (trébol de olor) tolera sal y fija nitrógeno.",
+       "dato": null,
+       "fuente": null
+      }
+     ],
+     "beneficios": [
+      "Suelo cubierto en los meses secos",
+      "Nitrógeno para el maíz siguiente",
+      "Forraje de invierno si hay hacienda",
+      "El maíz corta el ciclo de plagas del algodón"
+     ],
+     "que_falta_saber": [
+      "Fecha justa para secar o rolar la cobertura",
+      "Salinidad del agua de riego"
+     ],
+     "riesgos_revision_local": [
+      "Si se seca tarde, la cobertura gasta agua del maíz",
+      "Costo de semilla e implantación"
+     ],
+     "atributos": {
+      "demanda_agua": "alta",
+      "aporte_nitrogeno": "neutro",
+      "meses_suelo_desnudo": 0,
+      "forraje": true,
+      "ingreso": "medio",
+      "requiere_riego": true,
+      "requiere_hacienda": false,
+      "maquinaria_especial": "rolo o sembradora de grano fino"
+     },
+     "fuentes": []
+    },
+    {
+     "id": "z1c",
+     "tipo": "alternativa",
+     "nombre": "Bomba biológica de alfalfa",
+     "secuencia": [
+      {
+       "cultivo": "Alfalfa 3–4 años",
+       "seccion": "B",
+       "siembra_mes": null,
+       "cosecha_mes": null
+      },
+      {
+       "cultivo": "Sorgo",
+       "seccion": "A",
+       "siembra_mes": null,
+       "cosecha_mes": null
+      },
+      {
+       "cultivo": "Trigo",
+       "seccion": "A",
+       "siembra_mes": null,
+       "cosecha_mes": null
+      }
+     ],
+     "calendario": [
+      "cultivo",
+      "cultivo",
+      "cultivo",
+      "cultivo",
+      "cultivo",
+      "cultivo",
+      "cultivo",
+      "cultivo",
+      "cultivo",
+      "cultivo",
+      "cultivo",
+      "cultivo"
+     ],
+     "por_que": "Las raíces de la alfalfa llegan a varios metros, consumen agua profunda y bajan la napa salina; además fija nitrógeno y los fardos se venden bien en la zona de riego.",
+     "evidencia": [
+      {
+       "texto": "Raíces profundas que deprimen la napa freática (biodrenaje).",
+       "dato": null,
+       "fuente": null
+      }
+     ],
+     "beneficios": [
+      "Suelo cubierto todo el año",
+      "Baja la napa: menos salitre",
+      "Fardos con mercado en la zona"
+     ],
+     "que_falta_saber": [
+      "Profundidad y salinidad de la napa",
+      "Acceso a enfardadora y comprador de fardos"
+     ],
+     "riesgos_revision_local": [
+      "Consume mucha agua: depende del turno de riego",
+      "Inversión inicial y 3 a 4 años sin grano"
+     ],
+     "atributos": {
+      "demanda_agua": "alta",
+      "aporte_nitrogeno": "positivo",
+      "meses_suelo_desnudo": 0,
+      "forraje": true,
+      "ingreso": "alto",
+      "requiere_riego": true,
+      "requiere_hacienda": false,
+      "maquinaria_especial": "rolo o sembradora de grano fino"
+     },
+     "fuentes": []
+    }
+   ]
+  },
+  "zona_2_secano_este": {
+   "zona_protagonista": false,
+   "validado_por": "borrador del equipo (sin validar)",
+   "rotaciones": [
+    {
+     "id": "z2a",
+     "tipo": "actual",
+     "nombre": "Soja sobre soja con barbecho largo",
+     "secuencia": [
+      {
+       "cultivo": "Soja",
+       "seccion": "B",
+       "siembra_mes": null,
+       "cosecha_mes": null
+      }
+     ],
+     "calendario": [
+      "cultivo",
+      "cultivo",
+      "cultivo",
+      "cultivo",
+      "rastrojo",
+      "desnudo",
+      "desnudo",
+      "desnudo",
+      "desnudo",
+      "desnudo",
+      "desnudo",
+      "cultivo"
+     ],
+     "por_que": "Es lo más común en el secano del este. Sirve de punto de comparación.",
+     "evidencia": [
+      {
+       "texto": "La soja deja poco rastrojo y se descompone rápido.",
+       "dato": null,
+       "fuente": null
+      }
+     ],
+     "beneficios": [
+      "Siembra y venta conocidas",
+      "Bajo costo de implantación"
+     ],
+     "que_falta_saber": [
+      "Infiltración real del lote",
+      "Materia orgánica actual"
+     ],
+     "riesgos_revision_local": [
+      "Seis meses de suelo pelado",
+      "Las tormentas de marzo escurren en vez de infiltrar",
+      "Repite el mismo cultivo: plagas y enfermedades se acumulan"
+     ],
+     "atributos": {
+      "demanda_agua": "media",
+      "aporte_nitrogeno": "positivo",
+      "meses_suelo_desnudo": 6,
+      "forraje": false,
+      "ingreso": "alto",
+      "requiere_riego": false,
+      "requiere_hacienda": false,
+      "maquinaria_especial": "ninguna"
+     },
+     "fuentes": []
+    },
+    {
+     "id": "z2b",
+     "tipo": "alternativa",
+     "nombre": "Colchón de rastrojo",
+     "secuencia": [
+      {
+       "cultivo": "Soja",
+       "seccion": "B",
+       "siembra_mes": null,
+       "cosecha_mes": null
+      },
+      {
+       "cultivo": "Maíz tardío o sorgo",
+       "seccion": "A",
+       "siembra_mes": null,
+       "cosecha_mes": null
+      }
+     ],
+     "calendario": [
+      "cultivo",
+      "cultivo",
+      "cultivo",
+      "cultivo",
+      "rastrojo",
+      "rastrojo",
+      "rastrojo",
+      "rastrojo",
+      "rastrojo",
+      "rastrojo",
+      "rastrojo",
+      "cultivo"
+     ],
+     "por_que": "Sembrar maíz tardío o sorgo en diciembre o enero esquiva la primavera seca y deja mucha caña que tapa el suelo todo el invierno.",
+     "evidencia": [
+      {
+       "texto": "Con siembra tardía, la floración cae en febrero-marzo, con más agua en el suelo.",
+       "dato": null,
+       "fuente": null
+      }
+     ],
+     "beneficios": [
+      "Rastrojo grueso todo el invierno",
+      "Mejor infiltración de las tormentas",
+      "Corta el ciclo de plagas de la soja"
+     ],
+     "que_falta_saber": [
+      "Distancia a un acopio o comprador de maíz o sorgo",
+      "Control de malezas en el barbecho"
+     ],
+     "riesgos_revision_local": [
+      "Si la siembra se atrasa, la floración puede chocar con calor",
+      "Más gasto en fertilización nitrogenada"
+     ],
+     "atributos": {
+      "demanda_agua": "media",
+      "aporte_nitrogeno": "positivo",
+      "meses_suelo_desnudo": 0,
+      "forraje": false,
+      "ingreso": "medio",
+      "requiere_riego": false,
+      "requiere_hacienda": false,
+      "maquinaria_especial": "ninguna"
+     },
+     "fuentes": []
+    },
+    {
+     "id": "z2c",
+     "tipo": "alternativa",
+     "nombre": "Puente verde que se seca a tiempo",
+     "secuencia": [
+      {
+       "cultivo": "Soja",
+       "seccion": "B",
+       "siembra_mes": null,
+       "cosecha_mes": null
+      },
+      {
+       "cultivo": "Vicia + centeno",
+       "seccion": "D",
+       "siembra_mes": null,
+       "cosecha_mes": null
+      },
+      {
+       "cultivo": "Maíz tardío",
+       "seccion": "A",
+       "siembra_mes": null,
+       "cosecha_mes": null
+      }
+     ],
+     "calendario": [
+      "cultivo",
+      "cultivo",
+      "cultivo",
+      "cultivo",
+      "cobertura",
+      "cobertura",
+      "cobertura",
+      "cobertura",
+      "rastrojo",
+      "rastrojo",
+      "rastrojo",
+      "cultivo"
+     ],
+     "por_que": "La vicia fija nitrógeno para el maíz y el centeno tapa el suelo y frena malezas en invierno.",
+     "evidencia": [
+      {
+       "texto": "Hay que secarla antes de agosto, cuando el agua del suelo llega a su mínimo del año.",
+       "dato": null,
+       "fuente": null
+      }
+     ],
+     "beneficios": [
+      "Nitrógeno sin fertilizante para el maíz",
+      "Suelo cubierto en invierno",
+      "Menos malezas"
+     ],
+     "que_falta_saber": [
+      "Agua útil del suelo en abril, para decidir si conviene sembrarla",
+      "Herbicidas residuales que puedan dañar a la vicia"
+     ],
+     "riesgos_revision_local": [
+      "Si no se seca antes de agosto, vacía el agua que necesita el maíz",
+      "Requiere rolo o secado a tiempo"
+     ],
+     "atributos": {
+      "demanda_agua": "alta",
+      "aporte_nitrogeno": "positivo",
+      "meses_suelo_desnudo": 0,
+      "forraje": false,
+      "ingreso": "medio",
+      "requiere_riego": false,
+      "requiere_hacienda": false,
+      "maquinaria_especial": "rolo o sembradora de grano fino"
+     },
+     "fuentes": []
+    }
+   ]
+  },
+  "zona_3_monte_semiarido": {
+   "zona_protagonista": false,
+   "validado_por": "borrador del equipo (sin validar)",
+   "rotaciones": [
+    {
+     "id": "z3a",
+     "tipo": "actual",
+     "nombre": "Maíz o zapallo sin cobertura",
+     "secuencia": [
+      {
+       "cultivo": "Maíz o zapallo",
+       "seccion": "A",
+       "siembra_mes": null,
+       "cosecha_mes": null
+      }
+     ],
+     "calendario": [
+      "cultivo",
+      "cultivo",
+      "cultivo",
+      "rastrojo",
+      "desnudo",
+      "desnudo",
+      "desnudo",
+      "desnudo",
+      "desnudo",
+      "desnudo",
+      "desnudo",
+      "cultivo"
+     ],
+     "por_que": "Es lo que se hace hoy en lotes desmontados. Sirve de punto de comparación.",
+     "evidencia": [
+      {
+       "texto": "El rastrojo se pastorea en invierno y el suelo queda pelado y pisoteado.",
+       "dato": null,
+       "fuente": null
+      }
+     ],
+     "beneficios": [
+      "Alimento para la familia y la hacienda",
+      "Prácticas conocidas"
+     ],
+     "que_falta_saber": [
+      "Rendimientos en años secos",
+      "Carga de hacienda en invierno"
+     ],
+     "riesgos_revision_local": [
+      "Se pierde la cosecha en años secos",
+      "Suelo pelado y compactado en los meses de viento"
+     ],
+     "atributos": {
+      "demanda_agua": "alta",
+      "aporte_nitrogeno": "negativo",
+      "meses_suelo_desnudo": 7,
+      "forraje": false,
+      "ingreso": "bajo",
+      "requiere_riego": false,
+      "requiere_hacienda": false,
+      "maquinaria_especial": "ninguna"
+     },
+     "fuentes": []
+    },
+    {
+     "id": "z3b",
+     "tipo": "alternativa",
+     "nombre": "Rotación que aguanta la sequía",
+     "secuencia": [
+      {
+       "cultivo": "Sorgo doble propósito",
+       "seccion": "A",
+       "siembra_mes": null,
+       "cosecha_mes": null
+      },
+      {
+       "cultivo": "Poroto caupí",
+       "seccion": "B",
+       "siembra_mes": null,
+       "cosecha_mes": null
+      }
+     ],
+     "calendario": [
+      "cultivo",
+      "cultivo",
+      "cultivo",
+      "cultivo",
+      "rastrojo",
+      "rastrojo",
+      "rastrojo",
+      "rastrojo",
+      "rastrojo",
+      "desnudo",
+      "desnudo",
+      "cultivo"
+     ],
+     "por_que": "El sorgo necesita mucha menos agua que el maíz para dar grano y forraje. El caupí fija nitrógeno con calor y da proteína.",
+     "evidencia": [
+      {
+       "texto": "Sorgo y mijo toleran déficit hídrico mejor que el maíz.",
+       "dato": null,
+       "fuente": null
+      }
+     ],
+     "beneficios": [
+      "Rinde más parejo en años secos",
+      "Grano y forraje del mismo cultivo",
+      "Nitrógeno del caupí"
+     ],
+     "que_falta_saber": [
+      "Semilla de caupí disponible en la zona",
+      "Comprador del grano de sorgo"
+     ],
+     "riesgos_revision_local": [
+      "Pájaros en el sorgo",
+      "Octubre y noviembre todavía con suelo pelado"
+     ],
+     "atributos": {
+      "demanda_agua": "baja",
+      "aporte_nitrogeno": "positivo",
+      "meses_suelo_desnudo": 2,
+      "forraje": true,
+      "ingreso": "medio",
+      "requiere_riego": false,
+      "requiere_hacienda": false,
+      "maquinaria_especial": "ninguna"
+     },
+     "fuentes": []
+    },
+    {
+     "id": "z3c",
+     "tipo": "alternativa",
+     "nombre": "Sistema silvopastoril",
+     "secuencia": [
+      {
+       "cultivo": "Algarrobo + buffel o gatton",
+       "seccion": "D",
+       "siembra_mes": null,
+       "cosecha_mes": null
+      },
+      {
+       "cultivo": "Sorgo forrajero en franjas",
+       "seccion": "A",
+       "siembra_mes": null,
+       "cosecha_mes": null
+      }
+     ],
+     "calendario": [
+      "cobertura",
+      "cobertura",
+      "cobertura",
+      "cobertura",
+      "cobertura",
+      "cobertura",
+      "cobertura",
+      "cobertura",
+      "cobertura",
+      "cobertura",
+      "cobertura",
+      "cobertura"
+     ],
+     "por_que": "El algarrobo blanco fija nitrógeno, da sombra que baja la temperatura del suelo y chauchas para la hacienda; la pastura tapa el suelo todo el año.",
+     "evidencia": [
+      {
+       "texto": "Bajo la media sombra del monte el suelo se mantiene más fresco y húmedo.",
+       "dato": null,
+       "fuente": null
+      }
+     ],
+     "beneficios": [
+      "Suelo cubierto todo el año",
+      "Forraje en el bache de invierno",
+      "Conserva el monte nativo"
+     ],
+     "que_falta_saber": [
+      "Cuántos algarrobos quedan en el lote",
+      "Carga de hacienda que soporta"
+     ],
+     "riesgos_revision_local": [
+      "El buffel puede invadir áreas naturales",
+      "Tarda varios años en estabilizarse"
+     ],
+     "atributos": {
+      "demanda_agua": "baja",
+      "aporte_nitrogeno": "neutro",
+      "meses_suelo_desnudo": 0,
+      "forraje": true,
+      "ingreso": "medio",
+      "requiere_riego": false,
+      "requiere_hacienda": true,
+      "maquinaria_especial": "ninguna"
+     },
+     "fuentes": []
+    }
+   ]
+  },
+  "zona_4_bajos_submeridionales": {
+   "zona_protagonista": false,
+   "validado_por": "borrador del equipo (sin validar)",
+   "rotaciones": [
+    {
+     "id": "z4a",
+     "tipo": "actual",
+     "nombre": "Siembra oportunista",
+     "secuencia": [
+      {
+       "cultivo": "Soja o maíz",
+       "seccion": "B",
+       "siembra_mes": null,
+       "cosecha_mes": null
+      }
+     ],
+     "calendario": [
+      "cultivo",
+      "cultivo",
+      "cultivo",
+      "cultivo",
+      "rastrojo",
+      "desnudo",
+      "desnudo",
+      "desnudo",
+      "desnudo",
+      "desnudo",
+      "desnudo",
+      "cultivo"
+     ],
+     "por_que": "Se siembra cuando el piso lo permite. Sirve de punto de comparación.",
+     "evidencia": [
+      {
+       "texto": "Pendiente casi nula: el agua no escurre y se encharca.",
+       "dato": null,
+       "fuente": null
+      }
+     ],
+     "beneficios": [
+      "Sin inversión extra"
+     ],
+     "que_falta_saber": [
+      "Qué partes del lote se anegan y por cuánto tiempo",
+      "Salinidad y sodio del suelo"
+     ],
+     "riesgos_revision_local": [
+      "Pérdida total si se anega en marzo",
+      "Suelo pelado y salitre en la seca"
+     ],
+     "atributos": {
+      "demanda_agua": "media",
+      "aporte_nitrogeno": "positivo",
+      "meses_suelo_desnudo": 6,
+      "forraje": false,
+      "ingreso": "medio",
+      "requiere_riego": false,
+      "requiere_hacienda": false,
+      "maquinaria_especial": "ninguna"
+     },
+     "fuentes": []
+    },
+    {
+     "id": "z4b",
+     "tipo": "alternativa",
+     "nombre": "Cosecha segura de ciclo adaptado",
+     "secuencia": [
+      {
+       "cultivo": "Girasol temprano",
+       "seccion": "C",
+       "siembra_mes": null,
+       "cosecha_mes": null
+      },
+      {
+       "cultivo": "Sorgo granífero",
+       "seccion": "A",
+       "siembra_mes": null,
+       "cosecha_mes": null
+      },
+      {
+       "cultivo": "Trigo o cebada",
+       "seccion": "A",
+       "siembra_mes": null,
+       "cosecha_mes": null
+      }
+     ],
+     "calendario": [
+      "cultivo",
+      "cultivo",
+      "cultivo",
+      "cultivo",
+      "cultivo",
+      "rastrojo",
+      "rastrojo",
+      "cultivo",
+      "cultivo",
+      "cultivo",
+      "cultivo",
+      "cultivo"
+     ],
+     "por_que": "El girasol se siembra en agosto-septiembre y se cosecha antes de las lluvias fuertes; el sorgo aguanta sequía y encharcamientos cortos.",
+     "evidencia": [
+      {
+       "texto": "La raíz pivotante del girasol explora el perfil y abre el suelo.",
+       "dato": null,
+       "fuente": null
+      }
+     ],
+     "beneficios": [
+      "Se cosecha antes de que se aneguen los bajos",
+      "Raíz pivotante que abre el suelo",
+      "Tres cultivos con mercado"
+     ],
+     "que_falta_saber": [
+      "Humedad acumulada en agosto para el girasol",
+      "Riesgo de helada tardía en el lote"
+     ],
+     "riesgos_revision_local": [
+      "Helada tardía sobre el girasol recién nacido",
+      "La arcilla pesada dificulta la siembra"
+     ],
+     "atributos": {
+      "demanda_agua": "media",
+      "aporte_nitrogeno": "neutro",
+      "meses_suelo_desnudo": 0,
+      "forraje": false,
+      "ingreso": "alto",
+      "requiere_riego": false,
+      "requiere_hacienda": false,
+      "maquinaria_especial": "ninguna"
+     },
+     "fuentes": []
+    },
+    {
+     "id": "z4c",
+     "tipo": "alternativa",
+     "nombre": "Biodrenaje y regeneración salina",
+     "secuencia": [
+      {
+       "cultivo": "Melilotus + grama rhodes",
+       "seccion": "D",
+       "siembra_mes": null,
+       "cosecha_mes": null
+      },
+      {
+       "cultivo": "Sorgo forrajero",
+       "seccion": "A",
+       "siembra_mes": null,
+       "cosecha_mes": null
+      }
+     ],
+     "calendario": [
+      "cobertura",
+      "cobertura",
+      "cobertura",
+      "cobertura",
+      "cobertura",
+      "cobertura",
+      "cobertura",
+      "cobertura",
+      "cobertura",
+      "cobertura",
+      "cobertura",
+      "cobertura"
+     ],
+     "por_que": "Las raíces abren poros en la arcilla para que el agua infiltre, cubren el suelo todo el año contra el salitre y fijan nitrógeno.",
+     "evidencia": [
+      {
+       "texto": "Melilotus y grama rhodes toleran suelos salinos y anegamiento temporario.",
+       "dato": null,
+       "fuente": null
+      }
+     ],
+     "beneficios": [
+      "Menos encharcamiento",
+      "Suelo cubierto que frena el salitre",
+      "Forraje para la hacienda"
+     ],
+     "que_falta_saber": [
+      "Nivel de sodio del suelo",
+      "Hacienda para aprovechar el forraje"
+     ],
+     "riesgos_revision_local": [
+      "Poca ganancia a corto plazo",
+      "Implantación difícil en años secos"
+     ],
+     "atributos": {
+      "demanda_agua": "media",
+      "aporte_nitrogeno": "neutro",
+      "meses_suelo_desnudo": 0,
+      "forraje": true,
+      "ingreso": "bajo",
+      "requiere_riego": false,
+      "requiere_hacienda": true,
+      "maquinaria_especial": "ninguna"
+     },
+     "fuentes": []
+    }
+   ]
+  },
+  "zona_5_sur_serrano": {
+   "zona_protagonista": false,
+   "validado_por": "borrador del equipo (sin validar)",
+   "rotaciones": [
+    {
+     "id": "z5a",
+     "tipo": "actual",
+     "nombre": "Maíz o sorgo con pastoreo del rastrojo",
+     "secuencia": [
+      {
+       "cultivo": "Maíz o sorgo",
+       "seccion": "A",
+       "siembra_mes": null,
+       "cosecha_mes": null
+      }
+     ],
+     "calendario": [
+      "cultivo",
+      "cultivo",
+      "cultivo",
+      "rastrojo",
+      "desnudo",
+      "desnudo",
+      "desnudo",
+      "desnudo",
+      "desnudo",
+      "desnudo",
+      "desnudo",
+      "cultivo"
+     ],
+     "por_que": "Es lo más común en el sur: un cultivo de verano y el rastrojo para la hacienda. Sirve de punto de comparación.",
+     "evidencia": [
+      {
+       "texto": "Con unas 20 heladas por año, el pasto y el rastrojo se secan temprano y la hacienda los come hasta dejar el suelo pelado.",
+       "dato": null,
+       "fuente": null
+      }
+     ],
+     "beneficios": [
+      "Grano o forraje para la hacienda",
+      "Prácticas conocidas"
+     ],
+     "que_falta_saber": [
+      "Pendiente del lote: en las sierras el suelo pelado se erosiona",
+      "Carga de hacienda en invierno"
+     ],
+     "riesgos_revision_local": [
+      "Suelo pelado en invierno y primavera, con viento y lluvias de verano que lo lavan en las pendientes",
+      "Poco forraje en el bache de invierno"
+     ],
+     "atributos": {
+      "demanda_agua": "alta",
+      "aporte_nitrogeno": "negativo",
+      "meses_suelo_desnudo": 7,
+      "forraje": false,
+      "ingreso": "bajo",
+      "requiere_riego": false,
+      "requiere_hacienda": false,
+      "maquinaria_especial": "ninguna"
+     },
+     "fuentes": []
+    },
+    {
+     "id": "z5b",
+     "tipo": "alternativa",
+     "nombre": "Sorgo forrajero y verdeo de invierno",
+     "secuencia": [
+      {
+       "cultivo": "Sorgo forrajero",
+       "seccion": "A",
+       "siembra_mes": null,
+       "cosecha_mes": null
+      },
+      {
+       "cultivo": "Centeno o avena de pastoreo",
+       "seccion": "D",
+       "siembra_mes": null,
+       "cosecha_mes": null
+      }
+     ],
+     "calendario": [
+      "cultivo",
+      "cultivo",
+      "cultivo",
+      "cultivo",
+      "cobertura",
+      "cobertura",
+      "cobertura",
+      "cobertura",
+      "rastrojo",
+      "rastrojo",
+      "desnudo",
+      "cultivo"
+     ],
+     "por_que": "El centeno y la avena aguantan las heladas del sur, dan pasto verde en el bache de invierno y tapan el suelo.",
+     "evidencia": [
+      {
+       "texto": "Los verdeos de invierno de centeno y avena toleran el frío.",
+       "dato": null,
+       "fuente": null
+      }
+     ],
+     "beneficios": [
+      "Pasto verde en invierno para la hacienda",
+      "Suelo cubierto de mayo a octubre",
+      "Menos presión de pastoreo sobre el monte"
+     ],
+     "que_falta_saber": [
+      "Agua útil del suelo en marzo, para decidir si conviene sembrar el verdeo",
+      "Carga de hacienda que soporta"
+     ],
+     "riesgos_revision_local": [
+      "Si el otoño viene seco, el verdeo no nace",
+      "Si se sobrepastorea, el suelo queda pelado igual"
+     ],
+     "atributos": {
+      "demanda_agua": "alta",
+      "aporte_nitrogeno": "neutro",
+      "meses_suelo_desnudo": 1,
+      "forraje": true,
+      "ingreso": "medio",
+      "requiere_riego": false,
+      "requiere_hacienda": false,
+      "maquinaria_especial": "rolo o sembradora de grano fino"
+     },
+     "fuentes": []
+    },
+    {
+     "id": "z5c",
+     "tipo": "alternativa",
+     "nombre": "Silvopastoril con pastura que aguante el frío",
+     "secuencia": [
+      {
+       "cultivo": "Monte + pasto llorón o gatton",
+       "seccion": "D",
+       "siembra_mes": null,
+       "cosecha_mes": null
+      },
+      {
+       "cultivo": "Sorgo forrajero en franjas",
+       "seccion": "A",
+       "siembra_mes": null,
+       "cosecha_mes": null
+      }
+     ],
+     "calendario": [
+      "cobertura",
+      "cobertura",
+      "cobertura",
+      "cobertura",
+      "cobertura",
+      "cobertura",
+      "cobertura",
+      "cobertura",
+      "cobertura",
+      "cobertura",
+      "cobertura",
+      "cobertura"
+     ],
+     "por_que": "El monte da sombra y reparo del viento; una pastura que aguante las heladas cubre el suelo todo el año y frena la erosión en las pendientes.",
+     "evidencia": [
+      {
+       "texto": "El buffel grass sufre con heladas fuertes; en el sur conviene una pastura más tolerante al frío, como el pasto llorón.",
+       "dato": null,
+       "fuente": null
+      }
+     ],
+     "beneficios": [
+      "Suelo cubierto todo el año",
+      "Frena la erosión en lomas y pendientes",
+      "Forraje para vacas y cabras"
+     ],
+     "que_falta_saber": [
+      "Qué pastura se adapta mejor al lote (consultar al INTA)",
+      "Estado del monte en el lote"
+     ],
+     "riesgos_revision_local": [
+      "Tarda en implantarse si llueve poco",
+      "El pastoreo excesivo degrada el monte"
+     ],
+     "atributos": {
+      "demanda_agua": "baja",
+      "aporte_nitrogeno": "neutro",
+      "meses_suelo_desnudo": 0,
+      "forraje": true,
+      "ingreso": "medio",
+      "requiere_riego": false,
+      "requiere_hacienda": true,
+      "maquinaria_especial": "ninguna"
+     },
+     "fuentes": []
+    }
+   ]
+  }
+ }
+}
