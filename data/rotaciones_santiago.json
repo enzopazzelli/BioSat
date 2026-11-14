@@ -3,7 +3,7 @@
     "fuente": "Caso real Establecimiento 'Bella Criolla' (cerca del Río Utis, San Francisco, Depto. Quebrachos) + NASA POWER (1991-2025) + AIZAL V4 + Bibliografía INTA EEA Santiago del Estero y Ojo de Agua",
     "generado_por": "Vale (Frente 4 · Campo y agronomía)",
     "fecha": "2026-11-14",
-    "notas": "15 rotaciones (3 por cada una de las 5 zonas agroecológicas). Zona protagonista: zona_5_sur_serrano (Establecimiento 'Bella Criolla', zona del Río Utis / San Francisco, Depto. Quebrachos), enfocada en implantación de pasturas y pastoreo mixto vacuno y caprino. PENDIENTE: la entrevista a Bella Criolla todavia no se hizo; las fichas de la Zona 5 se ajustan cuando el productor responda. Las demas zonas se basan en bibliografia y falta validarlas con un agronomo."
+    "notas": "15 rotaciones (3 por cada una de las 5 zonas). Zona protagonista: zona_5_sur_serrano, con las fichas ajustadas a la entrevista al productor de 'Bella Criolla' (Río Utis, Depto. Quebrachos) del 14/11/2026. Falta su permiso escrito para nombrar el campo. Las zonas 1 a 4 se basan en bibliografía y falta validarlas con un agrónomo. Las citas marcadas 'a confirmar' hay que reemplazarlas por la publicación exacta."
   },
   "zonas": {
     "zona_1_riego_salitre": {
@@ -905,18 +905,18 @@
     },
     "zona_5_sur_serrano": {
       "zona_protagonista": true,
-      "validado_por": "sin validar",
+      "validado_por": "productor",
       "rotaciones": [
         {
           "id": "z5_actual",
           "tipo": "actual",
-          "nombre": "Pastura megatérmica pura y verdeo estival con sobrepastoreo invernal (suelo descubierto)",
+          "nombre": "Pasturas megatérmicas con monte para las cabras y bache de invierno cubierto con fardos",
           "secuencia": [
             {
-              "cultivo": "Pastura megatérmica (Gatton Panic / Buffel) o Sorgo forrajero",
+              "cultivo": "Pastura megatérmica (Gatton Panic, Buffel o Grama Rhodes)",
               "seccion": "A",
               "siembra_mes": 11,
-              "cosecha_mes": 5
+              "cosecha_mes": 6
             }
           ],
           "calendario": [
@@ -924,78 +924,82 @@
             "cultivo",
             "cultivo",
             "cultivo",
+            "cultivo",
             "rastrojo",
             "rastrojo",
-            "desnudo",
-            "desnudo",
+            "rastrojo",
             "desnudo",
             "desnudo",
             "cultivo",
             "cultivo"
           ],
-          "por_que": "Caso real en 'Bella Criolla' (cerca del Río Utis, San Francisco, Depto. Quebrachos): producen vacas y cabras sembrando pasturas. Cuando caen las 20 heladas del invierno se seca la pastura de verano y, al pastorear a fondo el remanente entre julio y octubre, quedan manchones de suelo pelado donde la cercanía al Río Utis y los bañados hace subir el salitre y se agrava el bache forrajero.",
+          "por_que": "Es lo que hace hoy el productor: ganadería de vacas y cabras con monte natural, pasturas megatérmicas (Gatton Panic, Buffel, Grama Rhodes) sembradas con las primeras lluvias de primavera-verano y pastoreo por sectores. Desde mayo o junio el pasto deja de crecer, las heladas queman el pasto verde y entre julio y octubre falta alimento de calidad, que se cubre con reservas, fardos o suplementos. En años secos el suelo queda descubierto y las primeras lluvias fuertes arrastran tierra.",
           "evidencia": [
             {
-              "texto": "La zona registra 20,4 días de helada al año en la normal 1991-2020 (pico de 8,8 heladas en julio), lo que quema la hoja de las pasturas estivales y detiene el rebrote hasta las lluvias de noviembre.",
+              "texto": "20,4 días de helada por año en la normal 1991-2020, el doble o más que el resto de la provincia. Empiezan en mayo y tienen su pico en julio: coincide con lo que cuenta el productor sobre el freno del pasto.",
               "dato": "clima_zonas.zona_5_sur_serrano.anual.dias_helada_3c",
               "fuente": "NASA POWER (1991-2020)"
             },
             {
-              "texto": "Déficit hídrico de -838 mm/año (739 mm de lluvia normal) con sólo 6 a 15 mm/mes entre junio y septiembre: al descubrirse el suelo en el valle del Río Utis, la evaporación succiona sales a la superficie y las lluvias de noviembre (94 mm) escurren sin infiltrar.",
+              "texto": "Falta de agua de 838 mm por año (lluvia menos demanda). Entre junio y septiembre llueven de 6 a 16 mm por mes y la humedad en raíces toca su mínimo en septiembre: por eso el bache llega hasta octubre.",
               "dato": "clima_zonas.zona_5_sur_serrano.anual.balance_mm",
               "fuente": "NASA POWER"
             }
           ],
           "beneficios": [
-            "Buen volumen de pasto en verano-otoño cuando llueve (enero a abril concentran más de 400 mm) con especies ya conocidas en el campo.",
-            "Aprovechamiento directo por vacas y cabras sin depender de fletes externos en verano."
+            "Especies que el productor ya conoce y que andan en la zona.",
+            "El monte da alimento a las cabras y protege el suelo.",
+            "El pastoreo por sectores ya evita agotar el pasto."
           ],
           "que_falta_saber": [
-            "Nivel de salinidad y alcalinidad en los potreros más bajos cercanos a los bañados del Río Utis versus los lotes de media loma.",
-            "Carga animal real (vacas y cabras por hectárea) y estado de subdivisión de potreros para dar descanso a la pastura.",
-            "Nitrógeno disponible en suelo tras varios años de gramínea pura sin leguminosas."
+            "Hectáreas de monte, pastura y lote de siembra, y cantidad de vacas y cabras (el productor no las dio).",
+            "Cuántos meses queda el suelo descubierto: depende de la seca de cada año.",
+            "Qué sectores se salinizan y cuáles se anegan con las crecientes del Río Utis.",
+            "Cuánto se gasta por año en fardos y suplementos para pasar el invierno."
           ],
           "riesgos_revision_local": [
-            "Degradación y pérdida de plantas de la pastura por doble estrés: heladas fuertes de julio y sobrepastoreo caprino/vacuno de la corona en primavera seca.",
-            "Manchones de suelo pelado y salitroso entre julio y octubre que reducen la receptividad ganadera del campo y dejan sin proteína a las cabras en parición/lactancia."
+            "Bache de alimento de julio a octubre que obliga a comprar fardos o suplementos.",
+            "Suelo descubierto en años secos: las primeras lluvias fuertes (más de 30 mm en un día) arrastran tierra.",
+            "Crecientes del Río Utis que anegan los bajos y complican mover la hacienda.",
+            "El Buffel tolera mal las heladas fuertes del sur."
           ],
           "atributos": {
-            "demanda_agua": "media",
+            "demanda_agua": "baja",
             "aporte_nitrogeno": "negativo",
-            "meses_suelo_desnudo": 4,
+            "meses_suelo_desnudo": 2,
             "forraje": true,
-            "ingreso": "bajo",
+            "ingreso": "medio",
             "requiere_riego": false,
             "maquinaria_especial": "ninguna"
           },
           "fuentes": [
-            "Caso real Establecimiento 'Bella Criolla' (Río Utis / San Francisco, Depto. Quebrachos) — Relevamiento BioSat",
-            "INTA EEA Santiago del Estero / AER Ojo de Agua — Sistemas ganaderos bovino-caprinos de la cuenca del Río Utis y sur santiagueño"
+            "Entrevista al productor de 'Bella Criolla' (Río Utis, Depto. Quebrachos), 14/11/2026 — docs/entrevista-productor-bella-criolla.md",
+            "NASA POWER, punto -29.50, -63.69 (1991-2025)"
           ]
         },
         {
           "id": "z5_alt1",
           "tipo": "alternativa",
-          "nombre": "Puente forrajero de invierno y antihielo: Sorgo forrajero + Melilotus alba y Centeno/Avena",
+          "nombre": "Verdeo de invierno en el lote de siembra: avena o centeno con Melilotus",
           "secuencia": [
             {
-              "cultivo": "Sorgo forrajero o sudangrás (verano)",
+              "cultivo": "Pastura megatérmica en los potreros (se mantiene)",
               "seccion": "A",
               "siembra_mes": 11,
-              "cosecha_mes": 4
+              "cosecha_mes": 6
             },
             {
-              "cultivo": "Melilotus alba (Trébol de olor) + Centeno o Avena negra (otoño-invierno)",
+              "cultivo": "Avena o centeno + Melilotus alba en el lote de siembra",
               "seccion": "D",
-              "siembra_mes": 4,
+              "siembra_mes": 3,
               "cosecha_mes": 9
             }
           ],
           "calendario": [
             "cultivo",
             "cultivo",
-            "cultivo",
-            "cultivo",
+            "cobertura",
+            "cobertura",
             "cobertura",
             "cobertura",
             "cobertura",
@@ -1005,31 +1009,36 @@
             "cultivo",
             "cultivo"
           ],
-          "por_que": "Ideal para la ribera del Río Utis en 'Bella Criolla': aprovecha la humedad de abril (62,4 mm de lluvia y pico de agua en raíces del 51,4 %) y los bajos húmedos para intersembrar Melilotus alba con centeno o avena. Resisten las 20 heladas y la salinidad del Utis, cubren el suelo todo el invierno, fijan nitrógeno para recuperar lotes cansados y entregan pasto verde proteico cuando la pastura megatérmica está helada.",
+          "por_que": "Ataca el problema que el productor marca como el más grande: pasar el invierno. En marzo y abril todavía llueve (127 y 62 mm) y el suelo tiene la mayor humedad del año. Con esa agua se puede sembrar avena o centeno con Melilotus, que aguantan las heladas, dan pasto verde entre julio y septiembre, tapan el suelo y el Melilotus suma nitrógeno. Puede reducir la compra de fardos.",
           "evidencia": [
             {
-              "texto": "Resiste las 20,4 heladas anuales (junio a agosto) y aprovecha el clima más templado del sur (solo 2,2 días/año > 40 °C en la normal 1991-2020), manteniendo cobertura viva en pleno invierno.",
-              "dato": "clima_zonas.zona_5_sur_serrano.anual.dias_calor_40",
-              "fuente": "NASA POWER (1991-2020)"
+              "texto": "Abril es el mes con más humedad en raíces del año (51,4 %, promedio 2020-2025), justo antes de que se corte la lluvia en mayo.",
+              "dato": "clima_zonas.zona_5_sur_serrano.meses",
+              "fuente": "NASA POWER"
             },
             {
-              "texto": "El Melilotus alba prospera en los suelos de pH neutro a alcalino del Río Utis y repone el nitrógeno edáfico consumido por las gramíneas forrajeras.",
-              "dato": "suelo_zonas.zona_5_sur_serrano.nitrogeno_g_kg",
-              "fuente": "AIZAL V4 (SoilGrids B11, B16)"
+              "texto": "Solo 2,2 días por año de más de 40 °C (normal 1991-2020) y 20 heladas: el clima del sur favorece a los cereales de invierno más que en el norte.",
+              "dato": "clima_zonas.zona_5_sur_serrano.anual.dias_calor_40",
+              "fuente": "NASA POWER (1991-2020)"
             }
           ],
           "beneficios": [
-            "Corta el bache forrajero de invierno-primavera entregando proteína fresca para cabras en lactancia y terneros.",
-            "Cero meses de suelo desnudo: la sombra vegetal evita que suba el salitre en los bajos cercanos al Río Utis.",
-            "Fijación biológica de nitrógeno que revitaliza el suelo antes de volver a sembrar sorgo o renovar una pastura perenne."
+            "Pasto verde en julio, agosto y septiembre, los meses que el productor marca como críticos.",
+            "Menos compra de fardos y suplementos.",
+            "Suelo tapado durante el invierno: menos tierra arrastrada con las primeras lluvias.",
+            "El Melilotus suma nitrógeno y tolera suelos con algo de sal."
           ],
           "que_falta_saber": [
-            "Humedad superficial en abril en los lotes de 'Bella Criolla' para definir si sembrar en línea o al voleo sobre el sorgo.",
-            "Disponibilidad de apotreramiento (alambre o boyero solar) para pastorear por franjas horarias."
+            "Si hay humedad suficiente en marzo-abril en ese lote (el productor lo pone como condición).",
+            "Si el suelo del lote lo permite (sal, piso).",
+            "Si hay maquinaria para sembrar o si se puede sembrar al voleo.",
+            "Costo de la semilla frente a lo que se gasta hoy en fardos."
           ],
           "riesgos_revision_local": [
-            "Compensación hídrica (trade-off): retirar la hacienda o cerrar el ciclo del verdeo a fines de agosto dejando rastrojo; si se pastorea al ras en septiembre-octubre, consume el agua útil para el cultivo de verano.",
-            "Manejar el pastoreo del Melilotus con precaución en horas de rocío para evitar empaste (meteorismo) en vacunos."
+            "Hacen falta alambrados y poder reservar el lote hasta que el pasto esté listo (lo dice el productor).",
+            "Si el otoño viene seco, conviene no sembrar.",
+            "Terminar el pastoreo a fines de septiembre dejando rastrojo, para no dejar el suelo pelado antes de las lluvias.",
+            "El Melilotus puede empastar a las vacas: entrar con cuidado."
           ],
           "atributos": {
             "demanda_agua": "media",
@@ -1038,34 +1047,35 @@
             "forraje": true,
             "ingreso": "medio",
             "requiere_riego": false,
-            "maquinaria_especial": "sembradora o siembra al voleo con cajón alfalfero"
+            "maquinaria_especial": "sembradora (o siembra al voleo) y alambrado o boyero para reservar el lote"
           },
           "fuentes": [
-            "INTA EEA Santiago del Estero / AER Ojo de Agua — Verdeos invernales y Melilotus alba en ambientes de bañados y llanuras del sur santiagueño",
-            "AIZAL V4 — Clima, Balance Hídrico y Química de Suelo (B04, B11, B16)"
+            "Entrevista al productor de 'Bella Criolla' (Río Utis, Depto. Quebrachos), 14/11/2026 — docs/entrevista-productor-bella-criolla.md",
+            "NASA POWER, punto -29.50, -63.69 (1991-2025)",
+            "INTA — verdeos de invierno y Melilotus alba en la región (cita a confirmar)"
           ]
         },
         {
           "id": "z5_alt2",
           "tipo": "alternativa",
-          "nombre": "Silvopastoril adaptado al Río Utis: Algarrobo + Grama Rhodes / Pasto Llorón + Melilotus y Poroto Caupí",
+          "nombre": "Pastura según el ambiente y monte conservado: Grama Rhodes en los bajos, especie a evaluar en las lomas",
           "secuencia": [
             {
-              "cultivo": "Monte de Algarrobo (Neltuma alba) + Grama Rhodes (bajos) / Pasto Llorón (lomas)",
-              "seccion": "B",
-              "siembra_mes": 10,
-              "cosecha_mes": 9
-            },
-            {
-              "cultivo": "Intersiembra de Melilotus alba + Franjas de Sorgo y Poroto Caupí",
+              "cultivo": "Grama Rhodes en los bajos con salitre",
               "seccion": "A",
-              "siembra_mes": 12,
-              "cosecha_mes": 5
+              "siembra_mes": 11,
+              "cosecha_mes": 6
             },
             {
-              "cultivo": "Reserva viva en pie (Tuna forrajera / Monte nativo)",
-              "seccion": "D",
-              "siembra_mes": 8,
+              "cultivo": "Lomas: Gatton Panic o una especie que aguante más el frío (pasto llorón, a evaluar)",
+              "seccion": "A",
+              "siembra_mes": 11,
+              "cosecha_mes": 6
+            },
+            {
+              "cultivo": "Monte nativo conservado (algarrobo) para ramoneo de las cabras y sombra",
+              "seccion": "B",
+              "siembra_mes": 1,
               "cosecha_mes": 12
             }
           ],
@@ -1075,52 +1085,56 @@
             "cultivo",
             "cultivo",
             "cultivo",
-            "cobertura",
-            "cobertura",
-            "cobertura",
-            "cobertura",
-            "cultivo",
+            "rastrojo",
+            "rastrojo",
+            "rastrojo",
+            "rastrojo",
+            "rastrojo",
             "cultivo",
             "cultivo"
           ],
-          "por_que": "Sistema integral a medida de 'Bella Criolla' (Río Utis, Quebrachos): combina Grama Rhodes en las medias lomas/bajos salinos del río y Pasto Llorón en las lomas más francas (ambos mucho más tolerantes a las 20 heladas del sur que el Buffel Grass), consociados con leguminosas (Algarrobo, Melilotus y Poroto Caupí) para sostener vacas y cabras todo el año con 0 meses de suelo desnudo.",
+          "por_que": "Sigue lo que propone el propio productor: no sembrar cualquier pastura en cualquier lugar. Grama Rhodes en los suelos con salinidad, otra especie a evaluar en las partes altas, y conservar el monte porque alimenta a los animales y protege el suelo. Con el pastoreo por sectores, la idea es no llegar a la seca con el suelo pelado.",
           "evidencia": [
             {
-              "texto": "Con 20,4 días de helada al año, la Grama Rhodes y el Pasto Llorón bajo media sombra de algarrobo toleran el frío invernal y rebrotan antes en primavera que el Buffel Grass.",
+              "texto": "Con 20,4 heladas por año, en las lomas conviene una especie más tolerante al frío que el Buffel.",
               "dato": "clima_zonas.zona_5_sur_serrano.anual.dias_helada_3c",
               "fuente": "NASA POWER (1991-2020)"
             },
             {
-              "texto": "La cobertura permanente de raíces y dosel arbóreo regula la napa en el corredor del Río Utis, frena la salinización y protege el suelo de las lluvias intensas de verano.",
+              "texto": "Porcentaje de monte nativo de la zona, para ver cuánto monte queda para conservar.",
               "dato": "suelo_zonas.zona_5_sur_serrano.monte_nativo_pct",
-              "fuente": "AIZAL V4 (MapBiomas Chaco / NASADEM)"
+              "fuente": "AIZAL V4 (MapBiomas Chaco)"
             }
           ],
           "beneficios": [
-            "Complementariedad perfecta vacuno-caprina: la vaca aprovecha el volumen de Grama Rhodes, Pasto Llorón y sorgo; la cabra aprovecha el ramoneo controlado, la chaucha de algarrobo y el poroto caupí.",
-            "Las leguminosas (Algarrobo + Melilotus + Caupí) inyectan nitrógeno gratis a la pastura, evitando que se degrade o amarillee a los 3 años.",
-            "Cobertura viva los 12 meses del año que frena tanto la erosión en lomas como la subida del salitre cerca del Río Utis."
+            "Cada ambiente con la pastura que mejor le va: menos fracasos de siembra.",
+            "El monte da alimento a las cabras, sombra a la hacienda y protege el suelo.",
+            "Suelo cubierto todo el año si se respeta el descanso de cada sector."
           ],
           "que_falta_saber": [
-            "Mapa de ambientes dentro de 'Bella Criolla' (qué hectáreas son bajo salino de influencia del Río Utis y cuáles son loma alta).",
-            "Tiempos de clausura disponibles en cada potrero para permitir el semillado de la pastura en otoño."
+            "Mapa de ambientes del campo: qué partes son loma, bajo con sal o bajo que se anega.",
+            "Qué especie conviene en las lomas (el productor dice que hay que evaluarlo).",
+            "Si la Grama Rhodes aguanta el tiempo que dura el agua de las crecientes del Utis en esos bajos."
           ],
           "riesgos_revision_local": [
-            "Si no se consocia con una leguminosa (Melilotus en invierno o Caupí/Algarrobo en verano), las gramíneas perennes agotan el nitrógeno del suelo y bajan su producción y proteína a partir del tercer año.",
-            "Regulación de la carga caprina sobre renovales de algarrobo y descanso oportuno de los lotes."
+            "Las gramíneas solas pierden fuerza con los años si al suelo le falta nitrógeno: sumar una leguminosa como el Melilotus.",
+            "Las crecientes del Río Utis anegan los bajos: prever potreros altos para sacar la hacienda.",
+            "Controlar las cabras sobre los renovales del monte para que se regenere.",
+            "Requiere clausurar la pastura nueva hasta que se afirme."
           ],
           "atributos": {
             "demanda_agua": "baja",
-            "aporte_nitrogeno": "positivo",
+            "aporte_nitrogeno": "neutro",
             "meses_suelo_desnudo": 0,
             "forraje": true,
-            "ingreso": "alto",
+            "ingreso": "medio",
             "requiere_riego": false,
-            "maquinaria_especial": "rolo selectivo o sembradora de pasturas"
+            "maquinaria_especial": "sembradora de pasturas o siembra al voleo"
           },
           "fuentes": [
-            "INTA EEA Santiago del Estero / AER Ojo de Agua — Implantación y manejo de Grama Rhodes, Pasto Llorón y sistemas silvopastoriles en el sur santiagueño",
-            "Caso real Establecimiento 'Bella Criolla' (Río Utis, San Francisco, Depto. Quebrachos)"
+            "Entrevista al productor de 'Bella Criolla' (Río Utis, Depto. Quebrachos), 14/11/2026 — docs/entrevista-productor-bella-criolla.md",
+            "NASA POWER, punto -29.50, -63.69 (1991-2025)",
+            "INTA — Grama Rhodes en suelos salinos y manejo silvopastoril (cita a confirmar)"
           ]
         }
       ]
