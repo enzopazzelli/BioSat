@@ -196,7 +196,7 @@ if (require.main === module) {
   let desactualizado = false;
   for (const [nombre, contenido] of Object.entries(salida)) {
     const ruta = path.join(__dirname, nombre);
-    const actual = fs.existsSync(ruta) ? fs.readFileSync(ruta, 'utf8') : null;
+    const actual = fs.existsSync(ruta) ? fs.readFileSync(ruta, 'utf8').replace(/\r\n/g, '\n') : null;   // git en Windows usa CRLF
     if (verificar) { if (actual !== contenido) { console.error('Desactualizado: ' + nombre); desactualizado = true; } }
     else { fs.writeFileSync(ruta, contenido, 'utf8'); console.log('Escrito ' + nombre); }
   }

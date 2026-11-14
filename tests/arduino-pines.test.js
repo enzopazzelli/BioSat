@@ -109,7 +109,7 @@ test('la línea del sketch es JSON válido y el lector la entiende', () => {
 test('el esquema SVG y la tabla de conexiones están al día con pines.json', () => {
   const G = require('../arduino/esquema/generar-esquema.js');
   const p = G.leerPines();
-  const leer = (n) => fs.readFileSync(path.join(RAIZ, 'esquema', n), 'utf8');
+  const leer = (n) => fs.readFileSync(path.join(RAIZ, 'esquema', n), 'utf8').replace(/\r\n/g, '\n');   // git en Windows pasa los archivos a CRLF
   assert.equal(leer(G.ARCHIVOS.svg), G.construirSvg(p), 'corré: node arduino/esquema/generar-esquema.js');
   assert.equal(leer(G.ARCHIVOS.tabla), G.construirTabla(p), 'corré: node arduino/esquema/generar-esquema.js');
 });
