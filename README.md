@@ -114,7 +114,6 @@ BioSat/
 ├── docs/                                                     <-- Documentación del equipo
 │   ├── AIZAL_Fichas_Variables_V4_2026.pdf                    <-- Fichas oficiales de las variables AIZAL V4
 │   ├── analisis-datos-nasa-santiago.md                       <-- Hallazgos climáticos 2020-2025 (a corregir, ver PLAN F1)
-│   ├── BioSat-cruce-de-datos-validacion.docx
 │   ├── contratos-de-datos.md                                 <-- Formato de los JSON que comparten los frentes
 │   ├── cruce-de-datos.md                                     <-- Qué sale de cruzar NASA POWER, AIZAL y Landsat; análisis de zonas
 │   ├── documentacion-tecnica-agronomica.md                   <-- Secciones de cultivo A/B/C/D y reglas de rotación
@@ -124,8 +123,7 @@ BioSat/
 │   ├── reglas-y-bitacora.md                                  <-- Reglas de oro y bitácora de decisiones
 │   ├── resena-desafio.md                                     <-- Reseña del desafío y guía de entrevista
 │   ├── transcripcion-video-desafio.md                        <-- Transcripción del video del desafío (los 4 verbos)
-│   ├── zonas-santiago-y-kit-arduino.md                       <-- Las 5 zonas, sus rotaciones y el kit Arduino
-│   └── ~$oSat-cruce-de-datos-validacion.docx
+│   └── zonas-santiago-y-kit-arduino.md                       <-- Las 5 zonas, sus rotaciones y el kit Arduino
 └── scripts/                                                  <-- Herramientas para bajar y procesar datos
     ├── actualizar_readme.py                                  <-- Regenera las secciones automáticas del README
     ├── descargar_nasa_power.py                               <-- Descarga y resume NASA POWER por zona
