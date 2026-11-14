@@ -50,17 +50,17 @@ Avance de cada integrante, contado desde las casillas de su plan en [`planes/`](
 <!-- AUTO:AVANCE:INICIO -->
 | Persona | Rama | Avance | Tareas |
 |---|---|---|---|
-| [Enzo · Integración y app](planes/1-enzo.md) | `enzo-app` | `▓▓▓▓▓▓▓░░░` 72% | 26/36 |
-| [Santi · Suelo, satélite e IA](planes/2-santi.md) | `santi-datos-ia` | `▓▓▓▓▓▓▓▓░░` 81% | 22/27 |
-| [Vale · Campo y agronomía](planes/3-vale.md) | `vale-rotaciones` | `▓▓▓▓▓▓░░░░` 64% | 14/22 |
-| [Sara · Kit Arduino y relato](planes/4-sara.md) | `sara-arduino-entrega` | `░░░░░░░░░░` 4% | 1/23 |
-| **Total** | | `▓▓▓▓▓▓░░░░` **58%** | **63/108** |
+| [Enzo · Integración y app](planes/1-enzo.md) | `enzo-app` | `▓▓▓▓▓▓▓▓░░` 75% | 30/40 |
+| [Santi · Suelo, satélite e IA](planes/2-santi.md) | `santi-datos-ia` | `▓▓▓▓▓▓▓▓░░` 78% | 21/27 |
+| [Vale · Campo y agronomía](planes/3-vale.md) | `vale-rotaciones` | `▓▓▓▓▓▓▓▓░░` 77% | 17/22 |
+| [Sara · Kit Arduino y relato](planes/4-sara.md) | `sara-arduino-entrega` | `▓▓░░░░░░░░` 20% | 5/25 |
+| **Total** | | `▓▓▓▓▓▓░░░░` **64%** | **73/114** |
 <!-- AUTO:AVANCE:FIN -->
 
 ### Lo más urgente
 
-1. **Santi: cambiar la contraseña de Meteomatics.** Está escrita en `scripts/descargar_meteomatics.py` y este repo es público. Hay que cambiarla en Meteomatics y leerla de una variable de entorno.
-2. **Sara: el kit Arduino y la entrega no tienen nada en el repo.** Faltan el sketch, el lector Web Serial (`arduino/lector-web-serial.js`), las lecturas grabadas, el guion, el video y la página del proyecto. Sin eso, la pantalla del kit solo anda con el Arduino conectado en vivo.
+1. **Santi: cambiar la contraseña de Meteomatics en el sitio de Meteomatics.** El script ya la lee de una variable de entorno (`METEOMATICS_PASSWORD`) y no está más en el código, pero **la clave vieja sigue en el historial público de Git**: hay que cambiarla igual.
+2. **Kit Arduino: está programado, falta armarlo y probarlo.** El sketch, el lector Web Serial y el esquema están en [`arduino/`](arduino/README.md) (Enzo se hizo cargo). Falta armar el kit, sellar el LM35, calibrar y grabar lecturas reales. **La entrega** (guion, video y página del proyecto) sigue sin empezar.
 3. **Santi: suelo y suelo pelado vacíos.** `data/suelo_zonas.json` y `data/diagnostico_landsat_ia.json` son plantillas sin ninguna medición, y el visor de Earth Engine está sin publicar. Los pasos están en [su plan](planes/2-santi.md).
 4. **Vale: confirmar `requiere_hacienda` y el permiso del productor.** Enzo completó 7 valores según el texto de cada rotación, y la entrevista deja pendiente el permiso por escrito para usar sus frases.
 5. **Enzo: sumar el lector de Sara apenas llegue, decidir si Meteomatics entra en la demo y ensayar la pantalla del kit en la pantalla grande.**
@@ -73,10 +73,10 @@ Sale solo de las casillas sin tildar de cada plan. Panorama completo y riesgos: 
 <details>
 <summary><b>Enzo</b>: 10 pendientes (<a href="planes/1-enzo.md">plan completo</a>)</summary>
 
-- Sumar el lector del Arduino de Sara (`arduino/lector-web-serial.js`) con respaldo de lecturas grabadas *(la app ya lo carga y habilita el botón; falta el archivo de Sara)* _(Congelamiento)_
 - Último merge de funciones a `main` _(Congelamiento)_
 - Revisar el README final con Sara _(Entrega)_
 - Dejar `main` estable con la app publicada _(Entrega)_
+- Botón de idioma EN/ES en toda la app *(etapa siguiente, con su propio diseño)* _(Sugerencias de la organización)_
 - Mostrar en la app y en el README el link del visor de Earth Engine cuando Santi lo publique _(Agregadas por Enzo)_
 - Verificar que el visor use las imágenes de Earth Engine cuando Santi suba `data/imagenes/escenas.json` _(Agregadas por Enzo)_
 - Decidir si Meteomatics entra en la app (alertas a 7-10 días, `data/meteomatics_santiago_zonas.json`) o queda fuera de la demo _(Agregadas por Enzo)_
@@ -87,22 +87,20 @@ Sale solo de las casillas sin tildar de cada plan. Panorama completo y riesgos: 
 </details>
 
 <details>
-<summary><b>Santi</b>: 5 pendientes (<a href="planes/2-santi.md">plan completo</a>)</summary>
+<summary><b>Santi</b>: 6 pendientes (<a href="planes/2-santi.md">plan completo</a>)</summary>
 
 - Correr `scripts/gee_visor_biosat.js`, publicarlo como Earth Engine App y pasarles el link a Enzo y a Sara _(Checkpoint 1)_
 - Sumar lo que responda la profesora al audio y al documento _(Congelamiento)_
 - Pasarle a Sara las métricas, el mapa de riesgo, una captura del visor y la comparación 2000 contra 2025 _(Congelamiento)_
 - Opcional: usar los embeddings AlphaEarth como variable extra del modelo o de la zonificación _(Congelamiento)_
 - Ayudar con el video y la página: explicar el modelo en 20 segundos _(Entrega)_
+- **Urgente:** cambiar la contraseña de Meteomatics en el sitio de Meteomatics. *El script ya la lee de `METEOMATICS_PASSWORD` y no está en el código (se tomó del PR #7), pero la clave viej... _(Agregadas por Enzo)_
 
 </details>
 
 <details>
-<summary><b>Vale</b>: 8 pendientes (<a href="planes/3-vale.md">plan completo</a>)</summary>
+<summary><b>Vale</b>: 5 pendientes (<a href="planes/3-vale.md">plan completo</a>)</summary>
 
-- Revisar los textos agronómicos de la app: que no haya errores ni promesas de más _(Congelamiento)_
-- Revisar "qué falta saber" y los riesgos de cada rotación (arman la lista del paso 5) _(Congelamiento)_
-- Sumar al glosario los términos agronómicos nuevos _(Congelamiento)_
 - Revisar la parte agronómica del guion y participar del ensayo _(Entrega)_
 - Confirmar los 7 `requiere_hacienda` que completó Enzo en `data/rotaciones_santiago.json` (Zona 3 las 3, Zona 4 alternativa 2, Zona 5 las 3) _(Agregadas por Enzo)_
 - Conseguir por escrito el permiso del productor para nombrar el campo y usar sus frases (la entrevista lo deja pendiente) _(Agregadas por Enzo)_
@@ -112,16 +110,13 @@ Sale solo de las casillas sin tildar de cada plan. Panorama completo y riesgos: 
 </details>
 
 <details>
-<summary><b>Sara</b>: 22 pendientes (<a href="planes/4-sara.md">plan completo</a>)</summary>
+<summary><b>Sara</b>: 20 pendientes (<a href="planes/4-sara.md">plan completo</a>)</summary>
 
 - Pasarte a tu rama (`git switch sara-arduino-entrega`) _(Hito 0)_
 - Confirmar la hora exacta y el formato de la entrega en la guía del participante (desde el celular, porque en la PC falla el sitio) y avisar al grupo _(Hito 0)_
-- Revisar que el kit tenga los sensores (agua, LM35, LDR, DHT11), los LEDs y la pantalla LCD _(Hito 0)_
-- Sketch `arduino/biosat_estacion_campo/biosat_estacion_campo.ino` que mande una línea JSON cada 2 segundos (contratos §6) _(Checkpoint 1)_
 - Armar las 3 bandejas: pelada y seca, salitrosa y con rastrojo _(Checkpoint 1)_
 - Calibrar los umbrales con las bandejas reales _(Checkpoint 1)_
 - Guion borrador de 2-3 minutos con el zoom de escalas del video de la NASA (50 km → 500 m → 30 m → 1 m² → el productor) y los 4 verbos _(Checkpoint 1)_
-- Lector Web Serial como módulo propio (`arduino/lector-web-serial.js`) con la interfaz `window.BioSatArduino` de contratos §6. La app ya lo carga sola cuando el archivo existe _(Checkpoint 2)_
 - Grabar lecturas reales de las 3 bandejas en `data/arduino_bandejas_demo.json` _(Checkpoint 2)_
 - Buscar una foto de astronauta del Chaco santiagueño (eol.jsc.nasa.gov) _(Checkpoint 2)_
 - Preparar la comparación 2000 contra 2025 de Campo Gallo (desmonte) para el pitch _(Checkpoint 2)_
@@ -132,10 +127,11 @@ Sale solo de las casillas sin tildar de cada plan. Panorama completo y riesgos: 
 - Hacer 2 ensayos completos de la demo con todo el equipo _(Entrega)_
 - Revisar el README final con Enzo _(Entrega)_
 - Subir la entrega con margen antes del cierre _(Entrega)_
-- Subir lo que ya tenga a `sara-arduino-entrega`: hoy la rama no tiene ningún commit de trabajo _(Agregadas por Enzo)_
+- Armar el kit con el esquema de `arduino/esquema/`: sellar el LM35, conectar el LCD en paralelo y comprobar 5 V y GND antes de enchufar _(Armado y prueba del kit)_
+- Probar el sketch en la placa con todos los sensores y verificar que la pantalla del kit lo lee (cerrar antes el Monitor serie del IDE) _(Armado y prueba del kit)_
+- Calibrar el LM35 con 2 temperaturas y el umbral de salitre con las bandejas A, B y C (pasos en `arduino/README.md`) _(Armado y prueba del kit)_
 - Crear la carpeta `entrega/` con el guion, el video o las diapositivas y la página del proyecto _(Agregadas por Enzo)_
 - Decidir el plan B del kit: si las bandejas no llegan, grabar lecturas reales en `data/arduino_bandejas_demo.json` y marcarlas como grabadas _(Agregadas por Enzo)_
-- Pedirle a Enzo ayuda con lo que no llegue: hoy todas las tareas de la entrega están solo en este plan _(Agregadas por Enzo)_
 
 </details>
 <!-- AUTO:PENDIENTE:FIN -->
@@ -143,12 +139,12 @@ Sale solo de las casillas sin tildar de cada plan. Panorama completo y riesgos: 
 **Últimas decisiones:**
 
 <!-- AUTO:DECISIONES:INICIO -->
+- **D-28**: Sugerencias de la organización: asistente de inicio, mapa real y app más fácil
 - **D-27**: Pantalla del kit para el jurado, guía "Del kit al campo" y Arduino Uno por USB
 - **D-26**: Informe de clima corregido y app lista para los datos de D-25
 - **D-25**: Propuesta de la profesora: zonificación AIZAL y modelo predictivo de desmontes
 - **D-24**: Checkpoint 1: clima 1981-2025 y app v1 publicada
 - **D-23**: Trabajo en paralelo con ramas y planes individuales
-- **D-22**: Equipo de 4 integrantes
 
 Todas las decisiones están en la [bitácora](docs/reglas-y-bitacora.md).
 <!-- AUTO:DECISIONES:FIN -->
@@ -182,6 +178,18 @@ BioSat/
 ├── NASA Space Apps Challenge.pdf                             <-- Enunciado oficial (pestaña Details)
 ├── PLAN.md                                                   <-- Plan de trabajo: roles, ruta y tareas
 ├── README.md                                                 <-- Portada del proyecto (se actualiza sola)
+├── arduino/                                                  <-- Kit Arduino: sketch, lector Web Serial, esquema y guía de armado
+│   ├── lector-web-serial.js                                  <-- Lee el Arduino por USB desde Chrome o Edge (window.BioSatArduino)
+│   ├── README.md                                             <-- Guía del kit: cómo armarlo, cargarlo, calibrarlo y usarlo con la app
+│   ├── biosat_estacion_campo/                                <-- Sketch del Arduino Uno (línea JSON cada 2 s, LCD y LEDs)
+│   │   └── biosat_estacion_campo.ino
+│   └── esquema/                                              <-- Esquema de conexiones: pines.json es la fuente; el resto se genera
+│       ├── componentes-disponibles.webp                      <-- Las piezas que tiene el equipo
+│       ├── concepto-original.jpeg                            <-- Imagen del plan inicial (con LCD I2C; no es la que se arma)
+│       ├── esquema-conexiones.svg                            <-- Esquema de conexiones (generado)
+│       ├── generar-esquema.js                                <-- Regenera el esquema SVG y la tabla desde pines.json
+│       ├── pines.json                                        <-- Fuente única de los pines y cables del kit
+│       └── tabla-de-conexiones.md                            <-- Tabla de cables por pin y por componente (generada)
 ├── data/                                                     <-- Datos y contratos JSON que lee la app
 │   ├── arduino_bandejas_demo.json                            <-- Lecturas grabadas del kit (Sara) · plantilla vacía
 │   ├── clima_zonas.json                                      <-- Clima NASA POWER 1981-2025 de las 5 zonas (lo lee la app)
@@ -190,6 +198,7 @@ BioSat/
 │   ├── meteomatics_santiago_zonas.json                       <-- Pronóstico y clima de Meteomatics por zona (Santi)
 │   ├── resumen_mensual_santiago.csv                          <-- Normal 1991-2020 por mes y zona, para planilla
 │   ├── rotaciones_santiago.json                              <-- 15 rotaciones de las 5 zonas (Vale) · Zona 5 validada por un productor, el resto sin validar
+│   ├── santiago_mapa.json                                    <-- Mapa de Santiago del Estero: 27 departamentos pintados por zona (IGN, vía geoBoundaries)
 │   ├── suelo_zonas.json                                      <-- Suelo por zona (Santi) · plantilla vacía: falta extraer de AIZAL
 │   ├── zonificacion_aizal.json                               <-- Zonificación k-means con AIZAL, 5 grupos (Santi) · cargada
 │   ├── datos_cruzados_aizal/                                 <-- Catálogo AIZAL V4: 38 variables de suelo, clima y paisaje
@@ -201,7 +210,7 @@ BioSat/
 │   │   ├── 05_Logistica_Antropico_y_Servicios/ (2 archivos)  <-- B26-B29, B32-B37: caminos, población
 │   │   └── 06_Embeddings_IA_AlphaEarth/ (2 archivos)         <-- Embeddings AlphaEarth 64D (DeepMind)
 │   └── imagenes/ (22 archivos)                               <-- Imágenes del visor exportadas de Earth Engine (Santi)
-├── docs/ (19 archivos)                                       <-- Documentación del equipo
+├── docs/ (21 archivos)                                       <-- Documentación del equipo
 ├── ia_desmonte/                                              <-- IA de Santi: zonificación AIZAL, modelo de desmontes, gráficos e informes
 │   ├── BioSat_IA_Zonificacion_y_Desmonte.ipynb
 │   ├── INSTRUCCIONES_PIPELINE.md                             <-- 🛰️ Instrucciones de Operación del Pipeline Automatizado B...
@@ -249,25 +258,16 @@ BioSat/
 │   ├── earth_engine_embeddings.js                            <-- Ejemplo GEE de embeddings (falta adaptar a SdE)
 │   ├── gee_exportar_zonas.js                                 <-- Earth Engine: estadísticas e imágenes por zona para la app
 │   ├── gee_visor_biosat.js                                   <-- Visor GIS en Earth Engine: 2000 vs 2025, NDVI, desmonte, zonas IA
-│   └── gee_zonas_y_desmonte.js                               <-- Earth Engine: zonificación AIZAL y modelo predictivo de desmontes
+│   ├── gee_zonas_y_desmonte.js                               <-- Earth Engine: zonificación AIZAL y modelo predictivo de desmontes
+│   └── generar_mapa_santiago.py                              <-- Genera data/santiago_mapa.json desde geoBoundaries
 ├── tests/                                                    <-- Pruebas de Node (node --test tests/*.test.js)
-│   └── kit-logica.test.js
-└── web/                                                      <-- App web BioSat (abrir con un servidor: ver Inicio rápido)
-    ├── app.js                                                <-- Lógica de la app: datos, motor, calendario, simulador y visor
-    ├── campo.css                                             <-- Estilos de la guía Del kit al campo
-    ├── campo.html                                            <-- Guía Del kit al campo: del kit a estaciones fijas en el lote
-    ├── estilos.css                                           <-- Estilos de la app
-    ├── index.html                                            <-- Página de la app
-    ├── kit-logica.js                                         <-- Lógica de la pantalla del kit, sin interfaz (con pruebas)
-    ├── kit.css                                               <-- Estilos de la pantalla del kit (tema oscuro de alto contraste)
-    ├── kit.html                                              <-- Pantalla del kit para la mesa del jurado (3 bandejas en vivo)
-    ├── kit.js                                                <-- Pantalla del kit: teclado, Arduino y dibujo de las bandejas
-    ├── datos-borrador/                                       <-- Rotaciones borrador: respaldo si una zona no tiene sus 3 rotaciones
-    │   └── rotaciones_borrador.json
-    ├── img/ (22 archivos)                                    <-- Imágenes Landsat de vista previa (Planetary Computer)
-    └── vendor/                                               <-- Leaflet, para el mapa sin internet
-        ├── leaflet.css
-        └── leaflet.js
+│   ├── arduino-pines.test.js
+│   ├── asistente-logica.test.js
+│   ├── frases-logica.test.js
+│   ├── kit-logica.test.js
+│   ├── lector-serial.test.js
+│   └── mapa-santiago.test.js
+└── web/ (38 archivos)                                        <-- App web BioSat (abrir con un servidor: ver Inicio rápido)
 ```
 <!-- AUTO:ESTRUCTURA:FIN -->
 

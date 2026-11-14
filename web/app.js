@@ -12,16 +12,16 @@ const ESTADO = {
 
 const ZONAS = {
   zona_1_riego_salitre:{num:1, nombre:'Área de riego del Río Dulce', lugar:'La Banda', zona:'La Banda · Robles · Beltrán', deptos:'Banda, Robles, Capital, San Martín, Silípica', problema:'Se riega por manto y la napa salina queda cerca. Si el lote queda pelado en la seca, el sol evapora y sube el salitre.', riego:true},
-  zona_2_secano_este:{num:2, nombre:'Secano agrícola del este', lugar:'Quimilí', zona:'Quimilí · Bandera · Sachayoj', deptos:'Moreno, Juan F. Ibarra, General Taboada', problema:'Todo depende de la lluvia: invierno y primavera secos, veranos de más de 40 °C y poco rastrojo si se hace soja sobre soja.', riego:false},
+  zona_2_secano_este:{num:2, nombre:'Secano agrícola del este', lugar:'Quimilí', zona:'Quimilí · Bandera · Sachayoj', deptos:'Moreno, Juan F. Ibarra', problema:'Todo depende de la lluvia: invierno y primavera secos, veranos de más de 40 °C y poco rastrojo si se hace soja sobre soja.', riego:false},
   zona_3_monte_semiarido:{num:3, nombre:'Chaco semiárido norte', lugar:'Campo Gallo', zona:'Campo Gallo · Monte Quemado', deptos:'Alberdi, Copo, Pellegrini, Figueroa', problema:'Estación seca larga, desmonte y falta de pasto en invierno para la hacienda.', riego:false},
-  zona_4_bajos_submeridionales:{num:4, nombre:'Bajos submeridionales', lugar:'Añatuya', zona:'Añatuya · Los Juríes · Pinto', deptos:'Aguirre, Mitre, Belgrano, Rivadavia, Quebrachos', problema:'Llanura plana y arcillosa: se anega con las lluvias de verano y se agrieta con salitre en la seca.', riego:false},
+  zona_4_bajos_submeridionales:{num:4, nombre:'Bajos submeridionales', lugar:'Añatuya', zona:'Añatuya · Los Juríes · Pinto', deptos:'Aguirre, Mitre, Belgrano, Rivadavia, General Taboada', problema:'Llanura plana y arcillosa: se anega con las lluvias de verano y se agrieta con salitre en la seca.', riego:false},
   zona_5_sur_serrano:{num:5, nombre:'Sur serrano y salinas', lugar:'Ojo de Agua', zona:'Ojo de Agua · Sumampa · Quebrachos', deptos:'Ojo de Agua, Quebrachos, Choya, Guasayán', problema:'Clima más fresco que el resto: unas 20 heladas por año y pocos días de más de 40 °C. Sierras con pendientes que se erosionan, salinas al oeste y ganadería de cría y caprina. Las rotaciones todavía son un borrador a validar con productores del sur.', riego:false}
 };
 
 const PRIO = [
   {id:'agua', label:'Ahorrar agua'},
   {id:'salitre', label:'Frenar el salitre'},
-  {id:'suelo', label:'Recuperar el suelo'},
+  {id:'suelo', label:'Cuidar el suelo'},
   {id:'forraje', label:'Sumar forraje'},
   {id:'ingreso', label:'Ingreso este año'}
 ];
@@ -83,7 +83,7 @@ function puntaje(r){
   const avisos = []; let viable = true;
   if (r.req.riego && !state.riego){ viable = false; avisos.push(['crit','Necesita riego']); }
   if (r.req.ganado && !state.ganado) avisos.push(['warn','Pensada con hacienda']);
-  if (r.req.maquinaria && !state.maq) avisos.push(['warn','Necesita rolo o sembradora (se puede contratar)']);
+  if (r.req.maquinaria && !state.maq) avisos.push(['warn', TEXTOS_PASOS.maqAviso]);
   return {pct, det, avisos, viable};
 }
 function reglas(r){
@@ -118,7 +118,6 @@ const CF = {
 };
 const cf = k => `<span class="conf ${CF[k][0]}" tabindex="0" data-tip="Confianza ${CF[k][0]}: ${CF[k][1]}">${CF[k][0]}</span>`;
 const CONF_FILA = {'Calor de más de 35 °C':'temp', 'Calor de más de 40 °C':'temp', 'Helada':'helada', 'Lluvia':'lluvia', 'Lluvia menos demanda':'balance'};
-const ZONA5 = '';
 
 /* ---------- Compensaciones y riesgo ---------- */
 // Coeficiente de cultivo simplificado (FAO-56): qué parte de la demanda de agua usa cada estado del suelo.
@@ -141,7 +140,7 @@ function trade(r, c){
   if (dAgua > 20) cuesta.push(`Pide unos ${nf(dAgua)} mm más de agua por año`);
   if (dCal > 0.5) cuesta.push(`${nf(dCal,1)} días más de 40 °C con cultivo en pie`);
   if (r.attr.ingreso < a.attr.ingreso) cuesta.push('Menos ingreso el primer año');
-  if (r.req.maquinaria) cuesta.push('Necesita rolo o sembradora de grano fino');
+  if (r.req.maquinaria) cuesta.push(TEXTOS_PASOS.maqCuesta);
   if (r.req.ganado) cuesta.push('Necesita hacienda para aprovechar el forraje');
   cuesta.push(r.riesgo[0]);
   return {gana:gana.slice(0, 4), cuesta:cuesta.length > 4 ? [...cuesta.slice(0, 3), cuesta[cuesta.length - 1]] : cuesta};
@@ -223,7 +222,7 @@ function renderVisor(){
   $('#rampa').hidden = !mostrar.some(id => id.endsWith('ndvi'));
   $('#escena').innerHTML = mostrar.map(id => escenaDe(z, id)).filter(Boolean)
     .map(e => `${e.item} · ${fechaTxt(e.fecha)}${e.nubes !== undefined ? ` · nubes ${nf(e.nubes,1)} %` : ''}`).join('<br>');
-  $('#celdaNota').innerHTML = `Recuadro punteado: la celda de NASA POWER (unos 50 km) ${cf('celda')}`;
+  $('#celdaNota').innerHTML = `${TEXTOS_PASOS.celdaNota} ${cf('celda')}`;
   const b = im.meta.bbox, bounds = [[b[1], b[0]], [b[3], b[2]]];
   const lat = CLIMA[state.zona].lat, lon = CLIMA[state.zona].lon;
   if (!window.L){
@@ -324,37 +323,66 @@ function botonArduino(){
     btn.textContent = state.vivo ? 'Arduino conectado' : 'Conectar Arduino por USB';
   } else {
     btn.disabled = true; btn.className = 'btn-off';
-    btn.title = lector ? 'Este navegador no permite leer el puerto USB: usá Chrome o Edge' : 'Llega con el lector de Sara (arduino/lector-web-serial.js)';
+    btn.title = lector ? 'Este navegador no permite leer el puerto USB: usá Chrome o Edge' : 'No se encontró el lector (arduino/lector-web-serial.js)';
   }
 }
 
 /* ---------- Paso 1 ---------- */
-function renderMapa(){
-  const X = lon => 20 + (lon + 65.4) * 50, Y = lat => 14 + (-25.4 - lat) * 48;
-  let s = '';
-  for (let lon = -65; lon <= -62; lon++) s += `<line class="map-grid" x1="${X(lon)}" y1="${Y(-25.4)}" x2="${X(lon)}" y2="${Y(-30.3)}"/><text class="map-lbl" x="${X(lon)}" y="264" text-anchor="middle">${-lon}°O</text>`;
-  for (let lat = -26; lat >= -30; lat--) s += `<line class="map-grid" x1="${X(-65.4)}" y1="${Y(lat)}" x2="${X(-61.4)}" y2="${Y(lat)}"/><text class="map-lbl" x="2" y="${Y(lat) + 3}">${-lat}°S</text>`;
-  for (const [id, z] of Object.entries(ZONAS)){
-    const c = CLIMA[id], x = X(c.lon), y = Y(c.lat), w = 0.625 * 50, h = 0.5 * 48;
-    s += `<g class="map-pt ${id === state.zona ? 'on' : ''}" data-zona="${id}" data-tip="Zona ${z.num}: ${esc(z.nombre)}\n${nf(c.lat,2)}°, ${nf(c.lon,2)}°">
-      <rect class="map-cell" x="${x - w/2}" y="${y - h/2}" width="${w}" height="${h}"/>
-      <circle cx="${x}" cy="${y}" r="5"/>
-      <text x="${x + 9}" y="${y - 7}">${z.num} ${esc(z.lugar)}</text></g>`;
-  }
-  $('#mapa').innerHTML = s;
+/* ---------- Paso 1 y asistente de inicio ---------- */
+// Lo que respondió la persona (ver asistente-logica.js). El asistente le pasa las respuestas a `state`.
+let respuestas = null, MAPA = null;
+// Textos de los pasos (todos acá, con claves, para poder traducirlos después).
+const TEXTOS_PASOS = {
+  detalle: 'Ver el detalle técnico: suelo, satélite y desmonte',
+  fichaMas: 'Más datos de la zona',
+  fichaDeptos: 'Departamentos',
+  fichaPunto: 'punto NASA POWER',
+  maqAviso: 'Necesita sembradora o rolo, para sembrar sin arar (se puede contratar)',
+  maqCuesta: 'Necesita sembradora o rolo, para sembrar sin arar',
+  ordenadasElegidas: 'Zona {num}. Ordenadas según lo que marcaste: {lista}.',
+  ordenadasDefecto: 'Zona {num}. Ordenadas según lo que más suele importar: {lista}. Podés cambiarlo en «Tu campo».',
+  celdaNota: 'Recuadro punteado: el área de unos 50 km de la que sale el clima de tu zona (NASA POWER).'
+};
+const TEXTOS_CAMPO = {titulo:'Tu campo', zona:'Zona', tiene:'Tenés', preocupa:'Te preocupa', nada:'Nada en particular', cambiar:'Cambiar mis respuestas'};
+function almacen(){ try { return window.localStorage; } catch (e) { return null; } }
+function aplicarRespuestas(r){ Object.assign(state, AsistenteLogica.aEstado(r, ZONAS), {elegida:null}); }
+function iniciarRespuestas(){
+  respuestas = window.AsistenteLogica ? AsistenteLogica.leer(almacen(), ZONAS) : null;
+  if (respuestas) aplicarRespuestas(respuestas);
 }
-function renderZonas(){
-  $('#zonaList').innerHTML = Object.entries(ZONAS).map(([id, z]) =>
-    `<button type="button" class="zona-btn" role="radio" aria-checked="${id === state.zona}" data-zona="${id}">
-      <span class="zn">${z.num}</span><strong>${esc(z.nombre)}</strong><span>${esc(z.zona)}</span></button>`).join('') + ZONA5;
+function irAlCalendario(){
+  const s = $('#calendario');
+  s.setAttribute('tabindex', '-1');
+  s.focus({preventScroll:true});
+  s.scrollIntoView();
+}
+function abrirAsistente(){
+  if (!window.BioSatAsistente || !window.AsistenteLogica) return;
+  BioSatAsistente.abrir({zonas:ZONAS, respuestas:respuestas, mapa:MAPA, alCerrar:r => {
+    respuestas = AsistenteLogica.normalizar(r, ZONAS);
+    AsistenteLogica.guardar(almacen(), respuestas);
+    aplicarRespuestas(respuestas);
+    renderTodo();
+    irAlCalendario();
+  }});
+}
+function renderTuCampo(){
+  const T = window.BioSatAsistente && BioSatAsistente.TEXTOS;
   const z = ZONAS[state.zona], c = CLIMA[state.zona];
-  $('#zonaFicha').innerHTML = `<strong>Zona ${z.num} · ${esc(z.nombre)}</strong><p>${esc(z.problema)}</p>
-    <span class="mono">Departamentos: ${esc(z.deptos)} · punto NASA POWER ${nf(c.lat,2)}°, ${nf(c.lon,2)}°</span>` + zonifTexto();
-  renderMapa();
-}
-function renderPrefs(){
-  $('#prioChips').innerHTML = PRIO.map(p => `<button type="button" class="chip" aria-pressed="${state.prio.has(p.id)}" data-prio="${p.id}">${p.label}</button>`).join('');
-  $('#limRiego').checked = state.riego; $('#limGanado').checked = state.ganado; $('#limMaq').checked = state.maq;
+  if (T){
+    const tiene = [state.riego && T.p4.riego, state.ganado && T.p4.hacienda, state.maq && T.p4.maq].filter(Boolean);
+    const lista = PRIO.filter(p => state.prio.has(p.id)).map(p => T.p3[p.id]).join(', ');
+    const preocupa = state.prioPorDefecto ? T.p4.porDefecto.replace('{lista}', lista) : lista;
+    $('#tuCampo').innerHTML = `<h3>${TEXTOS_CAMPO.titulo}</h3><dl class="tc-lista">
+      <div><dt>${TEXTOS_CAMPO.zona}</dt><dd>${z.num} · ${esc(z.lugar)} · ${esc(z.nombre)}</dd></div>
+      <div><dt>${TEXTOS_CAMPO.tiene}</dt><dd>${esc(tiene.length ? tiene.join(', ') : TEXTOS_CAMPO.nada)}</dd></div>
+      <div><dt>${TEXTOS_CAMPO.preocupa}</dt><dd>${esc(preocupa || TEXTOS_CAMPO.nada)}</dd></div></dl>
+      <button type="button" class="btn" id="btnCambiar">${TEXTOS_CAMPO.cambiar}</button>`;
+  }
+  $('#zonaFicha').innerHTML = `<strong>Zona ${z.num} · ${esc(z.lugar)} · ${esc(z.nombre)}</strong><p>${esc(z.problema)}</p>
+    <details class="ficha-tecnica"><summary>${TEXTOS_PASOS.fichaMas}</summary>
+      <span class="mono">${TEXTOS_PASOS.fichaDeptos}: ${esc(z.deptos)} · ${TEXTOS_PASOS.fichaPunto} ${nf(c.lat,2)}°, ${nf(c.lon,2)}°</span>${zonifTexto()}</details>`;
+  $('#detalleResumen').textContent = TEXTOS_PASOS.detalle;
 }
 
 /* ---------- Paso 2 ---------- */
@@ -505,9 +533,8 @@ function renderCards(){
   const c = clima(), rk = ranking();
   const z = ZONAS[state.zona];
   const prios = PRIO.filter(p => state.prio.has(p.id)).map(p => p.label.toLowerCase());
-  $('#cmpLede').textContent = prios.length
-    ? `Zona ${z.num}. Ordenadas según lo que marcaste: ${prios.join(', ')}.`
-    : `Zona ${z.num}. Marcá al menos una prioridad en el paso 1 para ordenarlas.`;
+  $('#cmpLede').textContent = (state.prioPorDefecto ? TEXTOS_PASOS.ordenadasDefecto : TEXTOS_PASOS.ordenadasElegidas)
+    .replace('{num}', z.num).replace('{lista}', prios.join(', '));
   $('#cmpLede').textContent += ' ' + (FUENTE_ROT[state.zona] || '');
   if (nivelDesmonte().nivel === 'alta') $('#cmpLede').textContent += ' Tu zona tiene presión de desmonte alta: conviene priorizar las rotaciones que conservan el monte.';
   $('#cards').innerHTML = rk.map(({r, p}, idx) => {
@@ -605,13 +632,27 @@ function renderDecidir(){
     ['Semilla e inoculante disponibles a tiempo', 'Logística']
   ];
   $('#listaTitulo').textContent = `${r.nombre} · Zona ${ZONAS[state.zona].num}`;
+  if (window.FrasesLogica) setFrase('#fraseListo', FrasesLogica.fraseAntesDeDecidir(r.nombre, items.length));
   $('#checklist').innerHTML = items.map(([t, who], i) => `<li><label><input type="checkbox" id="chk-${i}"><span>${esc(t)}<span class="who">${who}</span></span></label></li>`).join('');
   $('#listaTxt').value = `BioSat · Lista para revisar con el agrónomo\n${r.nombre} (Zona ${ZONAS[state.zona].num}: ${ZONAS[state.zona].nombre})\n\n` + items.map(([t]) => `[ ] ${t}`).join('\n');
 }
 
+/* ---------- Frases simples de cada paso ---------- */
+function setFrase(sel, texto){ const el = $(sel); el.textContent = texto || ''; el.hidden = !texto; }
+function renderFrases(){
+  if (!window.FrasesLogica) return;
+  const cn = clima('normal', 0, 0), cr = clima('reciente', 0, 0);
+  setFrase('#fraseCalor', FrasesLogica.fraseCalor(ZONAS[state.zona].lugar, sum(cn, m => m.d40), sum(cr, m => m.d40)));
+  const primera = ranking()[0];
+  setFrase('#fraseMejor', primera && primera.p.viable ? FrasesLogica.fraseMejorRotacion(primera.r.nombre, state.prioPorDefecto) : null);
+  // Paso 4: lo que pesaría un aumento de temperatura (el que está en el simulador o, si está en 0, 1 °C)
+  const g = state.dT > 0 ? state.dT : 1;
+  setFrase('#fraseSim', FrasesLogica.fraseCalorMas(ZONAS[state.zona].lugar, g, sum(clima('normal', 0, 0), m => m.d40), sum(clima('normal', g, 0), m => m.d40)));
+}
+
 /* ---------- Render general y eventos ---------- */
-function renderTodo(){ renderZonas(); renderPrefs(); renderStats(); renderCalendario(); renderPaneles(); renderDesmonte(); renderTrade(); renderCards(); renderSim(); renderDecidir(); renderVisor(); }
-function renderClima(){ renderStats(); renderCalendario(); renderPaneles(); renderTrade(); renderCards(); renderSim(); }
+function renderTodo(){ renderTuCampo(); renderFrases(); renderStats(); renderCalendario(); renderPaneles(); renderDesmonte(); renderTrade(); renderCards(); renderSim(); renderDecidir(); renderVisor(); }
+function renderClima(){ renderFrases(); renderStats(); renderCalendario(); renderPaneles(); renderTrade(); renderCards(); renderSim(); }
 document.addEventListener('click', e => {
   const cb = e.target.closest('[data-capa]');
   if (cb){ visor.capa = cb.dataset.capa; visor.cmp = 'no'; renderVisor(); return; }
@@ -632,19 +673,13 @@ $('#btnArduino').addEventListener('click', async () => {
 
 
 document.addEventListener('click', e => {
-  const zb = e.target.closest('[data-zona]');
-  if (zb){ state.zona = zb.dataset.zona; state.riego = ZONAS[state.zona].riego; state.elegida = null; renderTodo(); return; }
-  const pb = e.target.closest('[data-prio]');
-  if (pb){ const id = pb.dataset.prio; state.prio.has(id) ? state.prio.delete(id) : state.prio.add(id); renderPrefs(); renderCards(); renderDecidir(); return; }
+  if (e.target.closest('#btnCambiar')){ abrirAsistente(); return; }
   const tb = e.target.closest('[data-bandeja]');
   if (tb){ state.bandeja = tb.dataset.bandeja; renderPaneles(); return; }
   const ps = e.target.closest('#presets button');
   if (ps){ state.dP = Number(ps.dataset.p); state.dT = Number(ps.dataset.t); renderClima(); return; }
   if (e.target.closest('#escReset')){ state.dP = 0; state.dT = 0; renderClima(); return; }
 });
-$('#limRiego').addEventListener('change', e => { state.riego = e.target.checked; renderCards(); renderDecidir(); });
-$('#limGanado').addEventListener('change', e => { state.ganado = e.target.checked; renderCards(); renderDecidir(); });
-$('#limMaq').addEventListener('change', e => { state.maq = e.target.checked; renderCards(); renderDecidir(); });
 $('#simP').addEventListener('input', e => { state.dP = Number(e.target.value); renderClima(); });
 $('#simT').addEventListener('input', e => { state.dT = Number(e.target.value); renderClima(); });
 $('#perNormal').addEventListener('click', () => { state.periodo = 'normal'; $('#perNormal').setAttribute('aria-pressed','true'); $('#perReciente').setAttribute('aria-pressed','false'); renderClima(); });
@@ -761,7 +796,7 @@ async function cargarImagenes(){
 }
 
 async function cargarDatos(){
-  const [clima, rotVale, rotBorrador, suelo, diag, arduino, zonif, desmonte] = await Promise.all([
+  const [clima, rotVale, rotBorrador, suelo, diag, arduino, zonif, desmonte, mapa] = await Promise.all([
     cargarJSON('../data/clima_zonas.json'),
     cargarJSON('../data/rotaciones_santiago.json').catch(() => ({zonas:{}})),
     cargarJSON('datos-borrador/rotaciones_borrador.json'),
@@ -769,10 +804,11 @@ async function cargarDatos(){
     cargarJSON('../data/diagnostico_landsat_ia.json').catch(() => ({})),
     cargarJSON('../data/arduino_bandejas_demo.json').catch(() => null),
     cargarJSON('../data/zonificacion_aizal.json').catch(() => ({})),
-    cargarJSON('../data/desmonte_zonas.json').catch(() => ({}))
+    cargarJSON('../data/desmonte_zonas.json').catch(() => ({})),
+    cargarJSON('../data/santiago_mapa.json').catch(() => null)
   ]);
   CLIMA = adaptarClima(clima);
-  SUELO_Z = suelo; DIAG = diag; ARDUINO = arduino; ZONIF = zonif; DESMONTE = desmonte;
+  SUELO_Z = suelo; DIAG = diag; ARDUINO = arduino; ZONIF = zonif; DESMONTE = desmonte; MAPA = mapa;
   for (const z of Object.keys(ZONAS)){
     const v = (rotVale.zonas || {})[z], b = (rotBorrador.zonas || {})[z];
     const deVale = v && Array.isArray(v.rotaciones) && v.rotaciones.length >= 3;
@@ -784,7 +820,11 @@ async function cargarDatos(){
   IMG = await cargarImagenes();
 }
 
-cargarDatos().then(renderTodo).catch(err => {
+cargarDatos().then(() => {
+  iniciarRespuestas();
+  renderTodo();
+  if (window.AsistenteLogica && AsistenteLogica.debeAbrir(respuestas, location.search)) abrirAsistente();
+}).catch(err => {
   console.error(err);
   document.querySelector('main').insertAdjacentHTML('afterbegin',
     `<div class="wrap"><div class="aviso-carga"><strong>No se pudieron cargar los datos.</strong>

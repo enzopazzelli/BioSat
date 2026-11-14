@@ -7,18 +7,16 @@
       -27.43
     ],
     "invierno": {
-      "item": "LC09_L2SP_230079_20251009_02_T1",
-      "fecha": "2025-10-09",
-      "nubes": 0.01,
-      "ext": "jpg",
-      "cobertura": 1.0
+      "item": "Compuesto GEE Mediana L8/9 Invierno 2025",
+      "fecha": "2025-08-15",
+      "periodo": "2025-06-01 a 2025-10-31",
+      "nubes": 0.0
     },
     "verano": {
-      "item": "LC09_L2SP_230079_20250211_02_T1",
-      "fecha": "2025-02-11",
-      "nubes": 0.87,
-      "ext": "jpg",
-      "cobertura": 1.0
+      "item": "Compuesto GEE Mediana L8/9 Verano 2025",
+      "fecha": "2025-01-15",
+      "periodo": "2024-12-01 a 2025-03-31",
+      "nubes": 0.0
     }
   },
   "z2": {
@@ -29,17 +27,16 @@
       -27.35
     ],
     "invierno": {
-      "item": "LC08_L2SP_229079_20251010_02_T1",
-      "fecha": "2025-10-10",
-      "nubes": 0.0,
-      "cobertura": 0.83,
-      "ext": "png"
+      "item": "Compuesto GEE Mediana L8/9 Invierno 2025",
+      "fecha": "2025-08-15",
+      "periodo": "2025-06-01 a 2025-10-31",
+      "nubes": 0.0
     },
     "verano": {
-      "item": "LC08_L2SP_229079_20240329_02_T1",
-      "fecha": "2024-03-29",
-      "nubes": 0.0,
-      "cobertura": 0.88
+      "item": "Compuesto GEE Mediana L8/9 Verano 2025",
+      "fecha": "2025-01-15",
+      "periodo": "2024-12-01 a 2025-03-31",
+      "nubes": 0.0
     }
   },
   "z3": {
@@ -50,24 +47,22 @@
       -26.28
     ],
     "invierno": {
-      "item": "LC08_L2SP_229078_20251010_02_T1",
-      "fecha": "2025-10-10",
-      "nubes": 0.0,
-      "cobertura": 0.91,
-      "ext": "png"
+      "item": "Compuesto GEE Mediana L8/9 Invierno 2025",
+      "fecha": "2025-08-15",
+      "periodo": "2025-06-01 a 2025-10-31",
+      "nubes": 0.0
     },
     "verano": {
-      "item": "LC09_L2SP_229078_20250204_02_T1",
-      "fecha": "2025-02-04",
-      "nubes": 0.0,
-      "cobertura": 0.91,
-      "ext": "png"
+      "item": "Compuesto GEE Mediana L8/9 Verano 2025",
+      "fecha": "2025-01-15",
+      "periodo": "2024-12-01 a 2025-03-31",
+      "nubes": 0.0
     },
     "anio2000": {
-      "item": "LT05_L2SP_229078_20001021_02_T1",
-      "fecha": "2000-10-21",
-      "cobertura": 0.92,
-      "ext": "png"
+      "item": "Compuesto GEE Mediana L5/7 Año 2000",
+      "fecha": "2000-10-15",
+      "periodo": "1999-06-01 a 2001-10-31",
+      "nubes": 0.0
     }
   },
   "z4": {
@@ -78,18 +73,16 @@
       -28.16
     ],
     "invierno": {
-      "item": "LC08_L2SP_229080_20251010_02_T1",
-      "fecha": "2025-10-10",
-      "nubes": 0.67,
-      "ext": "jpg",
-      "cobertura": 1.0
+      "item": "Compuesto GEE Mediana L8/9 Invierno 2025",
+      "fecha": "2025-08-15",
+      "periodo": "2025-06-01 a 2025-10-31",
+      "nubes": 0.0
     },
     "verano": {
-      "item": "LC08_L2SP_229080_20250111_02_T1",
-      "fecha": "2025-01-11",
-      "nubes": 0.0,
-      "ext": "jpg",
-      "cobertura": 1.0
+      "item": "Compuesto GEE Mediana L8/9 Verano 2025",
+      "fecha": "2025-01-15",
+      "periodo": "2024-12-01 a 2025-03-31",
+      "nubes": 0.0
     }
   },
   "z5": {
@@ -100,16 +93,16 @@
       -29.2
     ],
     "invierno": {
-      "item": "LC08_L2SP_229080_20251010_02_T1",
-      "fecha": "2025-10-10",
-      "nubes": 0.67,
-      "cobertura": 0.81
+      "item": "Compuesto GEE Mediana L8/9 Invierno 2025",
+      "fecha": "2025-08-15",
+      "periodo": "2025-06-01 a 2025-10-31",
+      "nubes": 0.0
     },
     "verano": {
-      "item": "LC08_L2SP_229080_20250111_02_T1",
-      "fecha": "2025-01-11",
-      "nubes": 0.0,
-      "cobertura": 0.81
+      "item": "Compuesto GEE Mediana L8/9 Verano 2025",
+      "fecha": "2025-01-15",
+      "periodo": "2024-12-01 a 2025-03-31",
+      "nubes": 0.0
     }
   }
 }

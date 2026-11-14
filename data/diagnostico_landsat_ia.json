@@ -5,14 +5,14 @@
     "generado_por": "scripts/gee_exportar_zonas.js + pipeline Santi",
     "fecha": "2026-11-14",
     "periodo": "2023-2025",
-    "notas": "Meses de suelo pelado calculados con umbral NDVI < 0.25 sobre parcelas agrícolas. Índice de fragilidad territorial integra calor extremo MERRA-2, meses pelados, déficit hídrico y riesgo de desmonte RF."
+    "notas": "Meses de suelo pelado calculados con el método de umbral simple (NDVI < 0,25) sobre lotes agrícolas (ESA WorldCover) según scripts/gee_exportar_zonas.js. Conforme a la decisión D-25, la comparación de modelos de IA reside exclusivamente en data/desmonte_zonas.json, por lo que las métricas de clasificación aquí quedan en null."
   },
   "evaluacion": {
-    "datos_de_prueba": "Lotes agrícolas en celdas de prueba independientes (validación cruzada)",
+    "datos_de_prueba": null,
     "metodos": {
       "umbral_ndvi_nbr": {
-        "exactitud": 0.91,
-        "f1": 0.90
+        "exactitud": null,
+        "f1": null
       },
       "cnn_lstm": {
         "exactitud": null,
@@ -27,7 +27,20 @@
   },
   "zonas": {
     "zona_1_riego_salitre": {
-      "meses_suelo_pelado": [false, false, false, false, true, true, true, true, true, true, false, false],
+      "meses_suelo_pelado": [
+        false,
+        false,
+        false,
+        false,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        false,
+        false
+      ],
       "meses_suelo_pelado_promedio_anual": 6,
       "desmonte_reciente_pct": 0.8,
       "monte_actual_pct": 7.8,
@@ -36,7 +49,20 @@
       "confianza": "alta"
     },
     "zona_2_secano_este": {
-      "meses_suelo_pelado": [false, false, false, false, true, true, true, true, true, true, true, false],
+      "meses_suelo_pelado": [
+        false,
+        false,
+        false,
+        false,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        false
+      ],
       "meses_suelo_pelado_promedio_anual": 7,
       "desmonte_reciente_pct": 4.8,
       "monte_actual_pct": 21.4,
@@ -45,7 +71,20 @@
       "confianza": "alta"
     },
     "zona_3_monte_semiarido": {
-      "meses_suelo_pelado": [false, false, false, false, true, true, true, true, true, true, true, false],
+      "meses_suelo_pelado": [
+        false,
+        false,
+        false,
+        false,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        false
+      ],
       "meses_suelo_pelado_promedio_anual": 7,
       "desmonte_reciente_pct": 11.2,
       "monte_actual_pct": 64.2,
@@ -54,7 +93,20 @@
       "confianza": "alta"
     },
     "zona_4_bajos_submeridionales": {
-      "meses_suelo_pelado": [false, false, false, false, false, true, true, true, true, true, false, false],
+      "meses_suelo_pelado": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        true,
+        true,
+        true,
+        true,
+        false,
+        false
+      ],
       "meses_suelo_pelado_promedio_anual": 5,
       "desmonte_reciente_pct": 1.4,
       "monte_actual_pct": 16.5,
@@ -63,7 +115,20 @@
       "confianza": "alta"
     },
     "zona_5_sur_serrano": {
-      "meses_suelo_pelado": [false, false, false, false, true, true, true, true, true, true, false, false],
+      "meses_suelo_pelado": [
+        false,
+        false,
+        false,
+        false,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        false,
+        false
+      ],
       "meses_suelo_pelado_promedio_anual": 6,
       "desmonte_reciente_pct": 2.1,
       "monte_actual_pct": 44.8,

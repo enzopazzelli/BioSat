@@ -262,7 +262,7 @@ Las exporta [`scripts/gee_exportar_zonas.js`](../scripts/gee_exportar_zonas.js) 
 
 ### Lector para la app: `arduino/lector-web-serial.js` (Sara)
 
-La app lo carga si existe y habilita el botón "Conectar Arduino por USB". Tiene que dejar disponible este objeto:
+La app lo carga si existe y habilita el botón "Conectar Arduino por USB". Ya está hecho (`arduino/lector-web-serial.js`, con pruebas). `conectar()` vuelve apenas abre el puerto y las lecturas siguen llegando a `alLeer`. Tiene que dejar disponible este objeto:
 
 ```js
 window.BioSatArduino = {
@@ -362,3 +362,31 @@ Modelo predictivo de desmontes por zona (D-25). Lo genera la parte B de [`script
 
 - **`riesgo_medio_0_1`:** probabilidad media de desmonte del monte que queda en la celda de la zona. La app la muestra como "presión de desmonte".
 - **`proyeccion_ha`:** sale del modelo temporal (LSTM o Transformer). Si no llega a tiempo, queda en `null`.
+
+---
+
+## 9. `data/santiago_mapa.json` (mapa del asistente · Enzo)
+
+El contorno de Santiago del Estero con sus 27 departamentos, pintados por zona, para el mapa de la primera pregunta del asistente. Lo genera [`scripts/generar_mapa_santiago.py`](../scripts/generar_mapa_santiago.py) (corre una vez, con internet) y la app lo lee sin conexión.
+
+```json
+{
+  "meta": {"fuente": "geoBoundaries ARG ADM2 (año 2020), del IGN", "licencia": "CC BY 3.0 IGO", "url": "…", "generado_por": "scripts/generar_mapa_santiago.py", "fecha": "2026-11-14", "notas": "…"},
+  "viewBox": [322.8, 499.1],
+  "departamentos": [
+    {"nombre": "General Taboada", "zona": 4, "origen": "punto", "d": "M12.3,45.6L13.1,46.0…Z"}
+  ],
+  "puntos": {"1": {"x": 0, "y": 0}, "2": {"x": 0, "y": 0}, "3": {"x": 0, "y": 0}, "4": {"x": 0, "y": 0}, "5": {"x": 0, "y": 0}}
+}
+```
+
+- **`d`:** trazo SVG ya proyectado al cuadro `viewBox` (longitud × coseno de la latitud media), listo para dibujar sin hacer cuentas.
+- **`zona`:** número de 1 a 5.
+- **`puntos`:** el punto de NASA POWER de cada zona, en el mismo cuadro. Sale de `data/clima_zonas.json`.
+- **`origen`:** cómo se asignó el departamento a su zona, aplicando la primera regla que corresponda:
+  1. `"punto"`: el departamento contiene el punto de NASA POWER de la zona (5 departamentos). Así el pueblo de cada zona siempre cae sobre un departamento de su mismo color.
+  2. `"lista"`: el departamento ya figura en `ZONAS[...].deptos` de `web/app.js` (15).
+  3. `"cercana"`: va a la zona de punto más cercano al centro del departamento, calculado en plano (7).
+- **Es una aproximación:** las zonas se dibujan por departamento, pero el clima de cada una sale de un punto de NASA POWER (una celda de unos 50 km). La app lo dice debajo del mapa.
+- **Fuente y licencia:** Instituto Geográfico Nacional (IGN), vía geoBoundaries, CC BY 3.0 IGO. La app tiene que citarla junto al mapa.
+- El archivo original de geoBoundaries (5,5 MB, todo el país) **no se sube al repositorio**.

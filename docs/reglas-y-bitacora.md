@@ -148,3 +148,11 @@ Según la página oficial de premios (`NASA Space Apps Challenge - awards.mhtml`
   - **Hardware de la demo:** Arduino Uno por USB con Web Serial (Chrome o Edge). El ESP32 con LoRa queda para las estaciones de campo.
   - **Para Sara:** calentar las bandejas con una lámpara antes de la demo, así se ve la diferencia. El umbral de salitre va en `meta.umbrales` (contratos §6).
   - **Diseños:** `docs/superpowers/specs/2026-11-14-visor-kit-jurado-design.md` y `docs/superpowers/specs/2026-11-14-guia-del-kit-al-campo-design.md`.
+- **D-28 (Sugerencias de la organización: asistente de inicio, mapa real y app más fácil):**
+  - **Qué pidieron:** una persona de la organización de la NASA Space Apps vio la app y sugirió un botón de idioma EN/ES, que el Paso 1 se entienda mejor y simule un mapa de Santiago del Estero, pensado para gente grande, y que toda la app sea más fácil y amena.
+  - **Asistente de inicio:** 4 preguntas, una por pantalla y con letra y botones grandes (dónde queda tu campo, qué tenés, qué te preocupa y un resumen). Aparece solo la primera vez, se puede saltar y se reabre con "Cambiar mis respuestas" o con `?asistente=1`. Las respuestas se guardan en el navegador y, si no se puede guardar, todo sigue andando.
+  - **Mapa real:** el contorno de Santiago del Estero con sus 27 departamentos (IGN, vía geoBoundaries, CC BY 3.0 IGO), pintados por zona, con botones grandes por pueblo. Las zonas se dibujan por departamento, en forma aproximada, y el mapa lo dice. Contrato §9.
+  - **Corrección de datos:** el departamento *General Taboada*, donde queda Añatuya, figuraba en la Zona 2 y pasa a la Zona 4; *Quebrachos* queda solo en la Zona 5.
+  - **App más fácil:** una frase simple al comienzo de los pasos 2 y 3, calculada con los datos; suelo, satélite y desmonte dentro de un "Ver el detalle técnico" plegado; letra base de 17 px. El panel del sensor se deja a la vista porque es lo que se muestra en la demo.
+  - **Idioma EN/ES:** queda para la etapa siguiente, con su propio diseño. Los textos nuevos ya viven en objetos con claves para poder traducirlos.
+  - **Diseño y plan:** `docs/superpowers/specs/2026-11-14-asistente-y-mapa-design.md` y `docs/superpowers/plans/2026-11-14-asistente-y-mapa.md`.
