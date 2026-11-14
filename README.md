@@ -91,7 +91,6 @@ El detalle de tareas, la ruta de trabajo y los diagramas están en **[PLAN.md](P
 <!-- AUTO:ESTRUCTURA:INICIO -->
 ```text
 BioSat/
-├── arduino.jpeg
 ├── CONTEXTO.md                                               <-- Contexto inicial del 13/11 (histórico)
 ├── ESTRUCTURA_DATOS.md                                       <-- Arquitectura de datos y módulos AIZAL
 ├── NASA Space Apps Challenge - awards.mhtml                  <-- Premios globales y datos del equipo
