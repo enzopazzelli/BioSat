@@ -23,7 +23,7 @@ var ZONAS = [
   {id: 'zona_2_secano_este', nombre: 'Zona 2 · Secano del este', lat: -27.65, lon: -62.42},
   {id: 'zona_3_monte_semiarido', nombre: 'Zona 3 · Chaco semiárido norte', lat: -26.58, lon: -62.85},
   {id: 'zona_4_bajos_submeridionales', nombre: 'Zona 4 · Bajos submeridionales', lat: -28.46, lon: -62.83},
-  {id: 'zona_5_sur_serrano', nombre: 'Zona 5 · Sur serrano (en evaluación)', lat: -29.50, lon: -63.69}
+  {id: 'zona_5_sur_serrano', nombre: 'Zona 5 · Sur serrano y salinas', lat: -29.50, lon: -63.69}
 ];
 function celda(z) {
   return ee.Geometry.Rectangle([z.lon - 0.3125, z.lat - 0.25, z.lon + 0.3125, z.lat + 0.25]);

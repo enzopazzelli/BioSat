@@ -2,7 +2,7 @@
 
 > **Actualización (D-18 y D-20):**
 > - **Zona 3:** pasa a ser solo el norte chaqueño (Campo Gallo, Monte Quemado).
-> - **Zona 5 "Sur serrano y salinas":** el sur se separa en esta zona nueva, en evaluación, porque su clima es muy distinto (ver [`cruce-de-datos.md`](cruce-de-datos.md) §4).
+> - **Zona 5 "Sur serrano y salinas":** el sur se separa en esta zona nueva, confirmada en D-21, porque su clima es muy distinto (ver [`cruce-de-datos.md`](cruce-de-datos.md) §4). Sus rotaciones todavía son un borrador.
 > - **Kit:** se corrigieron los textos de los sensores de agua y de luz para no prometer más de lo que miden.
 
 > **Propósito de este documento:** Dejar documentado el inventario real de nuestro kit de hardware (**AltaNet Arduino Uno R3 + ESP32 USB-C**) y cómo se articula con los datos satelitales de la **NASA** para cubrir las **4 grandes zonas y problemáticas agroecológicas de Santiago del Estero**.
@@ -44,7 +44,7 @@ En la mesa de presentación podemos tener **3 pequeños recipientes reales** par
 
 ---
 
-## 2. Cobertura Provincial: Las Zonas Agroecológicas de Santiago del Estero (4 + Zona 5 en evaluación)
+## 2. Cobertura Provincial: Las 5 Zonas Agroecológicas de Santiago del Estero
 
 Para no depender de un único lote y lograr el máximo **Impacto Local (*Local Impact*)**, **BioSat** organiza la provincia de Santiago del Estero en sus **4 grandes realidades productivas**, cada una con sus coordenadas reales para consultar **NASA POWER / AppEEARS / FAO GAEZ** y sus **3 estrategias de rotación comparadas**.
 
@@ -131,7 +131,7 @@ Para no depender de un único lote y lograr el máximo **Impacto Local (*Local I
 
 ---
 
-### Zona 5: Sur Serrano y Salinas (en evaluación: más heladas, menos calor extremo y pendientes)
+### Zona 5: Sur Serrano y Salinas (Más Heladas, Menos Calor Extremo y Pendientes)
 - **Departamentos representativos:** Ojo de Agua, Quebrachos, Choya, Guasayán (ej. Villa Ojo de Agua, Sumampa, Frías).
 - **Coordenada de referencia NASA:** `Lat -29.50, Lon -63.69`
 - **Por qué es otra zona (NASA POWER, normal 1991-2020):**

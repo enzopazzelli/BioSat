@@ -103,3 +103,10 @@ Según la página oficial de premios (`NASA Space Apps Challenge - awards.mhtml`
     - [`contratos-de-datos.md`](contratos-de-datos.md): Zona 5 y la relación con la exportación de Earth Engine.
     - [`resena-desafio.md`](resena-desafio.md) y [`ESTRUCTURA_DATOS.md`](../ESTRUCTURA_DATOS.md): notas de vigencia.
     - README y PLAN.
+- **D-21 (Zona 5 confirmada):**
+  - El equipo confirma que BioSat trabaja con **5 zonas**. La Zona 5 "Sur serrano y salinas" (Ojo de Agua, Sumampa, Quebrachos, Choya, Guasayán) entra a la demo.
+  - [`cruce-de-datos.md`](cruce-de-datos.md) se actualiza:
+    - tabla oficial de las 5 zonas;
+    - dos cruces nuevos: riesgo de erosión en pendientes (NASADEM × suelo pelado × tormentas) y tolerancia a heladas por especie;
+    - imágenes del visor para las 5 zonas.
+  - Siguen pendientes la validación de las rotaciones de la Zona 5 (Frente 4) y su inclusión en la descarga de clima (Frente 1).

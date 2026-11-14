@@ -64,7 +64,7 @@ DESCRIPCIONES = {
     "docs/recursos-desafio.md": "Los 26 recursos oficiales y cómo los usamos",
     "docs/reglas-y-bitacora.md": "Reglas de oro y bitácora de decisiones",
     "docs/resena-desafio.md": "Reseña del desafío y guía de entrevista",
-    "docs/zonas-santiago-y-kit-arduino.md": "Zonas (4 + Zona 5 en evaluación), rotaciones y kit Arduino",
+    "docs/zonas-santiago-y-kit-arduino.md": "Las 5 zonas, sus rotaciones y el kit Arduino",
     "scripts": "Herramientas para bajar y procesar datos",
     "scripts/actualizar_readme.py": "Regenera las secciones automáticas del README",
     "scripts/descargar_nasa_power.py": "Descarga y resume NASA POWER por zona",

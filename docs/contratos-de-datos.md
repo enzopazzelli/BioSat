@@ -7,7 +7,7 @@
 Todos los archivos:
 
 - **Formato:** JSON en UTF-8, con nombres de campo en español y sin tildes (`lluvia_mm`, `dias_calor_40`).
-- **Zonas:** usan siempre estos 4 identificadores:
+- **Zonas:** usan siempre estos 5 identificadores:
 
 | `zona_id` | Zona | Punto NASA POWER |
 |---|---|---|
@@ -15,7 +15,7 @@ Todos los archivos:
 | `zona_2_secano_este` | Secano agrícola del este | -27.65, -62.42 |
 | `zona_3_monte_semiarido` | Chaco semiárido y monte | -26.58, -62.85 |
 | `zona_4_bajos_submeridionales` | Bajos submeridionales | -28.46, -62.83 |
-| `zona_5_sur_serrano` | Sur serrano y salinas (**en evaluación**, D-18) | -29.50, -63.69 |
+| `zona_5_sur_serrano` | Sur serrano y salinas (D-21) | -29.50, -63.69 |
 
 Cada archivo lleva arriba un bloque `meta` con `fuente`, `generado_por` (script o persona), `fecha` y `notas`.
 
