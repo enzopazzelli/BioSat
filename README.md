@@ -114,6 +114,7 @@ BioSat/
 ├── docs/                                                     <-- Documentación del equipo
 │   ├── AIZAL_Fichas_Variables_V4_2026.pdf                    <-- Fichas oficiales de las variables AIZAL V4
 │   ├── analisis-datos-nasa-santiago.md                       <-- Hallazgos climáticos 2020-2025 (a corregir, ver PLAN F1)
+│   ├── BioSat-cruce-de-datos-validacion.docx
 │   ├── contratos-de-datos.md                                 <-- Formato de los JSON que comparten los frentes
 │   ├── cruce-de-datos.md                                     <-- Qué sale de cruzar NASA POWER, AIZAL y Landsat; análisis de zonas
 │   ├── documentacion-tecnica-agronomica.md                   <-- Secciones de cultivo A/B/C/D y reglas de rotación
