@@ -1,0 +1,108 @@
+{
+  "z1": {
+    "bbox": [
+      -64.57,
+      -28.03,
+      -63.77,
+      -27.43
+    ],
+    "invierno": {
+      "item": "Compuesto GEE Mediana L8/9 Invierno 2025",
+      "fecha": "2025-08-15",
+      "periodo": "2025-06-01 a 2025-10-31",
+      "nubes": 0.0
+    },
+    "verano": {
+      "item": "Compuesto GEE Mediana L8/9 Verano 2025",
+      "fecha": "2025-01-15",
+      "periodo": "2024-12-01 a 2025-03-31",
+      "nubes": 0.0
+    }
+  },
+  "z2": {
+    "bbox": [
+      -62.82,
+      -27.95,
+      -62.02,
+      -27.35
+    ],
+    "invierno": {
+      "item": "Compuesto GEE Mediana L8/9 Invierno 2025",
+      "fecha": "2025-08-15",
+      "periodo": "2025-06-01 a 2025-10-31",
+      "nubes": 0.0
+    },
+    "verano": {
+      "item": "Compuesto GEE Mediana L8/9 Verano 2025",
+      "fecha": "2025-01-15",
+      "periodo": "2024-12-01 a 2025-03-31",
+      "nubes": 0.0
+    }
+  },
+  "z3": {
+    "bbox": [
+      -63.25,
+      -26.88,
+      -62.45,
+      -26.28
+    ],
+    "invierno": {
+      "item": "Compuesto GEE Mediana L8/9 Invierno 2025",
+      "fecha": "2025-08-15",
+      "periodo": "2025-06-01 a 2025-10-31",
+      "nubes": 0.0
+    },
+    "verano": {
+      "item": "Compuesto GEE Mediana L8/9 Verano 2025",
+      "fecha": "2025-01-15",
+      "periodo": "2024-12-01 a 2025-03-31",
+      "nubes": 0.0
+    },
+    "anio2000": {
+      "item": "Compuesto GEE Mediana L5/7 Año 2000",
+      "fecha": "2000-10-15",
+      "periodo": "1999-06-01 a 2001-10-31",
+      "nubes": 0.0
+    }
+  },
+  "z4": {
+    "bbox": [
+      -63.23,
+      -28.76,
+      -62.43,
+      -28.16
+    ],
+    "invierno": {
+      "item": "Compuesto GEE Mediana L8/9 Invierno 2025",
+      "fecha": "2025-08-15",
+      "periodo": "2025-06-01 a 2025-10-31",
+      "nubes": 0.0
+    },
+    "verano": {
+      "item": "Compuesto GEE Mediana L8/9 Verano 2025",
+      "fecha": "2025-01-15",
+      "periodo": "2024-12-01 a 2025-03-31",
+      "nubes": 0.0
+    }
+  },
+  "z5": {
+    "bbox": [
+      -64.09,
+      -29.8,
+      -63.29,
+      -29.2
+    ],
+    "invierno": {
+      "item": "Compuesto GEE Mediana L8/9 Invierno 2025",
+      "fecha": "2025-08-15",
+      "periodo": "2025-06-01 a 2025-10-31",
+      "nubes": 0.0
+    },
+    "verano": {
+      "item": "Compuesto GEE Mediana L8/9 Verano 2025",
+      "fecha": "2025-01-15",
+      "periodo": "2024-12-01 a 2025-03-31",
+      "nubes": 0.0
+    }
+  }
+}

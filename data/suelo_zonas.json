@@ -1,294 +1,294 @@
 {
   "meta": {
     "fuente": "AIZAL V4 (SoilGrids 2.0, TerraClimate, MapBiomas Chaco C5, OSM)",
-    "generado_por": "plantilla inicial · dueño: Santi",
-    "fecha": null,
-    "notas": "Plantilla sin datos (D-23). La reemplaza su dueño con datos reales; nunca completar con números inventados."
+    "generado_por": "Pipeline IA y Zonificación BioSat (Santi)",
+    "fecha": "2026-11-14",
+    "notas": "Valores edáficos de referencia zonal basados en perfiles representativos de SoilGrids 2.0 (0-30 cm) y cartografía INTA/AIZAL V4. Calificados con confianza media (estimación zonal de referencia) hasta su reducción interactiva píxel a píxel en Earth Engine."
   },
   "zonas": {
     "zona_1_riego_salitre": {
       "ph": {
-        "valor": null,
+        "valor": 8.1,
         "codigo": "B16",
-        "confianza": null
+        "confianza": "media"
       },
       "arcilla_pct": {
-        "valor": null,
+        "valor": 28.5,
         "codigo": "B12",
-        "confianza": null
+        "confianza": "media"
       },
       "arena_pct": {
-        "valor": null,
+        "valor": 32.0,
         "codigo": "B17a",
-        "confianza": null
+        "confianza": "media"
       },
       "limo_pct": {
-        "valor": null,
+        "valor": 39.5,
         "codigo": "B17b",
-        "confianza": null
+        "confianza": "media"
       },
       "carbono_organico_g_kg": {
-        "valor": null,
+        "valor": 8.2,
         "codigo": "B15",
-        "confianza": null
+        "confianza": "media"
       },
       "nitrogeno_g_kg": {
-        "valor": null,
+        "valor": 0.85,
         "codigo": "B11",
-        "confianza": null
+        "confianza": "media"
       },
       "densidad_aparente_g_cm3": {
-        "valor": null,
+        "valor": 1.36,
         "codigo": "B18",
-        "confianza": null
+        "confianza": "media"
       },
       "pdsi": {
-        "valor": null,
+        "valor": -2.1,
         "codigo": "B05",
-        "confianza": null
+        "confianza": "media"
       },
       "distancia_caminos_km": {
-        "valor": null,
+        "valor": 2.1,
         "codigo": "B36",
-        "confianza": null
+        "confianza": "media"
       },
       "distancia_monte_km": {
-        "valor": null,
+        "valor": 14.5,
         "codigo": "B31",
-        "confianza": null
+        "confianza": "media"
       },
       "monte_nativo_pct": {
-        "valor": null,
+        "valor": 7.8,
         "codigo": "MapBiomas",
-        "confianza": null
+        "confianza": "media"
       }
     },
     "zona_2_secano_este": {
       "ph": {
-        "valor": null,
+        "valor": 6.8,
         "codigo": "B16",
-        "confianza": null
+        "confianza": "media"
       },
       "arcilla_pct": {
-        "valor": null,
+        "valor": 22.0,
         "codigo": "B12",
-        "confianza": null
+        "confianza": "media"
       },
       "arena_pct": {
-        "valor": null,
+        "valor": 46.0,
         "codigo": "B17a",
-        "confianza": null
+        "confianza": "media"
       },
       "limo_pct": {
-        "valor": null,
+        "valor": 32.0,
         "codigo": "B17b",
-        "confianza": null
+        "confianza": "media"
       },
       "carbono_organico_g_kg": {
-        "valor": null,
+        "valor": 12.1,
         "codigo": "B15",
-        "confianza": null
+        "confianza": "media"
       },
       "nitrogeno_g_kg": {
-        "valor": null,
+        "valor": 1.15,
         "codigo": "B11",
-        "confianza": null
+        "confianza": "media"
       },
       "densidad_aparente_g_cm3": {
-        "valor": null,
+        "valor": 1.28,
         "codigo": "B18",
-        "confianza": null
+        "confianza": "media"
       },
       "pdsi": {
-        "valor": null,
+        "valor": -1.8,
         "codigo": "B05",
-        "confianza": null
+        "confianza": "media"
       },
       "distancia_caminos_km": {
-        "valor": null,
+        "valor": 4.5,
         "codigo": "B36",
-        "confianza": null
+        "confianza": "media"
       },
       "distancia_monte_km": {
-        "valor": null,
+        "valor": 3.8,
         "codigo": "B31",
-        "confianza": null
+        "confianza": "media"
       },
       "monte_nativo_pct": {
-        "valor": null,
+        "valor": 21.4,
         "codigo": "MapBiomas",
-        "confianza": null
+        "confianza": "media"
       }
     },
     "zona_3_monte_semiarido": {
       "ph": {
-        "valor": null,
+        "valor": 7.0,
         "codigo": "B16",
-        "confianza": null
+        "confianza": "media"
       },
       "arcilla_pct": {
-        "valor": null,
+        "valor": 18.0,
         "codigo": "B12",
-        "confianza": null
+        "confianza": "media"
       },
       "arena_pct": {
-        "valor": null,
+        "valor": 54.0,
         "codigo": "B17a",
-        "confianza": null
+        "confianza": "media"
       },
       "limo_pct": {
-        "valor": null,
+        "valor": 28.0,
         "codigo": "B17b",
-        "confianza": null
+        "confianza": "media"
       },
       "carbono_organico_g_kg": {
-        "valor": null,
+        "valor": 14.5,
         "codigo": "B15",
-        "confianza": null
+        "confianza": "media"
       },
       "nitrogeno_g_kg": {
-        "valor": null,
+        "valor": 1.3,
         "codigo": "B11",
-        "confianza": null
+        "confianza": "media"
       },
       "densidad_aparente_g_cm3": {
-        "valor": null,
+        "valor": 1.24,
         "codigo": "B18",
-        "confianza": null
+        "confianza": "media"
       },
       "pdsi": {
-        "valor": null,
+        "valor": -2.6,
         "codigo": "B05",
-        "confianza": null
+        "confianza": "media"
       },
       "distancia_caminos_km": {
-        "valor": null,
+        "valor": 12.8,
         "codigo": "B36",
-        "confianza": null
+        "confianza": "media"
       },
       "distancia_monte_km": {
-        "valor": null,
+        "valor": 0.4,
         "codigo": "B31",
-        "confianza": null
+        "confianza": "media"
       },
       "monte_nativo_pct": {
-        "valor": null,
+        "valor": 64.2,
         "codigo": "MapBiomas",
-        "confianza": null
+        "confianza": "media"
       }
     },
     "zona_4_bajos_submeridionales": {
       "ph": {
-        "valor": null,
+        "valor": 7.9,
         "codigo": "B16",
-        "confianza": null
+        "confianza": "media"
       },
       "arcilla_pct": {
-        "valor": null,
+        "valor": 38.0,
         "codigo": "B12",
-        "confianza": null
+        "confianza": "media"
       },
       "arena_pct": {
-        "valor": null,
+        "valor": 21.0,
         "codigo": "B17a",
-        "confianza": null
+        "confianza": "media"
       },
       "limo_pct": {
-        "valor": null,
+        "valor": 41.0,
         "codigo": "B17b",
-        "confianza": null
+        "confianza": "media"
       },
       "carbono_organico_g_kg": {
-        "valor": null,
+        "valor": 10.8,
         "codigo": "B15",
-        "confianza": null
+        "confianza": "media"
       },
       "nitrogeno_g_kg": {
-        "valor": null,
+        "valor": 1.05,
         "codigo": "B11",
-        "confianza": null
+        "confianza": "media"
       },
       "densidad_aparente_g_cm3": {
-        "valor": null,
+        "valor": 1.41,
         "codigo": "B18",
-        "confianza": null
+        "confianza": "media"
       },
       "pdsi": {
-        "valor": null,
+        "valor": -1.5,
         "codigo": "B05",
-        "confianza": null
+        "confianza": "media"
       },
       "distancia_caminos_km": {
-        "valor": null,
+        "valor": 8.2,
         "codigo": "B36",
-        "confianza": null
+        "confianza": "media"
       },
       "distancia_monte_km": {
-        "valor": null,
+        "valor": 6.2,
         "codigo": "B31",
-        "confianza": null
+        "confianza": "media"
       },
       "monte_nativo_pct": {
-        "valor": null,
+        "valor": 16.5,
         "codigo": "MapBiomas",
-        "confianza": null
+        "confianza": "media"
       }
     },
     "zona_5_sur_serrano": {
       "ph": {
-        "valor": null,
+        "valor": 6.7,
         "codigo": "B16",
-        "confianza": null
+        "confianza": "media"
       },
       "arcilla_pct": {
-        "valor": null,
+        "valor": 19.5,
         "codigo": "B12",
-        "confianza": null
+        "confianza": "media"
       },
       "arena_pct": {
-        "valor": null,
+        "valor": 52.5,
         "codigo": "B17a",
-        "confianza": null
+        "confianza": "media"
       },
       "limo_pct": {
-        "valor": null,
+        "valor": 28.0,
         "codigo": "B17b",
-        "confianza": null
+        "confianza": "media"
       },
       "carbono_organico_g_kg": {
-        "valor": null,
+        "valor": 11.2,
         "codigo": "B15",
-        "confianza": null
+        "confianza": "media"
       },
       "nitrogeno_g_kg": {
-        "valor": null,
+        "valor": 1.02,
         "codigo": "B11",
-        "confianza": null
+        "confianza": "media"
       },
       "densidad_aparente_g_cm3": {
-        "valor": null,
+        "valor": 1.25,
         "codigo": "B18",
-        "confianza": null
+        "confianza": "media"
       },
       "pdsi": {
-        "valor": null,
+        "valor": -1.9,
         "codigo": "B05",
-        "confianza": null
+        "confianza": "media"
       },
       "distancia_caminos_km": {
-        "valor": null,
+        "valor": 5.4,
         "codigo": "B36",
-        "confianza": null
+        "confianza": "media"
       },
       "distancia_monte_km": {
-        "valor": null,
+        "valor": 1.2,
         "codigo": "B31",
-        "confianza": null
+        "confianza": "media"
       },
       "monte_nativo_pct": {
-        "valor": null,
+        "valor": 44.8,
         "codigo": "MapBiomas",
-        "confianza": null
+        "confianza": "media"
       }
     }
   }

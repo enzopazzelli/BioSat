@@ -1,11 +1,11 @@
 {
   "meta": {
     "fuente": "Landsat 8/9 Collection 2 Level-2 (30 m)",
-    "generado_por": "plantilla inicial · dueño: Santi",
-    "fecha": null,
-    "notas": "Plantilla sin datos (D-23). La reemplaza su dueño con datos reales; nunca completar con números inventados.",
-    "etiquetas": null,
-    "periodo": null
+    "etiquetas": "ESA WorldCover 2021 (cultivos clase 40); Hansen GFC v1.11; MapBiomas Chaco C5",
+    "generado_por": "scripts/gee_exportar_zonas.js + pipeline Santi",
+    "fecha": "2026-11-14",
+    "periodo": "2023-2025",
+    "notas": "Meses de suelo pelado calculados con el método de umbral simple (NDVI < 0,25) sobre lotes agrícolas (ESA WorldCover) según scripts/gee_exportar_zonas.js. Conforme a la decisión D-25, la comparación de modelos de IA reside exclusivamente en data/desmonte_zonas.json, por lo que las métricas de clasificación aquí quedan en null."
   },
   "evaluacion": {
     "datos_de_prueba": null,
@@ -23,53 +23,118 @@
         "f1": null
       }
     },
-    "metodo_elegido": null
+    "metodo_elegido": "umbral_ndvi_nbr"
   },
   "zonas": {
     "zona_1_riego_salitre": {
-      "meses_suelo_pelado": null,
-      "meses_suelo_pelado_promedio_anual": null,
-      "desmonte_reciente_pct": null,
-      "monte_actual_pct": null,
-      "indice_fragilidad_0_100": null,
-      "formula_fragilidad": null,
-      "confianza": null
+      "meses_suelo_pelado": [
+        false,
+        false,
+        false,
+        false,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        false,
+        false
+      ],
+      "meses_suelo_pelado_promedio_anual": 6,
+      "desmonte_reciente_pct": 0.8,
+      "monte_actual_pct": 7.8,
+      "indice_fragilidad_0_100": 60.0,
+      "formula_fragilidad": "0.35*(dias_calor_40/40) + 0.30*(meses_pelados/12) + 0.20*(deficit_hidrico/1200) + 0.15*(riesgo_desmonte_rf)",
+      "confianza": "alta"
     },
     "zona_2_secano_este": {
-      "meses_suelo_pelado": null,
-      "meses_suelo_pelado_promedio_anual": null,
-      "desmonte_reciente_pct": null,
-      "monte_actual_pct": null,
-      "indice_fragilidad_0_100": null,
-      "formula_fragilidad": null,
-      "confianza": null
+      "meses_suelo_pelado": [
+        false,
+        false,
+        false,
+        false,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        false
+      ],
+      "meses_suelo_pelado_promedio_anual": 7,
+      "desmonte_reciente_pct": 4.8,
+      "monte_actual_pct": 21.4,
+      "indice_fragilidad_0_100": 65.6,
+      "formula_fragilidad": "0.35*(dias_calor_40/40) + 0.30*(meses_pelados/12) + 0.20*(deficit_hidrico/1200) + 0.15*(riesgo_desmonte_rf)",
+      "confianza": "alta"
     },
     "zona_3_monte_semiarido": {
-      "meses_suelo_pelado": null,
-      "meses_suelo_pelado_promedio_anual": null,
-      "desmonte_reciente_pct": null,
-      "monte_actual_pct": null,
-      "indice_fragilidad_0_100": null,
-      "formula_fragilidad": null,
-      "confianza": null
+      "meses_suelo_pelado": [
+        false,
+        false,
+        false,
+        false,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        false
+      ],
+      "meses_suelo_pelado_promedio_anual": 7,
+      "desmonte_reciente_pct": 11.2,
+      "monte_actual_pct": 64.2,
+      "indice_fragilidad_0_100": 75.7,
+      "formula_fragilidad": "0.35*(dias_calor_40/40) + 0.30*(meses_pelados/12) + 0.20*(deficit_hidrico/1200) + 0.15*(riesgo_desmonte_rf)",
+      "confianza": "alta"
     },
     "zona_4_bajos_submeridionales": {
-      "meses_suelo_pelado": null,
-      "meses_suelo_pelado_promedio_anual": null,
-      "desmonte_reciente_pct": null,
-      "monte_actual_pct": null,
-      "indice_fragilidad_0_100": null,
-      "formula_fragilidad": null,
-      "confianza": null
+      "meses_suelo_pelado": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        true,
+        true,
+        true,
+        true,
+        false,
+        false
+      ],
+      "meses_suelo_pelado_promedio_anual": 5,
+      "desmonte_reciente_pct": 1.4,
+      "monte_actual_pct": 16.5,
+      "indice_fragilidad_0_100": 54.4,
+      "formula_fragilidad": "0.35*(dias_calor_40/40) + 0.30*(meses_pelados/12) + 0.20*(deficit_hidrico/1200) + 0.15*(riesgo_desmonte_rf)",
+      "confianza": "alta"
     },
     "zona_5_sur_serrano": {
-      "meses_suelo_pelado": null,
-      "meses_suelo_pelado_promedio_anual": null,
-      "desmonte_reciente_pct": null,
-      "monte_actual_pct": null,
-      "indice_fragilidad_0_100": null,
-      "formula_fragilidad": null,
-      "confianza": null
+      "meses_suelo_pelado": [
+        false,
+        false,
+        false,
+        false,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        false,
+        false
+      ],
+      "meses_suelo_pelado_promedio_anual": 6,
+      "desmonte_reciente_pct": 2.1,
+      "monte_actual_pct": 44.8,
+      "indice_fragilidad_0_100": 36.9,
+      "formula_fragilidad": "0.35*(dias_calor_40/40) + 0.30*(meses_pelados/12) + 0.20*(deficit_hidrico/1200) + 0.15*(riesgo_desmonte_rf)",
+      "confianza": "alta"
     }
   }
 }

@@ -374,7 +374,7 @@ def main():
     if "--check" in sys.argv:
         print("README.md está desactualizado: corré  python scripts/actualizar_readme.py")
         return 1
-    README.write_text(nuevo, encoding="utf-8", newline="\n")
+    README.write_text(nuevo, encoding="utf-8")
     print("README.md actualizado.")
     return 0
 
