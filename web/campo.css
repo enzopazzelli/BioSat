@@ -1,0 +1,55 @@
+/* BioSat · guía "Del kit al campo". Usa los tokens de estilos.css (tema claro y oscuro).
+   Pensada para leerse de lejos, en la misma pantalla de la demo. */
+/* .guia y no .campo: estilos.css ya usa .campo para la grilla del paso 1 */
+.guia{display:grid;gap:clamp(28px,4vw,48px);padding-block:clamp(24px,4vw,48px) 56px;font-size:clamp(17px,1.4vw,20px)}
+.campo-volver{display:flex;flex-wrap:wrap;gap:8px 18px;align-items:center}
+.campo-volver a{color:var(--accent);font-weight:600}
+.campo-volver a.btn{color:var(--on-accent);text-decoration:none}
+
+.campo-intro{display:grid;gap:10px;max-width:60ch}
+.campo-eyebrow{font-family:var(--font-mono);font-size:.8em;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.campo-intro h1{font-size:clamp(2.6rem,6vw,4.6rem)}
+.campo-enlace{font-size:clamp(1.15rem,1.8vw,1.5rem);line-height:1.35}
+.campo-h2{font-size:clamp(1.6rem,2.6vw,2.2rem);margin-bottom:16px}
+
+/* Diagrama: fila de 4 nodos con flechas; columna por debajo de 700 px */
+.recorrido{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:44px}
+.nodo{position:relative;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:18px;display:grid;gap:6px;align-content:start;min-width:0}
+.nodo svg{width:48px;height:48px;fill:none;stroke:var(--accent);stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.nodo h3{font-size:clamp(1.3rem,2vw,1.7rem)}
+.nodo p{color:var(--muted)}
+.nodo-app{border-color:var(--accent);background:var(--accent-soft)}
+.nodo + .nodo::before{content:"→";position:absolute;left:-36px;top:50%;transform:translateY(-50%);
+  font-family:var(--font-display);font-weight:700;font-size:2rem;line-height:1;color:var(--accent)}
+@media (max-width:700px){
+  .recorrido{grid-template-columns:1fr;gap:36px}
+  .nodo + .nodo::before{content:"↓";left:50%;top:-34px;transform:translateX(-50%)}
+}
+
+/* Los 5 pasos: 5 columnas, después 2, después 1 */
+.pasos{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:14px}
+@media (max-width:1100px){.pasos{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:640px){.pasos{grid-template-columns:1fr}}
+.paso{padding:16px;display:grid;gap:8px;align-content:start;min-width:0;overflow-wrap:break-word;hyphens:auto}
+.paso-n{font-family:var(--font-display);font-weight:700;font-size:2.6rem;line-height:1;color:var(--accent)}
+.paso h3{font-size:clamp(1.25rem,1.7vw,1.5rem)}
+
+/* Estación y lo que no reemplaza */
+.campo-dos{display:grid;grid-template-columns:minmax(0,3fr) minmax(0,2fr);gap:16px;align-items:start}
+@media (max-width:900px){.campo-dos{grid-template-columns:1fr}}
+.campo-caja{padding:20px;min-width:0}
+.campo-tabla{width:100%;border-collapse:collapse;font-size:inherit}
+/* estilos.css pone todas las tablas en mono, a la derecha y sin cortar línea: acá es texto */
+.campo-tabla th,.campo-tabla td{white-space:normal;text-align:left;font-family:inherit;border-bottom:0}
+.campo-tabla th{text-align:left;font-family:var(--font-mono);font-size:.75em;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:500;padding:0 8px 8px 0}
+.campo-tabla td{border-top:1px solid var(--line);padding:10px 8px 10px 0;vertical-align:top}
+.campo-tabla td:first-child{font-weight:600}
+.campo-tabla td:last-child{color:var(--muted)}
+.campo-costos{margin:16px 0 0;display:grid;gap:8px}
+.campo-costos div{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:6px 12px;background:var(--surface-2);border-radius:var(--r);padding:10px 12px}
+.campo-costos dt{font-weight:600}
+.campo-costos dd{margin:0;display:flex;align-items:center;gap:8px;font-size:1.1em;white-space:nowrap}
+.campo-nota{margin-top:10px;color:var(--muted);font-size:.85em}
+.campo-no{border-color:var(--accent)}
+.campo-no ul{margin:0;padding-left:1.2em;display:grid;gap:8px;font-size:1.1em}
+.campo-pie{padding-top:8px;border-top:1px solid var(--line)}

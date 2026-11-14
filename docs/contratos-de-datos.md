@@ -279,6 +279,8 @@ window.BioSatArduino = {
 
 Lecturas **reales** grabadas durante la calibración. La app las usa si el Arduino no está conectado.
 
+- **`meta.umbrales`:** puede traer `{"conductividad_salitre_raw": N}`, el valor de `agua_raw` desde el que la bandeja avisa posible salitre. Lo usa la pantalla del kit (`web/kit.html`); si falta, toma 700.
+
 ```json
 {
   "meta": { "fuente": "Kit Arduino BioSat", "fecha": "2026-11-15", "notas": "umbrales usados: ..." },

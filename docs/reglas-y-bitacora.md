@@ -142,3 +142,9 @@ Según la página oficial de premios (`NASA Space Apps Challenge - awards.mhtml`
   - **App:** suma el panel "presión de desmonte en tu zona", con nivel relativo entre zonas, serie anual y métricas. También el grupo AIZAL en la ficha de la zona y la capa de zonas AIZAL en el visor.
   - **Arduino:** la conexión queda lista con la interfaz `window.BioSatArduino` (contratos §6).
   - **Pruebas:** la app funciona en celular (390 px, sin desbordes) y sin internet.
+- **D-27 (Pantalla del kit para el jurado, guía "Del kit al campo" y Arduino Uno por USB):**
+  - **Pantalla del kit:** `web/kit.html?zona=` muestra las 3 bandejas en grande, para la mesa del jurado. Se elige la bandeja con A, B o C (o con los botones) y la lectura se guarda sola cuando se estabiliza (menos de 0,3 °C en 5 lecturas). Sin Arduino usa las lecturas grabadas y lo avisa; sin grabadas dice "sin lectura". Cierra con la diferencia entre suelo pelado y cubierto frente al aire que ve NASA POWER.
+  - **Guía:** `web/campo.html` cuenta en una pantalla cómo se lleva el kit a un campo: 3 a 6 estaciones fijas, un receptor LoRa en el casco y la app. Los costos van marcados "a confirmar".
+  - **Hardware de la demo:** Arduino Uno por USB con Web Serial (Chrome o Edge). El ESP32 con LoRa queda para las estaciones de campo.
+  - **Para Sara:** calentar las bandejas con una lámpara antes de la demo, así se ve la diferencia. El umbral de salitre va en `meta.umbrales` (contratos §6).
+  - **Diseños:** `docs/superpowers/specs/2026-11-14-visor-kit-jurado-design.md` y `docs/superpowers/specs/2026-11-14-guia-del-kit-al-campo-design.md`.

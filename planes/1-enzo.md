@@ -46,6 +46,8 @@ Que un productor recorra los 5 pasos de la app sin ayuda, con números de clima 
 
 ### Congelamiento · Dom 15:00
 - [x] Paso 4 (simulador de lluvia y temperatura) y paso 5 (lista para el agrónomo)
+- [x] Pantalla del kit para la mesa del jurado (`web/kit.html`)
+- [x] Guía Del kit al campo (`web/campo.html`)
 - [ ] Sumar el lector del Arduino de Sara (`arduino/lector-web-serial.js`) con respaldo de lecturas grabadas *(la app ya lo carga y habilita el botón; falta el archivo de Sara)*
 - [x] "Apoya, no reemplaza" y fuente de cada dato visibles en toda la app
 - [x] Probar en celular y sin internet
