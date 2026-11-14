@@ -98,3 +98,17 @@
 | **k-means (agrupamiento)** | Método de IA que junta píxeles parecidos en grupos sin que nadie le diga cuáles son. | **"Zonas parecidas"** encontradas por los datos. |
 | **Hansen Global Forest Change** | Mapa mundial de pérdida de bosque por año, hecho con imágenes Landsat (Universidad de Maryland). | **"Dónde y cuándo se desmontó"**. |
 | **Coeficiente de cultivo (Kc)** | Fracción de la ET0 que usa un cultivo según su estado (FAO-56). Lo usamos simplificado para comparar rotaciones. | **"Cuánta agua pide cada etapa"**. |
+
+---
+
+## 6. Términos ganaderos y forrajeros (sumados tras entrevista en Quebrachos / Bella Criolla)
+
+| Término | Qué significa (para el equipo) | Cómo se traduce al agricultor |
+|---|---|---|
+| **Pastura megatérmica** | Especies forrajeras perennes de origen subtropical/tropical con vía fotosintética C4 (Gatton Panic, Buffel Grass, Grama Rhodes). Crecen con altas temperaturas y lluvia en verano, pero se detienen con frío. | **"Pastos de verano"**: rinden mucho volumen con calor y lluvia, pero las heladas los secan y frenan su rebrote hasta la primavera siguiente. |
+| **Bache forrajero** | Período del año (en el sur santiagueño: julio a octubre) donde el crecimiento del pasto se detiene por heladas y sequedad, cayendo drásticamente la oferta de alimento verde. | **"El pozo del invierno"**: los meses donde no hay pasto fresco y el ganado pierde estado si no tiene reservas o suplementación. |
+| **Forraje diferido** | Pastura o cultivo (como sorgo o Gatton) que se deja crecer en verano y se guarda "en pie" (sin pastorear) para que los animales lo coman seco durante el invierno. | **"El pasto guardado en pie para el invierno"**: sirve de volumen para llenar a la vaca, pero pierde proteína y necesita ayuda. |
+| **Consociación forrajera** | Siembra conjunta en el mismo lote de dos o más especies compatibles, típicamente una gramínea (aporta volumen de fibra) y una leguminosa (aporta nitrógeno y proteína). Ej.: Avena + Melilotus. | **"Mezcla de pasto y trébol en el mismo lote"**: la leguminosa le da fuerza al pasto y mejora la comida del animal. |
+| **Ramoneo** | Hábito de alimentación de animales (especialmente caprinos) que consumen brotes tiernos, hojas, frutos y ramas de arbustos y árboles del monte. | **"Comer del monte"**: cuando las cabras o vacas aprovechan las hojas, brotes y chauchas de algarrobo y mistol en vez de pasto del suelo. |
+| **Empaste / Meteorismo espumoso** | Trastorno digestivo agudo en rumiantes por acumulación excesiva de gases al fermentar rápidamente leguminosas tiernas (alfalfa o tréboles) con rocío o en ayuno. | **"Hinchazón de la panza en la vaca"**: peligro que ocurre si entran hambrientas a comer leguminosas muy tiernas o húmedas por rocío. |
+| **Biodrenaje** | Uso de pasturas o árboles de raíces profundas y alta transpiración para absorber excesos hídricos y regular el nivel de la napa freática en zonas bajas. | **"Bomba biológica de agua"**: plantas que chupan el exceso de agua subterránea para evitar que el lote se anegue o suba el salitre. |
