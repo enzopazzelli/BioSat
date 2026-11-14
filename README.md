@@ -49,8 +49,8 @@ Avance de cada integrante, contado desde las casillas de su plan en [`planes/`](
 <!-- AUTO:AVANCE:INICIO -->
 | Persona | Rama | Avance | Tareas |
 |---|---|---|---|
-| [Enzo · Integración y app](planes/1-enzo.md) | `enzo-app` | `▓▓▓▓▓▓▓░░░` 70% | 19/27 |
-| [Santi · Suelo, satélite e IA](planes/2-santi.md) | `santi-datos-ia` | `░░░░░░░░░░` 0% | 0/22 |
+| [Enzo · Integración y app](planes/1-enzo.md) | `enzo-app` | `▓▓▓▓▓▓▓░░░` 68% | 19/28 |
+| [Santi · Suelo, satélite e IA](planes/2-santi.md) | `santi-datos-ia` | `░░░░░░░░░░` 0% | 0/21 |
 | [Vale · Campo y agronomía](planes/3-vale.md) | `vale-rotaciones` | `░░░░░░░░░░` 0% | 0/18 |
 | [Sara · Kit Arduino y relato](planes/4-sara.md) | `sara-arduino-entrega` | `▓░░░░░░░░░` 5% | 1/19 |
 | **Total** | | `▓▓░░░░░░░░` **23%** | **20/86** |
@@ -59,12 +59,12 @@ Avance de cada integrante, contado desde las casillas de su plan en [`planes/`](
 **Últimas decisiones:**
 
 <!-- AUTO:DECISIONES:INICIO -->
+- **D-25**: Propuesta de la profesora: zonificación AIZAL y modelo predictivo de desmontes
 - **D-24**: Checkpoint 1: clima 1981-2025 y app v1 publicada
 - **D-23**: Trabajo en paralelo con ramas y planes individuales
 - **D-22**: Equipo de 4 integrantes
 - **D-21**: Zona 5 confirmada
 - **D-20**: Zona 5 operativa y revisión de la documentación
-- **D-19**: Visor GIS con Google Earth Engine
 
 Todas las decisiones están en la [bitácora](docs/reglas-y-bitacora.md).
 <!-- AUTO:DECISIONES:FIN -->
@@ -101,11 +101,13 @@ BioSat/
 ├── data/                                                     <-- Datos y contratos JSON que lee la app
 │   ├── arduino_bandejas_demo.json                            <-- Lecturas grabadas del kit (Sara) · plantilla hasta tener datos
 │   ├── clima_zonas.json                                      <-- Clima NASA POWER 1981-2025 de las 5 zonas (lo lee la app)
-│   ├── diagnostico_landsat_ia.json                           <-- Diagnóstico IA Landsat (Santi) · plantilla hasta tener datos
+│   ├── desmonte_zonas.json                                   <-- Riesgo y proyección de desmonte por zona (Santi) · plantilla
+│   ├── diagnostico_landsat_ia.json                           <-- Meses de suelo pelado por umbral (Santi) · plantilla
 │   ├── nasa_power_santiago_zonas.json                        <-- Versión vieja 2020-2025, con errores: usar clima_zonas.json
 │   ├── resumen_mensual_santiago.csv                          <-- Normal 1991-2020 por mes y zona, para planilla
 │   ├── rotaciones_santiago.json                              <-- Rotaciones de las 5 zonas (Vale) · plantilla hasta tener datos
 │   ├── suelo_zonas.json                                      <-- Suelo por zona (Santi) · plantilla hasta tener datos
+│   ├── zonificacion_aizal.json                               <-- Zonificación k-means con AIZAL (Santi) · plantilla hasta tener datos
 │   ├── datos_cruzados_aizal/                                 <-- Catálogo AIZAL V4: 38 variables de suelo, clima y paisaje
 │   │   ├── CATALOGO_MAESTRO_VARIABLES.md                     <-- Índice de módulos y reglas que disparan
 │   │   ├── 01_Clima_y_Balance_Hidrico/ (2 archivos)          <-- B01-B08: agua, lluvia, sequía, temperatura
@@ -140,7 +142,8 @@ BioSat/
 │   ├── descargar_nasa_power.py                               <-- Descarga y resume NASA POWER por zona
 │   ├── earth_engine_embeddings.js                            <-- Ejemplo GEE de embeddings (falta adaptar a SdE)
 │   ├── gee_exportar_zonas.js                                 <-- Earth Engine: estadísticas e imágenes por zona para la app
-│   └── gee_visor_biosat.js                                   <-- Visor GIS en Earth Engine: 2000 vs 2025, NDVI, desmonte, zonas IA
+│   ├── gee_visor_biosat.js                                   <-- Visor GIS en Earth Engine: 2000 vs 2025, NDVI, desmonte, zonas IA
+│   └── gee_zonas_y_desmonte.js                               <-- Earth Engine: zonificación AIZAL y modelo predictivo de desmontes
 └── web/                                                      <-- App web BioSat (abrir con un servidor: ver Inicio rápido)
     ├── app.js                                                <-- Lógica de la app: datos, motor, calendario, simulador y visor
     ├── estilos.css                                           <-- Estilos de la app
