@@ -1,0 +1,3 @@
+Modelo,ROC-AUC,F1-Score,Accuracy,Cohen-Kappa
+Regresión Logística (Baseline),0.986,0.9339,0.9337,0.8673
+Random Forest (150 Árboles),0.9726,0.9026,0.9033,0.8067

@@ -1,0 +1,6 @@
+zona_id,zona_nombre,lat,lon,lluvia_anual_mm,et0_anual_mm,deficit_hidrico_mm,tmax_verano_c,tmin_invierno_c,dias_calor_extremo,dias_helada,ph,arcilla_pct,arena_pct,limo_pct,carbono_organico_g_kg,nitrogeno_g_kg,densidad_aparente_g_cm3,cic_cmolc_kg,pendiente_pct,dist_caminos_km,dist_monte_km,monte_actual_pct
+zona_1_riego_salitre,Zona 1: Área de Riego del Río Dulce (Suelos Salitrosos),-27.73,-64.17,673.4,1380.0,-706.6,37.2,7.8,24,8,8.1,28.5,32.0,39.5,8.2,0.85,1.36,22.4,0.4,2.1,14.5,7.8
+zona_2_secano_este,Zona 2: Secano Agrícola del Este (Quimilí / Moreno),-27.65,-62.42,724.8,1450.0,-725.2,37.2,9.7,31,5,6.8,22.0,46.0,32.0,12.1,1.15,1.28,19.8,0.3,4.5,3.8,21.4
+zona_3_monte_semiarido,Zona 3: Monte Nativo y Chaco Semiárido (Copo / Alberdi),-26.58,-62.85,612.0,1520.0,-908.0,38.6,8.2,39,3,7.0,18.0,54.0,28.0,14.5,1.3,1.24,18.2,0.5,12.8,0.4,64.2
+zona_4_bajos_submeridionales,Zona 4: Bajos Submeridionales (Anegamiento y Salinidad),-28.46,-62.83,810.5,1390.0,-579.5,35.8,7.1,18,7,7.9,38.0,21.0,41.0,10.8,1.05,1.41,26.5,0.2,8.2,6.2,16.5
+zona_5_sur_serrano,Zona 5: Sur Serrano y Transición Pampeana (Ojo de Agua / Sumampa),-29.5,-63.69,585.0,1320.0,-735.0,33.4,4.5,11,16,6.7,19.5,52.5,28.0,11.2,1.02,1.25,16.5,3.8,5.4,1.2,44.8
