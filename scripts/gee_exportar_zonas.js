@@ -115,7 +115,7 @@ var invierno2000 = l57.filterDate('1999-06-01', '2001-10-31')
 ZONAS.forEach(function (z) {
   var recorte = ee.Geometry.Rectangle([z.lon - 0.4, z.lat - 0.3, z.lon + 0.4, z.lat + 0.3]);
   var p = {region: recorte, dimensions: 800, format: 'png'};
-  var prefijo = z.id.split('_').slice(0, 2).join('_');
+  var prefijo = 'z' + z.id.split('_')[1];   // z1, z2... (contratos §5)
   print(prefijo + '_invierno_rgb.png', invierno.visualize(VIS_RGB).getThumbURL(p));
   print(prefijo + '_verano_rgb.png', verano.visualize(VIS_RGB).getThumbURL(p));
   print(prefijo + '_invierno_ndvi.png', invierno.visualize(VIS_NDVI).getThumbURL(p));
