@@ -7,3 +7,6 @@ __pycache__/
 
 # Caché de NASA POWER 1981-2025 (pesada; se vuelve a bajar con scripts/descargar_nasa_power.py)
 data/raw_nasa_power/*_1981_2025.json
+
+# Bocetos del brainstorming (servidor local)
+.superpowers/
