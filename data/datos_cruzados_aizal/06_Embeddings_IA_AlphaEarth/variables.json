@@ -1,0 +1,23 @@
+{
+  "categoria": "Embeddings Satelitales IA (AlphaEarth Foundations)",
+  "descripcion": "Representación multivariada aprendida por IA (Google DeepMind, 64 dimensiones, píxel de 10 m) que resume un año de reflectancia óptica, radar y relieve.",
+  "pilar_agronomico": "Agrupamiento No Supervisado y Transferencia de Conocimiento entre Lotes",
+  "secciones_impactadas": "Detección de patrones espectro-temporales homogéneos y búsqueda de lotes análogos exitosos en el Gran Chaco",
+  "variables": {
+    "IA": {
+      "codigo": "IA",
+      "titulo": "Embeddings satelitales AlphaEarth 2024 (64 dimensiones)",
+      "banda": "emb",
+      "dimension": "Representación aprendida (IA) · Multivariada",
+      "estado_v4": "Variable nueva (IA)",
+      "descripcion": "Representación multivariada aprendida por un modelo de IA de Google DeepMind (AlphaEarth Foundations). Cada píxel de 10 m tiene un vector de 64 valores (A00 a A63), de longitud unitaria, que resume un año completo de observaciones ópticas (Sentinel-2, Landsat), de radar (Sentinel-1), LiDAR, clima y relieve. Los valores individuales no tienen un significado físico directo: lo importante es la similitud entre vectores. Dos sitios con vectores parecidos tienen una \"firma\" satelital parecida, es decir, paisajes parecidos.",
+      "periodo": "2024",
+      "tipo": "Ráster (64 bandas)",
+      "resolucion_fuente": "10 m",
+      "resolucion_aizal": "500 m (asset precalculado)",
+      "unidad": "Adimensional (componentes de un vector unitario, entre −1 y 1)",
+      "procesamiento": "Paso 4 del script de actualización: se tomó la colección GOOGLE/SATELLITE_EMBEDDING/V1/ANNUAL del año 2024 y se agregó a 500 m (promedio), guardando los valores × 10.000 como enteros (asset set_datos_v4_embeddings_2024). En la app: (1) se resumen las 64 bandas en sus 6 primeras componentes principales, calculadas en el área de interés; (2) se multiplican por un factor 0,5, de modo que el bloque completo pesa como una variable más del ranking del experto. Si el asset no existe, la app los lee de la colección original de 10 m (más lento). Uso en AIZAL-IA Opcional en el paso 2 (variable 39). Se usa también en la similitud entre paisajes (similitud coseno en todo el Gran Chaco) y como capa de referencia (vista RGB de las dimensiones A01, A16 y A09). No se escala a [0, 1] ni se incluye en el promedio por GUPa.",
+      "cambios_v3": "Variable nueva en AIZAL-IA (2026). 43"
+    }
+  }
+}
