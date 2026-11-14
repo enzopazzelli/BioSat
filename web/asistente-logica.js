@@ -66,15 +66,37 @@
   // La respuesta de la persona manda; si no respondió (null), vale el riego de la zona.
   const riegoEfectivo = (respuesta, riegoDeLaZona) => (typeof respuesta === 'boolean' ? respuesta : !!riegoDeLaZona);
 
+  // Lo que muestran las tarjetas de la pregunta 2: la respuesta si la hay y, si no, lo que la app va a usar
+  // (riego según la zona, hacienda Sí y sembradora No). Es lo mismo que aplica aEstado().
+  function valoresTarjetas(respuestas, zonas) {
+    const r = normalizar(respuestas, zonas);
+    return {
+      riego: riegoEfectivo(r.riego, zonas[r.zona].riego),
+      hacienda: r.ganado === null ? true : r.ganado,
+      maq: r.maq === null ? false : r.maq
+    };
+  }
+
+  const CAMPO_TARJETA = {riego: 'riego', hacienda: 'ganado', maq: 'maq'};
+  // Cambia SOLO la tarjeta que la persona tocó (de lo que se veía a lo contrario). Las demás siguen sin responder,
+  // así un cambio de zona después no arrastra una respuesta que la persona nunca dio.
+  function alternarTarjeta(respuestas, id, zonas) {
+    const r = normalizar(respuestas, zonas);
+    if (!(id in CAMPO_TARJETA)) return r;
+    return {...r, [CAMPO_TARJETA[id]]: !valoresTarjetas(r, zonas)[id]};
+  }
+
   // Convierte las respuestas en el `state` de app.js, completando lo que falta con los valores de siempre.
   function aEstado(respuestas, zonas) {
     const r = normalizar(respuestas, zonas);
+    const v = valoresTarjetas(r, zonas);
     return {
       zona: r.zona,
-      riego: riegoEfectivo(r.riego, zonas[r.zona].riego),
-      ganado: r.ganado === null ? true : r.ganado,
-      maq: r.maq === null ? false : r.maq,
-      prio: new Set(r.prio.length ? r.prio : PRIO_POR_DEFECTO)
+      riego: v.riego,
+      ganado: v.hacienda,
+      maq: v.maq,
+      prio: new Set(r.prio.length ? r.prio : PRIO_POR_DEFECTO),
+      prioPorDefecto: r.prio.length === 0
     };
   }
 
@@ -84,19 +106,20 @@
     return !(respuestas && respuestas.hecho === true);
   }
 
-  // Datos para la pantalla de resumen: sin textos, que van en TEXTOS.
+  // Datos para la pantalla de resumen: sin textos, que van en TEXTOS. Dice lo mismo que va a aplicar la app.
   function resumen(respuestas, zonas) {
     const r = normalizar(respuestas, zonas);
-    const z = zonas[r.zona];
+    const z = zonas[r.zona], v = valoresTarjetas(r, zonas);
     const tiene = [];
-    if (riegoEfectivo(r.riego, z.riego)) tiene.push('riego');
-    if (r.ganado === true) tiene.push('hacienda');
-    if (r.maq === true) tiene.push('maq');
-    return {num: z.num, pueblo: z.lugar, nombre: z.nombre, tiene, preocupa: r.prio};
+    if (v.riego) tiene.push('riego');
+    if (v.hacienda) tiene.push('hacienda');
+    if (v.maq) tiene.push('maq');
+    const porDefecto = r.prio.length === 0;
+    return {num: z.num, pueblo: z.lugar, nombre: z.nombre, tiene, preocupa: porDefecto ? [...PRIO_POR_DEFECTO] : r.prio, preocupaPorDefecto: porDefecto};
   }
 
   const A = {CLAVE, ZONA_POR_DEFECTO, MAX_PRIO, PRIO_IDS, PRIO_POR_DEFECTO,
-             respuestasPorDefecto, normalizar, leer, guardar, alternarPrio, riegoEfectivo, aEstado, debeAbrir, resumen};
+             respuestasPorDefecto, normalizar, leer, guardar, alternarPrio, riegoEfectivo, valoresTarjetas, alternarTarjeta, aEstado, debeAbrir, resumen};
   if (typeof module !== 'undefined' && module.exports) module.exports = A;
   else window.AsistenteLogica = A;
 })();

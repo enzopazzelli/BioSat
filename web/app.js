@@ -339,6 +339,8 @@ const TEXTOS_PASOS = {
   fichaPunto: 'punto NASA POWER',
   maqAviso: 'Necesita sembradora o rolo, para sembrar sin arar (se puede contratar)',
   maqCuesta: 'Necesita sembradora o rolo, para sembrar sin arar',
+  ordenadasElegidas: 'Zona {num}. Ordenadas según lo que marcaste: {lista}.',
+  ordenadasDefecto: 'Zona {num}. Ordenadas según lo que más suele importar: {lista}. Podés cambiarlo en «Tu campo».',
   celdaNota: 'Recuadro punteado: el área de unos 50 km de la que sale el clima de tu zona (NASA POWER).'
 };
 const TEXTOS_CAMPO = {titulo:'Tu campo', zona:'Zona', tiene:'Tenés', preocupa:'Te preocupa', nada:'Nada en particular', cambiar:'Cambiar mis respuestas'};
@@ -369,11 +371,12 @@ function renderTuCampo(){
   const z = ZONAS[state.zona], c = CLIMA[state.zona];
   if (T){
     const tiene = [state.riego && T.p4.riego, state.ganado && T.p4.hacienda, state.maq && T.p4.maq].filter(Boolean);
-    const preocupa = PRIO.filter(p => state.prio.has(p.id)).map(p => T.p3[p.id]);
+    const lista = PRIO.filter(p => state.prio.has(p.id)).map(p => T.p3[p.id]).join(', ');
+    const preocupa = state.prioPorDefecto ? T.p4.porDefecto.replace('{lista}', lista) : lista;
     $('#tuCampo').innerHTML = `<h3>${TEXTOS_CAMPO.titulo}</h3><dl class="tc-lista">
       <div><dt>${TEXTOS_CAMPO.zona}</dt><dd>${z.num} · ${esc(z.lugar)} · ${esc(z.nombre)}</dd></div>
       <div><dt>${TEXTOS_CAMPO.tiene}</dt><dd>${esc(tiene.length ? tiene.join(', ') : TEXTOS_CAMPO.nada)}</dd></div>
-      <div><dt>${TEXTOS_CAMPO.preocupa}</dt><dd>${esc(preocupa.length ? preocupa.join(', ') : TEXTOS_CAMPO.nada)}</dd></div></dl>
+      <div><dt>${TEXTOS_CAMPO.preocupa}</dt><dd>${esc(preocupa || TEXTOS_CAMPO.nada)}</dd></div></dl>
       <button type="button" class="btn" id="btnCambiar">${TEXTOS_CAMPO.cambiar}</button>`;
   }
   $('#zonaFicha').innerHTML = `<strong>Zona ${z.num} · ${esc(z.lugar)} · ${esc(z.nombre)}</strong><p>${esc(z.problema)}</p>
@@ -530,9 +533,8 @@ function renderCards(){
   const c = clima(), rk = ranking();
   const z = ZONAS[state.zona];
   const prios = PRIO.filter(p => state.prio.has(p.id)).map(p => p.label.toLowerCase());
-  $('#cmpLede').textContent = prios.length
-    ? `Zona ${z.num}. Ordenadas según lo que marcaste: ${prios.join(', ')}.`
-    : `Zona ${z.num}. Marcá al menos una prioridad en el paso 1 para ordenarlas.`;
+  $('#cmpLede').textContent = (state.prioPorDefecto ? TEXTOS_PASOS.ordenadasDefecto : TEXTOS_PASOS.ordenadasElegidas)
+    .replace('{num}', z.num).replace('{lista}', prios.join(', '));
   $('#cmpLede').textContent += ' ' + (FUENTE_ROT[state.zona] || '');
   if (nivelDesmonte().nivel === 'alta') $('#cmpLede').textContent += ' Tu zona tiene presión de desmonte alta: conviene priorizar las rotaciones que conservan el monte.';
   $('#cards').innerHTML = rk.map(({r, p}, idx) => {
@@ -630,6 +632,7 @@ function renderDecidir(){
     ['Semilla e inoculante disponibles a tiempo', 'Logística']
   ];
   $('#listaTitulo').textContent = `${r.nombre} · Zona ${ZONAS[state.zona].num}`;
+  if (window.FrasesLogica) setFrase('#fraseListo', FrasesLogica.fraseAntesDeDecidir(r.nombre, items.length));
   $('#checklist').innerHTML = items.map(([t, who], i) => `<li><label><input type="checkbox" id="chk-${i}"><span>${esc(t)}<span class="who">${who}</span></span></label></li>`).join('');
   $('#listaTxt').value = `BioSat · Lista para revisar con el agrónomo\n${r.nombre} (Zona ${ZONAS[state.zona].num}: ${ZONAS[state.zona].nombre})\n\n` + items.map(([t]) => `[ ] ${t}`).join('\n');
 }
@@ -641,7 +644,10 @@ function renderFrases(){
   const cn = clima('normal', 0, 0), cr = clima('reciente', 0, 0);
   setFrase('#fraseCalor', FrasesLogica.fraseCalor(ZONAS[state.zona].lugar, sum(cn, m => m.d40), sum(cr, m => m.d40)));
   const primera = ranking()[0];
-  setFrase('#fraseMejor', primera && primera.p.viable ? FrasesLogica.fraseMejorRotacion(primera.r.nombre) : null);
+  setFrase('#fraseMejor', primera && primera.p.viable ? FrasesLogica.fraseMejorRotacion(primera.r.nombre, state.prioPorDefecto) : null);
+  // Paso 4: lo que pesaría un aumento de temperatura (el que está en el simulador o, si está en 0, 1 °C)
+  const g = state.dT > 0 ? state.dT : 1;
+  setFrase('#fraseSim', FrasesLogica.fraseCalorMas(ZONAS[state.zona].lugar, g, sum(clima('normal', 0, 0), m => m.d40), sum(clima('normal', g, 0), m => m.d40)));
 }
 
 /* ---------- Render general y eventos ---------- */

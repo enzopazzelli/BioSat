@@ -47,6 +47,7 @@
       titulo: 'Esto es lo que entendimos',
       ayuda: '',
       campo: 'Tu campo',
+      porDefecto: '{lista} (las de siempre)',
       tiene: 'Tenés',
       preocupa: 'Te preocupa',
       nada: 'Nada en particular',
@@ -90,8 +91,7 @@
       `<path class="asist-dep z${d.zona}${d.zona === elegida ? ' on' : ''}" d="${esc(d.d)}" data-asist-mapa-zona="${esc(idPorNum[d.zona])}"><title>${esc(fmt(TEXTOS.p1.depTitulo, {nombre: d.nombre, num: d.zona}))}</title></path>`).join('');
     const puntos = Object.entries(mapa.puntos || {}).map(([num, p]) =>
       `<g class="asist-pto z${num}${Number(num) === elegida ? ' on' : ''}" data-asist-mapa-zona="${esc(idPorNum[num])}"><circle cx="${p.x}" cy="${p.y}" r="13"/><text x="${p.x}" y="${p.y}">${esc(num)}</text></g>`).join('');
-    return `<svg viewBox="0 0 ${ancho} ${alto}" role="img" aria-label="${esc(TEXTOS.p1.mapaAlt)}">${deps}${puntos}</svg>
-      <figcaption>${esc(TEXTOS.p1.mapaPie)}</figcaption>`;
+    return `<svg viewBox="0 0 ${ancho} ${alto}" role="img" aria-label="${esc(TEXTOS.p1.mapaAlt)}">${deps}${puntos}</svg>`;
   }
 
   // ------------------------------------------------------------------ Ventana
@@ -112,9 +112,9 @@
     raiz.setAttribute('aria-modal', 'true');
     raiz.setAttribute('aria-labelledby', 'asist-titulo');
     raiz.innerHTML = `<div class="asist-caja">
-      <button type="button" class="asist-saltar" data-asist-saltar aria-label="${esc(TEXTOS.comun.saltarAyuda)}">${esc(TEXTOS.comun.saltar)}</button>
       <div class="asist-barra" aria-hidden="true">${'<span></span>'.repeat(PANTALLAS)}</div>
-      <p class="asist-pregunta"></p>
+      <div class="asist-cab"><p class="asist-pregunta"></p>
+        <button type="button" class="asist-saltar" data-asist-saltar aria-label="${esc(TEXTOS.comun.saltarAyuda)}">${esc(TEXTOS.comun.saltar)}</button></div>
       <h2 id="asist-titulo" tabindex="-1"></h2>
       <p class="asist-ayuda"></p>
       <div class="asist-cuerpo"></div>
@@ -135,12 +135,8 @@
     document.documentElement.style.overflow = 'hidden';
 
     const q = (s) => raiz.querySelector(s);
-    const valorTarjeta = (id) => {
-      if (id === 'riego') return L.riegoEfectivo(r.riego, zonas[r.zona].riego);
-      if (id === 'hacienda') return r.ganado === null ? true : r.ganado;   // el mismo supuesto de siempre de la app
-      return r.maq === null ? false : r.maq;
-    };
-    const guardarTarjeta = (id, v) => { if (id === 'riego') r.riego = v; else if (id === 'hacienda') r.ganado = v; else r.maq = v; };
+    // Lo que se ve en las tarjetas es lo que la app va a usar; solo se guarda la que la persona toca.
+    const valorTarjeta = (id) => L.valoresTarjetas(r, zonas)[id];
 
     function cuerpoP1() {
       const botones = Object.entries(zonas).map(([id, z]) => {
@@ -152,7 +148,8 @@
       }).join('');
       const mapa = htmlMapa(opciones.mapa, r.zona, zonas);
       return `<div class="asist-p1${mapa ? '' : ' sin-mapa'}">${mapa ? `<figure class="asist-mapa">${mapa}</figure>` : ''}
-        <div class="asist-zonas" role="radiogroup" aria-label="${esc(TEXTOS.p1.grupo)}">${botones}</div></div>`;
+        <div class="asist-zonas" role="radiogroup" aria-label="${esc(TEXTOS.p1.grupo)}">${botones}</div>
+        ${mapa ? `<p class="asist-mapa-pie">${esc(TEXTOS.p1.mapaPie)}</p>` : ''}</div>`;
     }
     function cuerpoP2() {
       return '<div class="asist-tarjetas">' + TARJETAS.map((id) => {
@@ -172,7 +169,8 @@
       const res = L.resumen(r, zonas);
       const fila = (t, v) => `<div class="asist-fila"><dt>${esc(t)}</dt><dd>${esc(v)}</dd></div>`;
       const tiene = res.tiene.length ? res.tiene.map((k) => TEXTOS.p4[k]).join(', ') : TEXTOS.p4.nada;
-      const preocupa = res.preocupa.length ? res.preocupa.map((k) => TEXTOS.p3[k]).join(', ') : TEXTOS.p4.nada;
+      const lista = res.preocupa.map((k) => TEXTOS.p3[k]).join(', ');
+      const preocupa = res.preocupaPorDefecto ? fmt(TEXTOS.p4.porDefecto, {lista}) : lista;
       return `<dl class="asist-resumen">${fila(TEXTOS.p4.campo, fmt(TEXTOS.p4.zona, res) + ' · ' + res.nombre)}${fila(TEXTOS.p4.tiene, tiene)}${fila(TEXTOS.p4.preocupa, preocupa)}</dl>
         <p class="asist-nota">${esc(TEXTOS.p4.aviso)}</p>`;
     }
@@ -198,6 +196,7 @@
     function enfocar(selector) { const el = raiz.querySelector(selector); if (el) el.focus(); }
 
     function cerrar(motivo) {
+      document.removeEventListener('keydown', alTeclear);
       ventana = null;
       raiz.remove();
       for (const el of apagados) el.removeAttribute('inert');
@@ -207,8 +206,6 @@
     }
 
     function irA(n) {
-      // Al salir de la pantalla 2, lo que se ve en las tarjetas pasa a ser la respuesta.
-      if (pantalla === 1 && n > pantalla) for (const id of TARJETAS) guardarTarjeta(id, valorTarjeta(id));
       pantalla = n; aviso = '';
       dibujar(true);
     }
@@ -220,7 +217,7 @@
       if (b.hasAttribute('data-asist-atras')) return irA(Math.max(0, pantalla - 1));
       if (b.hasAttribute('data-asist-sig')) return pantalla === PANTALLAS - 1 ? cerrar('terminar') : irA(pantalla + 1);
       if (b.dataset.asistZona) { r.zona = b.dataset.asistZona; dibujar(false); return enfocar(`[data-asist-zona="${b.dataset.asistZona}"]`); }
-      if (b.dataset.asistTarjeta) { guardarTarjeta(b.dataset.asistTarjeta, !valorTarjeta(b.dataset.asistTarjeta)); dibujar(false); return enfocar(`[data-asist-tarjeta="${b.dataset.asistTarjeta}"]`); }
+      if (b.dataset.asistTarjeta) { Object.assign(r, L.alternarTarjeta(r, b.dataset.asistTarjeta, zonas)); dibujar(false); return enfocar(`[data-asist-tarjeta="${b.dataset.asistTarjeta}"]`); }
       if (b.dataset.asistPrio) {
         const antes = r.prio.length;
         r.prio = L.alternarPrio(r.prio, b.dataset.asistPrio);
@@ -235,15 +232,19 @@
       if (z) { r.zona = z.dataset.asistMapaZona; dibujar(false); enfocar('.asist-zona.on'); }
     });
 
-    raiz.addEventListener('keydown', (e) => {
+    const alTeclear = (e) => {
       if (e.key === 'Escape') { e.preventDefault(); return cerrar('saltar'); }
       if (e.key !== 'Tab') return;
       const f = [...raiz.querySelectorAll('button:not([disabled]), [tabindex="0"]')].filter((x) => x.offsetParent !== null && getComputedStyle(x).visibility !== 'hidden');
       if (!f.length) return;
       const primero = f[0], ultimo = f[f.length - 1];
+      if (!raiz.contains(document.activeElement)) { e.preventDefault(); (e.shiftKey ? ultimo : primero).focus(); return; }
       if (e.shiftKey && (document.activeElement === primero || document.activeElement === q('#asist-titulo'))) { e.preventDefault(); ultimo.focus(); }
       else if (!e.shiftKey && document.activeElement === ultimo) { e.preventDefault(); primero.focus(); }
-    });
+    };
+    // En el documento y no en la ventana: si se toca un texto (que no recibe foco), el foco queda en el fondo y
+    // Esc tiene que seguir saltando el asistente.
+    document.addEventListener('keydown', alTeclear);
 
     dibujar(true);
   }

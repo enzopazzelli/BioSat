@@ -110,5 +110,63 @@ test('debeAbrir: solo la primera vez, o siempre con ?asistente=1', () => {
 
 test('resumen nombra la zona, lo que tenés y lo que te preocupa', () => {
   const r = A.resumen({zona: 'zona_2_secano_este', riego: false, ganado: true, maq: false, prio: ['agua'], hecho: true}, ZONAS_PRUEBA);
-  assert.deepEqual(r, {num: 2, pueblo: 'Quimilí', nombre: 'Secano agrícola del este', tiene: ['hacienda'], preocupa: ['agua']});
+  assert.deepEqual(r, {num: 2, pueblo: 'Quimilí', nombre: 'Secano agrícola del este', tiene: ['hacienda'], preocupa: ['agua'], preocupaPorDefecto: false});
+});
+
+// ---- Arreglos de la revisión final: riego que no se "pega", y un resumen que no contradice a la app ----
+
+test('valoresTarjetas muestra lo que la app va a usar cuando no se respondió', () => {
+  assert.deepEqual(A.valoresTarjetas(A.respuestasPorDefecto(), ZONAS_PRUEBA), {riego: false, hacienda: true, maq: false});
+  const z1 = {...A.respuestasPorDefecto(), zona: 'zona_1_riego_salitre'};
+  assert.equal(A.valoresTarjetas(z1, ZONAS_PRUEBA).riego, true);   // la Zona 1 trae riego
+});
+
+test('alternarTarjeta solo guarda la tarjeta que la persona tocó', () => {
+  const z1 = {...A.respuestasPorDefecto(), zona: 'zona_1_riego_salitre'};
+  const r = A.alternarTarjeta(z1, 'riego', ZONAS_PRUEBA);          // se veía Sí → pasa a No
+  assert.equal(r.riego, false);
+  assert.equal(r.ganado, null);                                     // lo que no se tocó sigue sin responder
+  assert.equal(r.maq, null);
+  assert.equal(z1.riego, null);                                     // no modifica el original
+  assert.equal(A.alternarTarjeta(r, 'riego', ZONAS_PRUEBA).riego, true);   // y vuelve a Sí
+  assert.equal(A.alternarTarjeta(A.respuestasPorDefecto(), 'hacienda', ZONAS_PRUEBA).ganado, false);   // se veía Sí
+  assert.equal(A.alternarTarjeta(A.respuestasPorDefecto(), 'maq', ZONAS_PRUEBA).maq, true);            // se veía No
+});
+
+test('pasar por la pregunta 2 sin tocar nada no deja el riego "pegado" al cambiar de zona', () => {
+  // Zona 1 (riego por defecto) → la persona no toca nada → cambia a la Zona 2: el riego sigue el de la zona
+  let r = {...A.respuestasPorDefecto(), zona: 'zona_1_riego_salitre'};
+  assert.equal(A.valoresTarjetas(r, ZONAS_PRUEBA).riego, true);
+  r = {...r, zona: 'zona_2_secano_este'};
+  assert.equal(r.riego, null);
+  assert.equal(A.valoresTarjetas(r, ZONAS_PRUEBA).riego, false);
+  // en cambio, si la persona respondió, su respuesta manda aunque cambie de zona
+  const tocada = A.alternarTarjeta({...A.respuestasPorDefecto(), zona: 'zona_1_riego_salitre'}, 'riego', ZONAS_PRUEBA);
+  assert.equal(A.valoresTarjetas({...tocada, zona: 'zona_2_secano_este'}, ZONAS_PRUEBA).riego, false);
+});
+
+test('resumen aplica los mismos supuestos que la app y avisa cuando los temas son los de siempre', () => {
+  const r = A.resumen(A.respuestasPorDefecto(), ZONAS_PRUEBA);
+  assert.deepEqual(r.tiene, ['hacienda']);                          // hacienda Sí por defecto, igual que aEstado
+  assert.deepEqual(r.preocupa, ['agua', 'suelo']);                  // los temas de siempre
+  assert.equal(r.preocupaPorDefecto, true);
+  const elegido = A.resumen({...A.respuestasPorDefecto(), prio: ['forraje']}, ZONAS_PRUEBA);
+  assert.deepEqual(elegido.preocupa, ['forraje']);
+  assert.equal(elegido.preocupaPorDefecto, false);
+});
+
+test('el resumen y el estado coinciden siempre (nada de decir una cosa y aplicar otra)', () => {
+  for (const r of [A.respuestasPorDefecto(), {...A.respuestasPorDefecto(), zona: 'zona_1_riego_salitre', prio: ['salitre']},
+                   {...A.respuestasPorDefecto(), ganado: false, maq: true}]) {
+    const res = A.resumen(r, ZONAS_PRUEBA), e = A.aEstado(r, ZONAS_PRUEBA);
+    assert.deepEqual(res.tiene.includes('riego'), e.riego);
+    assert.deepEqual(res.tiene.includes('hacienda'), e.ganado);
+    assert.deepEqual(res.tiene.includes('maq'), e.maq);
+    assert.deepEqual(res.preocupa.slice().sort(), [...e.prio].sort());
+  }
+});
+
+test('aEstado avisa cuando los temas son los de siempre', () => {
+  assert.equal(A.aEstado(A.respuestasPorDefecto(), ZONAS_PRUEBA).prioPorDefecto, true);
+  assert.equal(A.aEstado({...A.respuestasPorDefecto(), prio: ['agua']}, ZONAS_PRUEBA).prioPorDefecto, false);
 });

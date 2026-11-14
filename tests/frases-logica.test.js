@@ -42,3 +42,33 @@ test('los textos están en un objeto con claves, listos para traducir', () => {
   assert.ok(F.TEXTOS && typeof F.TEXTOS === 'object');
   for (const k of ['calor', 'calorIgual', 'mejor']) assert.equal(typeof F.TEXTOS[k], 'string', k);
 });
+
+// ---- Arreglos de la revisión final: frases honestas y una por paso (2 a 5) ----
+
+test('fraseMejorRotacion no dice "lo que elegiste" cuando los temas son los de siempre', () => {
+  assert.equal(F.fraseMejorRotacion('Puente verde regulado', true),
+    'Con lo que más suele importar (agua y suelo), la primera opción es «Puente verde regulado».');
+  assert.equal(F.fraseMejorRotacion('Puente verde regulado', false), 'Para lo que elegiste, la primera opción es «Puente verde regulado».');
+  assert.equal(F.fraseMejorRotacion('', true), null);
+});
+
+test('fraseCalorMas cuenta cuánto pesa un grado más (paso 4)', () => {
+  assert.equal(F.fraseCalorMas('Quimilí', 1, 14, 20), 'Con 1 °C más, los días de más de 40 °C en Quimilí pasarían de 14 a 20 por año.');
+  assert.equal(F.fraseCalorMas('Quimilí', 1.5, 14, 25), 'Con 1,5 °C más, los días de más de 40 °C en Quimilí pasarían de 14 a 25 por año.');
+  assert.equal(F.fraseCalorMas('Quimilí', 0.5, 14.2, 14.4), 'Con 0,5 °C más, los días de más de 40 °C en Quimilí casi no cambiarían: unos 14 por año.');
+});
+
+test('fraseCalorMas devuelve null si falta un dato', () => {
+  assert.equal(F.fraseCalorMas('', 1, 14, 20), null);
+  assert.equal(F.fraseCalorMas('Quimilí', 0, 14, 20), null);       // sin grados de más no hay nada que contar
+  assert.equal(F.fraseCalorMas('Quimilí', 1, null, 20), null);
+  assert.equal(F.fraseCalorMas('Quimilí', 1, 14, NaN), null);
+});
+
+test('fraseAntesDeDecidir cuenta cuántas cosas hay que revisar (paso 5)', () => {
+  assert.equal(F.fraseAntesDeDecidir('Colchón de rastrojo', 9), 'Si elegís «Colchón de rastrojo», son 9 cosas para revisar con tu agrónomo antes de decidir.');
+  assert.equal(F.fraseAntesDeDecidir('Colchón de rastrojo', 1), 'Si elegís «Colchón de rastrojo», es 1 cosa para revisar con tu agrónomo antes de decidir.');
+  assert.equal(F.fraseAntesDeDecidir('', 9), null);
+  assert.equal(F.fraseAntesDeDecidir('X', 0), null);
+  assert.equal(F.fraseAntesDeDecidir('X', null), null);
+});
