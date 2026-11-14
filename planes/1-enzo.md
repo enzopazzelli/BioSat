@@ -48,7 +48,7 @@ Que un productor recorra los 5 pasos de la app sin ayuda, con números de clima 
 - [x] Paso 4 (simulador de lluvia y temperatura) y paso 5 (lista para el agrónomo)
 - [x] Pantalla del kit para la mesa del jurado (`web/kit.html`)
 - [x] Guía Del kit al campo (`web/campo.html`)
-- [ ] Sumar el lector del Arduino de Sara (`arduino/lector-web-serial.js`) con respaldo de lecturas grabadas *(la app ya lo carga y habilita el botón; falta el archivo de Sara)*
+- [x] Sumar el lector del Arduino de Sara (`arduino/lector-web-serial.js`) con respaldo de lecturas grabadas *(hecho y probado con un puerto simulado; falta probarlo con el Arduino real)*
 - [x] "Apoya, no reemplaza" y fuente de cada dato visibles en toda la app
 - [x] Probar en celular y sin internet
 - [x] Corregir `docs/analisis-datos-nasa-santiago.md` con los datos nuevos
@@ -57,6 +57,12 @@ Que un productor recorra los 5 pasos de la app sin ayuda, con números de clima 
 ### Entrega · Dom 19:00
 - [ ] Revisar el README final con Sara
 - [ ] Dejar `main` estable con la app publicada
+
+### Sugerencias de la organización · 14/11 noche
+- [x] Asistente de inicio de 4 preguntas (`web/asistente.js`, `web/asistente-logica.js`)
+- [x] Mapa real de Santiago del Estero en la pregunta 1 (`data/santiago_mapa.json`)
+- [x] App más fácil de entender: frases simples, detalle técnico plegado y letra más grande
+- [ ] Botón de idioma EN/ES en toda la app *(etapa siguiente, con su propio diseño)*
 
 ### Agregadas por Enzo · 14/11 noche (a revisar con cada uno)
 _Salen del repaso del repo. Cada uno decide cómo abordarlas; si no corresponden, se borran._

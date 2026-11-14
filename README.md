@@ -50,11 +50,11 @@ Avance de cada integrante, contado desde las casillas de su plan en [`planes/`](
 <!-- AUTO:AVANCE:INICIO -->
 | Persona | Rama | Avance | Tareas |
 |---|---|---|---|
-| [Enzo · Integración y app](planes/1-enzo.md) | `enzo-app` | `▓▓▓▓▓▓▓░░░` 72% | 26/36 |
+| [Enzo · Integración y app](planes/1-enzo.md) | `enzo-app` | `▓▓▓▓▓▓▓▓░░` 75% | 30/40 |
 | [Santi · Suelo, satélite e IA](planes/2-santi.md) | `santi-datos-ia` | `▓▓▓▓░░░░░░` 44% | 12/27 |
 | [Vale · Campo y agronomía](planes/3-vale.md) | `vale-rotaciones` | `▓▓▓▓▓▓░░░░` 64% | 14/22 |
 | [Sara · Kit Arduino y relato](planes/4-sara.md) | `sara-arduino-entrega` | `▓▓░░░░░░░░` 20% | 5/25 |
-| **Total** | | `▓▓▓▓▓░░░░░` **52%** | **57/110** |
+| **Total** | | `▓▓▓▓▓░░░░░` **54%** | **61/114** |
 <!-- AUTO:AVANCE:FIN -->
 
 ### Lo más urgente
@@ -73,10 +73,10 @@ Sale solo de las casillas sin tildar de cada plan. Panorama completo y riesgos: 
 <details>
 <summary><b>Enzo</b>: 10 pendientes (<a href="planes/1-enzo.md">plan completo</a>)</summary>
 
-- Sumar el lector del Arduino de Sara (`arduino/lector-web-serial.js`) con respaldo de lecturas grabadas *(la app ya lo carga y habilita el botón; falta el archivo de Sara)* _(Congelamiento)_
 - Último merge de funciones a `main` _(Congelamiento)_
 - Revisar el README final con Sara _(Entrega)_
 - Dejar `main` estable con la app publicada _(Entrega)_
+- Botón de idioma EN/ES en toda la app *(etapa siguiente, con su propio diseño)* _(Sugerencias de la organización)_
 - Mostrar en la app y en el README el link del visor de Earth Engine cuando Santi lo publique _(Agregadas por Enzo)_
 - Verificar que el visor use las imágenes de Earth Engine cuando Santi suba `data/imagenes/escenas.json` _(Agregadas por Enzo)_
 - Decidir si Meteomatics entra en la app (alertas a 7-10 días, `data/meteomatics_santiago_zonas.json`) o queda fuera de la demo _(Agregadas por Enzo)_
@@ -151,12 +151,12 @@ Sale solo de las casillas sin tildar de cada plan. Panorama completo y riesgos: 
 **Últimas decisiones:**
 
 <!-- AUTO:DECISIONES:INICIO -->
+- **D-28**: Sugerencias de la organización: asistente de inicio, mapa real y app más fácil
 - **D-27**: Pantalla del kit para el jurado, guía "Del kit al campo" y Arduino Uno por USB
 - **D-26**: Informe de clima corregido y app lista para los datos de D-25
 - **D-25**: Propuesta de la profesora: zonificación AIZAL y modelo predictivo de desmontes
 - **D-24**: Checkpoint 1: clima 1981-2025 y app v1 publicada
 - **D-23**: Trabajo en paralelo con ramas y planes individuales
-- **D-22**: Equipo de 4 integrantes
 
 Todas las decisiones están en la [bitácora](docs/reglas-y-bitacora.md).
 <!-- AUTO:DECISIONES:FIN -->
@@ -210,6 +210,7 @@ BioSat/
 │   ├── meteomatics_santiago_zonas.json                       <-- Pronóstico y clima de Meteomatics por zona (Santi)
 │   ├── resumen_mensual_santiago.csv                          <-- Normal 1991-2020 por mes y zona, para planilla
 │   ├── rotaciones_santiago.json                              <-- 15 rotaciones de las 5 zonas (Vale) · Zona 5 validada por un productor, el resto sin validar
+│   ├── santiago_mapa.json                                    <-- Mapa de Santiago del Estero: 27 departamentos pintados por zona (IGN, vía geoBoundaries)
 │   ├── suelo_zonas.json                                      <-- Suelo por zona (Santi) · plantilla vacía: falta extraer de AIZAL
 │   ├── zonificacion_aizal.json                               <-- Zonificación k-means con AIZAL, 5 grupos (Santi) · cargada
 │   └── datos_cruzados_aizal/                                 <-- Catálogo AIZAL V4: 38 variables de suelo, clima y paisaje
@@ -220,7 +221,7 @@ BioSat/
 │       ├── 04_Fisica_Suelo_y_Topografia/ (2 archivos)        <-- B10, B12, B17-B18, B24-B25: textura, relieve
 │       ├── 05_Logistica_Antropico_y_Servicios/ (2 archivos)  <-- B26-B29, B32-B37: caminos, población
 │       └── 06_Embeddings_IA_AlphaEarth/ (2 archivos)         <-- Embeddings AlphaEarth 64D (DeepMind)
-├── docs/ (19 archivos)                                       <-- Documentación del equipo
+├── docs/ (21 archivos)                                       <-- Documentación del equipo
 ├── ia_desmonte/                                              <-- IA de Santi: zonificación AIZAL, modelo de desmontes, gráficos e informes
 │   ├── BioSat_IA_Zonificacion_y_Desmonte.ipynb
 │   ├── INSTRUCCIONES_PIPELINE.md                             <-- 🛰️ Instrucciones de Operación del Pipeline Automatizado B...
@@ -268,27 +269,16 @@ BioSat/
 │   ├── earth_engine_embeddings.js                            <-- Ejemplo GEE de embeddings (falta adaptar a SdE)
 │   ├── gee_exportar_zonas.js                                 <-- Earth Engine: estadísticas e imágenes por zona para la app
 │   ├── gee_visor_biosat.js                                   <-- Visor GIS en Earth Engine: 2000 vs 2025, NDVI, desmonte, zonas IA
-│   └── gee_zonas_y_desmonte.js                               <-- Earth Engine: zonificación AIZAL y modelo predictivo de desmontes
+│   ├── gee_zonas_y_desmonte.js                               <-- Earth Engine: zonificación AIZAL y modelo predictivo de desmontes
+│   └── generar_mapa_santiago.py                              <-- Genera data/santiago_mapa.json desde geoBoundaries
 ├── tests/                                                    <-- Pruebas de Node (node --test tests/*.test.js)
 │   ├── arduino-pines.test.js
+│   ├── asistente-logica.test.js
+│   ├── frases-logica.test.js
 │   ├── kit-logica.test.js
-│   └── lector-serial.test.js
-└── web/                                                      <-- App web BioSat (abrir con un servidor: ver Inicio rápido)
-    ├── app.js                                                <-- Lógica de la app: datos, motor, calendario, simulador y visor
-    ├── campo.css                                             <-- Estilos de la guía Del kit al campo
-    ├── campo.html                                            <-- Guía Del kit al campo: del kit a estaciones fijas en el lote
-    ├── estilos.css                                           <-- Estilos de la app
-    ├── index.html                                            <-- Página de la app
-    ├── kit-logica.js                                         <-- Lógica de la pantalla del kit, sin interfaz (con pruebas)
-    ├── kit.css                                               <-- Estilos de la pantalla del kit (tema oscuro de alto contraste)
-    ├── kit.html                                              <-- Pantalla del kit para la mesa del jurado (3 bandejas en vivo)
-    ├── kit.js                                                <-- Pantalla del kit: teclado, Arduino y dibujo de las bandejas
-    ├── datos-borrador/                                       <-- Rotaciones borrador: respaldo si una zona no tiene sus 3 rotaciones
-    │   └── rotaciones_borrador.json
-    ├── img/ (22 archivos)                                    <-- Imágenes Landsat de vista previa (Planetary Computer)
-    └── vendor/                                               <-- Leaflet, para el mapa sin internet
-        ├── leaflet.css
-        └── leaflet.js
+│   ├── lector-serial.test.js
+│   └── mapa-santiago.test.js
+└── web/ (38 archivos)                                        <-- App web BioSat (abrir con un servidor: ver Inicio rápido)
 ```
 <!-- AUTO:ESTRUCTURA:FIN -->
 
