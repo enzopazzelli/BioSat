@@ -262,7 +262,7 @@ Las exporta [`scripts/gee_exportar_zonas.js`](../scripts/gee_exportar_zonas.js) 
 
 ### Lector para la app: `arduino/lector-web-serial.js` (Sara)
 
-La app lo carga si existe y habilita el botón "Conectar Arduino por USB". Tiene que dejar disponible este objeto:
+La app lo carga si existe y habilita el botón "Conectar Arduino por USB". Ya está hecho (`arduino/lector-web-serial.js`, con pruebas). `conectar()` vuelve apenas abre el puerto y las lecturas siguen llegando a `alLeer`. Tiene que dejar disponible este objeto:
 
 ```js
 window.BioSatArduino = {

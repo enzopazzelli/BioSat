@@ -71,7 +71,7 @@
     if (!(lector && typeof lector.soportado === 'function' && lector.soportado())) {
       btn.disabled = true;
       btn.title = lector ? 'Este navegador no permite leer el puerto USB: usá Chrome o Edge'
-                         : 'Falta el lector de Sara (arduino/lector-web-serial.js)';
+                         : 'No se encontró el lector (arduino/lector-web-serial.js)';
       return;
     }
     btn.disabled = false;

@@ -324,7 +324,7 @@ function botonArduino(){
     btn.textContent = state.vivo ? 'Arduino conectado' : 'Conectar Arduino por USB';
   } else {
     btn.disabled = true; btn.className = 'btn-off';
-    btn.title = lector ? 'Este navegador no permite leer el puerto USB: usá Chrome o Edge' : 'Llega con el lector de Sara (arduino/lector-web-serial.js)';
+    btn.title = lector ? 'Este navegador no permite leer el puerto USB: usá Chrome o Edge' : 'No se encontró el lector (arduino/lector-web-serial.js)';
   }
 }
 

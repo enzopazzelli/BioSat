@@ -15,7 +15,7 @@ Este panorama se escribió a mano a partir de `main`, los planes de [`planes/`](
 | F4 · Rotaciones | Vale | **Casi listo** | 15 rotaciones (5 zonas × 3). Zona 5 validada por un productor | Validar las zonas 1 a 4; revisar textos de la app; glosario |
 | F2 · Suelo y zonificación | Santi | **A medias** | Zonificación AIZAL en 5 grupos, cargada | `suelo_zonas.json` y `diagnostico_landsat_ia.json` vacíos; visor de Earth Engine sin publicar |
 | F3 · Modelo de desmontes | Santi | **Listo, con ajustes** | Modelo validado en el tiempo, riesgo y proyección por zona | Índice de fragilidad; revisar métricas (ver 4) |
-| F6 · Arduino | Sara | **Sin empezar** | Nada en el repo | Sketch, lector Web Serial, bandejas, lecturas grabadas |
+| F6 · Arduino | Enzo (toma el frente de Sara) | **Código listo, falta el armado** | Sketch compilado, lector Web Serial con pruebas, esquema regenerable y guía de armado en `arduino/` | Armar y sellar el LM35, probar en la placa, calibrar, grabar lecturas |
 | F7 · Entrega | Sara (coordina) | **Sin empezar** | Nada | Guion, video o diapositivas, página del proyecto, ensayos |
 
 Avance contado de las casillas de los planes: **Enzo 72%, Santi 44%, Vale 64%, Sara 4%** (53 de 108 casillas, 49%). Los porcentajes bajaron respecto de la versión anterior porque se sumaron 20 casillas que faltaban en los planes; no se perdió nada de lo hecho. Es una medida aproximada: no pesa igual cada tarea.
@@ -50,7 +50,7 @@ Se verificó en Chrome sin internet, a 390 px de ancho y con 13 pruebas automát
 
 ## 3. Lo que bloquea la demo
 
-1. **El kit Arduino no tiene nada en el repo.** Sin sketch, sin lector (`arduino/lector-web-serial.js`) y sin lecturas grabadas, la pantalla del kit solo funciona si Sara llega con todo armado y conectado. Es el riesgo más grande: su plan está en 5% y es el frente que más tiempo físico necesita (armar y calibrar 3 bandejas).
+1. **El kit está programado, pero no armado ni probado en la placa.** El sketch compila y el lector funciona con un puerto simulado, pero falta armarlo, sellar el LM35, calibrar y grabar lecturas reales en `data/arduino_bandejas_demo.json`. Es lo que más tiempo físico necesita y no se puede hacer desde la PC.
 2. **La entrega no empezó.** Falta el guion, el video o las diapositivas, la página del proyecto en Space Apps y la declaración de uso de IA. Solo Sara los tiene asignados.
 3. **Faltan el suelo y el suelo pelado por Landsat** (`suelo_zonas.json` y `diagnostico_landsat_ia.json`). Hoy la app los muestra como "sin dato" o "pendiente": el panel de suelo está vacío.
 
