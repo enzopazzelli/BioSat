@@ -51,9 +51,9 @@ Avance de cada integrante, contado desde las casillas de su plan en [`planes/`](
 |---|---|---|---|
 | [Enzo · Integración y app](planes/1-enzo.md) | `enzo-app` | `▓▓▓▓▓▓▓▓░░` 80% | 24/30 |
 | [Santi · Suelo, satélite e IA](planes/2-santi.md) | `santi-datos-ia` | `▓▓▓▓▓▓░░░░` 57% | 12/21 |
-| [Vale · Campo y agronomía](planes/3-vale.md) | `vale-rotaciones` | `░░░░░░░░░░` 0% | 0/18 |
+| [Vale · Campo y agronomía](planes/3-vale.md) | `vale-rotaciones` | `▓▓▓▓▓▓▓▓░░` 78% | 14/18 |
 | [Sara · Kit Arduino y relato](planes/4-sara.md) | `sara-arduino-entrega` | `▓░░░░░░░░░` 5% | 1/19 |
-| **Total** | | `▓▓▓▓░░░░░░` **42%** | **37/88** |
+| **Total** | | `▓▓▓▓▓▓░░░░` **58%** | **51/88** |
 <!-- AUTO:AVANCE:FIN -->
 
 **Últimas decisiones:**
@@ -91,6 +91,7 @@ El detalle de tareas, la ruta de trabajo y los diagramas están en **[PLAN.md](P
 <!-- AUTO:ESTRUCTURA:INICIO -->
 ```text
 BioSat/
+├── arduino.jpeg
 ├── CONTEXTO.md                                               <-- Contexto inicial del 13/11 (histórico)
 ├── ESTRUCTURA_DATOS.md                                       <-- Arquitectura de datos y módulos AIZAL
 ├── NASA Space Apps Challenge - awards.mhtml                  <-- Premios globales y datos del equipo
@@ -116,24 +117,7 @@ BioSat/
 │       ├── 04_Fisica_Suelo_y_Topografia/ (2 archivos)        <-- B10, B12, B17-B18, B24-B25: textura, relieve
 │       ├── 05_Logistica_Antropico_y_Servicios/ (2 archivos)  <-- B26-B29, B32-B37: caminos, población
 │       └── 06_Embeddings_IA_AlphaEarth/ (2 archivos)         <-- Embeddings AlphaEarth 64D (DeepMind)
-├── docs/                                                     <-- Documentación del equipo
-│   ├── AIZAL_Fichas_Variables_V4_2026.pdf                    <-- Fichas oficiales de las variables AIZAL V4
-│   ├── analisis-datos-nasa-santiago.md                       <-- Informe de clima 1981-2025 de las 5 zonas (generado desde los datos)
-│   ├── BioSat-cruce-de-datos-validacion.docx                 <-- Documento para que la profesora valide el enfoque
-│   ├── contratos-de-datos.md                                 <-- Formato de los JSON que comparten los frentes
-│   ├── cruce-de-datos.md                                     <-- Qué sale de cruzar NASA POWER, AIZAL y Landsat; análisis de zonas
-│   ├── documentacion-tecnica-agronomica.md                   <-- Secciones de cultivo A/B/C/D y reglas de rotación
-│   ├── glosario.md                                           <-- Términos técnicos en lenguaje de productor
-│   ├── integracion-meteomatics.md                            <-- Integración de Meteomatics en BioSat (NASA Space Apps Cha...
-│   ├── plan-de-pasos-y-agentes.md                            <-- Plan anterior (reemplazado por PLAN.md)
-│   ├── recursos-desafio.md                                   <-- Los 26 recursos oficiales y cómo los usamos
-│   ├── reglas-y-bitacora.md                                  <-- Reglas de oro y bitácora de decisiones
-│   ├── resena-desafio.md                                     <-- Reseña del desafío y guía de entrevista
-│   ├── transcripcion-video-desafio.md                        <-- Transcripción del video del desafío (los 4 verbos)
-│   ├── zonas-santiago-y-kit-arduino.md                       <-- Las 5 zonas, sus rotaciones y el kit Arduino
-│   └── superpowers/
-│       ├── plans/ (1 archivo)
-│       └── specs/ (2 archivos)
+├── docs/ (18 archivos)                                       <-- Documentación del equipo
 ├── ia_desmonte/
 │   ├── BioSat_IA_Zonificacion_y_Desmonte.ipynb
 │   ├── INSTRUCCIONES_PIPELINE.md                             <-- 🛰️ Instrucciones de Operación del Pipeline Automatizado B...

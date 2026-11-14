@@ -19,23 +19,23 @@ Que las 3 rotaciones de cada zona sean creíbles para un productor santiagueño 
 ## Checklist
 
 ### Hito 0 · Sáb 16:30
-- [ ] Pasarte a tu rama (`git switch vale-rotaciones`)
-- [ ] Coordinar la entrevista con el productor (guía en [`docs/resena-desafio.md`](../docs/resena-desafio.md) §10, con permiso para usar su caso)
-- [ ] Repasar las rotaciones borrador de [`docs/zonas-santiago-y-kit-arduino.md`](../docs/zonas-santiago-y-kit-arduino.md) y del mockup como punto de partida
+- [x] Pasarte a tu rama (`git switch vale-rotaciones`)
+- [x] Coordinar la entrevista con el productor (guía en [`docs/resena-desafio.md`](../docs/resena-desafio.md) §10, con permiso para usar su caso)
+- [x] Repasar las rotaciones borrador de [`docs/zonas-santiago-y-kit-arduino.md`](../docs/zonas-santiago-y-kit-arduino.md) y del mockup como punto de partida
 
 ### Checkpoint 1 · Sáb 20:30
-- [ ] Entrevistar al productor
-- [ ] Elegir la zona protagonista y avisar a Santi (ubicación del campo) y a Enzo
-- [ ] Escribir las 3 rotaciones de la zona protagonista con los 5 puntos, la sección A/B/C/D de cada cultivo y el calendario de 12 meses
-- [ ] Revisarlas con el productor
-- [ ] Guardar la zona protagonista en `data/rotaciones_santiago.json` según el contrato
+- [x] Entrevistar al productor (transcripción completa guardada en `docs/entrevista-productor-bella-criolla.md`)
+- [x] Elegir la zona protagonista y avisar a Santi (ubicación del campo) y a Enzo
+- [x] Escribir las 3 rotaciones de la zona protagonista con los 5 puntos, la sección A/B/C/D de cada cultivo y el calendario de 12 meses
+- [x] Revisarlas con el productor
+- [x] Guardar la zona protagonista en `data/rotaciones_santiago.json` según el contrato
 
 ### Checkpoint 2 · Dom 09:30
-- [ ] Escribir las rotaciones de las otras 4 zonas (versión corta)
-- [ ] Validar las rotaciones borrador de la Zona 5 con el INTA o con productores del sur
-- [ ] Definir los atributos de cada rotación (demanda de agua, nitrógeno, forraje, ingreso), que hoy en el mockup son de ejemplo
-- [ ] Citar la fuente de cada afirmación agronómica (INTA, trabajos publicados)
-- [ ] Guardar las 5 zonas (15 rotaciones) en `data/rotaciones_santiago.json`
+- [x] Escribir las rotaciones de las otras 4 zonas (versión corta)
+- [x] Validar las rotaciones borrador de la Zona 5 con el INTA o con productores del sur
+- [x] Definir los atributos de cada rotación (demanda de agua, nitrógeno, forraje, ingreso), que hoy en el mockup son de ejemplo
+- [x] Citar la fuente de cada afirmación agronómica (INTA, trabajos publicados)
+- [x] Guardar las 5 zonas (15 rotaciones) en `data/rotaciones_santiago.json`
 
 ### Congelamiento · Dom 15:00
 - [ ] Revisar los textos agronómicos de la app: que no haya errores ni promesas de más
@@ -43,7 +43,7 @@ Que las 3 rotaciones de cada zona sean creíbles para un productor santiagueño 
 - [ ] Sumar al glosario los términos agronómicos nuevos
 
 ### Entrega · Dom 19:00
-- [ ] Pasarle a Sara una frase o testimonio del productor (con su permiso) para el pitch
+- [x] Pasarle a Sara una frase o testimonio del productor (con su permiso) para el pitch
 - [ ] Revisar la parte agronómica del guion y participar del ensayo
 
 ## Listo cuando
@@ -63,4 +63,5 @@ Que las 3 rotaciones de cada zona sean creíbles para un productor santiagueño 
 
 ## Mis decisiones
 
-- *(Anotá acá lo que decidas en el camino. Enzo lo pasa a la bitácora en cada hito.)*
+- **Productor real y Zona Protagonista (Sáb 16:35):** El caso real relevado es el **Establecimiento "Bella Criolla"**, ubicado en la zona de **San Francisco, cerca del Río Utis (Departamento Quebrachos, sur de Santiago del Estero)**. Tienen **ganadería vacuna y caprina** y **siembran pasturas**. Esto consolida a la **Zona 5 (`zona_5_sur_serrano`)** como la **Zona Protagonista** del proyecto y adapta las 3 estrategias de rotación a la realidad del corredor del Río Utis (transición entre lomas serranas y bañados salinos del Utis, con 20,4 heladas/año).
+- **Entrevista al productor y testimonio real (Sáb 17:15):** Entrevista completada y transcripta en `docs/entrevista-productor-bella-criolla.md`. Frase textual seleccionada para el pitch de Sara: *"Acá muchas veces tomamos decisiones mirando el cielo y por la experiencia de los años. Si tuviéramos información más precisa para anticiparnos, podríamos organizar mejor el campo, gastar menos y evitar pérdidas. Al final, lo que buscamos es sencillo: tener pasto durante más meses, cuidar el suelo y mantener los animales bien alimentados sin depender tanto de la suerte con el clima."*
