@@ -61,7 +61,7 @@ Avance de cada integrante, contado desde las casillas de su plan en [`planes/`](
 
 1. **Santi: cambiar la contraseña de Meteomatics en el sitio de Meteomatics.** El script ya la lee de una variable de entorno (`METEOMATICS_PASSWORD`) y no está más en el código, pero **la clave vieja sigue en el historial público de Git**: hay que cambiarla igual.
 2. **Kit Arduino: está programado, falta armarlo y probarlo.** El sketch, el lector Web Serial y el esquema están en [`arduino/`](arduino/README.md) (Enzo se hizo cargo). Falta armar el kit, sellar el LM35, calibrar y grabar lecturas reales. **La entrega** (guion, video y página del proyecto) sigue sin empezar.
-3. **Santi: suelo y suelo pelado vacíos.** `data/suelo_zonas.json` y `data/diagnostico_landsat_ia.json` son plantillas sin ninguna medición, y el visor de Earth Engine está sin publicar. Los pasos están en [su plan](planes/2-santi.md).
+3. **Santi: suelo y Landsat ya están cargados, pero el suelo es una estimación zonal de referencia** (confianza "media", todavía sin extraer píxel a píxel de Earth Engine) y el visor de Earth Engine sigue sin publicar. Los pasos están en [su plan](planes/2-santi.md).
 4. **Vale: confirmar `requiere_hacienda` y el permiso del productor.** Enzo completó 7 valores según el texto de cada rotación, y la entrevista deja pendiente el permiso por escrito para usar sus frases.
 5. **Enzo: sumar el lector de Sara apenas llegue, decidir si Meteomatics entra en la demo y ensayar la pantalla del kit en la pantalla grande.**
 

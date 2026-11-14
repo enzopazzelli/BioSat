@@ -234,6 +234,7 @@ function renderVisor(){
     visor.map = L.map('mapaGis', {zoomSnap:0.25, attributionControl:true});
     L.control.scale({imperial:false}).addTo(visor.map);
     visor.map.attributionControl.setPrefix(false).addAttribution('Landsat (NASA/USGS) vía ' + FUENTE_IMG);
+    $('#gisNota').textContent = FUENTE_IMG === 'Google Earth Engine' ? TEXTOS_PASOS.imagenesGee : TEXTOS_PASOS.imagenesPc;
   }
   visor.layers.forEach(l => l.remove());
   visor.layers = mostrar.map(id => L.imageOverlay(im.img[id], bounds, {alt:'Imagen Landsat'}).addTo(visor.map));
@@ -341,6 +342,9 @@ const TEXTOS_PASOS = {
   maqCuesta: 'Necesita sembradora o rolo, para sembrar sin arar',
   ordenadasElegidas: 'Zona {num}. Ordenadas según lo que marcaste: {lista}.',
   ordenadasDefecto: 'Zona {num}. Ordenadas según lo que más suele importar: {lista}. Podés cambiarlo en «Tu campo».',
+  imagenesGee: 'Imágenes: compuestos de Landsat armados en Google Earth Engine (mediana de varios meses).',
+  imagenesPc: 'Imágenes: escenas sueltas de Landsat bajadas de Microsoft Planetary Computer.',
+  suelo: 'Fuente: {fuente}.',
   celdaNota: 'Recuadro punteado: el área de unos 50 km de la que sale el clima de tu zona (NASA POWER).'
 };
 const TEXTOS_CAMPO = {titulo:'Tu campo', zona:'Zona', tiene:'Tenés', preocupa:'Te preocupa', nada:'Nada en particular', cambiar:'Cambiar mis respuestas'};
@@ -481,8 +485,9 @@ function renderPaneles(){
     const conf = d.confianza ? ` <span class="conf ${esc(d.confianza)}" data-tip="Confianza informada en data/suelo_zonas.json">${esc(d.confianza)}</span>` : '';
     return `<div><dt>${n}</dt><dd>${tiene ? nf(v, 1) + (unidad ? ' ' + unidad : '') : 'sin dato'} · ${cod}${conf}</dd><span class="why">${why}</span></div>`;
   }).join('');
+  // Se muestra también la aclaración de la fuente (si los valores son una estimación de referencia, que lo diga).
   $('#soilNota').textContent = haySuelo
-    ? `Fuente: ${(SUELO_Z.meta && SUELO_Z.meta.fuente) || 'AIZAL V4'}.`
+    ? [TEXTOS_PASOS.suelo.replace('{fuente}', (SUELO_Z.meta && SUELO_Z.meta.fuente) || 'AIZAL V4'), SUELO_Z.meta && SUELO_Z.meta.notas].filter(Boolean).join(' ')
     : 'Sin datos todavía. Los carga Santi desde AIZAL V4 (SoilGrids, TerraClimate, MapBiomas).';
 
   // Satélite e IA (de Santi)
