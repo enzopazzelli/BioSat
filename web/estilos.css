@@ -345,4 +345,18 @@ input[type=range]{width:100%;accent-color:var(--accent)}
 .riesgo{display:grid;gap:4px;font-size:.85rem;border-left:3px solid var(--heat);padding-left:10px}
 .seguro{font-size:.8rem;color:var(--muted);line-height:1.8;border-top:1px solid var(--line);padding-top:10px}
 #tip{position:fixed;z-index:50;pointer-events:none;background:var(--ink);color:var(--surface);font-size:.78rem;line-height:1.4;padding:7px 10px;border-radius:4px;max-width:260px;white-space:pre-line;font-family:var(--font-text)}
+/* Presión de desmonte */
+.desmonte{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr) minmax(0,1fr);gap:20px;padding:16px;margin-top:16px}
+@media (max-width:980px){.desmonte{grid-template-columns:1fr}}
+.desmonte-col{display:grid;gap:8px;align-content:start;min-width:0}
+.desmonte-nivel{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.desmonte-nivel b{font-family:var(--font-display);font-size:2.4rem;line-height:1;font-variant-numeric:tabular-nums}
+.nivel{font-family:var(--font-mono);font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;border:1px solid currentColor;border-radius:3px;padding:1px 6px}
+.nivel.alta{color:var(--crit)}
+.nivel.media{color:var(--warn)}
+.nivel.baja{color:var(--ok)}
+.spark-d{width:100%;height:90px;display:block}
+.spark-d .b{fill:var(--heat)}
+.spark-d .p{fill:none;stroke:var(--heat);stroke-width:2;stroke-dasharray:4 3}
+.spark-d .ax{fill:var(--muted);font-family:var(--font-mono);font-size:9px}
 .aviso-carga{margin:24px auto;max-width:760px;padding:16px;border:1px solid var(--crit);border-radius:var(--r);background:var(--surface)}

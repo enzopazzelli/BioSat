@@ -137,3 +137,8 @@ Según la página oficial de premios (`NASA Space Apps Challenge - awards.mhtml`
   - **Modelo:** regresión logística, random forest y un modelo temporal (LSTM o Transformer), con validación temporal (entrena hasta 2015, prueba 2016-2023) → `data/desmonte_zonas.json`. Base en `scripts/gee_zonas_y_desmonte.js`.
   - **Qué queda fuera:** la CNN sobre parches de Landsat. Los meses de suelo pelado se calculan con el método de umbral.
   - **Cómo se lo contamos a la profesora:** se le manda un audio con este enfoque y el documento de validación actualizado.
+- **D-26 (Informe de clima corregido y app lista para los datos de D-25):**
+  - **Informe:** `docs/analisis-datos-nasa-santiago.md` se regeneró con un script desde `data/clima_zonas.json` (1981-2025, las 5 zonas). Se borraron el JSON viejo (2020-2025, con errores) y sus descargas crudas.
+  - **App:** suma el panel "presión de desmonte en tu zona", con nivel relativo entre zonas, serie anual y métricas. También el grupo AIZAL en la ficha de la zona y la capa de zonas AIZAL en el visor.
+  - **Arduino:** la conexión queda lista con la interfaz `window.BioSatArduino` (contratos §6).
+  - **Pruebas:** la app funciona en celular (390 px, sin desbordes) y sin internet.

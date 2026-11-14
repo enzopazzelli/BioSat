@@ -260,6 +260,21 @@ Las exporta [`scripts/gee_exportar_zonas.js`](../scripts/gee_exportar_zonas.js) 
 - **`agua_raw` y `luz_raw`:** son lecturas crudas de 0 a 1023. La app las traduce con los umbrales calibrados en las bandejas.
 - **`semaforo`:** puede ser `"verde"`, `"amarillo"` o `"rojo"`.
 
+### Lector para la app: `arduino/lector-web-serial.js` (Sara)
+
+La app lo carga si existe y habilita el botón "Conectar Arduino por USB". Tiene que dejar disponible este objeto:
+
+```js
+window.BioSatArduino = {
+  soportado: () => 'serial' in navigator,   // true en Chrome o Edge
+  conectar: async (alLeer) => { /* pide el puerto, abre a 9600 baudios y llama alLeer(lectura) con cada línea JSON */ },
+  desconectar: async () => { /* cierra el puerto */ }
+};
+```
+
+- `lectura` es el objeto de la línea JSON de arriba (`temp_suelo_c`, `agua_raw`, `luz_raw`, `temp_aire_c`, `hum_aire_pct`, `semaforo`).
+- Si el archivo no existe o el navegador no tiene Web Serial, la app usa las lecturas grabadas.
+
 ### Respaldo: `data/arduino_bandejas_demo.json`
 
 Lecturas **reales** grabadas durante la calibración. La app las usa si el Arduino no está conectado.
@@ -290,6 +305,7 @@ Zonificación de la provincia con k-means sobre clima y suelo de AIZAL, propuest
     "k": 5,
     "criterio_k": "silueta | codo | propuesta de la cátedra",
     "escala_m": 500,
+    "imagen": {"archivo": "data/imagenes/zonas_aizal.png", "bbox": [-65.3, -30.2, -61.5, -25.5]},
     "generado_por": "scripts/gee_zonas_y_desmonte.js",
     "fecha": null
   },
@@ -304,6 +320,7 @@ Zonificación de la provincia con k-means sobre clima y suelo de AIZAL, propuest
 ```
 
 - **`grupos`:** un elemento por grupo. `nombre` lo pone el equipo mirando el perfil (por ejemplo, "Sur fresco y serrano").
+- **`meta.imagen`** (opcional): PNG de los grupos con su recuadro `[oeste, sur, este, norte]`. Si está, el visor de la app muestra la capa "Zonas AIZAL".
 - **`comparacion_biosat`:** dice qué grupo AIZAL domina en la celda de cada zona de BioSat y en qué porcentaje. Sirve para validar las 5 zonas.
 
 ---

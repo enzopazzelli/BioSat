@@ -25,13 +25,13 @@ Mostrar en vivo que el suelo pelado se calienta y se seca mucho más que el cubi
 - [x] Textos del kit corregidos: el LDR mide luz, no NDVI, y el sensor de agua no separa salitre de humedad sin calibrar (D-20)
 
 ### Checkpoint 1 · Sáb 20:30
-- [ ] Sketch `arduino/biosat_estacion_campo/biosat_estacion_campo.ino` que mande una línea JSON cada 2 segundos (contrato §5)
+- [ ] Sketch `arduino/biosat_estacion_campo/biosat_estacion_campo.ino` que mande una línea JSON cada 2 segundos (contratos §6)
 - [ ] Armar las 3 bandejas: pelada y seca, salitrosa y con rastrojo
 - [ ] Calibrar los umbrales con las bandejas reales
 - [ ] Guion borrador de 2-3 minutos con el zoom de escalas del video de la NASA (50 km → 500 m → 30 m → 1 m² → el productor) y los 4 verbos
 
 ### Checkpoint 2 · Dom 09:30
-- [ ] Lector Web Serial como módulo propio (`arduino/lector-web-serial.js`) con una función simple para que Enzo lo sume a la app
+- [ ] Lector Web Serial como módulo propio (`arduino/lector-web-serial.js`) con la interfaz `window.BioSatArduino` de contratos §6. La app ya lo carga sola cuando el archivo existe
 - [ ] Grabar lecturas reales de las 3 bandejas en `data/arduino_bandejas_demo.json`
 - [ ] Buscar una foto de astronauta del Chaco santiagueño (eol.jsc.nasa.gov)
 - [ ] Preparar la comparación 2000 contra 2025 de Campo Gallo (desmonte) para el pitch
@@ -59,7 +59,7 @@ Mostrar en vivo que el suelo pelado se calienta y se seca mucho más que el cubi
 
 ## Para leer antes de arrancar
 
-[`planes/README.md`](README.md) · [`docs/contratos-de-datos.md`](../docs/contratos-de-datos.md) §5 · [`docs/transcripcion-video-desafio.md`](../docs/transcripcion-video-desafio.md) · [`docs/zonas-santiago-y-kit-arduino.md`](../docs/zonas-santiago-y-kit-arduino.md) §1
+[`planes/README.md`](README.md) · [`docs/contratos-de-datos.md`](../docs/contratos-de-datos.md) §6 · [`docs/transcripcion-video-desafio.md`](../docs/transcripcion-video-desafio.md) · [`docs/zonas-santiago-y-kit-arduino.md`](../docs/zonas-santiago-y-kit-arduino.md) §1
 
 ## Mis decisiones
 
