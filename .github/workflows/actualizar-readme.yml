@@ -1,0 +1,45 @@
+# Regenera las secciones automáticas del README (avance, decisiones y estructura)
+# en cada push a main. Si algo cambió, sube el README con un commit del robot.
+name: Actualizar README
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: actualizar-readme
+  cancel-in-progress: false
+
+jobs:
+  readme:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Regenerar secciones automáticas
+        run: python3 scripts/actualizar_readme.py
+
+      - name: Subir el README si cambió
+        run: |
+          if git diff --quiet -- README.md; then
+            echo "README al día, no hay nada que subir."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add README.md
+          git commit -m "Actualizar README automaticamente"
+          for intento in 1 2 3; do
+            if git pull --rebase origin main; then
+              git push origin HEAD:main && exit 0
+            else
+              git rebase --abort || true
+            fi
+            sleep 5
+          done
+          echo "No se pudo subir el README tras 3 intentos."
+          exit 1

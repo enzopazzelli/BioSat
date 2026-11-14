@@ -69,3 +69,15 @@ Según la página oficial de premios (`NASA Space Apps Challenge - awards.mhtml`
 - **D-12 (Hoja de ruta y coordinación multi-agente):** Se creó [`docs/plan-de-pasos-y-agentes.md`](plan-de-pasos-y-agentes.md) con los pasos 0 al 6 detallados, la separación por carpetas independientes y los contratos JSON en `data/` para poder trabajar con dos agentes en simultáneo sin conflictos de archivos.
 - **D-13 (Informe profundo de hallazgos NASA en Santiago del Estero):** Se analizaron los **8.768 registros diarios** descargados (récords térmicos, rachas de sequía, diluvios en 24 h y evolución año por año 2020–2025) y se documentaron en [`docs/analisis-datos-nasa-santiago.md`](analisis-datos-nasa-santiago.md).
 - **D-14 (Actualización integral de la guía de recursos oficiales + IA Landsat):** Se reescribió y amplió [`docs/recursos-desafio.md`](recursos-desafio.md) detallando qué trae cada una de las **26 páginas oficiales**, qué datos se pueden extraer de cada una, cómo se reemplazan en Santiago del Estero los 13 recursos exclusivos de EE. UU. (incluyendo la revalorización de **GEDI** para biomasa del monte chaqueño), y cómo se implementa paso a paso la arquitectura **`Landsat + CNN + RNN + Transformer`** sugerida por la profesora de Sistemas de IA.
+- **D-15 (Unificación del repositorio y plan para 3 integrantes):**
+  - Se incorpora el aporte de Santi: el catálogo AIZAL V4 en `data/datos_cruzados_aizal/`, [`ESTRUCTURA_DATOS.md`](../ESTRUCTURA_DATOS.md) y [`docs/documentacion-tecnica-agronomica.md`](documentacion-tecnica-agronomica.md).
+  - [`PLAN.md`](../PLAN.md) pasa a ser el único plan del equipo: 3 roles, 7 frentes, ruta del 14 y 15/11 y puntos de decisión. Reemplaza a `docs/plan-de-pasos-y-agentes.md`.
+  - Se crean los contratos de datos compartidos en [`docs/contratos-de-datos.md`](contratos-de-datos.md).
+  - El README se actualiza solo con [`scripts/actualizar_readme.py`](../scripts/actualizar_readme.py) y GitHub Actions.
+  - El prototipo se sitúa en Santiago del Estero (D-09), lo que prevalece sobre la nota de la documentación técnica que proponía EE. UU.
+  - El motor de reglas usa las secciones de cultivo A/B/C/D.
+- **D-16 (Correcciones científicas a los datos de clima):**
+  - `EVPTRNS` de NASA POWER viene en MJ/m²/día, no en mm. Por eso el balance hídrico actual da positivo (+400 a +500 mm al año), cuando lluvia − ET0 (Hargreaves) da entre −890 y −1.020 mm.
+  - 6 años (2020-2025) no alcanzan para hablar de "lo normal" ni de tendencias: se usará 1981-2025, con la normal 1991-2020.
+  - Medido así, el aumento del calor extremo se confirma. En la Zona 3 hubo 17 días al año de más de 40 °C en 1991-2020 y 38 en 2021-2025; los 4 años más calurosos de la serie son 2022-2025.
+  - La corrección queda como tarea del Frente 1 del [PLAN](../PLAN.md).

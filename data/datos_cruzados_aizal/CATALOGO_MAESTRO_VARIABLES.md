@@ -1,7 +1,7 @@
 # Catálogo Maestro: Datos Cruzados AIZAL V4 y Motor Agronómico
 
 > **Ubicación:** `data/datos_cruzados_aizal`  
-> **Fuentes:** [AIZAL_Fichas_Variables_V4_2026.pdf](docs/AIZAL_Fichas_Variables_V4_2026.pdf) · [CONTEXTONASA.md](docs/CONTEXTONASA.md)  
+> **Fuentes:** [AIZAL_Fichas_Variables_V4_2026.pdf](../../docs/AIZAL_Fichas_Variables_V4_2026.pdf) · [CONTEXTONASA.md](docs/CONTEXTONASA.md)  
 > **Resolución Estándar del Cubo:** Grilla de 500 m en WGS84 (EPSG:4326) con remuestreo a 30 m vía Sentinel-2 / Landsat.
 
 ---

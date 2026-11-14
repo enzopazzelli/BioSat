@@ -125,6 +125,13 @@ Al evaluar los 24 conjuntos de datos disponibles frente a los 5 pilares fisioló
 24. **USDA AMS (Market News):** Cotizaciones de commodities, tendencias de demanda y precios regionales (EE. UU.).
 
 > **Nota de Alcance Geográfico para el Prototipo:** Dado que los satélites NASA y FAO GAEZ son globales pero los datos granulares de suelo (SSURGO), historial de cultivos (CDL) y precios (AMS) son exclusivos de Estados Unidos, el MVP debe situarse en condados agrícolas de EE. UU. para garantizar continuidad de datos sin huecos.
+>
+> **Decisión del equipo (D-09 y D-15):** BioSat se sitúa en **Santiago del Estero**. Los datos exclusivos de EE. UU. se reemplazan así:
+> - **Suelo (SSURGO):** AIZAL V4 / SoilGrids.
+> - **Historial de cultivos (CDL):** MapBiomas Chaco + Landsat + lo que cuenta el productor.
+> - **Precios (AMS):** mercado local consultado al productor.
+>
+> El detalle está en [`recursos-desafio.md`](recursos-desafio.md) §3 y en el [PLAN](../PLAN.md).
 
 ---
 

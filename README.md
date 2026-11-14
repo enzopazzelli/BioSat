@@ -1,75 +1,173 @@
 # BioSat — Field Shift: Adapting Farms with NASA Data
 
-> **NASA Space Apps Challenge 2026** · Desafío: *Field Shift: Adapting Farms with NASA Data*  
-> Sede: Santiago del Estero, Argentina · Equipo: **BioSat**
+> **NASA Space Apps Challenge 2026** · Desafío: *Field Shift: Adapting Farms with NASA Data*
+> Sede: **Santiago del Estero, Argentina** · Equipo: **BioSat**
 
 ---
 
-## 🌾 Sobre el Proyecto
+## Qué es BioSat
 
-**BioSat** es un sistema de apoyo a la toma de decisiones (**DSS**) diseñado para que agricultores y agrónomos evalúen y comparen **estrategias de rotación de cultivos resilientes** frente al cambio climático y la degradación del suelo.
+**BioSat** es una herramienta de apoyo a la decisión para productores de **Santiago del Estero**. Ayuda a comparar **rotaciones de cultivos** que cuiden el suelo y aguanten mejor el calor, la sequía y el salitre.
 
-La herramienta combina:
-1. **Datos Satelitales Globales de la NASA y Copernicus:** Clima diario sin huecos (NASA POWER), humedad del suelo (SMAP), evapotranspiración (ECOSTRESS / OpenET), relieve (SRTM / Copernicus DEM) y vigor vegetal (Landsat / Sentinel-2).
-2. **Cubo Biofísico Regional (AIZAL V4):** 38 variables edáficas, climáticas y de cobertura terrestre a 500 m, junto con embeddings satelitales multivariados de Google DeepMind (AlphaEarth 2024).
-3. **Reglas Agronómicas Biológicas:** Motor que balancea el nitrógeno, minimiza las ventanas de suelo desnudo, promueve la descompactación biológica y rompe ciclos de plagas mediante la alternancia de 4 secciones funcionales de cultivo.
-4. **Validación Humana (*Human-in-the-Loop*):** Reconocimiento explícito de lo que el satélite no puede medir (compactación profunda a pala, herbicidas residuales, maquinaria disponible y acopios locales).
+Para cada zona de la provincia, BioSat junta:
+
+1. **Clima de la NASA (NASA POWER, 1981-2025):** días de calor extremo, heladas, meses sin lluvia y balance de agua.
+2. **Suelo y paisaje (AIZAL V4):** 38 variables del Gran Chaco (pH, textura, carbono, nitrógeno, distancia a caminos y a monte) y embeddings satelitales AlphaEarth.
+3. **Imágenes Landsat + IA:** detecta en qué meses el suelo queda pelado y dónde hubo desmonte (CNN + LSTM / Transformer, comparados contra un método simple).
+4. **Reglas agronómicas transparentes:** 4 secciones de cultivo (A gramíneas, B leguminosas, C raíces profundas, D coberturas) para balancear nitrógeno, cortar plagas y no dejar el suelo desnudo.
+5. **Medición en tierra:** un kit Arduino con 3 bandejas de suelo que muestra lo que el satélite no ve de cerca.
+6. **El productor:** sus prioridades y límites, y lo que el satélite no puede medir (compactación, herbicidas usados, maquinaria, mercado).
+
+Con eso, la app muestra el **calendario del lote** y compara **3 rotaciones** (la actual y 2 alternativas). Para cada una explica por qué se sugiere, qué evidencia la respalda, qué beneficios tiene, qué falta saber y qué riesgos tiene que revisar alguien local.
+
+> **BioSat apoya, no reemplaza**, el criterio del productor y del agrónomo.
 
 ---
 
-## 📁 Estructura del Repositorio
+## Estado del proyecto
 
+Avance por frente, contado desde las casillas de [PLAN.md](PLAN.md):
+
+<!-- AUTO:AVANCE:INICIO -->
+| Frente | Avance | Tareas |
+|---|---|---|
+| F1 · Clima con datos bien medidos (Enzo) | `░░░░░░░░░░` 0% | 0/9 |
+| F2 · Suelo y paisaje con AIZAL (Santi) | `░░░░░░░░░░` 0% | 0/7 |
+| F3 · IA con Landsat: suelo pelado y desmonte (Santi) | `░░░░░░░░░░` 0% | 0/10 |
+| F4 · Rotaciones y agronomía (Tercer integrante) | `░░░░░░░░░░` 0% | 0/8 |
+| F5 · App web y motor de reglas (Enzo) | `░░░░░░░░░░` 0% | 0/10 |
+| F6 · Kit Arduino "Espacio vs. Tierra" (Enzo, con armado del tercer integrante) | `░░░░░░░░░░` 0% | 0/5 |
+| F7 · Entrega y presentación (todos; coordina el tercer integrante) | `░░░░░░░░░░` 0% | 0/9 |
+| **Total** | `░░░░░░░░░░` **0%** | **0/58** |
+<!-- AUTO:AVANCE:FIN -->
+
+**Últimas decisiones:**
+
+<!-- AUTO:DECISIONES:INICIO -->
+- **D-16**: Correcciones científicas a los datos de clima
+- **D-15**: Unificación del repositorio y plan para 3 integrantes
+- **D-14**: Actualización integral de la guía de recursos oficiales + IA Landsat
+- **D-13**: Informe profundo de hallazgos NASA en Santiago del Estero
+- **D-12**: Hoja de ruta y coordinación multi-agente
+- **D-11**: Descarga de datos reales NASA POWER para Santiago del Estero
+
+Todas las decisiones están en la [bitácora](docs/reglas-y-bitacora.md).
+<!-- AUTO:DECISIONES:FIN -->
+
+---
+
+## Equipo
+
+| Quién | Rol | Frentes del plan |
+|---|---|---|
+| Enzo | Integración, app y Arduino | F1 Clima · F5 App y motor · F6 Arduino |
+| Santi | Suelo, satélite e IA | F2 Suelo AIZAL · F3 IA Landsat |
+| _Tercer integrante (a confirmar)_ | Campo, agronomía y relato | F4 Rotaciones · F7 Entrega |
+
+El detalle de tareas, la ruta de trabajo y los diagramas están en **[PLAN.md](PLAN.md)**.
+
+---
+
+## Estructura del repositorio
+
+<!-- AUTO:ESTRUCTURA:INICIO -->
 ```text
 BioSat/
-├── README.md                              <-- Este archivo
-├── ESTRUCTURA_DATOS.md                    <-- Guía detallada de la arquitectura de datos
-├── CONTEXTO.md                            <-- Bitácora del proyecto y decisiones de equipo
-├── data/
-│   ├── resumen_mensual_santiago.csv       <-- Resumen climático mensual (Santiago del Estero)
-│   ├── nasa_power_santiago_zonas.json     <-- Series diarias NASA POWER (2020-2025)
-│   ├── raw_nasa_power/                    <-- Descargas crudas por zona agroecológica
-│   └── datos_cruzados_aizal/              <-- Cubo de datos cruzados AIZAL V4 (38 variables)
-│       ├── CATALOGO_MAESTRO_VARIABLES.md
-│       ├── 01_Clima_y_Balance_Hidrico/
-│       ├── 02_Vegetacion_Fenologia_y_Paisaje/
-│       ├── 03_Quimica_Nutricion_Suelo/
-│       ├── 04_Fisica_Suelo_y_Topografia/
-│       ├── 05_Logistica_Antropico_y_Servicios/
-│       └── 06_Embeddings_IA_AlphaEarth/
-├── docs/
-│   ├── documentacion-tecnica-agronomica.md <-- Fundamentos del simulador y los 5 pilares
-│   ├── analisis-datos-nasa-santiago.md    <-- Informe de hallazgos climáticos 2020-2025
-│   ├── AIZAL_Fichas_Variables_V4_2026.pdf <-- Fichas técnicas completas de variables AIZAL
-│   ├── glosario.md                        <-- Términos satelitales, agronómicos y de IA
-│   ├── plan-de-pasos-y-agentes.md         <-- Hoja de ruta de desarrollo multi-agente
-│   ├── recursos-desafio.md                <-- Auditoría de los recursos oficiales NASA
-│   ├── reglas-y-bitacora.md               <-- Criterios de evaluación y bitácora
-│   ├── resena-desafio.md                  <-- Reseña del desafío Field Shift
-│   └── zonas-santiago-y-kit-arduino.md    <-- Zonas locales y módulo de sensores
-└── scripts/
-    ├── descargar_nasa_power.py            <-- Extracción de series diarias NASA POWER
-    └── earth_engine_embeddings.js         <-- Script GEE para embeddings satelitales
+├── CONTEXTO.md                                               <-- Contexto inicial del 13/11 (histórico)
+├── ESTRUCTURA_DATOS.md                                       <-- Arquitectura de datos y módulos AIZAL
+├── NASA Space Apps Challenge - awards.mhtml                  <-- Premios globales y datos del equipo
+├── NASA Space Apps Challenge.mhtml                           <-- Recursos oficiales (pestaña Resources)
+├── NASA Space Apps Challenge.pdf                             <-- Enunciado oficial (pestaña Details)
+├── PLAN.md                                                   <-- Plan de trabajo: roles, ruta y tareas
+├── README.md                                                 <-- Portada del proyecto (se actualiza sola)
+├── data/                                                     <-- Datos y contratos JSON que lee la app
+│   ├── nasa_power_santiago_zonas.json                        <-- Clima NASA POWER 2020-2025 (se reemplaza, ver PLAN F1)
+│   ├── resumen_mensual_santiago.csv                          <-- Resumen climático mensual por zona
+│   ├── datos_cruzados_aizal/                                 <-- Catálogo AIZAL V4: 38 variables de suelo, clima y paisaje
+│   │   ├── CATALOGO_MAESTRO_VARIABLES.md                     <-- Índice de módulos y reglas que disparan
+│   │   ├── 01_Clima_y_Balance_Hidrico/ (2 archivos)          <-- B01-B08: agua, lluvia, sequía, temperatura
+│   │   ├── 02_Vegetacion_Fenologia_y_Paisaje/ (2 archivos)   <-- B19-B23, B30-B31: paisaje, NDVI, monte
+│   │   ├── 03_Quimica_Nutricion_Suelo/ (2 archivos)          <-- B09, B11, B13-B16: nitrógeno, pH, carbono
+│   │   ├── 04_Fisica_Suelo_y_Topografia/ (2 archivos)        <-- B10, B12, B17-B18, B24-B25: textura, relieve
+│   │   ├── 05_Logistica_Antropico_y_Servicios/ (2 archivos)  <-- B26-B29, B32-B37: caminos, población
+│   │   └── 06_Embeddings_IA_AlphaEarth/ (2 archivos)         <-- Embeddings AlphaEarth 64D (DeepMind)
+│   └── raw_nasa_power/ (4 archivos)                          <-- Descargas crudas de NASA POWER
+├── docs/                                                     <-- Documentación del equipo
+│   ├── AIZAL_Fichas_Variables_V4_2026.pdf                    <-- Fichas oficiales de las variables AIZAL V4
+│   ├── analisis-datos-nasa-santiago.md                       <-- Hallazgos climáticos 2020-2025 (a corregir, ver PLAN F1)
+│   ├── contratos-de-datos.md                                 <-- Formato de los JSON que comparten los frentes
+│   ├── documentacion-tecnica-agronomica.md                   <-- Secciones de cultivo A/B/C/D y reglas de rotación
+│   ├── glosario.md                                           <-- Términos técnicos en lenguaje de productor
+│   ├── plan-de-pasos-y-agentes.md                            <-- Plan anterior (reemplazado por PLAN.md)
+│   ├── recursos-desafio.md                                   <-- Los 26 recursos oficiales y cómo los usamos
+│   ├── reglas-y-bitacora.md                                  <-- Reglas de oro y bitácora de decisiones
+│   ├── resena-desafio.md                                     <-- Reseña del desafío y guía de entrevista
+│   └── zonas-santiago-y-kit-arduino.md                       <-- Las 4 zonas, sus rotaciones y el kit Arduino
+└── scripts/                                                  <-- Herramientas para bajar y procesar datos
+    ├── actualizar_readme.py                                  <-- Regenera las secciones automáticas del README
+    ├── descargar_nasa_power.py                               <-- Descarga y resume NASA POWER por zona
+    └── earth_engine_embeddings.js                            <-- Ejemplo GEE de embeddings (falta adaptar a SdE)
 ```
+<!-- AUTO:ESTRUCTURA:FIN -->
 
 ---
 
-## 🚀 Inicio Rápido
+## Inicio rápido
 
-### Consulta de Datos Estructurados
-Para explorar la documentación técnica de las variables, consulta [ESTRUCTURA_DATOS.md](ESTRUCTURA_DATOS.md) o navega por los módulos en `data/datos_cruzados_aizal/`.
+**Bajar y resumir el clima de NASA POWER** (no necesita cuenta):
 
-### Descarga de Series de NASA POWER
 ```bash
 python scripts/descargar_nasa_power.py
 ```
 
-### Script de Google Earth Engine
-El script `scripts/earth_engine_embeddings.js` puede ejecutarse directamente en el Code Editor de Google Earth Engine para evaluar similitudes interanuales con la colección `GOOGLE/SATELLITE_EMBEDDING/V1/ANNUAL`.
+**Ver la app en tu compu** (cuando exista `web/`). Hay que abrirla con un servidor local, porque el navegador no deja leer los JSON si abrís el HTML con doble clic:
+
+```bash
+python -m http.server 8000
+# y abrir http://localhost:8000/web/
+```
+
+**Google Earth Engine:** `scripts/earth_engine_embeddings.js` se pega en el Code Editor de GEE para comparar embeddings `GOOGLE/SATELLITE_EMBEDDING/V1/ANNUAL` entre años.
+
+**Actualizar este README a mano** (normalmente no hace falta, ver abajo):
+
+```bash
+python scripts/actualizar_readme.py
+```
 
 ---
 
-## 📄 Documentación Técnica
+## Documentación
 
-* **[ESTRUCTURA_DATOS.md](ESTRUCTURA_DATOS.md):** Especificación completa de capas, bandas, resoluciones y fuentes de datos.
-* **[docs/documentacion-tecnica-agronomica.md](docs/documentacion-tecnica-agronomica.md):** Fundamentos agronómicos, las 4 secciones funcionales y la matriz de los 5 pilares fisiológicos.
-* **[docs/analisis-datos-nasa-santiago.md](docs/analisis-datos-nasa-santiago.md):** Análisis de 5 años de datos de temperatura, lluvia, evapotranspiración y humedad radicular en Santiago del Estero.
+| Para… | Leer |
+|---|---|
+| Saber qué hacer y quién lo hace | [PLAN.md](PLAN.md) |
+| Saber el formato de los datos compartidos | [docs/contratos-de-datos.md](docs/contratos-de-datos.md) |
+| Entender el desafío | [docs/resena-desafio.md](docs/resena-desafio.md) · [docs/recursos-desafio.md](docs/recursos-desafio.md) |
+| Ver los datos y su arquitectura | [ESTRUCTURA_DATOS.md](ESTRUCTURA_DATOS.md) · [catálogo AIZAL](data/datos_cruzados_aizal/CATALOGO_MAESTRO_VARIABLES.md) · [análisis NASA](docs/analisis-datos-nasa-santiago.md) |
+| Entender la agronomía y las reglas | [docs/documentacion-tecnica-agronomica.md](docs/documentacion-tecnica-agronomica.md) · [docs/zonas-santiago-y-kit-arduino.md](docs/zonas-santiago-y-kit-arduino.md) |
+| Conocer las reglas del equipo y las decisiones | [docs/reglas-y-bitacora.md](docs/reglas-y-bitacora.md) · [docs/glosario.md](docs/glosario.md) |
+| Ver el contexto del primer día | [CONTEXTO.md](CONTEXTO.md) |
+
+---
+
+## Cómo se mantiene actualizado este README
+
+Las secciones **Estado del proyecto**, **Últimas decisiones** y **Estructura del repositorio** se generan solas:
+
+- **Cuándo:** en cada `push` a `main`, GitHub Actions corre [`scripts/actualizar_readme.py`](scripts/actualizar_readme.py) y, si algo cambió, sube el README actualizado.
+- **Avance:** sale de las casillas `- [ ]` / `- [x]` de [PLAN.md](PLAN.md).
+- **Decisiones:** salen de la [bitácora](docs/reglas-y-bitacora.md).
+- **Estructura:** sale de los archivos del repo. Para darle descripción a un archivo nuevo, agregalo en `DESCRIPCIONES` dentro del script.
+- **Qué no tocar a mano:** lo que está entre las marcas `<!-- AUTO:... -->`, porque se pisa. El resto del README sí se edita a mano.
+- **Después de un push:** como el robot puede subir un commit, hacé `git pull --rebase` antes de tu próximo push.
+
+---
+
+## Reglas rápidas para colaborar
+
+1. **Antes de empezar:** leer [PLAN.md](PLAN.md) y [docs/contratos-de-datos.md](docs/contratos-de-datos.md). Los agentes de IA también.
+2. **Carpetas:** cada rol trabaja en sus carpetas (ver PLAN §2).
+3. **Antes de cada push:** `git pull --rebase`. Commits chicos y sin la línea `Co-Authored-By`.
+4. **Datos faltantes:** van como `null`. **Nunca inventar números.**
+5. **Registro:** cada decisión va a la bitácora y cada término nuevo al glosario.

@@ -1,6 +1,6 @@
 # Contexto de trabajo — BioDat (NASA Space Apps 2026)
 
-> Abrir esto primero. Resume dónde quedamos el **13/11/2026** para retomar mañana.
+> **Documento histórico.** Resume cómo arrancamos el **13/11/2026**. Para saber el estado actual, leer **[README.md](README.md)** y **[PLAN.md](PLAN.md)**. Varias preguntas abiertas de abajo ya se respondieron (por ejemplo, el enfoque se decidió en D-09 de la [bitácora](docs/reglas-y-bitacora.md)).
 
 ## Qué es este proyecto
 
