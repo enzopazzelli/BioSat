@@ -52,22 +52,22 @@ Avance por frente, contado desde las casillas de [PLAN.md](PLAN.md):
 | F1 · Clima con datos bien medidos (Enzo) | `▓░░░░░░░░░` 10% | 1/10 |
 | F2 · Suelo y paisaje con AIZAL (Santi) | `░░░░░░░░░░` 0% | 0/8 |
 | F3 · IA con Landsat: suelo pelado y desmonte (Santi) | `░░░░░░░░░░` 0% | 0/12 |
-| F4 · Rotaciones y agronomía (Tercer integrante) | `▓░░░░░░░░░` 11% | 1/9 |
+| F4 · Rotaciones y agronomía (Vale) | `▓░░░░░░░░░` 11% | 1/9 |
 | F5 · App web y motor de reglas (Enzo) | `░░░░░░░░░░` 0% | 0/15 |
-| F6 · Kit Arduino "Espacio vs. Tierra" (Enzo, con armado del tercer integrante) | `░░░░░░░░░░` 0% | 0/5 |
-| F7 · Entrega y presentación (todos; coordina el tercer integrante) | `░░░░░░░░░░` 0% | 0/11 |
+| F6 · Kit Arduino "Espacio vs. Tierra" (Sara) | `░░░░░░░░░░` 0% | 0/5 |
+| F7 · Entrega y presentación (todos; coordina Sara) | `░░░░░░░░░░` 0% | 0/11 |
 | **Total** | `░░░░░░░░░░` **3%** | **2/70** |
 <!-- AUTO:AVANCE:FIN -->
 
 **Últimas decisiones:**
 
 <!-- AUTO:DECISIONES:INICIO -->
+- **D-22**: Equipo de 4 integrantes
 - **D-21**: Zona 5 confirmada
 - **D-20**: Zona 5 operativa y revisión de la documentación
 - **D-19**: Visor GIS con Google Earth Engine
 - **D-18**: Análisis de zonas
 - **D-17**: Lectura del video del desafío
-- **D-16**: Correcciones científicas a los datos de clima
 
 Todas las decisiones están en la [bitácora](docs/reglas-y-bitacora.md).
 <!-- AUTO:DECISIONES:FIN -->
@@ -76,11 +76,12 @@ Todas las decisiones están en la [bitácora](docs/reglas-y-bitacora.md).
 
 ## Equipo
 
-| Quién | Rol | Frentes del plan |
-|---|---|---|
-| Enzo | Integración, app y Arduino | F1 Clima · F5 App y motor · F6 Arduino |
-| Santi | Suelo, satélite e IA | F2 Suelo AIZAL · F3 IA Landsat |
-| _Tercer integrante (a confirmar)_ | Campo, agronomía y relato | F4 Rotaciones · F7 Entrega |
+| # | Quién | Rol | Frentes del plan |
+|---|---|---|---|
+| 1 | Enzo | Integración y app | F1 Clima · F5 App y motor |
+| 2 | Santi | Suelo, satélite e IA | F2 Suelo AIZAL · F3 IA Landsat |
+| 3 | Vale | Campo y agronomía | F4 Rotaciones |
+| 4 | Sara | Kit Arduino y relato | F6 Arduino · F7 Entrega (coordina) |
 
 El detalle de tareas, la ruta de trabajo y los diagramas están en **[PLAN.md](PLAN.md)**.
 
@@ -113,6 +114,7 @@ BioSat/
 ├── docs/                                                     <-- Documentación del equipo
 │   ├── AIZAL_Fichas_Variables_V4_2026.pdf                    <-- Fichas oficiales de las variables AIZAL V4
 │   ├── analisis-datos-nasa-santiago.md                       <-- Hallazgos climáticos 2020-2025 (a corregir, ver PLAN F1)
+│   ├── BioSat-cruce-de-datos-validacion.docx
 │   ├── contratos-de-datos.md                                 <-- Formato de los JSON que comparten los frentes
 │   ├── cruce-de-datos.md                                     <-- Qué sale de cruzar NASA POWER, AIZAL y Landsat; análisis de zonas
 │   ├── documentacion-tecnica-agronomica.md                   <-- Secciones de cultivo A/B/C/D y reglas de rotación
@@ -122,7 +124,8 @@ BioSat/
 │   ├── reglas-y-bitacora.md                                  <-- Reglas de oro y bitácora de decisiones
 │   ├── resena-desafio.md                                     <-- Reseña del desafío y guía de entrevista
 │   ├── transcripcion-video-desafio.md                        <-- Transcripción del video del desafío (los 4 verbos)
-│   └── zonas-santiago-y-kit-arduino.md                       <-- Las 5 zonas, sus rotaciones y el kit Arduino
+│   ├── zonas-santiago-y-kit-arduino.md                       <-- Las 5 zonas, sus rotaciones y el kit Arduino
+│   └── ~$oSat-cruce-de-datos-validacion.docx
 └── scripts/                                                  <-- Herramientas para bajar y procesar datos
     ├── actualizar_readme.py                                  <-- Regenera las secciones automáticas del README
     ├── descargar_nasa_power.py                               <-- Descarga y resume NASA POWER por zona

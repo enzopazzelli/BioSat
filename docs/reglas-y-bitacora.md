@@ -110,3 +110,11 @@ Según la página oficial de premios (`NASA Space Apps Challenge - awards.mhtml`
     - dos cruces nuevos: riesgo de erosión en pendientes (NASADEM × suelo pelado × tormentas) y tolerancia a heladas por especie;
     - imágenes del visor para las 5 zonas.
   - Siguen pendientes la validación de las rotaciones de la Zona 5 (Frente 4) y su inclusión en la descarga de clima (Frente 1).
+- **D-22 (Equipo de 4 integrantes):**
+  - El equipo queda formado por **Enzo, Santi, Vale y Sara**.
+  - Reparto propuesto, a confirmar entre los cuatro:
+    - **Enzo:** clima y app (F1, F5).
+    - **Santi:** suelo AIZAL e IA con Landsat (F2, F3).
+    - **Vale:** rotaciones y agronomía de las 5 zonas (F4).
+    - **Sara:** kit Arduino y coordinación de la entrega (F6, F7).
+  - Se actualizaron el [PLAN](../PLAN.md) (roles, carpetas, cronograma y frentes), el README y los contratos de datos.

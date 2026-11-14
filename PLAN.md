@@ -47,13 +47,16 @@ Y en la mesa del jurado, el **kit Arduino con 3 bandejas de suelo** (pelado, sal
 
 ## 2. Equipo y roles
 
-Somos **3 personas**, cada una con su agente de IA. Cada rol tiene **sus propias carpetas** para no pisarnos. Los roles son una propuesta: si alguien sabe más de otra cosa, se cambian.
+Somos **4 personas**: Enzo, Santi, Vale y Sara, cada una con su agente de IA. Cada rol tiene **sus propias carpetas** para no pisarnos. Los roles son una propuesta: si alguien sabe más de otra cosa, se cambian.
 
-| Rol | Quién | Frentes | Carpetas propias |
-|---|---|---|---|
-| **Integración, app y Arduino** | Enzo | F1 Clima · F5 App y motor · F6 Arduino | `web/`, `arduino/`, `scripts/descargar_nasa_power.py`, `data/clima_zonas.json` |
-| **Suelo, satélite e IA** | Santi | F2 Suelo AIZAL · F3 IA Landsat | `ia_landsat/`, `data/datos_cruzados_aizal/`, `data/suelo_zonas.json`, `data/diagnostico_landsat_ia.json`, `scripts/*.js` |
-| **Campo, agronomía y relato** | _Tercer integrante (a confirmar)_ | F4 Rotaciones · F7 Entrega (coordina) | `data/rotaciones_santiago.json`, `entrega/`, textos de `docs/` |
+| # | Quién | Rol | Frentes | Carpetas propias |
+|---|---|---|---|---|
+| 1 | **Enzo** | Integración y app | F1 Clima · F5 App y motor | `web/`, `scripts/descargar_nasa_power.py`, `data/clima_zonas.json` |
+| 2 | **Santi** | Suelo, satélite e IA | F2 Suelo AIZAL · F3 IA Landsat | `ia_landsat/`, `data/datos_cruzados_aizal/`, `data/suelo_zonas.json`, `data/diagnostico_landsat_ia.json`, `scripts/*.js` |
+| 3 | **Vale** | Campo y agronomía | F4 Rotaciones (incluye validar la Zona 5) | `data/rotaciones_santiago.json`, textos agronómicos de `docs/` |
+| 4 | **Sara** | Kit Arduino y relato | F6 Arduino · F7 Entrega (coordina) | `arduino/`, `entrega/`, `data/arduino_bandejas_demo.json` |
+
+Al sumarse Sara (D-22), Enzo deja el Arduino para concentrarse en la app, y Vale deja la coordinación de la entrega para concentrarse en las rotaciones de las 5 zonas.
 
 ---
 
@@ -130,9 +133,9 @@ gantt
     section Enzo
     F1 Clima 1981-2025 y balance        :e1, 2026-11-14 14:30, 3h
     F5 App v1 calendario y fichas       :e2, 2026-11-14 15:30, 5h
-    F6 Sketch Arduino                   :e3, 2026-11-14 21:00, 3h
+    F5 Compensaciones, riesgo y visor   :e3, 2026-11-14 21:00, 3h
     F5 Motor y simulador                :e4, 2026-11-15 08:30, 4h
-    F6 Arduino en la app                :e5, 2026-11-15 12:30, 150m
+    F5 Integrar Arduino e IA            :e5, 2026-11-15 12:30, 150m
     F7 Publicación y README final       :e6, 2026-11-15 15:00, 2h
 
     section Santi
@@ -143,13 +146,19 @@ gantt
     F3 Integrar IA en la app            :s5, 2026-11-15 11:30, 3h
     F7 Apoyo video y página             :s6, 2026-11-15 15:00, 2h
 
-    section Tercer integrante
-    F4 Entrevista al productor          :a1, 2026-11-14 13:30, 2h
-    F4 Rotaciones zona protagonista     :a2, 2026-11-14 15:30, 5h
-    F6 Armar las 3 bandejas             :a3, 2026-11-14 20:30, 2h
-    F7 Guion borrador                   :a4, 2026-11-14 22:30, 2h
-    F4 Rotaciones de las otras 3 zonas  :a5, 2026-11-15 08:30, 3h
-    F7 Video, diapositivas y página     :a6, 2026-11-15 11:30, 330m
+    section Vale
+    F4 Entrevista al productor          :v1, 2026-11-14 13:30, 2h
+    F4 Rotaciones zona protagonista     :v2, 2026-11-14 15:30, 5h
+    F4 Rotaciones de las otras 4 zonas  :v3, 2026-11-14 21:00, 3h
+    F4 Validar la Zona 5 con INTA       :v4, 2026-11-15 08:30, 3h
+    F7 Apoyo guion y ensayos            :v5, 2026-11-15 11:30, 3h
+
+    section Sara
+    F6 Sketch Arduino                   :a1, 2026-11-14 15:00, 3h
+    F6 Armar y calibrar las 3 bandejas  :a2, 2026-11-14 18:00, 3h
+    F7 Guion borrador                   :a3, 2026-11-14 21:00, 2h
+    F6 Arduino en la app (Web Serial)   :a4, 2026-11-15 08:30, 3h
+    F7 Video, diapositivas y página     :a5, 2026-11-15 11:30, 330m
 ```
 
 | Cuándo | Momento | Qué tiene que estar listo |
@@ -212,7 +221,7 @@ gantt
 - [ ] Definir el índice de fragilidad como **fórmula visible**, no como salida de una caja negra
 - [ ] Guardar `data/diagnostico_landsat_ia.json`, **solo con valores calculados, nunca de ejemplo**
 
-### F4 · Rotaciones y agronomía (Tercer integrante)
+### F4 · Rotaciones y agronomía (Vale)
 
 **Objetivo:** que las 3 rotaciones de cada zona sean creíbles para un productor santiagueño.
 **Listo cuando:** las 12 fichas están en el JSON y las de la zona protagonista fueron revisadas por el productor.
@@ -248,7 +257,7 @@ gantt
 - [ ] Publicar en GitHub Pages
 - [ ] Probar en celular y sin internet
 
-### F6 · Kit Arduino "Espacio vs. Tierra" (Enzo, con armado del tercer integrante)
+### F6 · Kit Arduino "Espacio vs. Tierra" (Sara)
 
 **Objetivo:** mostrar en vivo que el suelo pelado se calienta y se seca mucho más que el cubierto.
 **Listo cuando:** la demo funciona con el Arduino conectado y también sin él.
@@ -259,7 +268,7 @@ gantt
 - [ ] Leer el Arduino desde la app con Web Serial (Chrome o Edge), sin programa intermedio
 - [ ] Grabar lecturas reales de las 3 bandejas como respaldo en `data/arduino_bandejas_demo.json`
 
-### F7 · Entrega y presentación (todos; coordina el tercer integrante)
+### F7 · Entrega y presentación (todos; coordina Sara)
 
 **Objetivo:** que el jurado entienda la historia en 2 minutos y que la entrega llegue a tiempo.
 **Listo cuando:** el proyecto está subido a Space Apps y la demo se ensayó 2 veces.
@@ -285,8 +294,8 @@ gantt
 | `data/clima_zonas.json` | F1 (Enzo) | App, IA, motor |
 | `data/suelo_zonas.json` | F2 (Santi) | Motor, app |
 | `data/diagnostico_landsat_ia.json` | F3 (Santi) | Calendario, motor |
-| `data/rotaciones_santiago.json` | F4 (tercer integrante) | Comparador, motor |
-| Línea JSON del Arduino + `data/arduino_bandejas_demo.json` | F6 (Enzo) | App |
+| `data/rotaciones_santiago.json` | F4 (Vale) | Comparador, motor |
+| Línea JSON del Arduino + `data/arduino_bandejas_demo.json` | F6 (Sara) | App |
 
 El detalle de cada campo está en [`docs/contratos-de-datos.md`](docs/contratos-de-datos.md). **Si un dato falta, va `null` y la app muestra "sin dato".** Nunca se completa con un número inventado.
 
@@ -320,7 +329,7 @@ El detalle de cada campo está en [`docs/contratos-de-datos.md`](docs/contratos-
 
 ## 9. Qué cambió respecto del plan anterior
 
-- **Somos 3 personas:** pasamos de 2 agentes a 7 frentes en paralelo, sin recortar el alcance.
+- **Somos 4 personas (Enzo, Santi, Vale y Sara):** pasamos de 2 agentes a 7 frentes en paralelo, sin recortar el alcance.
 - **Clima bien medido:** usamos 45 años (1981-2025) en lugar de 6 y corregimos el balance de agua. Medido así, el calor extremo sí se duplicó: en la Zona 3 hubo 17 días al año de más de 40 °C en 1991-2020 y 38 en 2021-2025.
 - **IA medible:** mantenemos CNN + RNN + Transformer, pero entrenados con etiquetas reales (MapBiomas Chaco) y comparados contra un método simple, como pide el enunciado.
 - **Suelo local:** se suma AIZAL V4, el aporte de Santi, para cubrir la "información local de suelo".
@@ -337,7 +346,8 @@ El detalle de cada campo está en [`docs/contratos-de-datos.md`](docs/contratos-
 ## 10. Preguntas abiertas
 
 - [ ] ¿A qué hora exacta cierra la entrega y en qué formato? (El video del desafío confirma las fechas 14 y 15/11, pero no dice el formato.)
-- [ ] ¿Quién es el tercer integrante? ¿Están bien los roles?
+- [x] Integrantes: Enzo, Santi, Vale y Sara (D-22)
+- [ ] ¿Están bien los roles de la sección 2?
 - [ ] ¿Santi tiene acceso al stack AIZAL V4 en Google Earth Engine?
 - [ ] ¿Dónde está el campo del productor y qué siembra hoy?
 - [ ] `data/datos_cruzados_aizal/CATALOGO_MAESTRO_VARIABLES.md` cita `docs/CONTEXTONASA.md`, que no está en el repo: ¿falta subirlo?

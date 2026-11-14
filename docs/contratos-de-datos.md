@@ -151,7 +151,7 @@ Resultado del módulo de IA con Landsat. **Solo valores calculados por el modelo
 
 ---
 
-## 4. `data/rotaciones_santiago.json` (F4 · Tercer integrante)
+## 4. `data/rotaciones_santiago.json` (F4 · Vale)
 
 Las 3 rotaciones de cada zona, con los 5 puntos que pide la NASA y los datos que usa el motor.
 
@@ -211,7 +211,7 @@ Las 3 rotaciones de cada zona, con los 5 puntos que pide la NASA y los datos que
 
 ---
 
-## 5. Kit Arduino (F6 · Enzo)
+## 5. Kit Arduino (F6 · Sara)
 
 ### Línea por puerto serie (9600 baudios, una cada 2 segundos)
 
