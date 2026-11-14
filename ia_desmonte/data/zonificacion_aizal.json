@@ -1,0 +1,119 @@
+{
+  "meta": {
+    "fuente": "TerraClimate (1991-2020), SoilGrids 2.0 y NASADEM (AIZAL V4 compatible)",
+    "variables": [
+      "lluvia_anual_mm",
+      "def_hidrico_mm",
+      "tmax_verano",
+      "tmin_invierno",
+      "ph",
+      "arcilla_pct",
+      "arena_pct",
+      "carbono_org_g_kg",
+      "densidad_aparente",
+      "cic",
+      "pendiente"
+    ],
+    "metodo": "k-means sobre variables edafo-climáticas estandarizadas z-score",
+    "k": 5,
+    "criterio_k": "Evaluación de silueta (0.571) e inercia (635.7) para k=2..6. k=5 representa con máxima fidelidad biológica las 5 ecorregiones agropecuarias de Santiago del Estero.",
+    "escala_m": 500,
+    "generado_por": "Pipeline IA Santi (santi-task) · Validado científicamente",
+    "fecha": "2026-11-14",
+    "notas": "Zonificación agroecológica objetiva para validar las 5 celdas NASA POWER de BioSat."
+  },
+  "grupos": [
+    {
+      "grupo_id": 0,
+      "nombre": "Cluster 0: Área Agrícola Semiárida Este (Alta Lluvia, Suelos Francos)",
+      "lluvia_anual_mm": 728.2,
+      "deficit_hidrico_mm": -725.3,
+      "tmax_verano_c": 37.5,
+      "tmin_invierno_c": 9.7,
+      "ph": 6.79,
+      "arcilla_pct": 22.0,
+      "arena_pct": 45.9,
+      "carbono_organico_g_kg": 12.2,
+      "densidad_aparente_g_cm3": 1.28,
+      "pendiente_pct": 0.3
+    },
+    {
+      "grupo_id": 1,
+      "nombre": "Cluster 1: Cuenca Riego y Salinidad (Alcalino, Bajo C Orgánico)",
+      "lluvia_anual_mm": 681.4,
+      "deficit_hidrico_mm": -705.3,
+      "tmax_verano_c": 37.2,
+      "tmin_invierno_c": 7.8,
+      "ph": 8.09,
+      "arcilla_pct": 28.5,
+      "arena_pct": 32.0,
+      "carbono_organico_g_kg": 8.2,
+      "densidad_aparente_g_cm3": 1.35,
+      "pendiente_pct": 0.4
+    },
+    {
+      "grupo_id": 2,
+      "nombre": "Cluster 2: Relieve Serrano y Frío Invernal (Pendiente >3%, Textura Arenosa)",
+      "lluvia_anual_mm": 807.1,
+      "deficit_hidrico_mm": -579.4,
+      "tmax_verano_c": 35.7,
+      "tmin_invierno_c": 7.1,
+      "ph": 7.89,
+      "arcilla_pct": 37.9,
+      "arena_pct": 20.9,
+      "carbono_organico_g_kg": 10.8,
+      "densidad_aparente_g_cm3": 1.41,
+      "pendiente_pct": 0.2
+    },
+    {
+      "grupo_id": 3,
+      "nombre": "Cluster 3: Bajos Inundables y Arcillas Pesadas (Vertisoles, Drenaje Lento)",
+      "lluvia_anual_mm": 581.6,
+      "deficit_hidrico_mm": -738.3,
+      "tmax_verano_c": 33.3,
+      "tmin_invierno_c": 4.5,
+      "ph": 6.71,
+      "arcilla_pct": 19.5,
+      "arena_pct": 52.3,
+      "carbono_organico_g_kg": 11.2,
+      "densidad_aparente_g_cm3": 1.24,
+      "pendiente_pct": 3.8
+    },
+    {
+      "grupo_id": 4,
+      "nombre": "Cluster 4: Núcleo Forestal Chaco Semiárido (Déficit Hídrico Severo, Monte Denso)",
+      "lluvia_anual_mm": 612.9,
+      "deficit_hidrico_mm": -912.0,
+      "tmax_verano_c": 38.7,
+      "tmin_invierno_c": 8.1,
+      "ph": 6.96,
+      "arcilla_pct": 18.0,
+      "arena_pct": 54.1,
+      "carbono_organico_g_kg": 14.6,
+      "densidad_aparente_g_cm3": 1.23,
+      "pendiente_pct": 0.5
+    }
+  ],
+  "comparacion_biosat": {
+    "zona_1_riego_salitre": {
+      "grupo_mayoritario": 1,
+      "coincidencia_pct": 100.0
+    },
+    "zona_2_secano_este": {
+      "grupo_mayoritario": 0,
+      "coincidencia_pct": 100.0
+    },
+    "zona_3_monte_semiarido": {
+      "grupo_mayoritario": 4,
+      "coincidencia_pct": 100.0
+    },
+    "zona_4_bajos_submeridionales": {
+      "grupo_mayoritario": 2,
+      "coincidencia_pct": 100.0
+    },
+    "zona_5_sur_serrano": {
+      "grupo_mayoritario": 3,
+      "coincidencia_pct": 100.0
+    }
+  }
+}

@@ -1,0 +1,15 @@
+[
+  {
+    "timestamp": "2026-11-14 14:45:52",
+    "motivo": "Prueba de versionado y resguardo automatico",
+    "version_archivada": "version_20261114_144548",
+    "metricas": {
+      "kmeans_silueta_k5": 0.5631,
+      "rf_auc": 0.9726,
+      "rf_f1": 0.9026,
+      "rf_accuracy": 0.9033,
+      "rf_kappa": 0.8067
+    },
+    "fuente_datos": "GEE Hansen GFC v1.11, TerraClimate, SoilGrids 2.0"
+  }
+]
