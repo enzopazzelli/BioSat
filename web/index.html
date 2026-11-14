@@ -10,8 +10,11 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Hanken+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <link rel="stylesheet" href="vendor/leaflet.css">
 <link rel="stylesheet" href="estilos.css">
+<link rel="stylesheet" href="asistente.css">
 <script src="vendor/leaflet.js"></script>
 <script src="../arduino/lector-web-serial.js" defer onerror="this.remove()"></script>
+<script src="asistente-logica.js" defer></script>
+<script src="asistente.js" defer></script>
 <script src="app.js" defer></script>
 </head>
 <body>
@@ -57,31 +60,8 @@
         </div>
       </header>
       <div class="campo">
-        <div class="card zonas">
-          <figure class="locator">
-            <svg id="mapa" viewBox="0 0 250 268" role="img" aria-label="Ubicación de las 4 zonas de Santiago del Estero"></svg>
-            <figcaption>Cada recuadro punteado es la celda de NASA POWER (½° × ⅝°, unos 50 km) que usamos para la zona.</figcaption>
-          </figure>
-          <div class="zona-list" id="zonaList" role="radiogroup" aria-label="Zona"></div>
-        </div>
-        <div class="prefs">
-          <div class="card pref-box">
-            <fieldset>
-              <legend>Lo que más te importa</legend>
-              <div class="chips" id="prioChips"></div>
-              <p class="hint">Podés marcar varias. Cambian el orden de las rotaciones del paso 3.</p>
-            </fieldset>
-            <fieldset>
-              <legend>Lo que tenés</legend>
-              <div class="switches">
-                <label class="switch"><input type="checkbox" id="limRiego"> Tengo riego</label>
-                <label class="switch"><input type="checkbox" id="limGanado"> Tengo hacienda</label>
-                <label class="switch"><input type="checkbox" id="limMaq"> Tengo rolo o sembradora de grano fino</label>
-              </div>
-            </fieldset>
-          </div>
-          <div class="card zona-ficha" id="zonaFicha"></div>
-        </div>
+        <div class="card tu-campo" id="tuCampo"></div>
+        <div class="card zona-ficha" id="zonaFicha"></div>
       </div>
     </div>
   </section>
