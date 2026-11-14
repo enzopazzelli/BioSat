@@ -21,15 +21,15 @@ En la demo, un **kit Arduino con 3 bandejas de suelo** mide en vivo lo que el sa
 | Entrada | Fuente | Para qué |
 |---|---|---|
 | Clima diario 1981-2025 | NASA POWER (API abierta) | Calor, heladas, lluvia y balance de agua por zona |
-| Imágenes de 30 m, 2016-2025 | Landsat 8/9 (NASA/USGS) | Meses de suelo pelado y desmonte |
-| Cobertura del suelo por año | MapBiomas Chaco | Etiquetas reales para entrenar y medir la IA |
-| Suelo y paisaje (38 variables, 500 m) | AIZAL V4 (SoilGrids, TerraClimate, OSM) | pH, textura, carbono, nitrógeno, distancia a caminos y a monte |
+| Imágenes de 30 m | Landsat 5/7/8/9 (NASA/USGS) | Meses de suelo pelado y visor del lote |
+| Historia de desmontes | LART desde 1976 (si se consigue) · MapBiomas Chaco · Hansen | Etiquetas del modelo predictivo de desmontes |
+| Suelo y paisaje (38 variables, 500 m) | AIZAL V4 (SoilGrids, TerraClimate, OSM) | pH, textura, carbono, nitrógeno, distancias; zonificación y predictores del desmonte |
 | Sensores en tierra | Kit Arduino (suelo, humedad/conductividad, luz, aire) | Comparar satélite y suelo |
 | El productor | Entrevista y formulario de la app | Rotación actual, prioridades y límites (riego, maquinaria, mercado) |
 
 **Cómo funciona, técnicamente:**
 1. **Datos:** scripts en Python bajan y resumen cada fuente en archivos JSON por zona (`data/`, ver [contratos](docs/contratos-de-datos.md)).
-2. **IA:** una red **CNN + LSTM / Transformer** sobre series de Landsat detecta suelo pelado y desmonte. Se compara contra un método simple (umbrales de NDVI/NBR) con métricas medidas.
+2. **IA:** con las variables de AIZAL se **zonifica la provincia** (k-means) y se entrena un **modelo predictivo de desmontes por zona**. Se comparan una regresión logística, un random forest y un modelo temporal (LSTM o Transformer), validados con años que el modelo no vio. Los meses de suelo pelado salen de Landsat con un método simple.
 3. **Motor de reglas transparente:** usa secciones de cultivo (A gramíneas, B leguminosas, C raíces profundas, D coberturas) y las prioridades del productor para ordenar las rotaciones **y explicar por qué**.
 4. **App web estática** (HTML + JavaScript): se publica en GitHub Pages, funciona sin internet y lee el Arduino por Web Serial.
 
@@ -76,7 +76,7 @@ Todas las decisiones están en la [bitácora](docs/reglas-y-bitacora.md).
 | # | Quién | Rol | Frentes | Rama | Plan |
 |---|---|---|---|---|---|
 | 1 | Enzo | Integración y app | F1 Clima · F5 App y motor | `enzo-app` | [planes/1-enzo.md](planes/1-enzo.md) |
-| 2 | Santi | Suelo, satélite e IA | F2 Suelo AIZAL · F3 IA Landsat | `santi-datos-ia` | [planes/2-santi.md](planes/2-santi.md) |
+| 2 | Santi | Suelo, satélite e IA | F2 Suelo y zonificación AIZAL · F3 Modelo de desmontes | `santi-datos-ia` | [planes/2-santi.md](planes/2-santi.md) |
 | 3 | Vale | Campo y agronomía | F4 Rotaciones | `vale-rotaciones` | [planes/3-vale.md](planes/3-vale.md) |
 | 4 | Sara | Kit Arduino y relato | F6 Arduino · F7 Entrega (coordina) | `sara-arduino-entrega` | [planes/4-sara.md](planes/4-sara.md) |
 
@@ -177,6 +177,7 @@ python -m http.server 8000
 
 - `scripts/gee_visor_biosat.js`: visor GIS de la provincia (2000 contra 2025, NDVI, suelo pelado, desmonte, zonas IA). Se puede publicar como Earth Engine App.
 - `scripts/gee_exportar_zonas.js`: estadísticas e imágenes por zona para la app.
+- `scripts/gee_zonas_y_desmonte.js`: zonificación con AIZAL (k-means) y modelo predictivo de desmontes con validación temporal.
 - `scripts/earth_engine_embeddings.js`: compara embeddings AlphaEarth entre años.
 
 **Actualizar este README a mano** (normalmente no hace falta, ver abajo):

@@ -1,0 +1,93 @@
+{
+  "meta": {
+    "historia": null,
+    "predictores": null,
+    "validacion": null,
+    "generado_por": "plantilla inicial · dueño: Santi",
+    "fecha": null,
+    "notas": "Plantilla sin datos (D-25). La reemplaza Santi con valores calculados; nunca completar a mano."
+  },
+  "evaluacion": {
+    "metodos": {
+      "regresion_logistica": {
+        "auc": null,
+        "f1": null
+      },
+      "random_forest": {
+        "auc": null,
+        "f1": null
+      },
+      "temporal_lstm_o_transformer": {
+        "error_ha_pct": null
+      }
+    },
+    "metodo_elegido": null
+  },
+  "zonas": {
+    "zona_1_riego_salitre": {
+      "monte_actual_pct": null,
+      "desmonte_ha_por_anio": {
+        "desde": null,
+        "valores": null
+      },
+      "riesgo_medio_0_1": null,
+      "proyeccion_ha": {
+        "anios": null,
+        "valores": null
+      },
+      "confianza": null
+    },
+    "zona_2_secano_este": {
+      "monte_actual_pct": null,
+      "desmonte_ha_por_anio": {
+        "desde": null,
+        "valores": null
+      },
+      "riesgo_medio_0_1": null,
+      "proyeccion_ha": {
+        "anios": null,
+        "valores": null
+      },
+      "confianza": null
+    },
+    "zona_3_monte_semiarido": {
+      "monte_actual_pct": null,
+      "desmonte_ha_por_anio": {
+        "desde": null,
+        "valores": null
+      },
+      "riesgo_medio_0_1": null,
+      "proyeccion_ha": {
+        "anios": null,
+        "valores": null
+      },
+      "confianza": null
+    },
+    "zona_4_bajos_submeridionales": {
+      "monte_actual_pct": null,
+      "desmonte_ha_por_anio": {
+        "desde": null,
+        "valores": null
+      },
+      "riesgo_medio_0_1": null,
+      "proyeccion_ha": {
+        "anios": null,
+        "valores": null
+      },
+      "confianza": null
+    },
+    "zona_5_sur_serrano": {
+      "monte_actual_pct": null,
+      "desmonte_ha_por_anio": {
+        "desde": null,
+        "valores": null
+      },
+      "riesgo_medio_0_1": null,
+      "proyeccion_ha": {
+        "anios": null,
+        "valores": null
+      },
+      "confianza": null
+    }
+  }
+}
