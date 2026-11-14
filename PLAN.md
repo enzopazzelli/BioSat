@@ -34,6 +34,15 @@ Y en la mesa del jurado, el **kit Arduino con 3 bandejas de suelo** (pelado, sal
 | Comparar enfoques de IA y estadística | Modelo IA vs. método simple (Frente 3) |
 | Información local de suelo | AIZAL V4 (Frente 2) |
 
+**Lo que pide el video del desafío** ([transcripción](docs/transcripcion-video-desafio.md)), en cuatro verbos:
+
+| Verbo | Cómo lo mostramos |
+|---|---|
+| Comparar rotaciones | Paso 3: las 3 rotaciones ordenadas según las prioridades |
+| Revelar compensaciones | Bloque "qué ganás y qué te cuesta" en cada rotación + gráfico de agua contra protección del suelo |
+| Comprender el riesgo | Riesgo como frecuencia: "en 1 de cada 5 años…", calculado año por año con NASA POWER |
+| Hacer visible la incertidumbre | Etiqueta de confianza (alta, media o baja) en cada dato, con el porqué |
+
 ---
 
 ## 2. Equipo y roles
@@ -166,7 +175,7 @@ gantt
 - [ ] Agregar rangos entre años (año seco, normal y húmedo) y la probabilidad de helada por mes
 - [ ] Agregar las fechas típicas de primera y última helada
 - [ ] Mostrar la humedad en raíces (`GWETROOT`) como anomalía contra lo normal, no con umbrales fijos
-- [ ] Decidir la Zona 3: hoy mezcla el norte (Campo Gallo) con el sur (Ojo de Agua), pero los datos son solo del norte
+- [ ] Decidir las zonas. El análisis de [`docs/cruce-de-datos.md`](docs/cruce-de-datos.md) §4 muestra que el sur (Ojo de Agua, Sumampa) tiene otro clima: propuesta, separarlo como Zona 5
 - [ ] Generar `data/clima_zonas.json` según el contrato
 - [ ] Corregir `docs/analisis-datos-nasa-santiago.md`: comparar contra 1991-2020 y decir "modelo de reanálisis", no "lo detectó el satélite"
 
@@ -182,12 +191,15 @@ gantt
 - [ ] Guardar `data/suelo_zonas.json` según el contrato
 - [ ] Adaptar `scripts/earth_engine_embeddings.js` a Santiago del Estero (hoy apunta a un punto de California) para buscar zonas parecidas
 - [ ] Plan B si no hay acceso a AIZAL: SoilGrids por punto
+- [ ] Agrupar la provincia en zonas parecidas con los embeddings AlphaEarth (k-means en Earth Engine) para validar o ajustar las zonas
 
 ### F3 · IA con Landsat: suelo pelado y desmonte (Santi)
 
 **Objetivo:** cumplir la idea de la profesora (CNN + RNN + Transformer) de forma que se pueda **medir y defender**.
 **Listo cuando:** hay una tabla de métricas que compara los 3 métodos y el JSON tiene solo valores calculados.
 
+- [ ] Correr [`scripts/gee_visor_biosat.js`](scripts/gee_visor_biosat.js) en Google Earth Engine y publicarlo como Earth Engine App (link público para la app y el pitch)
+- [ ] Correr [`scripts/gee_exportar_zonas.js`](scripts/gee_exportar_zonas.js): estadísticas por zona (meses de suelo pelado, monte y desmonte) e imágenes para el visor de la app
 - [ ] Bajar series Landsat 8/9 (2016-2025) de muestras en cada zona (Google Earth Engine o Microsoft Planetary Computer, que ya probamos y funciona sin cuenta)
 - [ ] Calcular NDVI, NBR y BSI por fecha y armar compuestos mensuales
 - [ ] Usar **etiquetas reales** de MapBiomas Chaco (monte, desmonte, agrícola) para entrenar y evaluar
@@ -224,6 +236,11 @@ gantt
 - [ ] Paso 3: comparador de las 3 rotaciones con los 5 puntos y "qué falta saber"
 - [ ] Motor de reglas transparente (secciones A/B/C/D + prioridades) que ordena las rotaciones y **explica por qué**
 - [ ] Paso 4: simulador de lluvia (−30 % a +20 %) y temperatura (+0 a +2,5 °C)
+- [ ] Bloque "qué ganás y qué te cuesta" en cada rotación, comparado contra la rotación actual
+- [ ] Gráfico de compensaciones: agua que pide el lote contra meses de suelo protegido
+- [ ] Riesgo como frecuencia ("en 1 de cada 5 años…"), calculado año por año
+- [ ] Etiqueta de confianza en cada dato (alta, media o baja) con el porqué
+- [ ] Visor GIS del lote con imágenes Landsat (color real, verdor NDVI, invierno contra verano, 2000 contra 2025) y la celda de NASA POWER dibujada encima
 - [ ] Paso 5: lista para llevar al agrónomo (imprimible)
 - [ ] Mostrar siempre "apoya, no reemplaza" y la fuente de cada dato
 - [ ] Publicar en GitHub Pages
@@ -246,7 +263,9 @@ gantt
 **Listo cuando:** el proyecto está subido a Space Apps y la demo se ensayó 2 veces.
 
 - [ ] Confirmar la hora de entrega y el formato en la guía del participante (desde el celular, porque en la PC falla el certificado del sitio)
-- [ ] Guion de 2-3 minutos: el productor → el calendario → las rotaciones → las bandejas
+- [ ] Guion de 2-3 minutos con el mismo zoom del video de la NASA: NASA POWER (50 km) → AIZAL (500 m) → Landsat (30 m) → sensor (1 m²) → el productor. Mostrar los 4 verbos del video en la app
+- [ ] Buscar una foto de astronauta del Chaco santiagueño en el catálogo público de la NASA (eol.jsc.nasa.gov): uno de los expertos del desafío trabaja con esas fotos
+- [ ] Usar la comparación Landsat 2000 contra 2025 de Campo Gallo (desmonte) en el pitch
 - [ ] Video o diapositivas según el formato que pidan
 - [ ] Página del proyecto en Space Apps: resumen, datos de la NASA usados, link al repo y a la app
 - [ ] Declarar el uso de herramientas de IA si la guía lo pide
@@ -312,7 +331,7 @@ El detalle de cada campo está en [`docs/contratos-de-datos.md`](docs/contratos-
 
 ## 10. Preguntas abiertas
 
-- [ ] ¿A qué hora exacta cierra la entrega y en qué formato?
+- [ ] ¿A qué hora exacta cierra la entrega y en qué formato? (El video del desafío confirma las fechas 14 y 15/11, pero no dice el formato.)
 - [ ] ¿Quién es el tercer integrante? ¿Están bien los roles?
 - [ ] ¿Santi tiene acceso al stack AIZAL V4 en Google Earth Engine?
 - [ ] ¿Dónde está el campo del productor y qué siembra hoy?

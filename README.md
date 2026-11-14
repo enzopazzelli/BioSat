@@ -50,24 +50,24 @@ Avance por frente, contado desde las casillas de [PLAN.md](PLAN.md):
 | Frente | Avance | Tareas |
 |---|---|---|
 | F1 · Clima con datos bien medidos (Enzo) | `░░░░░░░░░░` 0% | 0/9 |
-| F2 · Suelo y paisaje con AIZAL (Santi) | `░░░░░░░░░░` 0% | 0/7 |
-| F3 · IA con Landsat: suelo pelado y desmonte (Santi) | `░░░░░░░░░░` 0% | 0/10 |
+| F2 · Suelo y paisaje con AIZAL (Santi) | `░░░░░░░░░░` 0% | 0/8 |
+| F3 · IA con Landsat: suelo pelado y desmonte (Santi) | `░░░░░░░░░░` 0% | 0/12 |
 | F4 · Rotaciones y agronomía (Tercer integrante) | `░░░░░░░░░░` 0% | 0/8 |
-| F5 · App web y motor de reglas (Enzo) | `░░░░░░░░░░` 0% | 0/10 |
+| F5 · App web y motor de reglas (Enzo) | `░░░░░░░░░░` 0% | 0/15 |
 | F6 · Kit Arduino "Espacio vs. Tierra" (Enzo, con armado del tercer integrante) | `░░░░░░░░░░` 0% | 0/5 |
-| F7 · Entrega y presentación (todos; coordina el tercer integrante) | `░░░░░░░░░░` 0% | 0/9 |
-| **Total** | `░░░░░░░░░░` **0%** | **0/58** |
+| F7 · Entrega y presentación (todos; coordina el tercer integrante) | `░░░░░░░░░░` 0% | 0/11 |
+| **Total** | `░░░░░░░░░░` **0%** | **0/68** |
 <!-- AUTO:AVANCE:FIN -->
 
 **Últimas decisiones:**
 
 <!-- AUTO:DECISIONES:INICIO -->
+- **D-19**: Visor GIS con Google Earth Engine
+- **D-18**: Análisis de zonas
+- **D-17**: Lectura del video del desafío
 - **D-16**: Correcciones científicas a los datos de clima
 - **D-15**: Unificación del repositorio y plan para 3 integrantes
 - **D-14**: Actualización integral de la guía de recursos oficiales + IA Landsat
-- **D-13**: Informe profundo de hallazgos NASA en Santiago del Estero
-- **D-12**: Hoja de ruta y coordinación multi-agente
-- **D-11**: Descarga de datos reales NASA POWER para Santiago del Estero
 
 Todas las decisiones están en la [bitácora](docs/reglas-y-bitacora.md).
 <!-- AUTO:DECISIONES:FIN -->
@@ -114,17 +114,21 @@ BioSat/
 │   ├── AIZAL_Fichas_Variables_V4_2026.pdf                    <-- Fichas oficiales de las variables AIZAL V4
 │   ├── analisis-datos-nasa-santiago.md                       <-- Hallazgos climáticos 2020-2025 (a corregir, ver PLAN F1)
 │   ├── contratos-de-datos.md                                 <-- Formato de los JSON que comparten los frentes
+│   ├── cruce-de-datos.md                                     <-- Qué sale de cruzar NASA POWER, AIZAL y Landsat; análisis de zonas
 │   ├── documentacion-tecnica-agronomica.md                   <-- Secciones de cultivo A/B/C/D y reglas de rotación
 │   ├── glosario.md                                           <-- Términos técnicos en lenguaje de productor
 │   ├── plan-de-pasos-y-agentes.md                            <-- Plan anterior (reemplazado por PLAN.md)
 │   ├── recursos-desafio.md                                   <-- Los 26 recursos oficiales y cómo los usamos
 │   ├── reglas-y-bitacora.md                                  <-- Reglas de oro y bitácora de decisiones
 │   ├── resena-desafio.md                                     <-- Reseña del desafío y guía de entrevista
+│   ├── transcripcion-video-desafio.md                        <-- Transcripción del video del desafío (los 4 verbos)
 │   └── zonas-santiago-y-kit-arduino.md                       <-- Las 4 zonas, sus rotaciones y el kit Arduino
 └── scripts/                                                  <-- Herramientas para bajar y procesar datos
     ├── actualizar_readme.py                                  <-- Regenera las secciones automáticas del README
     ├── descargar_nasa_power.py                               <-- Descarga y resume NASA POWER por zona
-    └── earth_engine_embeddings.js                            <-- Ejemplo GEE de embeddings (falta adaptar a SdE)
+    ├── earth_engine_embeddings.js                            <-- Ejemplo GEE de embeddings (falta adaptar a SdE)
+    ├── gee_exportar_zonas.js                                 <-- Earth Engine: estadísticas e imágenes por zona para la app
+    └── gee_visor_biosat.js                                   <-- Visor GIS en Earth Engine: 2000 vs 2025, NDVI, desmonte, zonas IA
 ```
 <!-- AUTO:ESTRUCTURA:FIN -->
 
@@ -145,7 +149,11 @@ python -m http.server 8000
 # y abrir http://localhost:8000/web/
 ```
 
-**Google Earth Engine:** `scripts/earth_engine_embeddings.js` se pega en el Code Editor de GEE para comparar embeddings `GOOGLE/SATELLITE_EMBEDDING/V1/ANNUAL` entre años.
+**Google Earth Engine** (se pegan en el [Code Editor](https://code.earthengine.google.com) y se corren con "Run"):
+
+- `scripts/gee_visor_biosat.js`: visor GIS de la provincia (2000 contra 2025, NDVI, suelo pelado, desmonte, zonas IA). Se puede publicar como Earth Engine App.
+- `scripts/gee_exportar_zonas.js`: estadísticas e imágenes por zona para la app.
+- `scripts/earth_engine_embeddings.js`: compara embeddings AlphaEarth entre años.
 
 **Actualizar este README a mano** (normalmente no hace falta, ver abajo):
 

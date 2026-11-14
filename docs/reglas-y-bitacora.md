@@ -81,3 +81,15 @@ Según la página oficial de premios (`NASA Space Apps Challenge - awards.mhtml`
   - 6 años (2020-2025) no alcanzan para hablar de "lo normal" ni de tendencias: se usará 1981-2025, con la normal 1991-2020.
   - Medido así, el aumento del calor extremo se confirma. En la Zona 3 hubo 17 días al año de más de 40 °C en 1991-2020 y 38 en 2021-2025; los 4 años más calurosos de la serie son 2022-2025.
   - La corrección queda como tarea del Frente 1 del [PLAN](../PLAN.md).
+- **D-17 (Lectura del video del desafío):**
+  - La [transcripción](transcripcion-video-desafio.md) no es el formato de entrega: es la presentación del desafío. Confirma las fechas (14 y 15/11) y resume lo que esperan en cuatro verbos: comparar rotaciones, revelar compensaciones, comprender el riesgo y hacer visible la incertidumbre.
+  - Se suman al PLAN el bloque "qué ganás y qué te cuesta", el gráfico de compensaciones, el riesgo como frecuencia y las etiquetas de confianza.
+  - Los expertos del desafío trabajan con fotos de astronautas desde la Estación Espacial y con aprendizaje automático. Por eso el pitch usa el zoom de escalas (50 km → 30 m → 1 m²), busca una foto de astronauta del Chaco y muestra métricas del modelo de IA.
+- **D-18 (Análisis de zonas):**
+  - Con la normal 1991-2020 de NASA POWER en 10 puntos ([`cruce-de-datos.md`](cruce-de-datos.md) §4), el sur (Ojo de Agua, Sumampa) resulta otra zona: 2,2 días al año de más de 40 °C contra 14-17 y 20 heladas contra 5-10.
+  - Se propone separarlo como Zona 5 "Sur serrano y salinas". El oeste (Pellegrini, Jiménez) y el sureste (Selva) quedan como candidatos.
+  - Se validará con un agrupamiento de embeddings AlphaEarth en Earth Engine.
+- **D-19 (Visor GIS con Google Earth Engine):**
+  - Se crean [`scripts/gee_visor_biosat.js`](../scripts/gee_visor_biosat.js) y [`scripts/gee_exportar_zonas.js`](../scripts/gee_exportar_zonas.js). El primero es el visor interactivo: comparación 2000 contra 2025, NDVI, suelo pelado, desmonte, relieve y zonas IA; se puede publicar como Earth Engine App. El segundo exporta estadísticas e imágenes por zona.
+  - El mockup usa las mismas imágenes Landsat, bajadas de Microsoft Planetary Computer.
+  - La app final mostrará imágenes exportadas desde Earth Engine, así funciona sin internet.
