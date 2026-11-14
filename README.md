@@ -49,22 +49,22 @@ Avance de cada integrante, contado desde las casillas de su plan en [`planes/`](
 <!-- AUTO:AVANCE:INICIO -->
 | Persona | Rama | Avance | Tareas |
 |---|---|---|---|
-| [Enzo · Integración y app](planes/1-enzo.md) | `enzo-app` | `▓▓▓▓▓▓▓▓░░` 79% | 22/28 |
+| [Enzo · Integración y app](planes/1-enzo.md) | `enzo-app` | `▓▓▓▓▓▓▓▓░░` 80% | 24/30 |
 | [Santi · Suelo, satélite e IA](planes/2-santi.md) | `santi-datos-ia` | `░░░░░░░░░░` 0% | 0/21 |
 | [Vale · Campo y agronomía](planes/3-vale.md) | `vale-rotaciones` | `░░░░░░░░░░` 0% | 0/18 |
 | [Sara · Kit Arduino y relato](planes/4-sara.md) | `sara-arduino-entrega` | `▓░░░░░░░░░` 5% | 1/19 |
-| **Total** | | `▓▓▓░░░░░░░` **27%** | **23/86** |
+| **Total** | | `▓▓▓░░░░░░░` **28%** | **25/88** |
 <!-- AUTO:AVANCE:FIN -->
 
 **Últimas decisiones:**
 
 <!-- AUTO:DECISIONES:INICIO -->
+- **D-27**: Pantalla del kit para el jurado, guía "Del kit al campo" y Arduino Uno por USB
 - **D-26**: Informe de clima corregido y app lista para los datos de D-25
 - **D-25**: Propuesta de la profesora: zonificación AIZAL y modelo predictivo de desmontes
 - **D-24**: Checkpoint 1: clima 1981-2025 y app v1 publicada
 - **D-23**: Trabajo en paralelo con ramas y planes individuales
 - **D-22**: Equipo de 4 integrantes
-- **D-21**: Zona 5 confirmada
 
 Todas las decisiones están en la [bitácora](docs/reglas-y-bitacora.md).
 <!-- AUTO:DECISIONES:FIN -->
@@ -128,7 +128,10 @@ BioSat/
 │   ├── reglas-y-bitacora.md                                  <-- Reglas de oro y bitácora de decisiones
 │   ├── resena-desafio.md                                     <-- Reseña del desafío y guía de entrevista
 │   ├── transcripcion-video-desafio.md                        <-- Transcripción del video del desafío (los 4 verbos)
-│   └── zonas-santiago-y-kit-arduino.md                       <-- Las 5 zonas, sus rotaciones y el kit Arduino
+│   ├── zonas-santiago-y-kit-arduino.md                       <-- Las 5 zonas, sus rotaciones y el kit Arduino
+│   └── superpowers/
+│       ├── plans/ (1 archivo)
+│       └── specs/ (2 archivos)
 ├── planes/                                                   <-- Plan de cada integrante y cómo trabajamos en ramas
 │   ├── 1-enzo.md                                             <-- Plan de Enzo · integración y app (rama enzo-app)
 │   ├── 2-santi.md                                            <-- Plan de Santi · suelo, satélite e IA (rama santi-datos-ia)
@@ -142,10 +145,18 @@ BioSat/
 │   ├── gee_exportar_zonas.js                                 <-- Earth Engine: estadísticas e imágenes por zona para la app
 │   ├── gee_visor_biosat.js                                   <-- Visor GIS en Earth Engine: 2000 vs 2025, NDVI, desmonte, zonas IA
 │   └── gee_zonas_y_desmonte.js                               <-- Earth Engine: zonificación AIZAL y modelo predictivo de desmontes
+├── tests/                                                    <-- Pruebas de Node (node --test tests/*.test.js)
+│   └── kit-logica.test.js
 └── web/                                                      <-- App web BioSat (abrir con un servidor: ver Inicio rápido)
     ├── app.js                                                <-- Lógica de la app: datos, motor, calendario, simulador y visor
+    ├── campo.css                                             <-- Estilos de la guía Del kit al campo
+    ├── campo.html                                            <-- Guía Del kit al campo: del kit a estaciones fijas en el lote
     ├── estilos.css                                           <-- Estilos de la app
     ├── index.html                                            <-- Página de la app
+    ├── kit-logica.js                                         <-- Lógica de la pantalla del kit, sin interfaz (con pruebas)
+    ├── kit.css                                               <-- Estilos de la pantalla del kit (tema oscuro de alto contraste)
+    ├── kit.html                                              <-- Pantalla del kit para la mesa del jurado (3 bandejas en vivo)
+    ├── kit.js                                                <-- Pantalla del kit: teclado, Arduino y dibujo de las bandejas
     ├── datos-borrador/                                       <-- Rotaciones borrador hasta que Vale cargue las validadas
     │   └── rotaciones_borrador.json
     ├── img/ (22 archivos)                                    <-- Imágenes Landsat de vista previa (Planetary Computer)

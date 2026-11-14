@@ -494,6 +494,7 @@ function renderPaneles(){
     <span>NASA POWER ve tu zona en celdas de 50 km: en enero la máxima media del aire es ${nf(c[0].tmax, 1)} °C.</span>
     <span>El sensor mide un metro cuadrado${u && u.temp_suelo_c != null ? `: la bandeja marca ${val(u.temp_suelo_c, ' °C')} en el suelo` : ''}. Juntos dicen cuánto pesa la cobertura.</span>`;
   botonArduino();
+  $('#linkKit').href = 'kit.html?zona=' + encodeURIComponent(state.zona);
   $('#sensorNota').textContent = state.vivo ? 'En vivo desde el Arduino (Web Serial).' : lect.length
     ? `Lecturas grabadas del kit (${(ARDUINO.meta && ARDUINO.meta.fecha) || 'sin fecha'}).`
     : 'Sin lecturas grabadas todavía: las carga Sara. En la demo se leen en vivo por Web Serial.';

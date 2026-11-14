@@ -198,6 +198,9 @@ td{font-family:var(--font-mono);font-variant-numeric:tabular-nums}
 .luces i.on.a{background:var(--warn);opacity:1}
 .luces i.on.v{background:var(--ok);opacity:1}
 .vs{font-size:.82rem;border-top:1px solid var(--line);padding-top:10px;display:grid;gap:4px}
+.kit-links{display:flex;flex-wrap:wrap;gap:8px}
+.kit-links a{text-decoration:none}
+.kit-links a.capa{color:var(--ink)}
 .btn-off{border:1px dashed var(--line);background:transparent;border-radius:4px;padding:7px 10px;font-size:.82rem;color:var(--muted);cursor:not-allowed}
 
 /* Paso 3: tarjetas de rotación */
