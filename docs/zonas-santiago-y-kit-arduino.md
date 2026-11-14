@@ -44,7 +44,7 @@ En la mesa de presentación podemos tener **3 pequeños recipientes reales** par
 
 ---
 
-## 2. Cobertura Provincial: Las 4 Zonas Agroecológicas de Santiago del Estero
+## 2. Cobertura Provincial: Las Zonas Agroecológicas de Santiago del Estero (4 + Zona 5 en evaluación)
 
 Para no depender de un único lote y lograr el máximo **Impacto Local (*Local Impact*)**, **BioSat** organiza la provincia de Santiago del Estero en sus **4 grandes realidades productivas**, cada una con sus coordenadas reales para consultar **NASA POWER / AppEEARS / FAO GAEZ** y sus **3 estrategias de rotación comparadas**.
 
