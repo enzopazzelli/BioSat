@@ -211,7 +211,20 @@ Las 3 rotaciones de cada zona, con los 5 puntos que pide la NASA y los datos que
 
 ---
 
-## 5. Kit Arduino (F6 · Sara)
+## 5. Imágenes del visor (F3 · Santi)
+
+Las exporta [`scripts/gee_exportar_zonas.js`](../scripts/gee_exportar_zonas.js) y la app las muestra en el visor del lote.
+
+- **Carpeta:** `data/imagenes/`
+- **Nombre:** `zN_<capa>.png`
+  - `N` es el número de zona, de 1 a 5.
+  - `<capa>` es `invierno_rgb`, `verano_rgb`, `invierno_ndvi`, `verano_ndvi` o `2000_rgb`.
+- **Recorte:** el punto de NASA POWER de la zona ± 0,4° de longitud y ± 0,3° de latitud. La app usa ese recuadro para ubicar la imagen en el mapa.
+- **Archivo `data/imagenes/escenas.json`** (opcional): fecha y escena de cada imagen, para mostrarlas como fuente.
+
+---
+
+## 6. Kit Arduino (F6 · Sara)
 
 ### Línea por puerto serie (9600 baudios, una cada 2 segundos)
 

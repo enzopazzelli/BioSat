@@ -44,30 +44,27 @@ En la demo, un **kit Arduino con 3 bandejas de suelo** mide en vivo lo que el sa
 
 ## Estado del proyecto
 
-Avance por frente, contado desde las casillas de [PLAN.md](PLAN.md):
+Avance de cada integrante, contado desde las casillas de su plan en [`planes/`](planes/README.md). Se actualiza cuando cada uno integra su rama a `main`:
 
 <!-- AUTO:AVANCE:INICIO -->
-| Frente | Avance | Tareas |
-|---|---|---|
-| F1 · Clima con datos bien medidos (Enzo) | `▓░░░░░░░░░` 10% | 1/10 |
-| F2 · Suelo y paisaje con AIZAL (Santi) | `░░░░░░░░░░` 0% | 0/8 |
-| F3 · IA con Landsat: suelo pelado y desmonte (Santi) | `░░░░░░░░░░` 0% | 0/12 |
-| F4 · Rotaciones y agronomía (Vale) | `▓░░░░░░░░░` 11% | 1/9 |
-| F5 · App web y motor de reglas (Enzo) | `░░░░░░░░░░` 0% | 0/15 |
-| F6 · Kit Arduino "Espacio vs. Tierra" (Sara) | `░░░░░░░░░░` 0% | 0/5 |
-| F7 · Entrega y presentación (todos; coordina Sara) | `░░░░░░░░░░` 0% | 0/11 |
-| **Total** | `░░░░░░░░░░` **3%** | **2/70** |
+| Persona | Rama | Avance | Tareas |
+|---|---|---|---|
+| [Enzo · Integración y app](planes/1-enzo.md) | `enzo-app` | `░░░░░░░░░░` 0% | 0/27 |
+| [Santi · Suelo, satélite e IA](planes/2-santi.md) | `santi-datos-ia` | `░░░░░░░░░░` 0% | 0/22 |
+| [Vale · Campo y agronomía](planes/3-vale.md) | `vale-rotaciones` | `░░░░░░░░░░` 0% | 0/18 |
+| [Sara · Kit Arduino y relato](planes/4-sara.md) | `sara-arduino-entrega` | `▓░░░░░░░░░` 5% | 1/19 |
+| **Total** | | `░░░░░░░░░░` **1%** | **1/86** |
 <!-- AUTO:AVANCE:FIN -->
 
 **Últimas decisiones:**
 
 <!-- AUTO:DECISIONES:INICIO -->
+- **D-23**: Trabajo en paralelo con ramas y planes individuales
 - **D-22**: Equipo de 4 integrantes
 - **D-21**: Zona 5 confirmada
 - **D-20**: Zona 5 operativa y revisión de la documentación
 - **D-19**: Visor GIS con Google Earth Engine
 - **D-18**: Análisis de zonas
-- **D-17**: Lectura del video del desafío
 
 Todas las decisiones están en la [bitácora](docs/reglas-y-bitacora.md).
 <!-- AUTO:DECISIONES:FIN -->
@@ -76,12 +73,14 @@ Todas las decisiones están en la [bitácora](docs/reglas-y-bitacora.md).
 
 ## Equipo
 
-| # | Quién | Rol | Frentes del plan |
-|---|---|---|---|
-| 1 | Enzo | Integración y app | F1 Clima · F5 App y motor |
-| 2 | Santi | Suelo, satélite e IA | F2 Suelo AIZAL · F3 IA Landsat |
-| 3 | Vale | Campo y agronomía | F4 Rotaciones |
-| 4 | Sara | Kit Arduino y relato | F6 Arduino · F7 Entrega (coordina) |
+| # | Quién | Rol | Frentes | Rama | Plan |
+|---|---|---|---|---|---|
+| 1 | Enzo | Integración y app | F1 Clima · F5 App y motor | `enzo-app` | [planes/1-enzo.md](planes/1-enzo.md) |
+| 2 | Santi | Suelo, satélite e IA | F2 Suelo AIZAL · F3 IA Landsat | `santi-datos-ia` | [planes/2-santi.md](planes/2-santi.md) |
+| 3 | Vale | Campo y agronomía | F4 Rotaciones | `vale-rotaciones` | [planes/3-vale.md](planes/3-vale.md) |
+| 4 | Sara | Kit Arduino y relato | F6 Arduino · F7 Entrega (coordina) | `sara-arduino-entrega` | [planes/4-sara.md](planes/4-sara.md) |
+
+Cómo trabajamos en paralelo (ramas, reglas e hitos de integración): **[planes/README.md](planes/README.md)**.
 
 El detalle de tareas, la ruta de trabajo y los diagramas están en **[PLAN.md](PLAN.md)**.
 
@@ -100,8 +99,12 @@ BioSat/
 ├── PLAN.md                                                   <-- Plan de trabajo: roles, ruta y tareas
 ├── README.md                                                 <-- Portada del proyecto (se actualiza sola)
 ├── data/                                                     <-- Datos y contratos JSON que lee la app
+│   ├── arduino_bandejas_demo.json                            <-- Lecturas grabadas del kit (Sara) · plantilla hasta tener datos
+│   ├── diagnostico_landsat_ia.json                           <-- Diagnóstico IA Landsat (Santi) · plantilla hasta tener datos
 │   ├── nasa_power_santiago_zonas.json                        <-- Clima NASA POWER 2020-2025 (se reemplaza, ver PLAN F1)
 │   ├── resumen_mensual_santiago.csv                          <-- Resumen climático mensual por zona
+│   ├── rotaciones_santiago.json                              <-- Rotaciones de las 5 zonas (Vale) · plantilla hasta tener datos
+│   ├── suelo_zonas.json                                      <-- Suelo por zona (Santi) · plantilla hasta tener datos
 │   ├── datos_cruzados_aizal/                                 <-- Catálogo AIZAL V4: 38 variables de suelo, clima y paisaje
 │   │   ├── CATALOGO_MAESTRO_VARIABLES.md                     <-- Índice de módulos y reglas que disparan
 │   │   ├── 01_Clima_y_Balance_Hidrico/ (2 archivos)          <-- B01-B08: agua, lluvia, sequía, temperatura
@@ -114,7 +117,7 @@ BioSat/
 ├── docs/                                                     <-- Documentación del equipo
 │   ├── AIZAL_Fichas_Variables_V4_2026.pdf                    <-- Fichas oficiales de las variables AIZAL V4
 │   ├── analisis-datos-nasa-santiago.md                       <-- Hallazgos climáticos 2020-2025 (a corregir, ver PLAN F1)
-│   ├── BioSat-cruce-de-datos-validacion.docx
+│   ├── BioSat-cruce-de-datos-validacion.docx                 <-- Documento para que la profesora valide el enfoque
 │   ├── contratos-de-datos.md                                 <-- Formato de los JSON que comparten los frentes
 │   ├── cruce-de-datos.md                                     <-- Qué sale de cruzar NASA POWER, AIZAL y Landsat; análisis de zonas
 │   ├── documentacion-tecnica-agronomica.md                   <-- Secciones de cultivo A/B/C/D y reglas de rotación
@@ -125,6 +128,12 @@ BioSat/
 │   ├── resena-desafio.md                                     <-- Reseña del desafío y guía de entrevista
 │   ├── transcripcion-video-desafio.md                        <-- Transcripción del video del desafío (los 4 verbos)
 │   └── zonas-santiago-y-kit-arduino.md                       <-- Las 5 zonas, sus rotaciones y el kit Arduino
+├── planes/                                                   <-- Plan de cada integrante y cómo trabajamos en ramas
+│   ├── 1-enzo.md                                             <-- Plan de Enzo · integración y app (rama enzo-app)
+│   ├── 2-santi.md                                            <-- Plan de Santi · suelo, satélite e IA (rama santi-datos-ia)
+│   ├── 3-vale.md                                             <-- Plan de Vale · campo y agronomía (rama vale-rotaciones)
+│   ├── 4-sara.md                                             <-- Plan de Sara · Arduino y relato (rama sara-arduino-entrega)
+│   └── README.md                                             <-- Objetivo común, ramas, reglas e hitos de integración
 └── scripts/                                                  <-- Herramientas para bajar y procesar datos
     ├── actualizar_readme.py                                  <-- Regenera las secciones automáticas del README
     ├── descargar_nasa_power.py                               <-- Descarga y resume NASA POWER por zona
@@ -184,7 +193,7 @@ python scripts/actualizar_readme.py
 Las secciones **Estado del proyecto**, **Últimas decisiones** y **Estructura del repositorio** se generan solas:
 
 - **Cuándo:** en cada `push` a `main`, GitHub Actions corre [`scripts/actualizar_readme.py`](scripts/actualizar_readme.py) y, si algo cambió, sube el README actualizado.
-- **Avance:** sale de las casillas `- [ ]` / `- [x]` de [PLAN.md](PLAN.md).
+- **Avance:** sale de las casillas `- [ ]` / `- [x]` de los planes de [`planes/`](planes/README.md).
 - **Decisiones:** salen de la [bitácora](docs/reglas-y-bitacora.md).
 - **Estructura:** sale de los archivos del repo. Para darle descripción a un archivo nuevo, agregalo en `DESCRIPCIONES` dentro del script.
 - **Qué no tocar a mano:** lo que está entre las marcas `<!-- AUTO:... -->`, porque se pisa. El resto del README sí se edita a mano.
@@ -194,8 +203,8 @@ Las secciones **Estado del proyecto**, **Últimas decisiones** y **Estructura de
 
 ## Reglas rápidas para colaborar
 
-1. **Antes de empezar:** leer [PLAN.md](PLAN.md) y [docs/contratos-de-datos.md](docs/contratos-de-datos.md). Los agentes de IA también.
-2. **Carpetas:** cada rol trabaja en sus carpetas (ver PLAN §2).
-3. **Antes de cada push:** `git pull --rebase`. Commits chicos y sin la línea `Co-Authored-By`.
+1. **Antes de empezar:** leer [planes/README.md](planes/README.md), tu plan y [docs/contratos-de-datos.md](docs/contratos-de-datos.md). Los agentes de IA también.
+2. **Ramas y archivos:** cada uno trabaja en su rama y en sus archivos; nadie sube directo a `main`. Se integra con un *Pull Request* en cada hito.
+3. **Para traer lo de los demás:** `git fetch origin && git merge origin/main`. Commits chicos y sin la línea `Co-Authored-By`.
 4. **Datos faltantes:** van como `null`. **Nunca inventar números.**
 5. **Registro:** cada decisión va a la bitácora y cada término nuevo al glosario.

@@ -1,9 +1,9 @@
 # PLAN de trabajo — BioSat
 
 > **Para qué sirve:** es el **único plan del equipo**. Dice qué vamos a mostrar, quién hace cada cosa, en qué orden y cuándo nos juntamos a integrar.
-> **Cómo se usa:** cuando termines una tarea, cambiá `- [ ]` por `- [x]` y subilo. El avance del [README](README.md) se actualiza solo.
+> **Cómo se usa:** este es el plan general. Las tareas de cada uno, con sus casillas, están en su plan personal en [`planes/`](planes/README.md). Cuando termines una, tildala en tu plan; el avance del [README](README.md) se actualiza solo al integrar a `main`.
 > **Reemplaza a:** `docs/plan-de-pasos-y-agentes.md` (decisión D-15 de la [bitácora](docs/reglas-y-bitacora.md)).
-> **Última revisión:** sábado 14/11/2026, 15:00.
+> **Última revisión:** sábado 14/11/2026, 15:30 (trabajo en ramas, D-23).
 
 ---
 
@@ -49,12 +49,14 @@ Y en la mesa del jurado, el **kit Arduino con 3 bandejas de suelo** (pelado, sal
 
 Somos **4 personas**: Enzo, Santi, Vale y Sara, cada una con su agente de IA. Cada rol tiene **sus propias carpetas** para no pisarnos. Los roles son una propuesta: si alguien sabe más de otra cosa, se cambian.
 
-| # | Quién | Rol | Frentes | Carpetas propias |
-|---|---|---|---|---|
-| 1 | **Enzo** | Integración y app | F1 Clima · F5 App y motor | `web/`, `scripts/descargar_nasa_power.py`, `data/clima_zonas.json` |
-| 2 | **Santi** | Suelo, satélite e IA | F2 Suelo AIZAL · F3 IA Landsat | `ia_landsat/`, `data/datos_cruzados_aizal/`, `data/suelo_zonas.json`, `data/diagnostico_landsat_ia.json`, `scripts/*.js` |
-| 3 | **Vale** | Campo y agronomía | F4 Rotaciones (incluye validar la Zona 5) | `data/rotaciones_santiago.json`, textos agronómicos de `docs/` |
-| 4 | **Sara** | Kit Arduino y relato | F6 Arduino · F7 Entrega (coordina) | `arduino/`, `entrega/`, `data/arduino_bandejas_demo.json` |
+| # | Quién | Rol | Frentes | Rama | Plan y checklist |
+|---|---|---|---|---|---|
+| 1 | **Enzo** | Integración y app | F1 Clima · F5 App y motor | `enzo-app` | [planes/1-enzo.md](planes/1-enzo.md) |
+| 2 | **Santi** | Suelo, satélite e IA | F2 Suelo AIZAL · F3 IA Landsat | `santi-datos-ia` | [planes/2-santi.md](planes/2-santi.md) |
+| 3 | **Vale** | Campo y agronomía | F4 Rotaciones (incluye validar la Zona 5) | `vale-rotaciones` | [planes/3-vale.md](planes/3-vale.md) |
+| 4 | **Sara** | Kit Arduino y relato | F6 Arduino · F7 Entrega (coordina) | `sara-arduino-entrega` | [planes/4-sara.md](planes/4-sara.md) |
+
+Cada uno trabaja en **su rama** y en **sus archivos**: la lista completa de quién es dueño de qué está en [`planes/README.md`](planes/README.md).
 
 Al sumarse Sara (D-22), Enzo deja el Arduino para concentrarse en la app, y Vale deja la coordinación de la entrega para concentrarse en las rotaciones de las 5 zonas.
 
@@ -164,6 +166,7 @@ gantt
 | Cuándo | Momento | Qué tiene que estar listo |
 |---|---|---|
 | Sáb 13:30 | **Arranque** (15 min juntos) | Roles confirmados, contratos acordados, hora de entrega confirmada |
+| Sáb 16:30 | **Hito 0** | Cada uno en su rama, con su plan revisado; hora y formato de la entrega confirmados |
 | Sáb 20:30 | **Checkpoint 1** | App v1 publicada con calendario y fichas de la zona protagonista, con datos reales |
 | Dom 09:30 | **Checkpoint 2** | Decisión de IA (modelo o método simple), las 5 zonas cargadas |
 | Dom 15:00 | **Congelamiento** | No se suman funciones nuevas: solo se arregla y se pule |
@@ -173,117 +176,19 @@ gantt
 
 ## 5. Tareas por frente
 
-### F1 · Clima con datos bien medidos (Enzo)
+Las tareas detalladas, con sus casillas, están en el **plan de cada persona**. Así cada uno tilda en su propio archivo, en su rama, sin pisar a nadie. Este resumen sirve para ver qué busca cada frente.
 
-**Objetivo:** que cada número del calendario sea correcto y se pueda defender ante un científico.
-**Listo cuando:** existe `data/clima_zonas.json`, el balance de agua da negativo en invierno y el informe compara contra 1991-2020.
+| Frente | Quién | Objetivo | Listo cuando |
+|---|---|---|---|
+| F1 · Clima con datos bien medidos | [Enzo](planes/1-enzo.md) | Que cada número del calendario sea correcto y defendible | `data/clima_zonas.json` real para las 5 zonas, con la normal 1991-2020 y el balance lluvia − ET0 |
+| F2 · Suelo y paisaje con AIZAL | [Santi](planes/2-santi.md) | Sumar la información local de suelo que pide el desafío | Cada zona tiene sus valores de suelo con fuente y confianza |
+| F3 · IA con Landsat | [Santi](planes/2-santi.md) | Cumplir la idea de la profesora de forma medible | Tabla de métricas de los 3 métodos y JSON con valores calculados |
+| F4 · Rotaciones y agronomía | [Vale](planes/3-vale.md) | Rotaciones creíbles para un productor santiagueño | 15 rotaciones en el JSON, la zona protagonista validada y fuentes citadas |
+| F5 · App web y motor de reglas | [Enzo](planes/1-enzo.md) | Que un productor recorra los 5 pasos sin ayuda | Link público que anda en celular y copia sin internet |
+| F6 · Kit Arduino | [Sara](planes/4-sara.md) | Mostrar en vivo suelo pelado contra cubierto | La demo anda con y sin Arduino |
+| F7 · Entrega y presentación | [Sara](planes/4-sara.md) (con todos) | Historia clara en 2 minutos y entrega a tiempo | Entrega subida y 2 ensayos hechos |
 
-- [ ] Ampliar `scripts/descargar_nasa_power.py` a **1981-2025** (hoy usa solo 2020-2025)
-- [ ] Calcular lo **normal** con 1991-2020 y lo **reciente** con 2021-2025
-- [ ] Corregir la evapotranspiración: `EVPTRNS` viene en MJ/m²/día, no en mm. Calcular la **demanda de agua (ET0, Hargreaves)** y el balance **lluvia − ET0** (hoy da +500 mm al año; lo correcto ronda −900 mm)
-- [ ] Agregar rangos entre años (año seco, normal y húmedo) y la probabilidad de helada por mes
-- [ ] Agregar las fechas típicas de primera y última helada
-- [ ] Mostrar la humedad en raíces (`GWETROOT`) como anomalía contra lo normal, no con umbrales fijos
-- [x] Decidir las zonas: quedan 5, con el sur serrano como Zona 5 (D-21, ver [`docs/cruce-de-datos.md`](docs/cruce-de-datos.md) §4)
-- [ ] Incluir la Zona 5 (Ojo de Agua, -29.50, -63.69) en la descarga
-- [ ] Generar `data/clima_zonas.json` según el contrato
-- [ ] Corregir `docs/analisis-datos-nasa-santiago.md`: comparar contra 1991-2020 y decir "modelo de reanálisis", no "lo detectó el satélite"
-
-### F2 · Suelo y paisaje con AIZAL (Santi)
-
-**Objetivo:** sumar la información local de suelo que pide el enunciado, con datos del Gran Chaco.
-**Listo cuando:** cada zona tiene sus valores de suelo con fuente y nivel de confianza.
-
-- [ ] Confirmar acceso al stack AIZAL V4 en Google Earth Engine (o exportar GeoTIFF)
-- [ ] Definir el punto o polígono de cada zona y del campo del productor
-- [ ] Extraer por zona: pH (B16), arcilla, arena y limo (B12, B17a, B17b), carbono orgánico (B15), nitrógeno (B11), densidad aparente (B18), sequía PDSI (B05), distancia a caminos (B36) y a monte (B31)
-- [ ] Agregar el porcentaje de monte nativo por zona (MapBiomas Chaco)
-- [ ] Guardar `data/suelo_zonas.json` según el contrato
-- [ ] Adaptar `scripts/earth_engine_embeddings.js` a Santiago del Estero (hoy apunta a un punto de California) para buscar zonas parecidas
-- [ ] Plan B si no hay acceso a AIZAL: SoilGrids por punto
-- [ ] Agrupar la provincia en zonas parecidas con los embeddings AlphaEarth (k-means en Earth Engine) para validar o ajustar las zonas
-
-### F3 · IA con Landsat: suelo pelado y desmonte (Santi)
-
-**Objetivo:** cumplir la idea de la profesora (CNN + RNN + Transformer) de forma que se pueda **medir y defender**.
-**Listo cuando:** hay una tabla de métricas que compara los 3 métodos y el JSON tiene solo valores calculados.
-
-- [ ] Correr [`scripts/gee_visor_biosat.js`](scripts/gee_visor_biosat.js) en Google Earth Engine y publicarlo como Earth Engine App (link público para la app y el pitch)
-- [ ] Correr [`scripts/gee_exportar_zonas.js`](scripts/gee_exportar_zonas.js): estadísticas por zona (meses de suelo pelado, monte y desmonte) e imágenes para el visor de la app
-- [ ] Bajar series Landsat 8/9 (2016-2025) de muestras en cada zona (Google Earth Engine o Microsoft Planetary Computer, que ya probamos y funciona sin cuenta)
-- [ ] Calcular NDVI, NBR y BSI por fecha y armar compuestos mensuales
-- [ ] Usar **etiquetas reales** de MapBiomas Chaco (monte, desmonte, agrícola) para entrenar y evaluar
-- [ ] Método simple de referencia: umbrales de NDVI y NBR
-- [ ] Modelo 1: CNN (mira el parche) + LSTM (mira la secuencia en el tiempo)
-- [ ] Modelo 2: CNN + Transformer temporal, para comparar con el modelo 1
-- [ ] Evaluar los 3 métodos con zonas que el modelo no vio (exactitud y F1) y guardar la tabla
-- [ ] Calcular los **meses de suelo pelado** por zona (van al calendario) y el % de desmonte reciente (Zona 3)
-- [ ] Definir el índice de fragilidad como **fórmula visible**, no como salida de una caja negra
-- [ ] Guardar `data/diagnostico_landsat_ia.json`, **solo con valores calculados, nunca de ejemplo**
-
-### F4 · Rotaciones y agronomía (Vale)
-
-**Objetivo:** que las 3 rotaciones de cada zona sean creíbles para un productor santiagueño.
-**Listo cuando:** las 12 fichas están en el JSON y las de la zona protagonista fueron revisadas por el productor.
-
-- [ ] Entrevistar al productor con la guía de [`docs/resena-desafio.md`](docs/resena-desafio.md) §10 (pedir permiso para usar su caso)
-- [ ] Elegir la **zona protagonista** (la del productor)
-- [ ] Escribir las 3 rotaciones de la zona protagonista con los 5 puntos, marcando la sección A/B/C/D de cada cultivo
-- [ ] Revisarlas con el productor y, si se puede, con un agrónomo o el INTA
-- [ ] Escribir las rotaciones de las otras 3 zonas (versión corta, a partir de [`docs/zonas-santiago-y-kit-arduino.md`](docs/zonas-santiago-y-kit-arduino.md))
-- [ ] Citar la fuente de cada afirmación agronómica (INTA, trabajos publicados)
-- [ ] Guardar `data/rotaciones_santiago.json` según el contrato
-- [x] Corregir los textos del kit: el sensor de agua no distingue salitre de humedad sin calibrar, y el LDR mide luz, no NDVI
-- [ ] Validar con productores del sur (o con el INTA) las rotaciones borrador de la Zona 5
-
-### F5 · App web y motor de reglas (Enzo)
-
-**Objetivo:** que un productor recorra los 5 pasos sin ayuda y entienda de dónde sale cada dato.
-**Listo cuando:** hay un link público que funciona en celular y una copia que funciona sin internet.
-
-- [ ] Crear `web/` con HTML y JavaScript sin instalación, que lea los JSON de `data/`
-- [ ] Paso 1: zona, prioridades (ahorrar agua, frenar salitre, recuperar suelo, forraje, ingreso) y límites (riego, maquinaria, ganado)
-- [ ] Paso 2: **calendario del lote** con 12 meses (calor, helada, falta de agua y suelo pelado de cada rotación)
-- [ ] Paso 3: comparador de las 3 rotaciones con los 5 puntos y "qué falta saber"
-- [ ] Motor de reglas transparente (secciones A/B/C/D + prioridades) que ordena las rotaciones y **explica por qué**
-- [ ] Paso 4: simulador de lluvia (−30 % a +20 %) y temperatura (+0 a +2,5 °C)
-- [ ] Bloque "qué ganás y qué te cuesta" en cada rotación, comparado contra la rotación actual
-- [ ] Gráfico de compensaciones: agua que pide el lote contra meses de suelo protegido
-- [ ] Riesgo como frecuencia ("en 1 de cada 5 años…"), calculado año por año
-- [ ] Etiqueta de confianza en cada dato (alta, media o baja) con el porqué
-- [ ] Visor GIS del lote con imágenes Landsat (color real, verdor NDVI, invierno contra verano, 2000 contra 2025) y la celda de NASA POWER dibujada encima
-- [ ] Paso 5: lista para llevar al agrónomo (imprimible)
-- [ ] Mostrar siempre "apoya, no reemplaza" y la fuente de cada dato
-- [ ] Publicar en GitHub Pages
-- [ ] Probar en celular y sin internet
-
-### F6 · Kit Arduino "Espacio vs. Tierra" (Sara)
-
-**Objetivo:** mostrar en vivo que el suelo pelado se calienta y se seca mucho más que el cubierto.
-**Listo cuando:** la demo funciona con el Arduino conectado y también sin él.
-
-- [ ] Sketch `arduino/biosat_estacion_campo/biosat_estacion_campo.ino`: sensor de agua (A0), LM35 (A1), LDR (A2), DHT11, LEDs y LCD, con una línea JSON cada 2 segundos
-- [ ] Armar las 3 bandejas: pelada y seca, salitrosa, con rastrojo
-- [ ] Calibrar los umbrales con las bandejas reales
-- [ ] Leer el Arduino desde la app con Web Serial (Chrome o Edge), sin programa intermedio
-- [ ] Grabar lecturas reales de las 3 bandejas como respaldo en `data/arduino_bandejas_demo.json`
-
-### F7 · Entrega y presentación (todos; coordina Sara)
-
-**Objetivo:** que el jurado entienda la historia en 2 minutos y que la entrega llegue a tiempo.
-**Listo cuando:** el proyecto está subido a Space Apps y la demo se ensayó 2 veces.
-
-- [ ] Confirmar la hora de entrega y el formato en la guía del participante (desde el celular, porque en la PC falla el certificado del sitio)
-- [ ] Guion de 2-3 minutos con el mismo zoom del video de la NASA: NASA POWER (50 km) → AIZAL (500 m) → Landsat (30 m) → sensor (1 m²) → el productor. Mostrar los 4 verbos del video en la app
-- [ ] Buscar una foto de astronauta del Chaco santiagueño en el catálogo público de la NASA (eol.jsc.nasa.gov): uno de los expertos del desafío trabaja con esas fotos
-- [ ] Usar la comparación Landsat 2000 contra 2025 de Campo Gallo (desmonte) en el pitch
-- [ ] Video o diapositivas según el formato que pidan
-- [ ] Página del proyecto en Space Apps: resumen, datos de la NASA usados, link al repo y a la app
-- [ ] Declarar el uso de herramientas de IA si la guía lo pide
-- [ ] Revisar las reglas de uso de marcas (no usar logos de la NASA si no está permitido)
-- [ ] Revisar el README final
-- [ ] Hacer 2 ensayos completos de la demo
-- [ ] Subir la entrega con margen
+El avance de cada uno se ve en el [README](README.md), contado desde los planes.
 
 ---
 
@@ -303,14 +208,15 @@ El detalle de cada campo está en [`docs/contratos-de-datos.md`](docs/contratos-
 
 ## 7. Reglas para no pisarnos
 
-1. **Cada uno en sus carpetas** (tabla de la sección 2). En los archivos compartidos:
-   - `PLAN.md`: solo se tildan casillas.
-   - Bitácora: solo se agregan líneas al final.
-   - README: solo se tocan las partes manuales.
-2. **`git pull --rebase` antes de cada `git push`.** Commits chicos y seguidos.
-3. **Commits sin la línea `Co-Authored-By`** (convención del equipo).
-4. **Los agentes de IA** leen `README.md`, `PLAN.md` y `docs/contratos-de-datos.md` antes de tocar código, y trabajan solo en las carpetas de su rol.
-5. Cada decisión importante va a la [bitácora](docs/reglas-y-bitacora.md). Cada término nuevo va al [glosario](docs/glosario.md).
+El detalle está en [`planes/README.md`](planes/README.md). En corto:
+
+1. **Cada uno en su rama** (`enzo-app`, `santi-datos-ia`, `vale-rotaciones`, `sara-arduino-entrega`). Nadie sube directo a `main`.
+2. **Cada uno en sus archivos.** Los compartidos (`PLAN.md`, `README.md`, bitácora, contratos) los toca solo Enzo, en `main`.
+3. **Integración en cada hito** con un *Pull Request* a `main`: primero los datos (Santi, Vale, Sara) y al final la app (Enzo).
+4. **Traer lo de los demás:** `git fetch origin && git merge origin/main` en tu rama.
+5. **Decisiones** en la sección "Mis decisiones" de tu plan; Enzo las pasa a la [bitácora](docs/reglas-y-bitacora.md).
+6. **Commits sin la línea `Co-Authored-By`** (convención del equipo).
+7. **Agentes de IA:** leen `planes/README.md`, el plan de su dueño y los contratos antes de tocar nada.
 
 ---
 

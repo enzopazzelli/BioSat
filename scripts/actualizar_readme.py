@@ -27,6 +27,7 @@ from pathlib import Path
 RAIZ = Path(__file__).resolve().parent.parent
 README = RAIZ / "README.md"
 PLAN = RAIZ / "PLAN.md"
+PLANES = RAIZ / "planes"
 BITACORA = RAIZ / "docs" / "reglas-y-bitacora.md"
 
 # Descripción corta de cada archivo o carpeta que aparece en el árbol.
@@ -43,6 +44,19 @@ DESCRIPCIONES = {
     "data": "Datos y contratos JSON que lee la app",
     "data/nasa_power_santiago_zonas.json": "Clima NASA POWER 2020-2025 (se reemplaza, ver PLAN F1)",
     "data/resumen_mensual_santiago.csv": "Resumen climático mensual por zona",
+    "data/suelo_zonas.json": "Suelo por zona (Santi) · plantilla hasta tener datos",
+    "data/diagnostico_landsat_ia.json": "Diagnóstico IA Landsat (Santi) · plantilla hasta tener datos",
+    "data/rotaciones_santiago.json": "Rotaciones de las 5 zonas (Vale) · plantilla hasta tener datos",
+    "data/arduino_bandejas_demo.json": "Lecturas grabadas del kit (Sara) · plantilla hasta tener datos",
+    "data/imagenes": "Imágenes del visor exportadas de Earth Engine (Santi)",
+    "planes": "Plan de cada integrante y cómo trabajamos en ramas",
+    "planes/README.md": "Objetivo común, ramas, reglas e hitos de integración",
+    "planes/1-enzo.md": "Plan de Enzo · integración y app (rama enzo-app)",
+    "planes/2-santi.md": "Plan de Santi · suelo, satélite e IA (rama santi-datos-ia)",
+    "planes/3-vale.md": "Plan de Vale · campo y agronomía (rama vale-rotaciones)",
+    "planes/4-sara.md": "Plan de Sara · Arduino y relato (rama sara-arduino-entrega)",
+    "docs/BioSat-cruce-de-datos-validacion.docx": "Documento para que la profesora valide el enfoque",
+    ".gitignore": "Archivos que git no sube",
     "data/raw_nasa_power": "Descargas crudas de NASA POWER",
     "data/datos_cruzados_aizal": "Catálogo AIZAL V4: 38 variables de suelo, clima y paisaje",
     "data/datos_cruzados_aizal/CATALOGO_MAESTRO_VARIABLES.md": "Índice de módulos y reglas que disparan",
@@ -98,7 +112,31 @@ def barra(hechas, total, ancho=10):
     return "▓" * llenos + "░" * (ancho - llenos)
 
 
+def contar_casillas(texto):
+    tareas = re.findall(r"^\s*[-*]\s+\[( |x|X)\]", texto, re.M)
+    return sum(1 for t in tareas if t.lower() == "x"), len(tareas)
+
+
 def seccion_avance():
+    # Si hay planes individuales (planes/N-nombre.md), el avance se cuenta por persona.
+    planes = sorted(p for p in PLANES.glob("*.md") if p.name.lower() != "readme.md")
+    if planes:
+        filas = ["| Persona | Rama | Avance | Tareas |", "|---|---|---|---|"]
+        th = tt = 0
+        for p in planes:
+            texto = leer(p)
+            titulo = re.search(r"^# (?:Plan de )?(.+)$", texto, re.M)
+            nombre = titulo.group(1).strip() if titulo else p.stem
+            rama = re.search(r"\*\*Rama\*\*\s*\|\s*`([^`]+)`", texto)
+            h, t = contar_casillas(texto)
+            th += h; tt += t
+            pct = round(100 * h / t) if t else 0
+            enlace = f"[{nombre.replace('|', '/')}](planes/{p.name})"
+            filas.append(f"| {enlace} | `{rama.group(1) if rama else '-'}` | `{barra(h, t)}` {pct}% | {h}/{t} |")
+        pct = round(100 * th / tt) if tt else 0
+        filas.append(f"| **Total** | | `{barra(th, tt)}` **{pct}%** | **{th}/{tt}** |")
+        return "\n".join(filas)
+
     texto = leer(PLAN)
     if not texto:
         return "_Todavía no hay PLAN.md._"

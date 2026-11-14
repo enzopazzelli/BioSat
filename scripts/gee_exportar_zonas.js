@@ -4,7 +4,7 @@
  * Cómo usarlo:
  *   1. Pegar en https://code.earthengine.google.com y tocar "Run".
  *   2. En la consola aparece la tabla por zona y los links de las imágenes.
- *      Bajarlas a web/img/ con el nombre que indica cada link.
+ *      Bajarlas a data/imagenes/ con el nombre que indica cada link (contratos §5).
  *   3. En la pestaña "Tasks", correr "biosat_estadisticas_zonas" (CSV a Google Drive).
  *   4. Con el CSV se completa data/diagnostico_landsat_ia.json
  *      (ver docs/contratos-de-datos.md §3). Nunca completar a mano.

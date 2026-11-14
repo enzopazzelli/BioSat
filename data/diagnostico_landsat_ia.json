@@ -1,0 +1,75 @@
+{
+  "meta": {
+    "fuente": "Landsat 8/9 Collection 2 Level-2 (30 m)",
+    "generado_por": "plantilla inicial · dueño: Santi",
+    "fecha": null,
+    "notas": "Plantilla sin datos (D-23). La reemplaza su dueño con datos reales; nunca completar con números inventados.",
+    "etiquetas": null,
+    "periodo": null
+  },
+  "evaluacion": {
+    "datos_de_prueba": null,
+    "metodos": {
+      "umbral_ndvi_nbr": {
+        "exactitud": null,
+        "f1": null
+      },
+      "cnn_lstm": {
+        "exactitud": null,
+        "f1": null
+      },
+      "cnn_transformer": {
+        "exactitud": null,
+        "f1": null
+      }
+    },
+    "metodo_elegido": null
+  },
+  "zonas": {
+    "zona_1_riego_salitre": {
+      "meses_suelo_pelado": null,
+      "meses_suelo_pelado_promedio_anual": null,
+      "desmonte_reciente_pct": null,
+      "monte_actual_pct": null,
+      "indice_fragilidad_0_100": null,
+      "formula_fragilidad": null,
+      "confianza": null
+    },
+    "zona_2_secano_este": {
+      "meses_suelo_pelado": null,
+      "meses_suelo_pelado_promedio_anual": null,
+      "desmonte_reciente_pct": null,
+      "monte_actual_pct": null,
+      "indice_fragilidad_0_100": null,
+      "formula_fragilidad": null,
+      "confianza": null
+    },
+    "zona_3_monte_semiarido": {
+      "meses_suelo_pelado": null,
+      "meses_suelo_pelado_promedio_anual": null,
+      "desmonte_reciente_pct": null,
+      "monte_actual_pct": null,
+      "indice_fragilidad_0_100": null,
+      "formula_fragilidad": null,
+      "confianza": null
+    },
+    "zona_4_bajos_submeridionales": {
+      "meses_suelo_pelado": null,
+      "meses_suelo_pelado_promedio_anual": null,
+      "desmonte_reciente_pct": null,
+      "monte_actual_pct": null,
+      "indice_fragilidad_0_100": null,
+      "formula_fragilidad": null,
+      "confianza": null
+    },
+    "zona_5_sur_serrano": {
+      "meses_suelo_pelado": null,
+      "meses_suelo_pelado_promedio_anual": null,
+      "desmonte_reciente_pct": null,
+      "monte_actual_pct": null,
+      "indice_fragilidad_0_100": null,
+      "formula_fragilidad": null,
+      "confianza": null
+    }
+  }
+}

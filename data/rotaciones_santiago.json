@@ -1,0 +1,35 @@
+{
+  "meta": {
+    "fuente": "Entrevista al productor + INTA + bibliografía",
+    "generado_por": "plantilla inicial · dueño: Vale",
+    "fecha": null,
+    "notas": "Plantilla sin datos (D-23). La reemplaza su dueño con datos reales; nunca completar con números inventados."
+  },
+  "zonas": {
+    "zona_1_riego_salitre": {
+      "zona_protagonista": false,
+      "validado_por": "sin validar",
+      "rotaciones": []
+    },
+    "zona_2_secano_este": {
+      "zona_protagonista": false,
+      "validado_por": "sin validar",
+      "rotaciones": []
+    },
+    "zona_3_monte_semiarido": {
+      "zona_protagonista": false,
+      "validado_por": "sin validar",
+      "rotaciones": []
+    },
+    "zona_4_bajos_submeridionales": {
+      "zona_protagonista": false,
+      "validado_por": "sin validar",
+      "rotaciones": []
+    },
+    "zona_5_sur_serrano": {
+      "zona_protagonista": false,
+      "validado_por": "sin validar",
+      "rotaciones": []
+    }
+  }
+}

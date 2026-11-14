@@ -118,3 +118,9 @@ Según la página oficial de premios (`NASA Space Apps Challenge - awards.mhtml`
     - **Vale:** rotaciones y agronomía de las 5 zonas (F4).
     - **Sara:** kit Arduino y coordinación de la entrega (F6, F7).
   - Se actualizaron el [PLAN](../PLAN.md) (roles, carpetas, cronograma y frentes), el README y los contratos de datos.
+- **D-23 (Trabajo en paralelo con ramas y planes individuales):**
+  - **Ramas:** cada integrante trabaja en la suya: `enzo-app`, `santi-datos-ia`, `vale-rotaciones` y `sara-arduino-entrega`. Se integra a `main` con *Pull Requests* en cada hito: Hito 0 (sáb 16:30), Checkpoint 1, Checkpoint 2 y congelamiento.
+  - **Planes personales:** las tareas con casillas pasan del PLAN a los planes de [`planes/`](../planes/README.md). Cada uno tilda en su archivo, sin conflictos. El README cuenta el avance por persona.
+  - **Libertad de cada uno:** los planes son un punto de partida; cada integrante decide cómo abordar su parte. Lo fijo es el objetivo común, los contratos y los hitos.
+  - **Archivos compartidos y decisiones:** los compartidos los edita solo Enzo en `main`. Las decisiones se anotan en cada plan y Enzo las pasa a esta bitácora.
+  - **Plantillas:** se suben con todo en `null` los 4 archivos compartidos, para que la app se pueda programar desde el principio. Se suma el contrato de las imágenes del visor (`data/imagenes/`).
