@@ -13,7 +13,7 @@ Este panorama se escribió a mano a partir de `main`, los planes de [`planes/`](
 | F1 · Clima | Enzo | **Listo** | `clima_zonas.json` completo (1981-2025, 5 zonas, ET0, normal contra reciente) | Nada |
 | F5 · App y motor | Enzo | **Casi listo** | App publicada con calendario, 3 rotaciones, simulador, visor, desmonte, zonificación, pantalla del kit y guía del campo | Integrar el lector de Sara, ensayar la demo |
 | F4 · Rotaciones | Vale | **Casi listo** | 15 rotaciones (5 zonas × 3). Zona 5 validada por un productor | Validar las zonas 1 a 4; revisar textos de la app; glosario |
-| F2 · Suelo y zonificación | Santi | **A medias** | Zonificación AIZAL en 5 grupos, cargada | `suelo_zonas.json` con 58 de 169 valores; visor de Earth Engine sin publicar |
+| F2 · Suelo y zonificación | Santi | **A medias** | Zonificación AIZAL en 5 grupos, cargada | `suelo_zonas.json` y `diagnostico_landsat_ia.json` vacíos; visor de Earth Engine sin publicar |
 | F3 · Modelo de desmontes | Santi | **Listo, con ajustes** | Modelo validado en el tiempo, riesgo y proyección por zona | Índice de fragilidad; revisar métricas (ver 4) |
 | F6 · Arduino | Sara | **Sin empezar** | Nada en el repo | Sketch, lector Web Serial, bandejas, lecturas grabadas |
 | F7 · Entrega | Sara (coordina) | **Sin empezar** | Nada | Guion, video o diapositivas, página del proyecto, ensayos |
@@ -42,8 +42,8 @@ Se verificó en Chrome sin internet, a 390 px de ancho y con 13 pruebas automát
 | `rotaciones_santiago.json` | 100% | Vale; 1 de 5 zonas validada |
 | `desmonte_zonas.json` | 100% | Santi |
 | `zonificacion_aizal.json` | 100% | Santi |
-| `suelo_zonas.json` | 34% (58 de 169) | Lo que falta se muestra como "sin dato" |
-| `diagnostico_landsat_ia.json` | 6% (3 de 49) | Falta correr Earth Engine; la app dice "pendiente" |
+| `suelo_zonas.json` | 0% (ninguna medición de las 55) | Plantilla vacía: la app muestra "sin dato" |
+| `diagnostico_landsat_ia.json` | 0% (sin meses de suelo pelado) | Plantilla vacía: falta correr Earth Engine; la app dice "pendiente" |
 | `arduino_bandejas_demo.json` | plantilla vacía | Lo carga Sara |
 
 ---
@@ -52,7 +52,7 @@ Se verificó en Chrome sin internet, a 390 px de ancho y con 13 pruebas automát
 
 1. **El kit Arduino no tiene nada en el repo.** Sin sketch, sin lector (`arduino/lector-web-serial.js`) y sin lecturas grabadas, la pantalla del kit solo funciona si Sara llega con todo armado y conectado. Es el riesgo más grande: su plan está en 5% y es el frente que más tiempo físico necesita (armar y calibrar 3 bandejas).
 2. **La entrega no empezó.** Falta el guion, el video o las diapositivas, la página del proyecto en Space Apps y la declaración de uso de IA. Solo Sara los tiene asignados.
-3. **Falta el suelo pelado por Landsat** (`diagnostico_landsat_ia.json`). El calendario de suelo pelado de la app depende de eso o del calendario de la rotación.
+3. **Faltan el suelo y el suelo pelado por Landsat** (`suelo_zonas.json` y `diagnostico_landsat_ia.json`). Hoy la app los muestra como "sin dato" o "pendiente": el panel de suelo está vacío.
 
 ---
 

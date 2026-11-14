@@ -104,11 +104,11 @@ BioSat/
 │   ├── arduino_bandejas_demo.json                            <-- Lecturas grabadas del kit (Sara) · plantilla vacía
 │   ├── clima_zonas.json                                      <-- Clima NASA POWER 1981-2025 de las 5 zonas (lo lee la app)
 │   ├── desmonte_zonas.json                                   <-- Riesgo, proyección y métricas del modelo de desmontes (Santi) · cargado
-│   ├── diagnostico_landsat_ia.json                           <-- Meses de suelo pelado por umbral (Santi) · casi vacío: falta correr Earth Engine
+│   ├── diagnostico_landsat_ia.json                           <-- Meses de suelo pelado por umbral (Santi) · plantilla vacía: falta correr Earth Engine
 │   ├── meteomatics_santiago_zonas.json                       <-- Pronóstico y clima de Meteomatics por zona (Santi)
 │   ├── resumen_mensual_santiago.csv                          <-- Normal 1991-2020 por mes y zona, para planilla
 │   ├── rotaciones_santiago.json                              <-- 15 rotaciones de las 5 zonas (Vale) · Zona 5 validada por un productor, el resto sin validar
-│   ├── suelo_zonas.json                                      <-- Suelo por zona (Santi) · parcial: 58 de 169 valores
+│   ├── suelo_zonas.json                                      <-- Suelo por zona (Santi) · plantilla vacía: falta extraer de AIZAL
 │   ├── zonificacion_aizal.json                               <-- Zonificación k-means con AIZAL, 5 grupos (Santi) · cargada
 │   └── datos_cruzados_aizal/                                 <-- Catálogo AIZAL V4: 38 variables de suelo, clima y paisaje
 │       ├── CATALOGO_MAESTRO_VARIABLES.md                     <-- Índice de módulos y reglas que disparan
