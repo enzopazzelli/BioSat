@@ -110,8 +110,8 @@ const CF = {
   lluvia:['media','La lluvia cambia mucho en pocos kilómetros y la celda de 50 km la promedia.'],
   balance:['media','La demanda de agua se estima con una fórmula simple (Hargreaves).'],
   racha:['media','Sale de la lluvia del modelo; un pluviómetro en el campo puede marcar otra cosa.'],
-  rot:['baja','Año tipo de la rotación: borrador del equipo hasta que Vale cargue las rotaciones validadas.'],
-  puntaje:['baja','Sale de reglas fijas sobre la rotación (ver "¿Cómo ordena BioSat?"). Es baja mientras las rotaciones sean borrador.'],
+  rot:['baja','Año tipo de la rotación: lo armó el equipo y todavía no lo validó un productor ni un agrónomo.'],
+  puntaje:['baja','Sale de reglas fijas sobre la rotación (ver "¿Cómo ordena BioSat?"). Es baja mientras las rotaciones no estén validadas.'],
   expo:['media','30 años reales de NASA POWER cruzados con el año tipo de la rotación, que es un supuesto.'],
   agua:['baja','Estimación simple con coeficientes de cultivo de la FAO. Sirve para comparar, no para regar.'],
   celda:['media','Todo lo que cae dentro de la celda comparte los mismos números de clima.']

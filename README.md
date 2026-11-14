@@ -51,9 +51,9 @@ Avance de cada integrante, contado desde las casillas de su plan en [`planes/`](
 |---|---|---|---|
 | [Enzo · Integración y app](planes/1-enzo.md) | `enzo-app` | `▓▓▓▓▓▓▓▓░░` 80% | 24/30 |
 | [Santi · Suelo, satélite e IA](planes/2-santi.md) | `santi-datos-ia` | `░░░░░░░░░░` 0% | 0/21 |
-| [Vale · Campo y agronomía](planes/3-vale.md) | `vale-rotaciones` | `░░░░░░░░░░` 0% | 0/18 |
+| [Vale · Campo y agronomía](planes/3-vale.md) | `vale-rotaciones` | `▓▓▓▓▓▓░░░░` 56% | 10/18 |
 | [Sara · Kit Arduino y relato](planes/4-sara.md) | `sara-arduino-entrega` | `▓░░░░░░░░░` 5% | 1/19 |
-| **Total** | | `▓▓▓░░░░░░░` **28%** | **25/88** |
+| **Total** | | `▓▓▓▓░░░░░░` **40%** | **35/88** |
 <!-- AUTO:AVANCE:FIN -->
 
 **Últimas decisiones:**
