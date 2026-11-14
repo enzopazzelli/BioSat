@@ -1,35 +1,1129 @@
 {
   "meta": {
-    "fuente": "Entrevista al productor + INTA + bibliografía",
-    "generado_por": "plantilla inicial · dueño: Vale",
-    "fecha": null,
-    "notas": "Plantilla sin datos (D-23). La reemplaza su dueño con datos reales; nunca completar con números inventados."
+    "fuente": "Caso real Establecimiento 'Bella Criolla' (cerca del Río Utis, San Francisco, Depto. Quebrachos) + NASA POWER (1991-2025) + AIZAL V4 + Bibliografía INTA EEA Santiago del Estero y Ojo de Agua",
+    "generado_por": "Vale (Frente 4 · Campo y agronomía)",
+    "fecha": "2026-11-14",
+    "notas": "15 rotaciones (3 por cada una de las 5 zonas agroecológicas). Zona protagonista: zona_5_sur_serrano (Establecimiento 'Bella Criolla', zona del Río Utis / San Francisco, Depto. Quebrachos), enfocada en implantación de pasturas y pastoreo mixto vacuno y caprino. PENDIENTE: la entrevista a Bella Criolla todavia no se hizo; las fichas de la Zona 5 se ajustan cuando el productor responda. Las demas zonas se basan en bibliografia y falta validarlas con un agronomo."
   },
   "zonas": {
     "zona_1_riego_salitre": {
       "zona_protagonista": false,
       "validado_por": "sin validar",
-      "rotaciones": []
+      "rotaciones": [
+        {
+          "id": "z1_actual",
+          "tipo": "actual",
+          "nombre": "Algodón sobre algodón con barbecho pelado de invierno",
+          "secuencia": [
+            {
+              "cultivo": "Algodón",
+              "seccion": "C",
+              "siembra_mes": 11,
+              "cosecha_mes": 4
+            }
+          ],
+          "calendario": [
+            "cultivo",
+            "cultivo",
+            "cultivo",
+            "cultivo",
+            "rastrojo",
+            "desnudo",
+            "desnudo",
+            "desnudo",
+            "desnudo",
+            "desnudo",
+            "cultivo",
+            "cultivo"
+          ],
+          "por_que": "Es el esquema tradicional del área de riego del Río Dulce: deja el lote pelado de junio a octubre tras el deslintado y destrucción de rastrojo, favoreciendo el ascenso capilar de sales desde la napa freática.",
+          "evidencia": [
+            {
+              "texto": "Déficit evaporativo de -1.020 mm/año (lluvia normal 763 mm frente a alta demanda atmosférica) que succiona agua salina hacia la superficie cuando el suelo queda desnudo en invierno y primavera.",
+              "dato": "clima_zonas.zona_1_riego_salitre.anual.balance_mm",
+              "fuente": "NASA POWER (1991-2020)"
+            },
+            {
+              "texto": "Los días de calor extremo (> 40 °C) pasaron de 16,2 días/año en la normal 1991-2020 a 28,9 días/año en 2020-2025, acelerando la evaporación directa desde el suelo pelado.",
+              "dato": "clima_zonas.zona_1_riego_salitre.anual.dias_calor_40",
+              "fuente": "NASA POWER"
+            }
+          ],
+          "beneficios": [
+            "Manejo y comercialización de fibra ya conocidos por el productor local.",
+            "Permite labores mecánicas de destrucción de rastrojo obligatorias contra el picudo del algodonero."
+          ],
+          "que_falta_saber": [
+            "Conductividad eléctrica real del suelo (dS/m) y profundidad actual de la napa freática en el lote.",
+            "Calidad salina del turno de agua de riego disponible y nivel de infestación local de picudo."
+          ],
+          "riesgos_revision_local": [
+            "Salinización progresiva de la cama de siembra por 5 meses de suelo desnudo expuesto al sol y viento norte.",
+            "Acumulación del picudo del algodonero y enfermedades de raíz por falta de rotación con gramíneas."
+          ],
+          "atributos": {
+            "demanda_agua": "alta",
+            "aporte_nitrogeno": "negativo",
+            "meses_suelo_desnudo": 5,
+            "forraje": false,
+            "ingreso": "medio",
+            "requiere_riego": true,
+            "maquinaria_especial": "cosechadora de algodón y desmalezadora de rastrojo"
+          },
+          "fuentes": [
+            "INTA EEA Santiago del Estero — Manejo de suelos salinos y sódicos en el Área de Riego del Río Dulce",
+            "SENASA / INTA — Programa Nacional de Prevención y Erradicación del Picudo del Algodonero"
+          ]
+        },
+        {
+          "id": "z1_alt1",
+          "tipo": "alternativa",
+          "nombre": "Escudo antisalitre: Algodón + Cobertura (Cebada + Melilotus) + Maíz",
+          "secuencia": [
+            {
+              "cultivo": "Algodón",
+              "seccion": "C",
+              "siembra_mes": 11,
+              "cosecha_mes": 4
+            },
+            {
+              "cultivo": "Cebada forrajera + Melilotus alba",
+              "seccion": "D",
+              "siembra_mes": 5,
+              "cosecha_mes": 9
+            },
+            {
+              "cultivo": "Maíz bajo riego",
+              "seccion": "A",
+              "siembra_mes": 12,
+              "cosecha_mes": 5
+            }
+          ],
+          "calendario": [
+            "cultivo",
+            "cultivo",
+            "cultivo",
+            "cultivo",
+            "cobertura",
+            "cobertura",
+            "cobertura",
+            "cobertura",
+            "cobertura",
+            "rastrojo",
+            "cultivo",
+            "cultivo"
+          ],
+          "por_que": "Cubre el suelo en el bache seco de mayo a septiembre (cuando llueven apenas 3 a 9 mm/mes) con especies tolerantes a la salinidad, cortando la evaporación superficial que hace subir el salitre y fijando nitrógeno biológico.",
+          "evidencia": [
+            {
+              "texto": "Entre mayo y septiembre la lluvia cae por debajo de 9 mm/mes mientras la máxima ya sube a 31 °C en septiembre; tapar el suelo con cobertura evita que el sol evapore la humedad subsuperficial (GWETROOT ~44-52 %).",
+              "dato": "clima_zonas.zona_1_riego_salitre.anual.lluvia_mm",
+              "fuente": "NASA POWER"
+            },
+            {
+              "texto": "Evalúa el pH del suelo en el perfil superior para confirmar la buena adaptación del Melilotus alba (trébol de olor) en ambientes alcalinos/salinos.",
+              "dato": "suelo_zonas.zona_1_riego_salitre.ph",
+              "fuente": "AIZAL V4 (SoilGrids B16)"
+            }
+          ],
+          "beneficios": [
+            "Cero meses de suelo desnudo: la sombra vegetal y el rastrojo frenan el ascenso capilar de sales.",
+            "El Melilotus fija nitrógeno atmosférico para el maíz siguiente y la rotación corta el ciclo del picudo del algodonero.",
+            "Posibilidad de aprovechar un pastoreo liviano o corte forrajero de invierno."
+          ],
+          "que_falta_saber": [
+            "Disponibilidad de turno de riego en otoño (abril-mayo) para implantar la cobertura invernal.",
+            "Residualidad de herbicidas usados en el algodón que puedan afectar la emergencia del Melilotus."
+          ],
+          "riesgos_revision_local": [
+            "Si el secado o rolado de la cebada y el Melilotus se demora más allá de septiembre, puede consumir la humedad necesaria para la siembra de verano.",
+            "Respetar el vacío sanitario obligatorio entre la destrucción del rastrojo de algodón y el cultivo siguiente."
+          ],
+          "atributos": {
+            "demanda_agua": "media",
+            "aporte_nitrogeno": "positivo",
+            "meses_suelo_desnudo": 0,
+            "forraje": true,
+            "ingreso": "alto",
+            "requiere_riego": true,
+            "maquinaria_especial": "rolo faca o pulverizadora para secado de cobertura"
+          },
+          "fuentes": [
+            "INTA EEA Santiago del Estero — Cultivos de cobertura y consociaciones invernales en suelos salinos bajo riego",
+            "AIZAL V4 — Módulos de Química (B11, B16) y Clima (B03, B04)"
+          ]
+        },
+        {
+          "id": "z1_alt2",
+          "tipo": "alternativa",
+          "nombre": "Bomba biológica profunda: Pastura de Alfalfa + Sorgo + Trigo",
+          "secuencia": [
+            {
+              "cultivo": "Alfalfa (ciclo 3 años)",
+              "seccion": "B",
+              "siembra_mes": 4,
+              "cosecha_mes": 3
+            },
+            {
+              "cultivo": "Sorgo granífero o forrajero",
+              "seccion": "A",
+              "siembra_mes": 11,
+              "cosecha_mes": 4
+            },
+            {
+              "cultivo": "Trigo de invierno",
+              "seccion": "A",
+              "siembra_mes": 5,
+              "cosecha_mes": 10
+            }
+          ],
+          "calendario": [
+            "cultivo",
+            "cultivo",
+            "cultivo",
+            "cultivo",
+            "cultivo",
+            "cultivo",
+            "cultivo",
+            "cultivo",
+            "cultivo",
+            "cultivo",
+            "cultivo",
+            "cultivo"
+          ],
+          "por_que": "Las raíces profundas de la alfalfa consumen excedentes hídricos subsuperficiales (en marzo caen 226,7 mm de lluvia media más el riego), deprimen la napa freática salina, fijan nitrógeno y generan fardos de alta rentabilidad local.",
+          "evidencia": [
+            {
+              "texto": "En marzo se concentran 226,7 mm de lluvia promedio (con récords de 207 mm en 24 h) y la humedad radicular supera el 56 %, elevando la napa; la alfalfa actúa como bomba biológica de drenaje.",
+              "dato": "clima_zonas.zona_1_riego_salitre.anual.balance_mm",
+              "fuente": "NASA POWER"
+            },
+            {
+              "texto": "Aporta nitrógeno biológico masivo y mejora la estructura física en suelos con limitaciones de densidad aparente y nitrógeno total.",
+              "dato": "suelo_zonas.zona_1_riego_salitre.nitrogeno_g_kg",
+              "fuente": "AIZAL V4 (SoilGrids B11)"
+            }
+          ],
+          "beneficios": [
+            "Cobertura viva los 12 meses del año y depresión efectiva de la napa freática para frenar el salitre.",
+            "Alto ingreso continuo por venta de fardos o rollos de alfalfa de calidad en la cuenca lechera y ganadera.",
+            "Recuperación de la fertilidad nitrogenada y del carbono orgánico del lote tras 3 años de pastura."
+          ],
+          "que_falta_saber": [
+            "Nivel exacto de nivelación láser del lote para evitar encharcamientos que asfixien la corona de la alfalfa.",
+            "Análisis de fósforo disponible (P) y salinidad inicial en los primeros 30 cm antes de sembrar alfalfa."
+          ],
+          "riesgos_revision_local": [
+            "La alfalfa es muy sensible al anegamiento prolongado (> 48 h) si el lote no drena bien tras lluvias torrenciales de marzo.",
+            "Alta inversión inicial en semilla e implantación que se amortiza a lo largo de 3 a 4 campañas."
+          ],
+          "atributos": {
+            "demanda_agua": "alta",
+            "aporte_nitrogeno": "positivo",
+            "meses_suelo_desnudo": 0,
+            "forraje": true,
+            "ingreso": "alto",
+            "requiere_riego": true,
+            "maquinaria_especial": "segadora acondicionadora y enfardadora o rotoenfardadora"
+          },
+          "fuentes": [
+            "INTA EEA Santiago del Estero — Producción de alfalfa bajo riego y manejo del agua en el Río Dulce",
+            "Basigalup, D. H. (Ed.) — El cultivo de la alfalfa en la Argentina (Ediciones INTA)"
+          ]
+        }
+      ]
     },
     "zona_2_secano_este": {
       "zona_protagonista": false,
       "validado_por": "sin validar",
-      "rotaciones": []
+      "rotaciones": [
+        {
+          "id": "z2_actual",
+          "tipo": "actual",
+          "nombre": "Monocultivo de soja de verano con barbecho largo desnudo",
+          "secuencia": [
+            {
+              "cultivo": "Soja de verano",
+              "seccion": "B",
+              "siembra_mes": 12,
+              "cosecha_mes": 4
+            }
+          ],
+          "calendario": [
+            "cultivo",
+            "cultivo",
+            "cultivo",
+            "cultivo",
+            "rastrojo",
+            "desnudo",
+            "desnudo",
+            "desnudo",
+            "desnudo",
+            "desnudo",
+            "desnudo",
+            "cultivo"
+          ],
+          "por_que": "El monocultivo de soja en secano (Quimilí / Bandera) deja un rastrojo escaso y de rápida descomposición (baja relación C/N), exponiendo el suelo desnudo durante 6 meses al calor extremo y a las tormentas de primavera-verano.",
+          "evidencia": [
+            {
+              "texto": "Promedio de 111 días/año con más de 35 °C y más de 30 días/año por encima de 40 °C en el período reciente (con récords de 46,5 °C en octubre), que mineralizan la materia orgánica cuando el suelo está pelado.",
+              "dato": "clima_zonas.zona_2_secano_este.anual.dias_calor_40",
+              "fuente": "NASA POWER"
+            },
+            {
+              "texto": "Déficit hídrico estructural (830 mm de lluvia normal frente a -886 mm de balance lluvia - ET0) y piso de humedad radicular (GWETROOT) de apenas 37,2 % en septiembre.",
+              "dato": "clima_zonas.zona_2_secano_este.anual.balance_mm",
+              "fuente": "NASA POWER"
+            }
+          ],
+          "beneficios": [
+            "Menor costo de implantación que las gramíneas y liquidez comercial inmediata.",
+            "Logística, maquinaria y manejo ampliamente difundidos en el este provincial."
+          ],
+          "que_falta_saber": [
+            "Presencia de piso de arado o compactación subsuperficial a 20-30 cm (prueba de pala o penetrómetro).",
+            "Presencia de malezas resistentes a glifosato y nivel de fósforo extractable en el lote."
+          ],
+          "riesgos_revision_local": [
+            "6 meses de suelo desnudo provocan planchado superficial, pérdida de infiltración ante tormentas de más de 100 mm en marzo y caída del stock de carbono.",
+            "Alto riesgo de quiebre de rinde si una ola de calor (> 40 °C) coincide con el llenado de vainas en febrero."
+          ],
+          "atributos": {
+            "demanda_agua": "media",
+            "aporte_nitrogeno": "neutro",
+            "meses_suelo_desnudo": 6,
+            "forraje": false,
+            "ingreso": "medio",
+            "requiere_riego": false,
+            "maquinaria_especial": "ninguna"
+          },
+          "fuentes": [
+            "INTA EEA Quimilí — Efecto del monocultivo de soja sobre las propiedades físicas y químicas en el Chaco Semiárido",
+            "Red de Ensayos de Soja del NEA (INTA)"
+          ]
+        },
+        {
+          "id": "z2_alt1",
+          "tipo": "alternativa",
+          "nombre": "Colchón de rastrojo: Soja + Maíz tardío o Sorgo granífero",
+          "secuencia": [
+            {
+              "cultivo": "Soja de verano",
+              "seccion": "B",
+              "siembra_mes": 12,
+              "cosecha_mes": 4
+            },
+            {
+              "cultivo": "Maíz tardío o Sorgo granífero",
+              "seccion": "A",
+              "siembra_mes": 12,
+              "cosecha_mes": 6
+            }
+          ],
+          "calendario": [
+            "cultivo",
+            "cultivo",
+            "cultivo",
+            "cultivo",
+            "cultivo",
+            "rastrojo",
+            "rastrojo",
+            "rastrojo",
+            "rastrojo",
+            "rastrojo",
+            "rastrojo",
+            "cultivo"
+          ],
+          "por_que": "Alternar leguminosa (Sección B) con gramínea estival tardía (Sección A) ubica la floración del maíz o sorgo en febrero-marzo (cuando llueven 88 a 172 mm/mes) y deja un grueso colchón de rastrojo que protege el suelo todo el invierno.",
+          "evidencia": [
+            {
+              "texto": "Concentración de lluvias en verano (marzo aporta 171,9 mm promedio) que recarga la humedad en raíces al 47,3 %, asegurando agua en el período crítico del maíz tardío o sorgo.",
+              "dato": "clima_zonas.zona_2_secano_este.anual.lluvia_mm",
+              "fuente": "NASA POWER"
+            },
+            {
+              "texto": "El aporte de rastrojo rico en carbono (alta relación C/N) recompone el carbono orgánico edáfico en suelos del secano este.",
+              "dato": "suelo_zonas.zona_2_secano_este.carbono_organico_g_kg",
+              "fuente": "AIZAL V4 (SoilGrids B15)"
+            }
+          ],
+          "beneficios": [
+            "Reduce a cero los meses de suelo desnudo gracias al rastrojo persistente de caña de maíz o sorgo.",
+            "Mejora la infiltración de las lluvias intensas de verano y reduce la temperatura superficial del suelo en más de 10 °C.",
+            "Corta ciclos de enfermedades fúngicas y malezas difíciles del monocultivo de soja."
+          ],
+          "que_falta_saber": [
+            "Distancia real al acopio y costo de flete para comercializar el grano de sorgo o maíz (B36).",
+            "Agua útil almacenada en el perfil a la fecha de siembra en diciembre."
+          ],
+          "riesgos_revision_local": [
+            "Menor margen bruto del sorgo o maíz frente a la soja cuando la distancia a puerto supera el umbral económico y no se transforma en carne en origen.",
+            "Inmovilización temporal de nitrógeno por el rastrojo de gramínea si no se ajusta la fertilización."
+          ],
+          "atributos": {
+            "demanda_agua": "media",
+            "aporte_nitrogeno": "neutro",
+            "meses_suelo_desnudo": 0,
+            "forraje": true,
+            "ingreso": "medio",
+            "requiere_riego": false,
+            "maquinaria_especial": "sembradora de directa con cuchillas turbo para cortar rastrojo"
+          },
+          "fuentes": [
+            "INTA EEA Quimilí — Rotaciones agrícolas y secuencias con gramíneas en el este de Santiago del Estero",
+            "AIZAL V4 — Módulos de Carbono Orgánico (B15) y Distancia a Caminos (B36)"
+          ]
+        },
+        {
+          "id": "z2_alt2",
+          "tipo": "alternativa",
+          "nombre": "Puente verde regulado: Soja + Cobertura (Vicia villosa + Centeno) + Maíz tardío",
+          "secuencia": [
+            {
+              "cultivo": "Soja de verano",
+              "seccion": "B",
+              "siembra_mes": 12,
+              "cosecha_mes": 4
+            },
+            {
+              "cultivo": "Vicia villosa + Centeno (cultivo de servicio)",
+              "seccion": "D",
+              "siembra_mes": 4,
+              "cosecha_mes": 8
+            },
+            {
+              "cultivo": "Maíz tardío",
+              "seccion": "A",
+              "siembra_mes": 12,
+              "cosecha_mes": 6
+            }
+          ],
+          "calendario": [
+            "cultivo",
+            "cultivo",
+            "cultivo",
+            "cultivo",
+            "cobertura",
+            "cobertura",
+            "cobertura",
+            "cobertura",
+            "rastrojo",
+            "rastrojo",
+            "rastrojo",
+            "cultivo"
+          ],
+          "por_que": "Intercala un cultivo de servicio consociado (Sección D: gramínea + leguminosa) en otoño-invierno que fija nitrógeno biológico para el maíz tardío, suprime malezas resistentes y mantiene raíces vivas sin dejar el suelo desnudo.",
+          "evidencia": [
+            {
+              "texto": "Entre julio y septiembre apenas llueven 13,5 mm acumulados y el agua en raíces cae al mínimo de 37,2 % en septiembre: por eso la regla agronómica exige secar el puente verde en agosto.",
+              "dato": "clima_zonas.zona_2_secano_este.anual.balance_mm",
+              "fuente": "NASA POWER"
+            },
+            {
+              "texto": "Compensa la limitación de nitrógeno total del suelo mediante fijación simbiótica de la vicia antes del maíz.",
+              "dato": "suelo_zonas.zona_2_secano_este.nitrogeno_g_kg",
+              "fuente": "AIZAL V4 (SoilGrids B11)"
+            }
+          ],
+          "beneficios": [
+            "Aporte de 40 a 80 kg N/ha fijados biológicamente por la Vicia villosa para el maíz tardío.",
+            "Control físico de malezas de otoño-invierno (rama negra, yuyo colorado) reduciendo el uso de herbicidas.",
+            "Cobertura 100 % del suelo durante los meses de viento norte y tormentas primaverales."
+          ],
+          "que_falta_saber": [
+            "Milímetros de agua útil en los primeros 100 cm de suelo en abril (post-cosecha de soja) para decidir si sembrar el cultivo de servicio.",
+            "Historial de herbicidas residuales aplicados en soja que puedan dañar la vicia."
+          ],
+          "riesgos_revision_local": [
+            "Compensación crítica (trade-off): si el otoño es muy seco o si la cobertura se seca tarde (septiembre/octubre), el cultivo de servicio consume el agua del perfil y compromete la recarga para el maíz de diciembre.",
+            "Costo adicional de semilla de vicia e inoculante específico."
+          ],
+          "atributos": {
+            "demanda_agua": "alta",
+            "aporte_nitrogeno": "positivo",
+            "meses_suelo_desnudo": 0,
+            "forraje": true,
+            "ingreso": "alto",
+            "requiere_riego": false,
+            "maquinaria_especial": "rolo faca o equipo pulverizador para terminación temprana en agosto"
+          },
+          "fuentes": [
+            "INTA EEA Quimilí / AAPRESID — Red de Cultivos de Servicio en el Chaco Semiárido: manejo del costo hídrico",
+            "AIZAL V4 — Química y Nutrición de Suelo (B11, B15)"
+          ]
+        }
+      ]
     },
     "zona_3_monte_semiarido": {
       "zona_protagonista": false,
       "validado_por": "sin validar",
-      "rotaciones": []
+      "rotaciones": [
+        {
+          "id": "z3_actual",
+          "tipo": "actual",
+          "nombre": "Lote desmontado con Maíz/Zapallo en verano y sobrepastoreo invernal",
+          "secuencia": [
+            {
+              "cultivo": "Maíz o Zapallo a secano",
+              "seccion": "A",
+              "siembra_mes": 12,
+              "cosecha_mes": 4
+            }
+          ],
+          "calendario": [
+            "cultivo",
+            "cultivo",
+            "cultivo",
+            "cultivo",
+            "rastrojo",
+            "desnudo",
+            "desnudo",
+            "desnudo",
+            "desnudo",
+            "desnudo",
+            "desnudo",
+            "cultivo"
+          ],
+          "por_que": "En el norte semiárido (Campo Gallo / Monte Quemado), sembrar maíz a cielo abierto en lotes desmontados y luego sobrepastorear el rastrojo deja el suelo pelado 6 meses bajo el régimen térmico más extremo del país.",
+          "evidencia": [
+            {
+              "texto": "Los días de más de 40 °C se duplicaron de 17,2 días/año (normal 1991-2020) a 36-38 días/año en 2021-2025 (pico de 49 días en 2025 y récord de 47,35 °C), calcinando el suelo sin sombra arbórea.",
+              "dato": "clima_zonas.zona_3_monte_semiarido.anual.dias_calor_40",
+              "fuente": "NASA POWER"
+            },
+            {
+              "texto": "Alto índice de fragilidad por exposición del suelo y pérdida de cobertura de monte detectada por satélite.",
+              "dato": "diagnostico_landsat_ia.zonas.zona_3_monte_semiarido.indice_fragilidad_0_100",
+              "fuente": "Landsat 8/9 + Modelo IA"
+            }
+          ],
+          "beneficios": [
+            "Producción de grano y alimento de autoconsumo en años de lluvias favorables.",
+            "No requiere inversión en implantación de pasturas perennes."
+          ],
+          "que_falta_saber": [
+            "Grado de compactación superficial por pisoteo animal y pérdida de horizonte A fértil.",
+            "Disponibilidad de aguadas y sombra para la hacienda en los meses de septiembre a diciembre."
+          ],
+          "riesgos_revision_local": [
+            "Pérdida frecuente de la cosecha de maíz por aborto floral ante olas de calor (> 40 °C) y déficit hídrico (-973 mm/año de balance).",
+            "Erosión eólica y térmica severa entre junio y noviembre, y bache forrajero agudo para vacas y cabras."
+          ],
+          "atributos": {
+            "demanda_agua": "alta",
+            "aporte_nitrogeno": "negativo",
+            "meses_suelo_desnudo": 6,
+            "forraje": true,
+            "ingreso": "bajo",
+            "requiere_riego": false,
+            "maquinaria_especial": "ninguna"
+          },
+          "fuentes": [
+            "INTA EEA Santiago del Estero / AER Monte Quemado — Diagnóstico de sistemas productivos del Chaco Semiárido Norte"
+          ]
+        },
+        {
+          "id": "z3_alt1",
+          "tipo": "alternativa",
+          "nombre": "Secuencia ultrarresistente a sequía: Sorgo doble propósito + Poroto Caupí / Mijo",
+          "secuencia": [
+            {
+              "cultivo": "Sorgo doble propósito (grano y diferido)",
+              "seccion": "A",
+              "siembra_mes": 12,
+              "cosecha_mes": 5
+            },
+            {
+              "cultivo": "Poroto Caupí (Vigna unguiculata) o Poroto Mung",
+              "seccion": "B",
+              "siembra_mes": 11,
+              "cosecha_mes": 3
+            },
+            {
+              "cultivo": "Mijo forrajero (Mohair / Panicum miliaceum)",
+              "seccion": "D",
+              "siembra_mes": 1,
+              "cosecha_mes": 4
+            }
+          ],
+          "calendario": [
+            "cultivo",
+            "cultivo",
+            "cultivo",
+            "cultivo",
+            "cultivo",
+            "rastrojo",
+            "rastrojo",
+            "rastrojo",
+            "rastrojo",
+            "rastrojo",
+            "cultivo",
+            "cultivo"
+          ],
+          "por_que": "Reemplaza al maíz por especies fisiológicamente adaptadas al calor extremo: el sorgo y el mijo tienen máxima eficiencia en uso del agua, y el poroto caupí fija nitrógeno en climas cálidos aportando proteína clave para el ganado y la familia.",
+          "evidencia": [
+            {
+              "texto": "Resiste los más de 126 días/año con temperaturas > 35 °C y las rachas de hasta 130 días sin lluvia útil gracias a la latencia vegetativa del sorgo.",
+              "dato": "clima_zonas.zona_3_monte_semiarido.anual.dias_calor_35",
+              "fuente": "NASA POWER"
+            },
+            {
+              "texto": "El poroto caupí repone nitrógeno en suelos chaqueños de baja materia orgánica sin exigir los regímenes hídricos de la soja.",
+              "dato": "suelo_zonas.zona_3_monte_semiarido.nitrogeno_g_kg",
+              "fuente": "AIZAL V4 (SoilGrids B11)"
+            }
+          ],
+          "beneficios": [
+            "Estabilidad de producción de grano y forraje diferido en pie para pasar el invierno seco.",
+            "Cobertura de rastrojo durante todo el invierno si se regula la carga animal (dejando al menos 30-40 % de remanente).",
+            "Aporte proteico de alta digestibilidad del poroto caupí para suplementación caprina y vacuna."
+          ],
+          "que_falta_saber": [
+            "Disponibilidad local de semilla de poroto caupí y sorgo doble propósito antes de las lluvias de noviembre.",
+            "Capacidad de apotreramiento (alambre eléctrico) para racionar el pastoreo del sorgo diferido."
+          ],
+          "riesgos_revision_local": [
+            "Riesgo de toxicidad por ácido cianhídrico (durrina) si se pastorea el rebrote de sorgo joven estresado por sequía.",
+            "Si no se retira la hacienda a tiempo, el sobrepastoreo consume todo el rastrojo y vuelve a dejar el suelo desnudo."
+          ],
+          "atributos": {
+            "demanda_agua": "baja",
+            "aporte_nitrogeno": "positivo",
+            "meses_suelo_desnudo": 0,
+            "forraje": true,
+            "ingreso": "medio",
+            "requiere_riego": false,
+            "maquinaria_especial": "ninguna (adaptable a siembra directa o labranza mínima)"
+          },
+          "fuentes": [
+            "INTA EEA Santiago del Estero — Sorgo diferido y leguminosas estivales (Vigna unguiculata) para el Chaco Semiárido"
+          ]
+        },
+        {
+          "id": "z3_alt2",
+          "tipo": "alternativa",
+          "nombre": "Sistema Agro-Silvopastoril: Algarrobo blanco + Buffel Grass / Gatton Panic + Tuna",
+          "secuencia": [
+            {
+              "cultivo": "Algarrobo blanco (Neltuma alba) en cobertura permanente",
+              "seccion": "B",
+              "siembra_mes": 1,
+              "cosecha_mes": 12
+            },
+            {
+              "cultivo": "Pastura megatérmica (Buffel Grass / Gatton Panic)",
+              "seccion": "A",
+              "siembra_mes": 11,
+              "cosecha_mes": 10
+            },
+            {
+              "cultivo": "Franjas de Sorgo forrajero y Tuna forrajera (Opuntia ficus-indica)",
+              "seccion": "D",
+              "siembra_mes": 12,
+              "cosecha_mes": 8
+            }
+          ],
+          "calendario": [
+            "cultivo",
+            "cultivo",
+            "cultivo",
+            "cultivo",
+            "cultivo",
+            "cobertura",
+            "cobertura",
+            "cobertura",
+            "cobertura",
+            "cobertura",
+            "cultivo",
+            "cultivo"
+          ],
+          "por_que": "Con apenas 5,1 días de helada al año pero 38 días de más de 40 °C, el norte santiagueño requiere la media sombra arbórea del algarrobo (leguminosa nativa de raíz profunda) combinada con pasturas megatérmicas (Buffel/Gatton) y bancos de agua/energía en pencas de tuna.",
+          "evidencia": [
+            {
+              "texto": "Baja incidencia de heladas (5,1 días/año ≤ 3 °C en la normal) que permite la excelente supervivencia de Buffel Grass y Gatton Panic bajo dosel de monte.",
+              "dato": "clima_zonas.zona_3_monte_semiarido.anual.dias_helada_3c",
+              "fuente": "NASA POWER"
+            },
+            {
+              "texto": "La proximidad y conservación del monte nativo amortigua la temperatura superficial del suelo en más de 12 °C y sostiene los servicios ecosistémicos.",
+              "dato": "suelo_zonas.zona_3_monte_semiarido.monte_nativo_pct",
+              "fuente": "AIZAL V4 (MapBiomas Chaco)"
+            }
+          ],
+          "beneficios": [
+            "Cobertura permanente los 12 meses: frena la erosión eólica y reduce la evaporación del suelo bajo la copa de los árboles.",
+            "El algarrobo fija nitrógeno profundo y entrega chauchas de alto valor energético/proteico en noviembre-diciembre (justo antes de las lluvias).",
+            "La tuna forrajera actúa como reserva de agua viva en pie durante las sequías de más de 120 días."
+          ],
+          "que_falta_saber": [
+            "Categoría del lote en el Ordenamiento Territorial de Bosques Nativos (OTBN Provincial) antes de realizar rolado selectivo.",
+            "Carga animal actual (equivalente vaca y cabra por hectárea) y subdivisión de potreros."
+          ],
+          "riesgos_revision_local": [
+            "Requiere clausura inicial del potrero (sin pastoreo en el primer verano) para que la pastura megatérmica semille y afiance raíces.",
+            "Rebrote de arbustivas leñosas invasoras (fachinal) si no se maneja adecuadamente el descanso de la pastura."
+          ],
+          "atributos": {
+            "demanda_agua": "baja",
+            "aporte_nitrogeno": "positivo",
+            "meses_suelo_desnudo": 0,
+            "forraje": true,
+            "ingreso": "alto",
+            "requiere_riego": false,
+            "maquinaria_especial": "rolo pisador selectivo de baja intensidad (MBGI)"
+          },
+          "fuentes": [
+            "INTA EEA Santiago del Estero — Manejo de Bosques con Ganadería Integrada (MBGI) y pasturas megatérmicas",
+            "Kunst, C. et al. (INTA) — Rolado selectivo de baja intensidad y sistemas silvopastoriles en la Región Chaqueña"
+          ]
+        }
+      ]
     },
     "zona_4_bajos_submeridionales": {
       "zona_protagonista": false,
       "validado_por": "sin validar",
-      "rotaciones": []
+      "rotaciones": [
+        {
+          "id": "z4_actual",
+          "tipo": "actual",
+          "nombre": "Siembra oportunista de Soja o Maíz y suelo descubierto el resto del año",
+          "secuencia": [
+            {
+              "cultivo": "Soja o Maíz oportunista",
+              "seccion": "B",
+              "siembra_mes": 12,
+              "cosecha_mes": 4
+            }
+          ],
+          "calendario": [
+            "cultivo",
+            "cultivo",
+            "cultivo",
+            "cultivo",
+            "desnudo",
+            "desnudo",
+            "desnudo",
+            "desnudo",
+            "desnudo",
+            "desnudo",
+            "desnudo",
+            "cultivo"
+          ],
+          "por_que": "En los bajos planos y arcillosos (Añatuya / Pinto), sembrar cultivos anuales convencionales en verano expone al productor al doble golpe: pérdida por encharcamiento en marzo y 7 meses de suelo agrietado con subida de salitre en la seca.",
+          "evidencia": [
+            {
+              "texto": "Contraste extremo entre 139,5 mm de lluvia en marzo sobre suelos sin pendiente y rachas secas de hasta 163 días seguidos en otoño-invierno-primavera.",
+              "dato": "clima_zonas.zona_4_bajos_submeridionales.anual.lluvia_mm",
+              "fuente": "NASA POWER"
+            },
+            {
+              "texto": "Alto porcentaje de arcilla que impide el drenaje rápido en verano y provoca agrietamiento y ascenso salino cuando el suelo queda desnudo.",
+              "dato": "suelo_zonas.zona_4_bajos_submeridionales.arcilla_pct",
+              "fuente": "AIZAL V4 (SoilGrids B12)"
+            }
+          ],
+          "beneficios": [
+            "Permite obtener cosecha comercial únicamente en años con lluvias moderadas y bien distribuidas."
+          ],
+          "que_falta_saber": [
+            "Porcentaje de Sodio Intercambiable (PSI) y conductividad eléctrica en el perfil arcilloso.",
+            "Cota topográfica fina del lote (microrrelieve de loma, media loma o bajo alcalino)."
+          ],
+          "riesgos_revision_local": [
+            "Asfixia radicular y falta de piso para cosechar en marzo-abril cuando ocurren tormentas intensas.",
+            "Planchado y salinización superficial durante los 7 meses de barbecho desnudo."
+          ],
+          "atributos": {
+            "demanda_agua": "alta",
+            "aporte_nitrogeno": "neutro",
+            "meses_suelo_desnudo": 7,
+            "forraje": false,
+            "ingreso": "bajo",
+            "requiere_riego": false,
+            "maquinaria_especial": "ninguna"
+          },
+          "fuentes": [
+            "INTA EEA Santiago del Estero / AER Añatuya — Caracterización hidro-halomórfica de los Bajos Submeridionales"
+          ]
+        },
+        {
+          "id": "z4_alt1",
+          "tipo": "alternativa",
+          "nombre": "Escape al anegamiento: Girasol temprano + Sorgo granífero + Cebada/Trigo",
+          "secuencia": [
+            {
+              "cultivo": "Girasol (raíz pivotante)",
+              "seccion": "C",
+              "siembra_mes": 8,
+              "cosecha_mes": 1
+            },
+            {
+              "cultivo": "Sorgo granífero",
+              "seccion": "A",
+              "siembra_mes": 12,
+              "cosecha_mes": 5
+            },
+            {
+              "cultivo": "Cebada o Trigo (según agua en perfil)",
+              "seccion": "A",
+              "siembra_mes": 5,
+              "cosecha_mes": 10
+            }
+          ],
+          "calendario": [
+            "cultivo",
+            "rastrojo",
+            "rastrojo",
+            "rastrojo",
+            "cultivo",
+            "cultivo",
+            "cultivo",
+            "cultivo",
+            "cultivo",
+            "cultivo",
+            "cultivo",
+            "cultivo"
+          ],
+          "por_que": "El girasol (Sección C) explora perfiles compactados con su raíz pivotante y se cosecha en diciembre/enero antes de las lluvias que anegan los bajos en marzo; el sorgo tolera tanto sequía como encharcamientos temporales.",
+          "evidencia": [
+            {
+              "texto": "La cosecha estival temprana del girasol esquiva el pico de lluvias de marzo (139,5 mm) y aprovecha la reserva de humedad acumulada en otoño.",
+              "dato": "clima_zonas.zona_4_bajos_submeridionales.anual.balance_mm",
+              "fuente": "NASA POWER"
+            },
+            {
+              "texto": "La raíz pivotante del girasol perfora suelos de alta densidad aparente, mejorando la macroporosidad para los cultivos siguientes.",
+              "dato": "suelo_zonas.zona_4_bajos_submeridionales.densidad_aparente_g_cm3",
+              "fuente": "AIZAL V4 (SoilGrids B18)"
+            }
+          ],
+          "beneficios": [
+            "Descompactación biológica profunda del suelo arcilloso y cobertura de rastrojo en el mes más lluvioso (marzo).",
+            "Diversificación de fechas de siembra y cosecha que reduce el riesgo climático y financiero.",
+            "Ruptura del ciclo de malezas y patógenos al rotar secciones C y A."
+          ],
+          "que_falta_saber": [
+            "Humedad útil disponible en agosto para lograr una emergencia pareja del girasol.",
+            "Presencia de paloma torcaza en la zona y distancia a acopio de girasol."
+          ],
+          "riesgos_revision_local": [
+            "Si agosto y septiembre son extremadamente secos, la ventana de siembra del girasol puede retrasarse hasta octubre.",
+            "Cuidar el período entre cosecha de girasol y cultivo de invierno manteniendo el rastrojo en pie."
+          ],
+          "atributos": {
+            "demanda_agua": "baja",
+            "aporte_nitrogeno": "negativo",
+            "meses_suelo_desnudo": 0,
+            "forraje": true,
+            "ingreso": "medio",
+            "requiere_riego": false,
+            "maquinaria_especial": "cabezal girasolero para la cosecha"
+          },
+          "fuentes": [
+            "INTA — Guía práctica para el cultivo de girasol y sorgo en ambientes marginales del NEA/NOA",
+            "AIZAL V4 — Física del Suelo (B12, B18)"
+          ]
+        },
+        {
+          "id": "z4_alt2",
+          "tipo": "alternativa",
+          "nombre": "Biodrenaje y regeneración salina: Melilotus alba + Grama Rhodes / Agropiro + Sorgo forrajero",
+          "secuencia": [
+            {
+              "cultivo": "Melilotus alba (Trébol de olor)",
+              "seccion": "B",
+              "siembra_mes": 4,
+              "cosecha_mes": 11
+            },
+            {
+              "cultivo": "Grama Rhodes (Chloris gayana) o Agropiro",
+              "seccion": "A",
+              "siembra_mes": 10,
+              "cosecha_mes": 9
+            },
+            {
+              "cultivo": "Sorgo forrajero o granífero",
+              "seccion": "D",
+              "siembra_mes": 11,
+              "cosecha_mes": 4
+            }
+          ],
+          "calendario": [
+            "cultivo",
+            "cultivo",
+            "cultivo",
+            "cultivo",
+            "cultivo",
+            "cultivo",
+            "cultivo",
+            "cultivo",
+            "cultivo",
+            "cultivo",
+            "cultivo",
+            "cultivo"
+          ],
+          "por_que": "En suelos arcillosos e inundables con salinidad, la consociación de Grama Rhodes (gramínea perenne halófita) con Melilotus alba (leguminosa de raíz pivotante que tolera alcalinidad y encharcamiento) actúa como biodrenaje vivo los 12 meses.",
+          "evidencia": [
+            {
+              "texto": "Tolera tanto las 9,7 heladas anuales de la zona como las rachas secas de hasta 163 días, manteniendo el suelo sombreado para que no aflore el salitre.",
+              "dato": "clima_zonas.zona_4_bajos_submeridionales.anual.dias_helada_3c",
+              "fuente": "NASA POWER"
+            },
+            {
+              "texto": "Adaptada a suelos pesados de alta arcilla y pH elevado donde los cultivos agrícolas anuales fracasan.",
+              "dato": "suelo_zonas.zona_4_bajos_submeridionales.ph",
+              "fuente": "AIZAL V4 (SoilGrids B16)"
+            }
+          ],
+          "beneficios": [
+            "Las raíces de Melilotus y Grama Rhodes abren bioporos que duplican la tasa de infiltración del agua de lluvia.",
+            "Fijación biológica de nitrógeno y aporte continuo de forraje para ganadería de cría y recría.",
+            "Eliminación total del suelo desnudo y lavado gradual de sales hacia capas profundas."
+          ],
+          "que_falta_saber": [
+            "Calidad de agua de bebida para la hacienda en el bajo (contenido de sulfatos y sales totales).",
+            "Necesidad de obras simples de manejo de escorrentía en superficie."
+          ],
+          "riesgos_revision_local": [
+            "Evitar el pisoteo animal con suelo saturado de agua inmediatamente después de las lluvias de marzo para no destruir la estructura superficial.",
+            "Permitir la resiembra natural del Melilotus en primavera retirando o aliviando la carga animal."
+          ],
+          "atributos": {
+            "demanda_agua": "baja",
+            "aporte_nitrogeno": "positivo",
+            "meses_suelo_desnudo": 0,
+            "forraje": true,
+            "ingreso": "medio",
+            "requiere_riego": false,
+            "maquinaria_especial": "sembradora de pasturas o siembra al voleo con rastra liviana"
+          },
+          "fuentes": [
+            "INTA EEA Santiago del Estero / INTA Reconquista — Recuperación productiva de Bajos Submeridionales con Grama Rhodes y Melilotus alba"
+          ]
+        }
+      ]
     },
     "zona_5_sur_serrano": {
-      "zona_protagonista": false,
+      "zona_protagonista": true,
       "validado_por": "sin validar",
-      "rotaciones": []
+      "rotaciones": [
+        {
+          "id": "z5_actual",
+          "tipo": "actual",
+          "nombre": "Pastura megatérmica pura y verdeo estival con sobrepastoreo invernal (suelo descubierto)",
+          "secuencia": [
+            {
+              "cultivo": "Pastura megatérmica (Gatton Panic / Buffel) o Sorgo forrajero",
+              "seccion": "A",
+              "siembra_mes": 11,
+              "cosecha_mes": 5
+            }
+          ],
+          "calendario": [
+            "cultivo",
+            "cultivo",
+            "cultivo",
+            "cultivo",
+            "rastrojo",
+            "rastrojo",
+            "desnudo",
+            "desnudo",
+            "desnudo",
+            "desnudo",
+            "cultivo",
+            "cultivo"
+          ],
+          "por_que": "Caso real en 'Bella Criolla' (cerca del Río Utis, San Francisco, Depto. Quebrachos): producen vacas y cabras sembrando pasturas. Cuando caen las 20 heladas del invierno se seca la pastura de verano y, al pastorear a fondo el remanente entre julio y octubre, quedan manchones de suelo pelado donde la cercanía al Río Utis y los bañados hace subir el salitre y se agrava el bache forrajero.",
+          "evidencia": [
+            {
+              "texto": "La zona registra 20,4 días de helada al año en la normal 1991-2020 (pico de 8,8 heladas en julio), lo que quema la hoja de las pasturas estivales y detiene el rebrote hasta las lluvias de noviembre.",
+              "dato": "clima_zonas.zona_5_sur_serrano.anual.dias_helada_3c",
+              "fuente": "NASA POWER (1991-2020)"
+            },
+            {
+              "texto": "Déficit hídrico de -838 mm/año (739 mm de lluvia normal) con sólo 6 a 15 mm/mes entre junio y septiembre: al descubrirse el suelo en el valle del Río Utis, la evaporación succiona sales a la superficie y las lluvias de noviembre (94 mm) escurren sin infiltrar.",
+              "dato": "clima_zonas.zona_5_sur_serrano.anual.balance_mm",
+              "fuente": "NASA POWER"
+            }
+          ],
+          "beneficios": [
+            "Buen volumen de pasto en verano-otoño cuando llueve (enero a abril concentran más de 400 mm) con especies ya conocidas en el campo.",
+            "Aprovechamiento directo por vacas y cabras sin depender de fletes externos en verano."
+          ],
+          "que_falta_saber": [
+            "Nivel de salinidad y alcalinidad en los potreros más bajos cercanos a los bañados del Río Utis versus los lotes de media loma.",
+            "Carga animal real (vacas y cabras por hectárea) y estado de subdivisión de potreros para dar descanso a la pastura.",
+            "Nitrógeno disponible en suelo tras varios años de gramínea pura sin leguminosas."
+          ],
+          "riesgos_revision_local": [
+            "Degradación y pérdida de plantas de la pastura por doble estrés: heladas fuertes de julio y sobrepastoreo caprino/vacuno de la corona en primavera seca.",
+            "Manchones de suelo pelado y salitroso entre julio y octubre que reducen la receptividad ganadera del campo y dejan sin proteína a las cabras en parición/lactancia."
+          ],
+          "atributos": {
+            "demanda_agua": "media",
+            "aporte_nitrogeno": "negativo",
+            "meses_suelo_desnudo": 4,
+            "forraje": true,
+            "ingreso": "bajo",
+            "requiere_riego": false,
+            "maquinaria_especial": "ninguna"
+          },
+          "fuentes": [
+            "Caso real Establecimiento 'Bella Criolla' (Río Utis / San Francisco, Depto. Quebrachos) — Relevamiento BioSat",
+            "INTA EEA Santiago del Estero / AER Ojo de Agua — Sistemas ganaderos bovino-caprinos de la cuenca del Río Utis y sur santiagueño"
+          ]
+        },
+        {
+          "id": "z5_alt1",
+          "tipo": "alternativa",
+          "nombre": "Puente forrajero de invierno y antihielo: Sorgo forrajero + Melilotus alba y Centeno/Avena",
+          "secuencia": [
+            {
+              "cultivo": "Sorgo forrajero o sudangrás (verano)",
+              "seccion": "A",
+              "siembra_mes": 11,
+              "cosecha_mes": 4
+            },
+            {
+              "cultivo": "Melilotus alba (Trébol de olor) + Centeno o Avena negra (otoño-invierno)",
+              "seccion": "D",
+              "siembra_mes": 4,
+              "cosecha_mes": 9
+            }
+          ],
+          "calendario": [
+            "cultivo",
+            "cultivo",
+            "cultivo",
+            "cultivo",
+            "cobertura",
+            "cobertura",
+            "cobertura",
+            "cobertura",
+            "cobertura",
+            "rastrojo",
+            "cultivo",
+            "cultivo"
+          ],
+          "por_que": "Ideal para la ribera del Río Utis en 'Bella Criolla': aprovecha la humedad de abril (62,4 mm de lluvia y pico de agua en raíces del 51,4 %) y los bajos húmedos para intersembrar Melilotus alba con centeno o avena. Resisten las 20 heladas y la salinidad del Utis, cubren el suelo todo el invierno, fijan nitrógeno para recuperar lotes cansados y entregan pasto verde proteico cuando la pastura megatérmica está helada.",
+          "evidencia": [
+            {
+              "texto": "Resiste las 20,4 heladas anuales (junio a agosto) y aprovecha el clima más templado del sur (solo 2,2 días/año > 40 °C en la normal 1991-2020), manteniendo cobertura viva en pleno invierno.",
+              "dato": "clima_zonas.zona_5_sur_serrano.anual.dias_calor_40",
+              "fuente": "NASA POWER (1991-2020)"
+            },
+            {
+              "texto": "El Melilotus alba prospera en los suelos de pH neutro a alcalino del Río Utis y repone el nitrógeno edáfico consumido por las gramíneas forrajeras.",
+              "dato": "suelo_zonas.zona_5_sur_serrano.nitrogeno_g_kg",
+              "fuente": "AIZAL V4 (SoilGrids B11, B16)"
+            }
+          ],
+          "beneficios": [
+            "Corta el bache forrajero de invierno-primavera entregando proteína fresca para cabras en lactancia y terneros.",
+            "Cero meses de suelo desnudo: la sombra vegetal evita que suba el salitre en los bajos cercanos al Río Utis.",
+            "Fijación biológica de nitrógeno que revitaliza el suelo antes de volver a sembrar sorgo o renovar una pastura perenne."
+          ],
+          "que_falta_saber": [
+            "Humedad superficial en abril en los lotes de 'Bella Criolla' para definir si sembrar en línea o al voleo sobre el sorgo.",
+            "Disponibilidad de apotreramiento (alambre o boyero solar) para pastorear por franjas horarias."
+          ],
+          "riesgos_revision_local": [
+            "Compensación hídrica (trade-off): retirar la hacienda o cerrar el ciclo del verdeo a fines de agosto dejando rastrojo; si se pastorea al ras en septiembre-octubre, consume el agua útil para el cultivo de verano.",
+            "Manejar el pastoreo del Melilotus con precaución en horas de rocío para evitar empaste (meteorismo) en vacunos."
+          ],
+          "atributos": {
+            "demanda_agua": "media",
+            "aporte_nitrogeno": "positivo",
+            "meses_suelo_desnudo": 0,
+            "forraje": true,
+            "ingreso": "medio",
+            "requiere_riego": false,
+            "maquinaria_especial": "sembradora o siembra al voleo con cajón alfalfero"
+          },
+          "fuentes": [
+            "INTA EEA Santiago del Estero / AER Ojo de Agua — Verdeos invernales y Melilotus alba en ambientes de bañados y llanuras del sur santiagueño",
+            "AIZAL V4 — Clima, Balance Hídrico y Química de Suelo (B04, B11, B16)"
+          ]
+        },
+        {
+          "id": "z5_alt2",
+          "tipo": "alternativa",
+          "nombre": "Silvopastoril adaptado al Río Utis: Algarrobo + Grama Rhodes / Pasto Llorón + Melilotus y Poroto Caupí",
+          "secuencia": [
+            {
+              "cultivo": "Monte de Algarrobo (Neltuma alba) + Grama Rhodes (bajos) / Pasto Llorón (lomas)",
+              "seccion": "B",
+              "siembra_mes": 10,
+              "cosecha_mes": 9
+            },
+            {
+              "cultivo": "Intersiembra de Melilotus alba + Franjas de Sorgo y Poroto Caupí",
+              "seccion": "A",
+              "siembra_mes": 12,
+              "cosecha_mes": 5
+            },
+            {
+              "cultivo": "Reserva viva en pie (Tuna forrajera / Monte nativo)",
+              "seccion": "D",
+              "siembra_mes": 8,
+              "cosecha_mes": 12
+            }
+          ],
+          "calendario": [
+            "cultivo",
+            "cultivo",
+            "cultivo",
+            "cultivo",
+            "cultivo",
+            "cobertura",
+            "cobertura",
+            "cobertura",
+            "cobertura",
+            "cultivo",
+            "cultivo",
+            "cultivo"
+          ],
+          "por_que": "Sistema integral a medida de 'Bella Criolla' (Río Utis, Quebrachos): combina Grama Rhodes en las medias lomas/bajos salinos del río y Pasto Llorón en las lomas más francas (ambos mucho más tolerantes a las 20 heladas del sur que el Buffel Grass), consociados con leguminosas (Algarrobo, Melilotus y Poroto Caupí) para sostener vacas y cabras todo el año con 0 meses de suelo desnudo.",
+          "evidencia": [
+            {
+              "texto": "Con 20,4 días de helada al año, la Grama Rhodes y el Pasto Llorón bajo media sombra de algarrobo toleran el frío invernal y rebrotan antes en primavera que el Buffel Grass.",
+              "dato": "clima_zonas.zona_5_sur_serrano.anual.dias_helada_3c",
+              "fuente": "NASA POWER (1991-2020)"
+            },
+            {
+              "texto": "La cobertura permanente de raíces y dosel arbóreo regula la napa en el corredor del Río Utis, frena la salinización y protege el suelo de las lluvias intensas de verano.",
+              "dato": "suelo_zonas.zona_5_sur_serrano.monte_nativo_pct",
+              "fuente": "AIZAL V4 (MapBiomas Chaco / NASADEM)"
+            }
+          ],
+          "beneficios": [
+            "Complementariedad perfecta vacuno-caprina: la vaca aprovecha el volumen de Grama Rhodes, Pasto Llorón y sorgo; la cabra aprovecha el ramoneo controlado, la chaucha de algarrobo y el poroto caupí.",
+            "Las leguminosas (Algarrobo + Melilotus + Caupí) inyectan nitrógeno gratis a la pastura, evitando que se degrade o amarillee a los 3 años.",
+            "Cobertura viva los 12 meses del año que frena tanto la erosión en lomas como la subida del salitre cerca del Río Utis."
+          ],
+          "que_falta_saber": [
+            "Mapa de ambientes dentro de 'Bella Criolla' (qué hectáreas son bajo salino de influencia del Río Utis y cuáles son loma alta).",
+            "Tiempos de clausura disponibles en cada potrero para permitir el semillado de la pastura en otoño."
+          ],
+          "riesgos_revision_local": [
+            "Si no se consocia con una leguminosa (Melilotus en invierno o Caupí/Algarrobo en verano), las gramíneas perennes agotan el nitrógeno del suelo y bajan su producción y proteína a partir del tercer año.",
+            "Regulación de la carga caprina sobre renovales de algarrobo y descanso oportuno de los lotes."
+          ],
+          "atributos": {
+            "demanda_agua": "baja",
+            "aporte_nitrogeno": "positivo",
+            "meses_suelo_desnudo": 0,
+            "forraje": true,
+            "ingreso": "alto",
+            "requiere_riego": false,
+            "maquinaria_especial": "rolo selectivo o sembradora de pasturas"
+          },
+          "fuentes": [
+            "INTA EEA Santiago del Estero / AER Ojo de Agua — Implantación y manejo de Grama Rhodes, Pasto Llorón y sistemas silvopastoriles en el sur santiagueño",
+            "Caso real Establecimiento 'Bella Criolla' (Río Utis, San Francisco, Depto. Quebrachos)"
+          ]
+        }
+      ]
     }
   }
 }

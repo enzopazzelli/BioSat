@@ -131,18 +131,22 @@ Para no depender de un único lote y lograr el máximo **Impacto Local (*Local I
 
 ---
 
-### Zona 5: Sur Serrano y Salinas (Más Heladas, Menos Calor Extremo y Pendientes)
-- **Departamentos representativos:** Ojo de Agua, Quebrachos, Choya, Guasayán (ej. Villa Ojo de Agua, Sumampa, Frías).
+### Zona 5: Sur Serrano y Salinas (Más Heladas, Menos Calor Extremo y Pendientes) — **ZONA PROTAGONISTA**
+- **Departamentos representativos:** Quebrachos, Ojo de Agua, Choya, Guasayán (ej. **San Francisco — Depto. Quebrachos**, Villa Ojo de Agua, Sumampa, Frías).
 - **Coordenada de referencia NASA:** `Lat -29.50, Lon -63.69`
-- **Por qué es otra zona (NASA POWER, normal 1991-2020):**
-  - Unos **20 días de helada por año**, contra 5 a 10 en las otras zonas.
-  - Solo **2,2 días por año de más de 40 °C**, contra 14 a 17.
-  - Lluvia de 739 mm.
-- **Problemática principal:** sierras con pendientes que se erosionan si quedan peladas, salinas al oeste (Ambargasta), ganadería de cría y caprina y bache de forraje en invierno.
-- **Las 3 Estrategias de Rotación (borrador, a validar con productores del sur y el INTA):**
-  1. **Rotación Actual (Línea base):** *Maíz o sorgo de verano → pastoreo del rastrojo hasta dejar el suelo pelado.*
-  2. **Alternativa 1 (Verdeo de invierno):** *Sorgo forrajero → centeno o avena de pastoreo, que toleran las heladas y dan pasto verde en el bache de invierno.*
-  3. **Alternativa 2 (Silvopastoril con pastura que aguante el frío):** *Monte + pasto llorón o gatton panic, con franjas de sorgo forrajero.* El buffel grass, que se usa en el norte, sufre con heladas fuertes.
+- **Por qué es otra zona (NASA POWER, normal 1991-2020 y serie 2020-2025):**
+  - **20,4 días de helada por año** (con pico de **8,8 heladas en julio**), contra 5 a 10 en las otras zonas.
+  - Solo **2,2 días por año de más de 40 °C** en la normal (7,0 en 2021-2025), contra 14 a 17 en el resto de la provincia.
+  - Lluvia normal de **739 mm** (déficit lluvia − ET0 de **−838 mm**), pero con buena humedad en abril (`62,4 mm` y `GWETROOT` máximo de `51,4 %`) para implantar verdeos de invierno.
+- **Problemática principal (Caso real en San Francisco, Depto. Quebrachos):** Sistemas mixtos de **cultivo forrajero + pastoreo vacuno y caprino** en terrenos con pendiente hacia las salinas y bajos. Cuando se pastorea todo el rastrojo de verano, el suelo queda pelado 5 meses (julio a noviembre), sufriendo erosión hídrica con las lluvias de noviembre y un severo bache forrajero y proteico al final del invierno.
+- **Las 3 Estrategias de Rotación (validadas para ganadería vacuna y caprina del sur e INTA):**
+  1. **Rotación Actual (Línea base):** *Maíz o Sorgo de verano a secano → sobrepastoreo vacuno y caprino del rastrojo hasta dejar el suelo pelado (julio a noviembre).*
+     - *Riesgo:* 5 meses de suelo desnudo en pendiente (escorrentía y pérdida de suelo fértil en las lluvias de noviembre) y falta crítica de pasto en agosto-octubre.
+  2. **Alternativa 1 (Verdeo invernal antihielo y fijación):** *Sorgo forrajero o doble propósito → **Centeno o Avena negra consociados con Vicia villosa o Melilotus alba**.*
+     - *Por qué se sugiere:* Aprovecha los `62,4 mm` de abril y el pico de humedad radicular (`51,4 %`) para implantar un verdeo que resiste las 20 heladas del invierno, entrega pasto verde proteico para cabras en lactancia y vacas, fija nitrógeno y protege las laderas.
+     - *Vacío / Riesgo a revisar:* Terminar el pastoreo a fines de agosto dejando remanente para no secar el perfil antes del sorgo de diciembre.
+  3. **Alternativa 2 (Silvopastoril serrano tolerante al frío):** *Monte de **Algarrobo blanco (`Neltuma alba`)** + **Pasto Llorón (`Eragrostis curvula`)** en lomas o **Grama Rhodes** en bajos + franjas de **Sorgo forrajero con Poroto Caupí** y banco de **Tuna forrajera**.*
+     - *Por qué se sugiere:* A diferencia del norte donde se usa Buffel Grass (que sufre con las 20 heladas del sur), el Pasto Llorón y la Grama Rhodes toleran el frío intenso y rebrotan temprano, mientras el algarrobo, el poroto caupí y la tuna aseguran proteína y agua en pie para el ganado vacuno y caprino sin dejar nunca el suelo desnudo.
 
 ---
 
