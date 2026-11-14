@@ -31,8 +31,8 @@ Que un productor recorra los 5 pasos de la app sin ayuda, con números de clima 
 - [x] Generar `data/clima_zonas.json` según el contrato
 - [x] Paso 1 (zona, prioridades, límites) y paso 2 (calendario del lote) con datos reales
 - [ ] Paso 3 (comparador de 3 rotaciones con los 5 puntos) con las rotaciones de la zona protagonista de Vale
-- [ ] Integrar en `main` lo que esté listo y publicar la app v1 en GitHub Pages
-- [ ] Pasar a la bitácora las decisiones anotadas en los planes de cada uno
+- [x] Integrar en `main` lo que esté listo y publicar la app v1 en GitHub Pages
+- [x] Pasar a la bitácora las decisiones anotadas en los planes de cada uno
 
 ### Checkpoint 2 · Dom 09:30
 - [x] Motor de reglas transparente (secciones A/B/C/D + prioridades) que ordena las rotaciones y explica por qué
@@ -77,4 +77,5 @@ Que un productor recorra los 5 pasos de la app sin ayuda, con números de clima 
 - **Imágenes:** la app usa `data/imagenes/` (Earth Engine, de Santi) si existe; si no, las de Planetary Computer en `web/img/`.
 - **Sin internet:** Leaflet y las imágenes van dentro de `web/`. Las fuentes tipográficas caen a las del sistema.
 - **Caché de NASA POWER 1981-2025:** no se sube (está en `.gitignore`); el script la vuelve a bajar en segundos.
+- **App publicada (Checkpoint 1):** https://enzopazzelli.github.io/BioSat/web/
 - **Pendiente:** `data/nasa_power_santiago_zonas.json` queda como versión vieja (2020-2025, con errores) hasta corregir el informe de análisis.

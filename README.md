@@ -147,7 +147,9 @@ BioSat/
 
 ## Inicio rápido
 
-**Bajar y resumir el clima de NASA POWER** (no necesita cuenta):
+**Ver la app publicada:** https://enzopazzelli.github.io/BioSat/web/
+
+**Bajar y resumir el clima de NASA POWER** (no necesita cuenta; genera `data/clima_zonas.json`):
 
 ```bash
 python scripts/descargar_nasa_power.py

@@ -124,3 +124,9 @@ Según la página oficial de premios (`NASA Space Apps Challenge - awards.mhtml`
   - **Libertad de cada uno:** los planes son un punto de partida; cada integrante decide cómo abordar su parte. Lo fijo es el objetivo común, los contratos y los hitos.
   - **Archivos compartidos y decisiones:** los compartidos los edita solo Enzo en `main`. Las decisiones se anotan en cada plan y Enzo las pasa a esta bitácora.
   - **Plantillas:** se suben con todo en `null` los 4 archivos compartidos, para que la app se pueda programar desde el principio. Se suma el contrato de las imágenes del visor (`data/imagenes/`).
+- **D-24 (Checkpoint 1: clima 1981-2025 y app v1 publicada):**
+  - **Clima:** `scripts/descargar_nasa_power.py` baja 1981-2025 para las 5 zonas y genera `data/clima_zonas.json`. Trae normal y reciente, ET0, balance, heladas, rangos, anomalía de humedad, escenarios de temperatura y datos año por año. El contrato §1 se actualizó con este formato.
+  - **App v1:** `web/` lee los JSON de `data/` y se publica en GitHub Pages: https://enzopazzelli.github.io/BioSat/web/
+  - **Motor:** los puntajes salen de reglas fijas sobre los atributos y el calendario de cada rotación (la leguminosa suma solo si no es monocultivo).
+  - **Datos que faltan:** mientras Vale no cargue las rotaciones, la app usa el borrador del equipo y lo avisa. Las imágenes del visor salen de Planetary Computer hasta que Santi exporte las de Earth Engine.
+  - **Sin internet:** Leaflet y las imágenes van dentro de `web/`. La caché cruda de NASA POWER no se sube al repo.
