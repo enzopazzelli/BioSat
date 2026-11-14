@@ -50,10 +50,10 @@ Avance de cada integrante, contado desde las casillas de su plan en [`planes/`](
 | Persona | Rama | Avance | Tareas |
 |---|---|---|---|
 | [Enzo · Integración y app](planes/1-enzo.md) | `enzo-app` | `▓▓▓▓▓▓▓▓░░` 80% | 24/30 |
-| [Santi · Suelo, satélite e IA](planes/2-santi.md) | `santi-datos-ia` | `░░░░░░░░░░` 0% | 0/21 |
-| [Vale · Campo y agronomía](planes/3-vale.md) | `vale-rotaciones` | `▓▓▓▓▓▓░░░░` 56% | 10/18 |
+| [Santi · Suelo, satélite e IA](planes/2-santi.md) | `santi-datos-ia` | `▓▓▓▓▓▓░░░░` 57% | 12/21 |
+| [Vale · Campo y agronomía](planes/3-vale.md) | `vale-rotaciones` | `▓▓▓▓▓▓▓▓░░` 78% | 14/18 |
 | [Sara · Kit Arduino y relato](planes/4-sara.md) | `sara-arduino-entrega` | `▓░░░░░░░░░` 5% | 1/19 |
-| **Total** | | `▓▓▓▓░░░░░░` **40%** | **35/88** |
+| **Total** | | `▓▓▓▓▓▓░░░░` **58%** | **51/88** |
 <!-- AUTO:AVANCE:FIN -->
 
 **Últimas decisiones:**
@@ -91,6 +91,7 @@ El detalle de tareas, la ruta de trabajo y los diagramas están en **[PLAN.md](P
 <!-- AUTO:ESTRUCTURA:INICIO -->
 ```text
 BioSat/
+├── arduino.jpeg
 ├── CONTEXTO.md                                               <-- Contexto inicial del 13/11 (histórico)
 ├── ESTRUCTURA_DATOS.md                                       <-- Arquitectura de datos y módulos AIZAL
 ├── NASA Space Apps Challenge - awards.mhtml                  <-- Premios globales y datos del equipo
@@ -103,6 +104,7 @@ BioSat/
 │   ├── clima_zonas.json                                      <-- Clima NASA POWER 1981-2025 de las 5 zonas (lo lee la app)
 │   ├── desmonte_zonas.json                                   <-- Riesgo y proyección de desmonte por zona (Santi) · plantilla
 │   ├── diagnostico_landsat_ia.json                           <-- Meses de suelo pelado por umbral (Santi) · plantilla
+│   ├── meteomatics_santiago_zonas.json
 │   ├── resumen_mensual_santiago.csv                          <-- Normal 1991-2020 por mes y zona, para planilla
 │   ├── rotaciones_santiago.json                              <-- Rotaciones de las 5 zonas (Vale) · plantilla hasta tener datos
 │   ├── suelo_zonas.json                                      <-- Suelo por zona (Santi) · plantilla hasta tener datos
@@ -115,23 +117,41 @@ BioSat/
 │       ├── 04_Fisica_Suelo_y_Topografia/ (2 archivos)        <-- B10, B12, B17-B18, B24-B25: textura, relieve
 │       ├── 05_Logistica_Antropico_y_Servicios/ (2 archivos)  <-- B26-B29, B32-B37: caminos, población
 │       └── 06_Embeddings_IA_AlphaEarth/ (2 archivos)         <-- Embeddings AlphaEarth 64D (DeepMind)
-├── docs/                                                     <-- Documentación del equipo
-│   ├── AIZAL_Fichas_Variables_V4_2026.pdf                    <-- Fichas oficiales de las variables AIZAL V4
-│   ├── analisis-datos-nasa-santiago.md                       <-- Informe de clima 1981-2025 de las 5 zonas (generado desde los datos)
-│   ├── BioSat-cruce-de-datos-validacion.docx                 <-- Documento para que la profesora valide el enfoque
-│   ├── contratos-de-datos.md                                 <-- Formato de los JSON que comparten los frentes
-│   ├── cruce-de-datos.md                                     <-- Qué sale de cruzar NASA POWER, AIZAL y Landsat; análisis de zonas
-│   ├── documentacion-tecnica-agronomica.md                   <-- Secciones de cultivo A/B/C/D y reglas de rotación
-│   ├── glosario.md                                           <-- Términos técnicos en lenguaje de productor
-│   ├── plan-de-pasos-y-agentes.md                            <-- Plan anterior (reemplazado por PLAN.md)
-│   ├── recursos-desafio.md                                   <-- Los 26 recursos oficiales y cómo los usamos
-│   ├── reglas-y-bitacora.md                                  <-- Reglas de oro y bitácora de decisiones
-│   ├── resena-desafio.md                                     <-- Reseña del desafío y guía de entrevista
-│   ├── transcripcion-video-desafio.md                        <-- Transcripción del video del desafío (los 4 verbos)
-│   ├── zonas-santiago-y-kit-arduino.md                       <-- Las 5 zonas, sus rotaciones y el kit Arduino
-│   └── superpowers/
-│       ├── plans/ (1 archivo)
-│       └── specs/ (2 archivos)
+├── docs/ (18 archivos)                                       <-- Documentación del equipo
+├── ia_desmonte/
+│   ├── BioSat_IA_Zonificacion_y_Desmonte.ipynb
+│   ├── INSTRUCCIONES_PIPELINE.md                             <-- 🛰️ Instrucciones de Operación del Pipeline Automatizado B...
+│   ├── README.md                                             <-- 🛰️ Espacio de Trabajo: santi-task
+│   ├── data/
+│   │   ├── desmonte_entrenamiento_2001_2015.csv
+│   │   ├── desmonte_prueba_2016_2023.csv
+│   │   ├── desmonte_zonas.json
+│   │   ├── serie_historica_desmonte_zonas.csv
+│   │   ├── zonas_bioclima_suelo.csv
+│   │   └── zonificacion_aizal.json
+│   ├── gee/
+│   │   ├── biosat_gee_pipeline_completo.js
+│   │   └── README_GEE.md                                     <-- Módulo Google Earth Engine (GEE): Extracción y Procesamie...
+│   ├── graficos_y_resultados/
+│   │   ├── 01_codo_y_silueta_kmeans.png
+│   │   ├── 02_heatmap_perfiles_clusters.png
+│   │   ├── 03_matriz_correspondencia_zonas.png
+│   │   ├── 04_curvas_roc_modelos.png
+│   │   ├── 05_matrices_confusion.png
+│   │   ├── 06_importancia_variables_rf.png
+│   │   ├── 07_serie_historica_desmonte.png
+│   │   ├── 08_riesgo_desmonte_por_zona.png
+│   │   ├── resumen_metricas_modelos.csv
+│   │   ├── explicaciones/ (9 archivos)
+│   │   └── historial/ (2 archivos)
+│   ├── python/
+│   │   ├── compilar_notebook.py
+│   │   ├── extraer_metricas_pdf.py
+│   │   └── pipeline_automatizado.py
+│   └── registros/
+│       ├── INDICE_REGISTROS.md                               <-- 📂 Índice Histórico de Registros y Reportes PDF
+│       ├── registro_metricas_20261114_151536.json
+│       └── Reporte_IA_BioSat_20261114_151536.pdf
 ├── planes/                                                   <-- Plan de cada integrante y cómo trabajamos en ramas
 │   ├── 1-enzo.md                                             <-- Plan de Enzo · integración y app (rama enzo-app)
 │   ├── 2-santi.md                                            <-- Plan de Santi · suelo, satélite e IA (rama santi-datos-ia)
@@ -140,6 +160,7 @@ BioSat/
 │   └── README.md                                             <-- Objetivo común, ramas, reglas e hitos de integración
 ├── scripts/                                                  <-- Herramientas para bajar y procesar datos
 │   ├── actualizar_readme.py                                  <-- Regenera las secciones automáticas del README
+│   ├── descargar_meteomatics.py
 │   ├── descargar_nasa_power.py                               <-- Descarga y resume NASA POWER por zona
 │   ├── earth_engine_embeddings.js                            <-- Ejemplo GEE de embeddings (falta adaptar a SdE)
 │   ├── gee_exportar_zonas.js                                 <-- Earth Engine: estadísticas e imágenes por zona para la app
