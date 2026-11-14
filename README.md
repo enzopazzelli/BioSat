@@ -210,7 +210,7 @@ BioSat/
 │   │   ├── 05_Logistica_Antropico_y_Servicios/ (2 archivos)  <-- B26-B29, B32-B37: caminos, población
 │   │   └── 06_Embeddings_IA_AlphaEarth/ (2 archivos)         <-- Embeddings AlphaEarth 64D (DeepMind)
 │   └── imagenes/ (22 archivos)                               <-- Imágenes del visor exportadas de Earth Engine (Santi)
-├── docs/ (21 archivos)                                       <-- Documentación del equipo
+├── docs/ (23 archivos)                                       <-- Documentación del equipo
 ├── ia_desmonte/                                              <-- IA de Santi: zonificación AIZAL, modelo de desmontes, gráficos e informes
 │   ├── BioSat_IA_Zonificacion_y_Desmonte.ipynb
 │   ├── INSTRUCCIONES_PIPELINE.md                             <-- 🛰️ Instrucciones de Operación del Pipeline Automatizado B...
@@ -315,6 +315,7 @@ python scripts/actualizar_readme.py
 | Para… | Leer |
 |---|---|
 | Ver cómo viene todo y qué falta | [docs/estado-del-proyecto.md](docs/estado-del-proyecto.md) |
+| Tener toda la memoria de lo que hay en el repo | [docs/memoria-del-proyecto.md](docs/memoria-del-proyecto.md) |
 | Saber qué hacer y quién lo hace | [PLAN.md](PLAN.md) |
 | Saber el formato de los datos compartidos | [docs/contratos-de-datos.md](docs/contratos-de-datos.md) |
 | Entender el desafío | [docs/resena-desafio.md](docs/resena-desafio.md) · [docs/recursos-desafio.md](docs/recursos-desafio.md) |

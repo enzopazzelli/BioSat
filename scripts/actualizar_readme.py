@@ -54,6 +54,8 @@ DESCRIPCIONES = {
     "data/meteomatics_santiago_zonas.json": "Pronóstico y clima de Meteomatics por zona (Santi)",
     "docs/entrevista-productor-bella-criolla.md": "Entrevista al productor de la Zona 5 y cruce con los datos (Vale)",
     "docs/integracion-meteomatics.md": "Cómo se integra Meteomatics (Santi)",
+    "docs/memoria-del-proyecto.md": "Memoria de todo lo que hay en el repo: partes, datos, decisiones y pendientes",
+    "docs/mockup/biosat-mockup.html": "Mockup original de la app (reemplazado por web/)",
     "docs/estado-del-proyecto.md": "Panorama general: qué está hecho, qué falta y qué riesgos hay",
     "ia_desmonte": "IA de Santi: zonificación AIZAL, modelo de desmontes, gráficos e informes",
     "scripts/descargar_meteomatics.py": "Descarga datos de Meteomatics por zona",
