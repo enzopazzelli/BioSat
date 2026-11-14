@@ -15,6 +15,7 @@
 <script src="../arduino/lector-web-serial.js" defer onerror="this.remove()"></script>
 <script src="asistente-logica.js" defer></script>
 <script src="asistente.js" defer></script>
+<script src="frases-logica.js" defer></script>
 <script src="app.js" defer></script>
 </head>
 <body>
@@ -56,7 +57,7 @@
         <div>
           <p class="eyebrow">Paso 1 de 5</p>
           <h2>¿Dónde está tu campo y qué te importa?</h2>
-          <p class="lede">Elegí tu zona y marcá tus prioridades. Con eso BioSat arma el calendario de tu lote y ordena las rotaciones.</p>
+          <p class="lede">Estas son tus respuestas. Con eso BioSat arma el calendario de tu lote y ordena las rotaciones. Las podés cambiar cuando quieras.</p>
         </div>
       </header>
       <div class="campo">
@@ -73,6 +74,7 @@
         <div>
           <p class="eyebrow">Paso 2 de 5</p>
           <h2>¿Qué le pasa a tu campo durante el año?</h2>
+          <p class="en-una-frase" id="fraseCalor" hidden></p>
           <p class="lede" id="calLede"></p>
         </div>
         <div class="seg" role="group" aria-label="Período de los datos">
@@ -115,28 +117,8 @@
         </div>
       </div>
 
-      <div class="panels">
-        <article class="card panel">
-          <div class="panel-h"><h3>Tu suelo</h3><span class="src">AIZAL V4 · grilla de 500 m</span></div>
-          <dl class="soil" id="soil"></dl>
-          <p class="pending" id="soilNota"></p>
-        </article>
-        <article class="card panel">
-          <div class="panel-h"><h3>Lo que ve el satélite</h3><span class="src">Landsat 8/9 · 30 m</span></div>
-          <p class="hint">Meses en que tu zona suele quedar con el suelo pelado, según las imágenes:</p>
-          <div>
-            <div class="mini-cal" id="miniSat"></div>
-            <div class="strip-lbl" id="miniSatLbl"></div>
-          </div>
-          <div class="tabla-scroll">
-            <table>
-              <thead><tr><th>Método</th><th>Exactitud</th><th>F1</th></tr></thead>
-              <tbody id="metodos"></tbody>
-            </table>
-          </div>
-          <p class="pending" id="satNota"></p>
-        </article>
-        <article class="card panel">
+      <!-- El sensor queda a la vista: es lo que se muestra en la demo (ver el ledger de la tarea 6). -->
+      <article class="card panel panel-sensor">
           <div class="panel-h"><h3>Lo que mide el sensor</h3><span class="src">Kit Arduino · 1 m²</span></div>
           <div class="trays" role="group" aria-label="Bandeja de demostración" id="trays"></div>
           <div class="read" id="read"></div>
@@ -146,27 +128,51 @@
           <div class="kit-links"><a class="btn" id="linkKit" href="kit.html">Pantalla del kit</a><a class="capa" href="campo.html">Del kit al campo</a></div>
           <p class="pending" id="sensorNota"></p>
         </article>
-      </div>
 
-      <div class="card desmonte" id="panelDesmonte">
-        <div class="desmonte-col">
-          <div class="panel-h"><h3>Presión de desmonte en tu zona</h3><span class="src">Modelo predictivo · D-25</span></div>
-          <div class="desmonte-nivel" id="desmonteNivel"></div>
-          <p class="hint" id="desmonteTexto"></p>
+      <details class="detalle-tecnico" id="detalleTecnico">
+        <summary id="detalleResumen"></summary>
+        <div class="panels">
+            <article class="card panel">
+              <div class="panel-h"><h3>Tu suelo</h3><span class="src">AIZAL V4 · grilla de 500 m</span></div>
+              <dl class="soil" id="soil"></dl>
+              <p class="pending" id="soilNota"></p>
+            </article>
+            <article class="card panel">
+              <div class="panel-h"><h3>Lo que ve el satélite</h3><span class="src">Landsat 8/9 · 30 m</span></div>
+              <p class="hint">Meses en que tu zona suele quedar con el suelo pelado, según las imágenes:</p>
+              <div>
+                <div class="mini-cal" id="miniSat"></div>
+                <div class="strip-lbl" id="miniSatLbl"></div>
+              </div>
+              <div class="tabla-scroll">
+                <table>
+                  <thead><tr><th>Método</th><th>Exactitud</th><th>F1</th></tr></thead>
+                  <tbody id="metodos"></tbody>
+                </table>
+              </div>
+              <p class="pending" id="satNota"></p>
+            </article>
         </div>
-        <div class="desmonte-col">
-          <span class="visor-t">Hectáreas desmontadas por año</span>
-          <svg class="spark-d" id="desmonteSerie" viewBox="0 0 320 90" preserveAspectRatio="none" role="img" aria-label="Desmonte anual de la zona"></svg>
-          <p class="hint" id="desmonteSerieNota"></p>
+        <div class="card desmonte" id="panelDesmonte">
+          <div class="desmonte-col">
+            <div class="panel-h"><h3>Presión de desmonte en tu zona</h3><span class="src">Modelo predictivo · D-25</span></div>
+            <div class="desmonte-nivel" id="desmonteNivel"></div>
+            <p class="hint" id="desmonteTexto"></p>
+          </div>
+          <div class="desmonte-col">
+            <span class="visor-t">Hectáreas desmontadas por año</span>
+            <svg class="spark-d" id="desmonteSerie" viewBox="0 0 320 90" preserveAspectRatio="none" role="img" aria-label="Desmonte anual de la zona"></svg>
+            <p class="hint" id="desmonteSerieNota"></p>
+          </div>
+          <div class="desmonte-col">
+            <div class="tabla-scroll"><table>
+              <thead><tr><th>Modelo</th><th>AUC</th><th>F1 o error</th></tr></thead>
+              <tbody id="desmonteMetodos"></tbody>
+            </table></div>
+            <p class="pending" id="desmonteNota"></p>
+          </div>
         </div>
-        <div class="desmonte-col">
-          <div class="tabla-scroll"><table>
-            <thead><tr><th>Modelo</th><th>AUC</th><th>F1 o error</th></tr></thead>
-            <tbody id="desmonteMetodos"></tbody>
-          </table></div>
-          <p class="pending" id="desmonteNota"></p>
-        </div>
-      </div>
+      </details>
     </div>
   </section>
 
@@ -177,6 +183,7 @@
         <div>
           <p class="eyebrow">Paso 3 de 5</p>
           <h2>Tu rotación de hoy contra 2 alternativas</h2>
+          <p class="en-una-frase" id="fraseMejor" hidden></p>
           <p class="lede" id="cmpLede"></p>
         </div>
       </header>

@@ -21,7 +21,7 @@ const ZONAS = {
 const PRIO = [
   {id:'agua', label:'Ahorrar agua'},
   {id:'salitre', label:'Frenar el salitre'},
-  {id:'suelo', label:'Recuperar el suelo'},
+  {id:'suelo', label:'Cuidar el suelo'},
   {id:'forraje', label:'Sumar forraje'},
   {id:'ingreso', label:'Ingreso este año'}
 ];
@@ -83,7 +83,7 @@ function puntaje(r){
   const avisos = []; let viable = true;
   if (r.req.riego && !state.riego){ viable = false; avisos.push(['crit','Necesita riego']); }
   if (r.req.ganado && !state.ganado) avisos.push(['warn','Pensada con hacienda']);
-  if (r.req.maquinaria && !state.maq) avisos.push(['warn','Necesita rolo o sembradora (se puede contratar)']);
+  if (r.req.maquinaria && !state.maq) avisos.push(['warn', TEXTOS_PASOS.maqAviso]);
   return {pct, det, avisos, viable};
 }
 function reglas(r){
@@ -140,7 +140,7 @@ function trade(r, c){
   if (dAgua > 20) cuesta.push(`Pide unos ${nf(dAgua)} mm más de agua por año`);
   if (dCal > 0.5) cuesta.push(`${nf(dCal,1)} días más de 40 °C con cultivo en pie`);
   if (r.attr.ingreso < a.attr.ingreso) cuesta.push('Menos ingreso el primer año');
-  if (r.req.maquinaria) cuesta.push('Necesita rolo o sembradora de grano fino');
+  if (r.req.maquinaria) cuesta.push(TEXTOS_PASOS.maqCuesta);
   if (r.req.ganado) cuesta.push('Necesita hacienda para aprovechar el forraje');
   cuesta.push(r.riesgo[0]);
   return {gana:gana.slice(0, 4), cuesta:cuesta.length > 4 ? [...cuesta.slice(0, 3), cuesta[cuesta.length - 1]] : cuesta};
@@ -222,7 +222,7 @@ function renderVisor(){
   $('#rampa').hidden = !mostrar.some(id => id.endsWith('ndvi'));
   $('#escena').innerHTML = mostrar.map(id => escenaDe(z, id)).filter(Boolean)
     .map(e => `${e.item} · ${fechaTxt(e.fecha)}${e.nubes !== undefined ? ` · nubes ${nf(e.nubes,1)} %` : ''}`).join('<br>');
-  $('#celdaNota').innerHTML = `Recuadro punteado: la celda de NASA POWER (unos 50 km) ${cf('celda')}`;
+  $('#celdaNota').innerHTML = `${TEXTOS_PASOS.celdaNota} ${cf('celda')}`;
   const b = im.meta.bbox, bounds = [[b[1], b[0]], [b[3], b[2]]];
   const lat = CLIMA[state.zona].lat, lon = CLIMA[state.zona].lon;
   if (!window.L){
@@ -331,6 +331,16 @@ function botonArduino(){
 /* ---------- Paso 1 y asistente de inicio ---------- */
 // Lo que respondió la persona (ver asistente-logica.js). El asistente le pasa las respuestas a `state`.
 let respuestas = null, MAPA = null;
+// Textos de los pasos (todos acá, con claves, para poder traducirlos después).
+const TEXTOS_PASOS = {
+  detalle: 'Ver el detalle técnico: suelo, satélite y desmonte',
+  fichaMas: 'Más datos de la zona',
+  fichaDeptos: 'Departamentos',
+  fichaPunto: 'punto NASA POWER',
+  maqAviso: 'Necesita sembradora o rolo, para sembrar sin arar (se puede contratar)',
+  maqCuesta: 'Necesita sembradora o rolo, para sembrar sin arar',
+  celdaNota: 'Recuadro punteado: el área de unos 50 km de la que sale el clima de tu zona (NASA POWER).'
+};
 const TEXTOS_CAMPO = {titulo:'Tu campo', zona:'Zona', tiene:'Tenés', preocupa:'Te preocupa', nada:'Nada en particular', cambiar:'Cambiar mis respuestas'};
 function almacen(){ try { return window.localStorage; } catch (e) { return null; } }
 function aplicarRespuestas(r){ Object.assign(state, AsistenteLogica.aEstado(r, ZONAS), {elegida:null}); }
@@ -366,8 +376,10 @@ function renderTuCampo(){
       <div><dt>${TEXTOS_CAMPO.preocupa}</dt><dd>${esc(preocupa.length ? preocupa.join(', ') : TEXTOS_CAMPO.nada)}</dd></div></dl>
       <button type="button" class="btn" id="btnCambiar">${TEXTOS_CAMPO.cambiar}</button>`;
   }
-  $('#zonaFicha').innerHTML = `<strong>Zona ${z.num} · ${esc(z.nombre)}</strong><p>${esc(z.problema)}</p>
-    <span class="mono">Departamentos: ${esc(z.deptos)} · punto NASA POWER ${nf(c.lat,2)}°, ${nf(c.lon,2)}°</span>` + zonifTexto();
+  $('#zonaFicha').innerHTML = `<strong>Zona ${z.num} · ${esc(z.lugar)} · ${esc(z.nombre)}</strong><p>${esc(z.problema)}</p>
+    <details class="ficha-tecnica"><summary>${TEXTOS_PASOS.fichaMas}</summary>
+      <span class="mono">${TEXTOS_PASOS.fichaDeptos}: ${esc(z.deptos)} · ${TEXTOS_PASOS.fichaPunto} ${nf(c.lat,2)}°, ${nf(c.lon,2)}°</span>${zonifTexto()}</details>`;
+  $('#detalleResumen').textContent = TEXTOS_PASOS.detalle;
 }
 
 /* ---------- Paso 2 ---------- */
@@ -622,9 +634,19 @@ function renderDecidir(){
   $('#listaTxt').value = `BioSat · Lista para revisar con el agrónomo\n${r.nombre} (Zona ${ZONAS[state.zona].num}: ${ZONAS[state.zona].nombre})\n\n` + items.map(([t]) => `[ ] ${t}`).join('\n');
 }
 
+/* ---------- Frases simples de cada paso ---------- */
+function setFrase(sel, texto){ const el = $(sel); el.textContent = texto || ''; el.hidden = !texto; }
+function renderFrases(){
+  if (!window.FrasesLogica) return;
+  const cn = clima('normal', 0, 0), cr = clima('reciente', 0, 0);
+  setFrase('#fraseCalor', FrasesLogica.fraseCalor(ZONAS[state.zona].lugar, sum(cn, m => m.d40), sum(cr, m => m.d40)));
+  const primera = ranking()[0];
+  setFrase('#fraseMejor', primera && primera.p.viable ? FrasesLogica.fraseMejorRotacion(primera.r.nombre) : null);
+}
+
 /* ---------- Render general y eventos ---------- */
-function renderTodo(){ renderTuCampo(); renderStats(); renderCalendario(); renderPaneles(); renderDesmonte(); renderTrade(); renderCards(); renderSim(); renderDecidir(); renderVisor(); }
-function renderClima(){ renderStats(); renderCalendario(); renderPaneles(); renderTrade(); renderCards(); renderSim(); }
+function renderTodo(){ renderTuCampo(); renderFrases(); renderStats(); renderCalendario(); renderPaneles(); renderDesmonte(); renderTrade(); renderCards(); renderSim(); renderDecidir(); renderVisor(); }
+function renderClima(){ renderFrases(); renderStats(); renderCalendario(); renderPaneles(); renderTrade(); renderCards(); renderSim(); }
 document.addEventListener('click', e => {
   const cb = e.target.closest('[data-capa]');
   if (cb){ visor.capa = cb.dataset.capa; visor.cmp = 'no'; renderVisor(); return; }
