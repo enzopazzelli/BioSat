@@ -19,6 +19,8 @@ Objetivo del desafío: una herramienta que ayude a un agricultor a **comparar ro
 | `docs/glosario.md` | Glosario vivo de términos satelitales, agronómicos, de IA (CNN/RNN/Transformer) y sensores Arduino |
 | `docs/reglas-y-bitacora.md` | Reglas de oro del proyecto, alineación con los premios de la NASA y bitácora de decisiones |
 | `docs/zonas-santiago-y-kit-arduino.md` | Kit AltaNet Arduino + ESP32, las 4 Zonas de Santiago del Estero y el módulo IA `CNN + RNN + Transformer` con Landsat |
+| `docs/analisis-datos-nasa-santiago.md` | **Informe detallado de los hallazgos climáticos y agronómicos reales de la NASA (2020–2025) en las 4 zonas de Santiago del Estero** |
+| `docs/plan-de-pasos-y-agentes.md` | **Hoja de ruta paso a paso (Pasos 0 al 6) y guía para trabajar con 2 agentes en paralelo sin pisarse** |
 | `scripts/descargar_nasa_power.py` | Script en Python que descarga y procesa los datos diarios de NASA POWER para las 4 zonas |
 | `data/nasa_power_santiago_zonas.json` | Datos reales procesados de NASA POWER (2020–2025, 2.192 días por zona) listos para usar en la app |
 | `data/resumen_mensual_santiago.csv` | Tabla mensual limpia (48 filas: 12 meses × 4 zonas) en formato CSV |
