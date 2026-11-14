@@ -19,34 +19,34 @@ Que un productor recorra los 5 pasos de la app sin ayuda, con números de clima 
 ## Checklist
 
 ### Hito 0 · Sáb 16:30
-- [ ] Pasarte a tu rama (`git switch enzo-app`)
-- [ ] Traer el mockup al repo como base de `web/` (está en el link del mockup)
-- [ ] Hacer que `web/` lea los JSON de `data/` (las plantillas ya están) y muestre "sin dato" donde haya `null`
+- [x] Pasarte a tu rama (`git switch enzo-app`)
+- [x] Traer el mockup al repo como base de `web/` (está en el link del mockup)
+- [x] Hacer que `web/` lea los JSON de `data/` (las plantillas ya están) y muestre "sin dato" donde haya `null`
 
 ### Checkpoint 1 · Sáb 20:30
-- [ ] Ampliar `scripts/descargar_nasa_power.py` a 1981-2025 y sumar la Zona 5 (Ojo de Agua, -29.50, -63.69)
-- [ ] Calcular lo normal (1991-2020) y lo reciente (2021-2025)
-- [ ] Calcular la demanda de agua (ET0 Hargreaves) y el balance lluvia − ET0; `EVPTRNS` viene en MJ/m²/día
-- [ ] Agregar rangos entre años, probabilidad y fechas típicas de helada, y la humedad en raíces como anomalía
-- [ ] Generar `data/clima_zonas.json` según el contrato
-- [ ] Paso 1 (zona, prioridades, límites) y paso 2 (calendario del lote) con datos reales
+- [x] Ampliar `scripts/descargar_nasa_power.py` a 1981-2025 y sumar la Zona 5 (Ojo de Agua, -29.50, -63.69)
+- [x] Calcular lo normal (1991-2020) y lo reciente (2021-2025)
+- [x] Calcular la demanda de agua (ET0 Hargreaves) y el balance lluvia − ET0; `EVPTRNS` viene en MJ/m²/día
+- [x] Agregar rangos entre años, probabilidad y fechas típicas de helada, y la humedad en raíces como anomalía
+- [x] Generar `data/clima_zonas.json` según el contrato
+- [x] Paso 1 (zona, prioridades, límites) y paso 2 (calendario del lote) con datos reales
 - [ ] Paso 3 (comparador de 3 rotaciones con los 5 puntos) con las rotaciones de la zona protagonista de Vale
-- [ ] Integrar en `main` lo que esté listo y publicar la app v1 en GitHub Pages
-- [ ] Pasar a la bitácora las decisiones anotadas en los planes de cada uno
+- [x] Integrar en `main` lo que esté listo y publicar la app v1 en GitHub Pages
+- [x] Pasar a la bitácora las decisiones anotadas en los planes de cada uno
 
 ### Checkpoint 2 · Dom 09:30
-- [ ] Motor de reglas transparente (secciones A/B/C/D + prioridades) que ordena las rotaciones y explica por qué
-- [ ] Bloque "qué ganás y qué te cuesta" y gráfico de compensaciones
-- [ ] Riesgo como frecuencia ("en 1 de cada 5 años…")
-- [ ] Etiquetas de confianza en cada dato
-- [ ] Visor GIS del lote con las imágenes de `data/imagenes/` (de Santi)
-- [ ] Las 5 zonas cargadas con suelo y diagnóstico de IA (lo que haya; el resto, "sin dato")
+- [x] Motor de reglas transparente (secciones A/B/C/D + prioridades) que ordena las rotaciones y explica por qué
+- [x] Bloque "qué ganás y qué te cuesta" y gráfico de compensaciones
+- [x] Riesgo como frecuencia ("en 1 de cada 5 años…")
+- [x] Etiquetas de confianza en cada dato
+- [x] Visor GIS del lote con las imágenes de `data/imagenes/` (de Santi)
+- [x] Las 5 zonas cargadas con suelo y diagnóstico de IA (lo que haya; el resto, "sin dato")
 - [ ] Integrar en `main` y pasar decisiones a la bitácora
 
 ### Congelamiento · Dom 15:00
-- [ ] Paso 4 (simulador de lluvia y temperatura) y paso 5 (lista para el agrónomo)
+- [x] Paso 4 (simulador de lluvia y temperatura) y paso 5 (lista para el agrónomo)
 - [ ] Sumar el lector del Arduino de Sara (`arduino/lector-web-serial.js`) con respaldo de lecturas grabadas
-- [ ] "Apoya, no reemplaza" y fuente de cada dato visibles en toda la app
+- [x] "Apoya, no reemplaza" y fuente de cada dato visibles en toda la app
 - [ ] Probar en celular y sin internet
 - [ ] Corregir `docs/analisis-datos-nasa-santiago.md` con los datos nuevos
 - [ ] Último merge de funciones a `main`
@@ -71,4 +71,11 @@ Que un productor recorra los 5 pasos de la app sin ayuda, con números de clima 
 
 ## Mis decisiones
 
-- *(Anotá acá lo que decidas en el camino.)*
+- **Clima (14/11):** `data/clima_zonas.json` suma escenarios de temperatura y datos año por año para el simulador y el riesgo. Actualicé el contrato §1.
+- **Puntajes del motor:** salen de reglas fijas sobre los atributos y el calendario de cada rotación, no de números puestos a mano. La leguminosa suma un punto solo si no es monocultivo.
+- **Rotaciones:** mientras Vale no cargue las 3 de una zona, la app usa el borrador del equipo (`web/datos-borrador/`) y lo avisa en pantalla.
+- **Imágenes:** la app usa `data/imagenes/` (Earth Engine, de Santi) si existe; si no, las de Planetary Computer en `web/img/`.
+- **Sin internet:** Leaflet y las imágenes van dentro de `web/`. Las fuentes tipográficas caen a las del sistema.
+- **Caché de NASA POWER 1981-2025:** no se sube (está en `.gitignore`); el script la vuelve a bajar en segundos.
+- **App publicada (Checkpoint 1):** https://enzopazzelli.github.io/BioSat/web/
+- **Pendiente:** `data/nasa_power_santiago_zonas.json` queda como versión vieja (2020-2025, con errores) hasta corregir el informe de análisis.

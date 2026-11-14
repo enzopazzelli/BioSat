@@ -23,54 +23,60 @@ Cada archivo lleva arriba un bloque `meta` con `fuente`, `generado_por` (script 
 
 ## 1. `data/clima_zonas.json` (F1 · Enzo)
 
-Clima por zona y por mes, con lo **normal** (1991-2020) y lo **reciente** (2021-2025).
+Lo genera [`scripts/descargar_nasa_power.py`](../scripts/descargar_nasa_power.py) con NASA POWER diario 1981-2025. Trae lo **normal** (1991-2020) y lo **reciente** (2021-2025) de cada zona.
 
 ```json
 {
   "meta": {
     "fuente": "NASA POWER (MERRA-2), modelo de reanálisis, celda de ~50 km",
     "generado_por": "scripts/descargar_nasa_power.py",
-    "fecha": "2026-11-14",
     "periodo_normal": "1991-2020",
     "periodo_reciente": "2021-2025",
-    "notas": "ET0 calculada con Hargreaves a partir de T2M_MAX y T2M_MIN"
+    "escenarios_temperatura_c": [0, 0.5, 1, 1.5, 2, 2.5]
   },
   "zonas": {
     "zona_2_secano_este": {
-      "nombre": "Secano agrícola del este",
-      "lat": -27.65,
-      "lon": -62.42,
+      "nombre": "Secano agrícola del este", "lat": -27.65, "lon": -62.42,
       "anual": {
-        "lluvia_mm": { "normal": null, "reciente": null },
-        "et0_mm": { "normal": null, "reciente": null },
-        "balance_mm": { "normal": null, "reciente": null },
-        "dias_calor_35": { "normal": null, "reciente": null },
-        "dias_calor_40": { "normal": null, "reciente": null },
-        "dias_helada_3c": { "normal": null, "reciente": null },
-        "ultima_helada_tipica": "MM-DD",
-        "primera_helada_tipica": "MM-DD"
+        "lluvia_mm": {"normal": 830, "reciente": 0},
+        "et0_mm": {"normal": 0, "reciente": 0},
+        "balance_mm": {"normal": 0, "reciente": 0},
+        "dias_calor_35": {"normal": 0, "reciente": 0},
+        "dias_calor_40": {"normal": 0, "reciente": 0},
+        "dias_helada_3c": {"normal": 0, "reciente": 0},
+        "primera_helada_tipica": "DD/MM", "ultima_helada_tipica": "DD/MM",
+        "racha_seca_max": {"dias": 0, "termino": "DD/MM/AAAA"},
+        "record_tmax": {"c": 0, "fecha": "DD/MM/AAAA"}
       },
-      "meses": [
-        {
-          "mes": 1,
-          "lluvia_mm": { "p10": null, "mediana": null, "p90": null },
-          "et0_mm": null,
-          "balance_mm": null,
-          "dias_calor_35": null,
-          "dias_calor_40": null,
-          "dias_helada_3c": null,
-          "prob_helada_pct": null,
-          "humedad_raices_anomalia": null
-        }
-      ]
+      "serie_dias_calor_40": {"desde": 1981, "valores": [0, 0, 0]},
+      "periodos": {
+        "normal": {
+          "meses": [{
+            "mes": 1, "tmax_c": 0, "tmin_c": 0,
+            "lluvia_mm": {"media": 0, "p10": 0, "mediana": 0, "p90": 0},
+            "tormentas_30mm": 0, "dias_helada_3c": 0, "prob_helada_pct": 0,
+            "humedad_raices": 0, "humedad_raices_anomalia": 0,
+            "dias_calor_35": [0, 0, 0, 0, 0, 0],
+            "dias_calor_40": [0, 0, 0, 0, 0, 0],
+            "et0_mm": [0, 0, 0, 0, 0, 0]
+          }],
+          "anios": [{"anio": 1991, "dias_calor_40": [[0, 0, 0]], "tormentas_30mm": [0, 0, 0]}]
+        },
+        "reciente": {"meses": [], "anios": []}
+      }
     }
   }
 }
 ```
 
-- `meses` tiene siempre 12 elementos, de enero a diciembre.
-- `balance_mm` es **lluvia − ET0** (negativo = falta agua).
-- `humedad_raices_anomalia` es la diferencia de `GWETROOT` contra su promedio normal del mismo mes (negativo = más seco de lo normal).
+*(Los ceros del ejemplo solo muestran la forma; el archivo real trae los valores calculados.)*
+
+**Cómo leer los campos:**
+- **`meses`:** 12 elementos, de enero a diciembre.
+- **Listas de 6 valores** (`dias_calor_35`, `dias_calor_40`, `et0_mm`): una por escenario de temperatura (+0 a +2,5 °C). El primero es el clima real; los otros los usa el simulador.
+- **`anios`:** trae año por año los días de más de 40 °C por mes (6 listas de 12, una por escenario) y las tormentas por mes. Sirve para el riesgo como frecuencia ("en 1 de cada 5 años…").
+- **`balance_mm`:** es lluvia − ET0 (Hargreaves). Negativo = falta agua.
+- **`humedad_raices`:** es `GWETROOT` (0 a 1). `humedad_raices_anomalia` es la diferencia contra el mismo mes de 1991-2020; en el período normal vale 0.
 
 ---
 
@@ -190,6 +196,7 @@ Las 3 rotaciones de cada zona, con los 5 puntos que pide la NASA y los datos que
             "forraje": false,
             "ingreso": "bajo | medio | alto",
             "requiere_riego": false,
+            "requiere_hacienda": false,
             "maquinaria_especial": "ninguna | texto"
           },
           "fuentes": ["INTA EEA Santiago del Estero, ..."]
@@ -208,6 +215,13 @@ Las 3 rotaciones de cada zona, con los 5 puntos que pide la NASA y los datos que
   - **D:** coberturas.
 - `calendario` tiene 12 valores, de enero a diciembre. Valores posibles: `"cultivo"`, `"cobertura"`, `"rastrojo"` o `"desnudo"`.
 - `evidencia[].dato` apunta a un campo de otro contrato. Así la app muestra el número real al lado del texto.
+- **Puntajes de la app:** salen de estos atributos con reglas fijas y visibles (ver "¿Cómo ordena BioSat?" en la app):
+  - **Ahorrar agua:** según `demanda_agua`.
+  - **Frenar el salitre:** según los meses de mayo a octubre con el suelo cubierto.
+  - **Recuperar el suelo:** según los meses sin suelo pelado, más 1 si suma una leguminosa a una rotación con otras secciones.
+  - **Sumar forraje:** según `forraje`.
+  - **Ingreso:** según `ingreso`.
+- **Mientras una zona no tenga sus 3 rotaciones en este archivo**, la app usa el borrador de `web/datos-borrador/rotaciones_borrador.json` y lo avisa.
 
 ---
 
@@ -220,7 +234,16 @@ Las exporta [`scripts/gee_exportar_zonas.js`](../scripts/gee_exportar_zonas.js) 
   - `N` es el número de zona, de 1 a 5.
   - `<capa>` es `invierno_rgb`, `verano_rgb`, `invierno_ndvi`, `verano_ndvi` o `2000_rgb`.
 - **Recorte:** el punto de NASA POWER de la zona ± 0,4° de longitud y ± 0,3° de latitud. La app usa ese recuadro para ubicar la imagen en el mapa.
-- **Archivo `data/imagenes/escenas.json`** (opcional): fecha y escena de cada imagen, para mostrarlas como fuente.
+- **Archivo `data/imagenes/escenas.json`:** cuando existe, la app usa estas imágenes en lugar de las de vista previa (`web/img/`). Formato, por zona:
+
+```json
+{"z1": {"bbox": [-64.57, -28.03, -63.77, -27.43],
+        "invierno": {"item": "ID de escena", "fecha": "AAAA-MM-DD", "nubes": 0.4},
+        "verano": {"item": "...", "fecha": "...", "nubes": 0},
+        "anio2000": {"item": "...", "fecha": "..."}}}
+```
+
+  Solo se muestran las capas cuya estación (`invierno`, `verano`, `anio2000`) figura en el archivo.
 
 ---
 
