@@ -1,6 +1,6 @@
 # Diseño: pantalla del kit para la mesa del jurado
 
-**Fecha:** 14/11/2026 · **Responsable:** Enzo (`enzo-app`) · **Estado:** para aprobar
+**Fecha:** 14/11/2026 · **Responsable:** Enzo (`enzo-app`) · **Estado:** aprobado por Enzo (14/11)
 
 ## Para qué
 
