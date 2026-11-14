@@ -5,22 +5,40 @@
 
 ---
 
-## Qué es BioSat
+## En pocas palabras
 
-**BioSat** es una herramienta de apoyo a la decisión para productores de **Santiago del Estero**. Ayuda a comparar **rotaciones de cultivos** que cuiden el suelo y aguanten mejor el calor, la sequía y el salitre.
+**Qué vamos a hacer:** una app web que ayuda a un productor de **Santiago del Estero** a elegir una **rotación de cultivos** que cuide su suelo y aguante el calor extremo, la sequía y el salitre.
 
-Para cada zona de la provincia, BioSat junta:
+**En qué consiste:** el productor elige su zona y lo que le importa (agua, salitre, suelo, forraje, ingreso). La app le muestra:
+- **El calendario de su lote:** cuándo hace demasiado calor, cuándo hiela, cuándo falta agua y cuándo el suelo queda pelado.
+- **3 rotaciones comparadas:** su rotación actual y 2 alternativas. Cada una explica por qué se sugiere, qué evidencia la respalda, qué beneficios tiene, qué falta saber y qué riesgos debe revisar un agrónomo local.
+- **Un simulador:** "¿y si llueve menos o hace más calor?".
 
-1. **Clima de la NASA (NASA POWER, 1981-2025):** días de calor extremo, heladas, meses sin lluvia y balance de agua.
-2. **Suelo y paisaje (AIZAL V4):** 38 variables del Gran Chaco (pH, textura, carbono, nitrógeno, distancia a caminos y a monte) y embeddings satelitales AlphaEarth.
-3. **Imágenes Landsat + IA:** detecta en qué meses el suelo queda pelado y dónde hubo desmonte (CNN + LSTM / Transformer, comparados contra un método simple).
-4. **Reglas agronómicas transparentes:** 4 secciones de cultivo (A gramíneas, B leguminosas, C raíces profundas, D coberturas) para balancear nitrógeno, cortar plagas y no dejar el suelo desnudo.
-5. **Medición en tierra:** un kit Arduino con 3 bandejas de suelo que muestra lo que el satélite no ve de cerca.
-6. **El productor:** sus prioridades y límites, y lo que el satélite no puede medir (compactación, herbicidas usados, maquinaria, mercado).
+En la demo, un **kit Arduino con 3 bandejas de suelo** mide en vivo lo que el satélite no ve de cerca.
 
-Con eso, la app muestra el **calendario del lote** y compara **3 rotaciones** (la actual y 2 alternativas). Para cada una explica por qué se sugiere, qué evidencia la respalda, qué beneficios tiene, qué falta saber y qué riesgos tiene que revisar alguien local.
+**Qué consume:**
 
-> **BioSat apoya, no reemplaza**, el criterio del productor y del agrónomo.
+| Entrada | Fuente | Para qué |
+|---|---|---|
+| Clima diario 1981-2025 | NASA POWER (API abierta) | Calor, heladas, lluvia y balance de agua por zona |
+| Imágenes de 30 m, 2016-2025 | Landsat 8/9 (NASA/USGS) | Meses de suelo pelado y desmonte |
+| Cobertura del suelo por año | MapBiomas Chaco | Etiquetas reales para entrenar y medir la IA |
+| Suelo y paisaje (38 variables, 500 m) | AIZAL V4 (SoilGrids, TerraClimate, OSM) | pH, textura, carbono, nitrógeno, distancia a caminos y a monte |
+| Sensores en tierra | Kit Arduino (suelo, humedad/conductividad, luz, aire) | Comparar satélite y suelo |
+| El productor | Entrevista y formulario de la app | Rotación actual, prioridades y límites (riego, maquinaria, mercado) |
+
+**Cómo funciona, técnicamente:**
+1. **Datos:** scripts en Python bajan y resumen cada fuente en archivos JSON por zona (`data/`, ver [contratos](docs/contratos-de-datos.md)).
+2. **IA:** una red **CNN + LSTM / Transformer** sobre series de Landsat detecta suelo pelado y desmonte. Se compara contra un método simple (umbrales de NDVI/NBR) con métricas medidas.
+3. **Motor de reglas transparente:** usa secciones de cultivo (A gramíneas, B leguminosas, C raíces profundas, D coberturas) y las prioridades del productor para ordenar las rotaciones **y explicar por qué**.
+4. **App web estática** (HTML + JavaScript): se publica en GitHub Pages, funciona sin internet y lee el Arduino por Web Serial.
+
+**Por qué es diferente y qué aporta:**
+- **Hecha para un lugar real:** está pensada para las 4 zonas de Santiago del Estero, con rotaciones revisadas por un productor de la zona. No es un mapa genérico "para cualquier punto del mundo".
+- **Espacio + tierra:** une los datos satelitales de la NASA con mediciones en el suelo, en vivo.
+- **IA que se puede medir:** no da por buena la IA; la compara contra un método simple y muestra los números.
+- **Suelo del Gran Chaco:** usa datos locales de suelo (AIZAL), que fuera de EE. UU. casi nadie tiene a mano.
+- **Honesta:** cada dato muestra su fuente y su incertidumbre, los dilemas quedan a la vista (por ejemplo, una cobertura protege el suelo pero gasta agua) y la herramienta **apoya, no reemplaza** al productor ni al agrónomo.
 
 ---
 
