@@ -50,12 +50,105 @@ Avance de cada integrante, contado desde las casillas de su plan en [`planes/`](
 <!-- AUTO:AVANCE:INICIO -->
 | Persona | Rama | Avance | Tareas |
 |---|---|---|---|
-| [Enzo · Integración y app](planes/1-enzo.md) | `enzo-app` | `▓▓▓▓▓▓▓▓▓░` 87% | 26/30 |
-| [Santi · Suelo, satélite e IA](planes/2-santi.md) | `santi-datos-ia` | `▓▓▓▓▓▓░░░░` 57% | 12/21 |
-| [Vale · Campo y agronomía](planes/3-vale.md) | `vale-rotaciones` | `▓▓▓▓▓▓▓▓░░` 78% | 14/18 |
-| [Sara · Kit Arduino y relato](planes/4-sara.md) | `sara-arduino-entrega` | `▓░░░░░░░░░` 5% | 1/19 |
-| **Total** | | `▓▓▓▓▓▓░░░░` **60%** | **53/88** |
+| [Enzo · Integración y app](planes/1-enzo.md) | `enzo-app` | `▓▓▓▓▓▓▓░░░` 72% | 26/36 |
+| [Santi · Suelo, satélite e IA](planes/2-santi.md) | `santi-datos-ia` | `▓▓▓▓░░░░░░` 44% | 12/27 |
+| [Vale · Campo y agronomía](planes/3-vale.md) | `vale-rotaciones` | `▓▓▓▓▓▓░░░░` 64% | 14/22 |
+| [Sara · Kit Arduino y relato](planes/4-sara.md) | `sara-arduino-entrega` | `░░░░░░░░░░` 4% | 1/23 |
+| **Total** | | `▓▓▓▓▓░░░░░` **49%** | **53/108** |
 <!-- AUTO:AVANCE:FIN -->
+
+### Lo más urgente
+
+1. **Santi: cambiar la contraseña de Meteomatics.** Está escrita en `scripts/descargar_meteomatics.py` y este repo es público. Hay que cambiarla en Meteomatics y leerla de una variable de entorno.
+2. **Sara: el kit Arduino y la entrega no tienen nada en el repo.** Faltan el sketch, el lector Web Serial (`arduino/lector-web-serial.js`), las lecturas grabadas, el guion, el video y la página del proyecto. Sin eso, la pantalla del kit solo anda con el Arduino conectado en vivo.
+3. **Santi: suelo y suelo pelado vacíos.** `data/suelo_zonas.json` y `data/diagnostico_landsat_ia.json` son plantillas sin ninguna medición, y el visor de Earth Engine está sin publicar. Los pasos están en [su plan](planes/2-santi.md).
+4. **Vale: confirmar `requiere_hacienda` y el permiso del productor.** Enzo completó 7 valores según el texto de cada rotación, y la entrevista deja pendiente el permiso por escrito para usar sus frases.
+5. **Enzo: sumar el lector de Sara apenas llegue, decidir si Meteomatics entra en la demo y ensayar la pantalla del kit en la pantalla grande.**
+
+### Lo que falta, por persona
+
+Sale solo de las casillas sin tildar de cada plan. Panorama completo y riesgos: [docs/estado-del-proyecto.md](docs/estado-del-proyecto.md).
+
+<!-- AUTO:PENDIENTE:INICIO -->
+<details>
+<summary><b>Enzo</b>: 10 pendientes (<a href="planes/1-enzo.md">plan completo</a>)</summary>
+
+- Sumar el lector del Arduino de Sara (`arduino/lector-web-serial.js`) con respaldo de lecturas grabadas *(la app ya lo carga y habilita el botón; falta el archivo de Sara)* _(Congelamiento)_
+- Último merge de funciones a `main` _(Congelamiento)_
+- Revisar el README final con Sara _(Entrega)_
+- Dejar `main` estable con la app publicada _(Entrega)_
+- Mostrar en la app y en el README el link del visor de Earth Engine cuando Santi lo publique _(Agregadas por Enzo)_
+- Verificar que el visor use las imágenes de Earth Engine cuando Santi suba `data/imagenes/escenas.json` _(Agregadas por Enzo)_
+- Decidir si Meteomatics entra en la app (alertas a 7-10 días, `data/meteomatics_santiago_zonas.json`) o queda fuera de la demo _(Agregadas por Enzo)_
+- Ensayar `web/kit.html` y `web/campo.html` en la pantalla grande de la demo, con el kit conectado _(Agregadas por Enzo)_
+- Cerrar `PLAN.md`: sumar kit y guía en la sección 1 y contestar las preguntas abiertas _(Agregadas por Enzo)_
+- Probar de nuevo la app publicada en el celular y sin internet después del último merge _(Agregadas por Enzo)_
+
+</details>
+
+<details>
+<summary><b>Santi</b>: 15 pendientes (<a href="planes/2-santi.md">plan completo</a>)</summary>
+
+- Subir `docs/CONTEXTONASA.md` o sacar su link del catálogo AIZAL _(Hito 0)_
+- Correr `scripts/gee_visor_biosat.js`, publicarlo como Earth Engine App y pasarles el link a Enzo y a Sara _(Checkpoint 1)_
+- Correr `scripts/gee_exportar_zonas.js`: imágenes en `data/imagenes/` y meses de suelo pelado por umbral en `data/diagnostico_landsat_ia.json` _(Checkpoint 1)_
+- Extraer de AIZAL por zona: pH, textura, carbono, nitrógeno, densidad aparente, PDSI, distancias y % de monte, y guardarlo en `data/suelo_zonas.json` _(Checkpoint 1)_
+- Definir el índice de fragilidad como fórmula visible, sumando el riesgo de desmonte _(Checkpoint 2)_
+- Sumar lo que responda la profesora al audio y al documento _(Congelamiento)_
+- Pasarle a Sara las métricas, el mapa de riesgo, una captura del visor y la comparación 2000 contra 2025 _(Congelamiento)_
+- Opcional: usar los embeddings AlphaEarth como variable extra del modelo o de la zonificación _(Congelamiento)_
+- Ayudar con el video y la página: explicar el modelo en 20 segundos _(Entrega)_
+- **Urgente:** cambiar la contraseña de Meteomatics y leerla de una variable de entorno (está escrita en `scripts/descargar_meteomatics.py` y el repo es público) _(Agregadas por Enzo)_
+- Crear `data/imagenes/escenas.json` con las imágenes exportadas de Earth Engine (sin ese archivo la app no las usa; formato en contratos §5) _(Agregadas por Enzo)_
+- Confirmar de dónde salen los números de `ia_desmonte/data/zonas_bioclima_suelo.csv`: no coinciden con `data/clima_zonas.json`. Si fueron estimaciones, no usarlos para `data/suelo_zonas.json` _(Agregadas por Enzo)_
+- Dejar un solo juego de métricas: el plan dice AUC 0,986 y 0,973; `data/desmonte_zonas.json` dice 0,984 y 0,971. Completar también la silueta de `data/zonificacion_aizal.json` _(Agregadas por Enzo)_
+- Abrir un PR por cada avance: la rama `santi-datos-ia` del repo quedó vieja porque el PR #5 vino de un fork _(Agregadas por Enzo)_
+- Explicar en una página cómo se usa Meteomatics en BioSat y qué falta para integrarlo _(Agregadas por Enzo)_
+
+</details>
+
+<details>
+<summary><b>Vale</b>: 8 pendientes (<a href="planes/3-vale.md">plan completo</a>)</summary>
+
+- Revisar los textos agronómicos de la app: que no haya errores ni promesas de más _(Congelamiento)_
+- Revisar "qué falta saber" y los riesgos de cada rotación (arman la lista del paso 5) _(Congelamiento)_
+- Sumar al glosario los términos agronómicos nuevos _(Congelamiento)_
+- Revisar la parte agronómica del guion y participar del ensayo _(Entrega)_
+- Confirmar los 7 `requiere_hacienda` que completó Enzo en `data/rotaciones_santiago.json` (Zona 3 las 3, Zona 4 alternativa 2, Zona 5 las 3) _(Agregadas por Enzo)_
+- Conseguir por escrito el permiso del productor para nombrar el campo y usar sus frases (la entrevista lo deja pendiente) _(Agregadas por Enzo)_
+- Validar las zonas 1 a 4 con un productor o un agrónomo del INTA, o dejarlas "sin validar" a propósito y decirlo en la presentación _(Agregadas por Enzo)_
+- Corregir en la evidencia de la Zona 5 el dato que cita humedad en raíces: hoy apunta a los meses de clima, que no tienen ese campo _(Agregadas por Enzo)_
+
+</details>
+
+<details>
+<summary><b>Sara</b>: 22 pendientes (<a href="planes/4-sara.md">plan completo</a>)</summary>
+
+- Pasarte a tu rama (`git switch sara-arduino-entrega`) _(Hito 0)_
+- Confirmar la hora exacta y el formato de la entrega en la guía del participante (desde el celular, porque en la PC falla el sitio) y avisar al grupo _(Hito 0)_
+- Revisar que el kit tenga los sensores (agua, LM35, LDR, DHT11), los LEDs y la pantalla LCD _(Hito 0)_
+- Sketch `arduino/biosat_estacion_campo/biosat_estacion_campo.ino` que mande una línea JSON cada 2 segundos (contratos §6) _(Checkpoint 1)_
+- Armar las 3 bandejas: pelada y seca, salitrosa y con rastrojo _(Checkpoint 1)_
+- Calibrar los umbrales con las bandejas reales _(Checkpoint 1)_
+- Guion borrador de 2-3 minutos con el zoom de escalas del video de la NASA (50 km → 500 m → 30 m → 1 m² → el productor) y los 4 verbos _(Checkpoint 1)_
+- Lector Web Serial como módulo propio (`arduino/lector-web-serial.js`) con la interfaz `window.BioSatArduino` de contratos §6. La app ya lo carga sola cuando el archivo existe _(Checkpoint 2)_
+- Grabar lecturas reales de las 3 bandejas en `data/arduino_bandejas_demo.json` _(Checkpoint 2)_
+- Buscar una foto de astronauta del Chaco santiagueño (eol.jsc.nasa.gov) _(Checkpoint 2)_
+- Preparar la comparación 2000 contra 2025 de Campo Gallo (desmonte) para el pitch _(Checkpoint 2)_
+- Video o diapositivas, según el formato que pidan _(Congelamiento)_
+- Borrador de la página del proyecto en Space Apps: resumen, datos de la NASA usados, links al repo y a la app _(Congelamiento)_
+- Declarar el uso de herramientas de IA, si la guía lo pide _(Congelamiento)_
+- Revisar las reglas de uso de marcas (logos de la NASA) _(Congelamiento)_
+- Hacer 2 ensayos completos de la demo con todo el equipo _(Entrega)_
+- Revisar el README final con Enzo _(Entrega)_
+- Subir la entrega con margen antes del cierre _(Entrega)_
+- Subir lo que ya tenga a `sara-arduino-entrega`: hoy la rama no tiene ningún commit de trabajo _(Agregadas por Enzo)_
+- Crear la carpeta `entrega/` con el guion, el video o las diapositivas y la página del proyecto _(Agregadas por Enzo)_
+- Decidir el plan B del kit: si las bandejas no llegan, grabar lecturas reales en `data/arduino_bandejas_demo.json` y marcarlas como grabadas _(Agregadas por Enzo)_
+- Pedirle a Enzo ayuda con lo que no llegue: hoy todas las tareas de la entrega están solo en este plan _(Agregadas por Enzo)_
+
+</details>
+<!-- AUTO:PENDIENTE:FIN -->
 
 **Últimas decisiones:**
 
@@ -246,9 +339,10 @@ python scripts/actualizar_readme.py
 
 ## Cómo se mantiene actualizado este README
 
-Las secciones **Estado del proyecto**, **Últimas decisiones** y **Estructura del repositorio** se generan solas:
+Las secciones **Estado del proyecto**, **Lo que falta**, **Últimas decisiones** y **Estructura del repositorio** se generan solas:
 
 - **Cuándo:** en cada `push` a `main`, GitHub Actions corre [`scripts/actualizar_readme.py`](scripts/actualizar_readme.py) y, si algo cambió, sube el README actualizado.
+- **Lo que falta:** las casillas sin tildar de cada plan, agrupadas por persona.
 - **Avance:** sale de las casillas `- [ ]` / `- [x]` de los planes de [`planes/`](planes/README.md).
 - **Decisiones:** salen de la [bitácora](docs/reglas-y-bitacora.md).
 - **Estructura:** sale de los archivos del repo. Para darle descripción a un archivo nuevo, agregalo en `DESCRIPCIONES` dentro del script.

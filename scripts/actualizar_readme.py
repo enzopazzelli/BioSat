@@ -4,6 +4,7 @@ Actualiza las secciones automáticas del README de BioSat.
 
 Qué hace:
   1. AVANCE:      cuenta las tareas [ ] y [x] de cada frente en PLAN.md.
+  1b. PENDIENTE:  lista, por persona, las casillas sin tildar de su plan.
   2. DECISIONES:  copia las últimas decisiones de docs/reglas-y-bitacora.md.
   3. ESTRUCTURA:  dibuja el árbol de archivos del repositorio.
 
@@ -196,6 +197,43 @@ def seccion_avance():
     return "\n".join(filas)
 
 
+# ------------------------------------------------------------ PENDIENTE
+
+def seccion_pendiente():
+    """Lista, por persona, las casillas sin tildar de su plan (con el hito al que pertenecen)."""
+    planes = sorted(p for p in PLANES.glob("*.md") if p.name.lower() != "readme.md")
+    bloques = []
+    for p in planes:
+        texto = leer(p)
+        titulo = re.search(r"^# (?:Plan de )?(.+)$", texto, re.M)
+        nombre = titulo.group(1).strip() if titulo else p.stem
+        hito = ""
+        abiertas = []
+        for linea in texto.splitlines():
+            h = re.match(r"^###\s+(.*)", linea)
+            if h:
+                hito = re.sub(r"\s*·.*$", "", h.group(1)).strip()
+                continue
+            if re.match(r"^## ", linea):
+                hito = ""
+                continue
+            m = re.match(r"^\s*[-*]\s+\[ \]\s+(.*)", linea)
+            if m:
+                tarea = re.sub(r"\s+", " ", m.group(1)).strip()
+                if len(tarea) > 190:
+                    tarea = tarea[:187].rstrip() + "..."
+                abiertas.append(f"- {tarea}" + (f" _({hito})_" if hito else ""))
+        persona = nombre.split("·")[0].strip()
+        if abiertas:
+            bloques.append(
+                f'<details>\n<summary><b>{persona}</b>: {len(abiertas)} pendientes '
+                f'(<a href="planes/{p.name}">plan completo</a>)</summary>\n\n'
+                + "\n".join(abiertas) + "\n\n</details>")
+        else:
+            bloques.append(f"**{persona}**: sin pendientes. ✅")
+    return "\n\n".join(bloques) if bloques else "_No hay planes individuales todavía._"
+
+
 # ------------------------------------------------------------ DECISIONES
 
 def seccion_decisiones():
@@ -310,6 +348,7 @@ def main():
 
     nuevo = original
     nuevo = reemplazar(nuevo, "AVANCE", seccion_avance())
+    nuevo = reemplazar(nuevo, "PENDIENTE", seccion_pendiente())
     nuevo = reemplazar(nuevo, "DECISIONES", seccion_decisiones())
     nuevo = reemplazar(nuevo, "ESTRUCTURA", seccion_estructura())
 

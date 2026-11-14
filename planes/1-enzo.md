@@ -58,6 +58,15 @@ Que un productor recorra los 5 pasos de la app sin ayuda, con números de clima 
 - [ ] Revisar el README final con Sara
 - [ ] Dejar `main` estable con la app publicada
 
+### Agregadas por Enzo · 14/11 noche (a revisar con cada uno)
+_Salen del repaso del repo. Cada uno decide cómo abordarlas; si no corresponden, se borran._
+- [ ] Mostrar en la app y en el README el link del visor de Earth Engine cuando Santi lo publique
+- [ ] Verificar que el visor use las imágenes de Earth Engine cuando Santi suba `data/imagenes/escenas.json`
+- [ ] Decidir si Meteomatics entra en la app (alertas a 7-10 días, `data/meteomatics_santiago_zonas.json`) o queda fuera de la demo
+- [ ] Ensayar `web/kit.html` y `web/campo.html` en la pantalla grande de la demo, con el kit conectado
+- [ ] Cerrar `PLAN.md`: sumar kit y guía en la sección 1 y contestar las preguntas abiertas
+- [ ] Probar de nuevo la app publicada en el celular y sin internet después del último merge
+
 ## Listo cuando
 
 - Hay un link público que funciona en celular y una copia que funciona sin internet.

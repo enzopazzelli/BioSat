@@ -47,6 +47,13 @@ Mostrar en vivo que el suelo pelado se calienta y se seca mucho más que el cubi
 - [ ] Revisar el README final con Enzo
 - [ ] Subir la entrega con margen antes del cierre
 
+### Agregadas por Enzo · 14/11 noche (a revisar con cada uno)
+_Salen del repaso del repo. Cada uno decide cómo abordarlas; si no corresponden, se borran._
+- [ ] Subir lo que ya tenga a `sara-arduino-entrega`: hoy la rama no tiene ningún commit de trabajo
+- [ ] Crear la carpeta `entrega/` con el guion, el video o las diapositivas y la página del proyecto
+- [ ] Decidir el plan B del kit: si las bandejas no llegan, grabar lecturas reales en `data/arduino_bandejas_demo.json` y marcarlas como grabadas
+- [ ] Pedirle a Enzo ayuda con lo que no llegue: hoy todas las tareas de la entrega están solo en este plan
+
 ## Listo cuando
 
 - La demo funciona con el Arduino conectado y también sin él.

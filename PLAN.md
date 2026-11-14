@@ -3,7 +3,7 @@
 > **Para qué sirve:** es el **único plan del equipo**. Dice qué vamos a mostrar, quién hace cada cosa, en qué orden y cuándo nos juntamos a integrar.
 > **Cómo se usa:** este es el plan general. Las tareas de cada uno, con sus casillas, están en su plan personal en [`planes/`](planes/README.md). Cuando termines una, tildala en tu plan; el avance del [README](README.md) se actualiza solo al integrar a `main`.
 > **Reemplaza a:** `docs/plan-de-pasos-y-agentes.md` (decisión D-15 de la [bitácora](docs/reglas-y-bitacora.md)).
-> **Última revisión:** sábado 14/11/2026, 15:30 (trabajo en ramas, D-23).
+> **Última revisión:** sábado 14/11/2026, noche (kit para el jurado y guía del campo, D-27; ver el [estado del proyecto](docs/estado-del-proyecto.md)).
 
 ---
 
@@ -262,8 +262,8 @@ El detalle está en [`planes/README.md`](planes/README.md). En corto:
 
 - [ ] ¿A qué hora exacta cierra la entrega y en qué formato? (El video del desafío confirma las fechas 14 y 15/11, pero no dice el formato.)
 - [x] Integrantes: Enzo, Santi, Vale y Sara (D-22)
-- [ ] ¿Están bien los roles de la sección 2?
-- [ ] ¿Santi tiene acceso al stack AIZAL V4 en Google Earth Engine?
+- [x] ¿Están bien los roles de la sección 2? (se trabaja con ellos desde D-23)
+- [x] ¿Santi tiene acceso al stack AIZAL V4 en Google Earth Engine? (confirmado en su plan)
 - [ ] ¿Conseguimos la base de desmontes del LART desde 1976? (monitoreodesmonte.com.ar está caído; escribirles)
-- [ ] ¿Dónde está el campo del productor y qué siembra hoy?
+- [x] ¿Dónde está el campo del productor y qué siembra hoy? (Bella Criolla, Río Utis: ganadería con pasturas y monte; ver la [entrevista](docs/entrevista-productor-bella-criolla.md))
 - [ ] `data/datos_cruzados_aizal/CATALOGO_MAESTRO_VARIABLES.md` cita `docs/CONTEXTONASA.md`, que no está en el repo: ¿falta subirlo?

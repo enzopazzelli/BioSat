@@ -46,6 +46,13 @@ Que las 3 rotaciones de cada zona sean creíbles para un productor santiagueño 
 - [x] Pasarle a Sara una frase o testimonio del productor (con su permiso) para el pitch
 - [ ] Revisar la parte agronómica del guion y participar del ensayo
 
+### Agregadas por Enzo · 14/11 noche (a revisar con cada uno)
+_Salen del repaso del repo. Cada uno decide cómo abordarlas; si no corresponden, se borran._
+- [ ] Confirmar los 7 `requiere_hacienda` que completó Enzo en `data/rotaciones_santiago.json` (Zona 3 las 3, Zona 4 alternativa 2, Zona 5 las 3)
+- [ ] Conseguir por escrito el permiso del productor para nombrar el campo y usar sus frases (la entrevista lo deja pendiente)
+- [ ] Validar las zonas 1 a 4 con un productor o un agrónomo del INTA, o dejarlas "sin validar" a propósito y decirlo en la presentación
+- [ ] Corregir en la evidencia de la Zona 5 el dato que cita humedad en raíces: hoy apunta a los meses de clima, que no tienen ese campo
+
 ## Listo cuando
 
 - `data/rotaciones_santiago.json` tiene las 15 rotaciones (5 zonas × 3).

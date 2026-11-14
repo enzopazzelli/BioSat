@@ -18,7 +18,7 @@ Este panorama se escribió a mano a partir de `main`, los planes de [`planes/`](
 | F6 · Arduino | Sara | **Sin empezar** | Nada en el repo | Sketch, lector Web Serial, bandejas, lecturas grabadas |
 | F7 · Entrega | Sara (coordina) | **Sin empezar** | Nada | Guion, video o diapositivas, página del proyecto, ensayos |
 
-Avance contado de las casillas de los planes: **Enzo 87%, Santi 57%, Vale 78%, Sara 5%** (53 de 88 casillas, 60%). Es una medida aproximada: no pesa igual cada tarea.
+Avance contado de las casillas de los planes: **Enzo 72%, Santi 44%, Vale 64%, Sara 4%** (53 de 108 casillas, 49%). Los porcentajes bajaron respecto de la versión anterior porque se sumaron 20 casillas que faltaban en los planes; no se perdió nada de lo hecho. Es una medida aproximada: no pesa igual cada tarea.
 
 ---
 
@@ -108,13 +108,7 @@ Hitos de los planes: **Checkpoint 2** domingo 09:30, **congelamiento** domingo 1
 
 ## 7. Casillas abiertas de cada plan
 
-**Enzo (4 abiertas):** sumar el lector de Sara, último merge de funciones, revisar el README con Sara y dejar `main` estable.
-
-**Santi (9 abiertas):** subir `CONTEXTONASA.md`, correr y publicar el visor de Earth Engine, correr la exportación de zonas, completar `suelo_zonas.json`, definir el índice de fragilidad, sumar lo que responda la profesora, pasarle material a Sara, y opcionales (AlphaEarth, ayudar con el video).
-
-**Vale (4 abiertas):** revisar los textos agronómicos de la app, revisar "qué falta saber" y los riesgos, sumar términos al glosario y participar del ensayo.
-
-**Sara (18 abiertas):** todo el frente del Arduino, el guion, el video, la página del proyecto y los ensayos.
+La lista completa, por persona, está en el [README](../README.md#lo-que-falta-por-persona) y sale sola de los planes. Incluye las tareas que se sumaron en el repaso del 14/11 (marcadas "Agregadas por Enzo"): cada uno decide si corresponden.
 
 ---
 
