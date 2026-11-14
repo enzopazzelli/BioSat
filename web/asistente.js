@@ -22,6 +22,7 @@
       ayuda: 'Tocá tu pueblo, o el color en el mapa.',
       grupo: 'Zona de tu campo',
       mapaAlt: 'Mapa de Santiago del Estero con las 5 zonas',
+      depTitulo: '{nombre} · zona {num}',
       mapaPie: 'Límites: IGN, vía geoBoundaries (CC BY 3.0 IGO). Las zonas se dibujan por departamento, en forma aproximada. El clima de cada una sale de un punto de NASA POWER.',
       elegida: 'elegida'
     },
@@ -77,8 +78,21 @@
   const TEMAS = ['agua', 'salitre', 'suelo', 'forraje', 'ingreso'];
   const TARJETAS = ['riego', 'hacienda', 'maq'];
 
-  // Dibuja el mapa de la pantalla 1. Lo completa la tarea del mapa; sin datos devuelve ''.
-  function htmlMapa(mapa, zonaId, zonas) { return ''; }
+  // Mapa de la pantalla 1: un trazo por departamento, pintado con el color de su zona, y un círculo numerado
+  // en el punto de cada zona. Tocar un departamento o un círculo elige la zona (los botones son lo accesible).
+  function htmlMapa(mapa, zonaId, zonas) {
+    if (!mapa || !Array.isArray(mapa.departamentos) || !Array.isArray(mapa.viewBox)) return '';
+    const idPorNum = {};
+    for (const [id, z] of Object.entries(zonas)) idPorNum[z.num] = id;
+    const elegida = zonas[zonaId].num;
+    const [ancho, alto] = mapa.viewBox;
+    const deps = mapa.departamentos.map((d) =>
+      `<path class="asist-dep z${d.zona}${d.zona === elegida ? ' on' : ''}" d="${esc(d.d)}" data-asist-mapa-zona="${esc(idPorNum[d.zona])}"><title>${esc(fmt(TEXTOS.p1.depTitulo, {nombre: d.nombre, num: d.zona}))}</title></path>`).join('');
+    const puntos = Object.entries(mapa.puntos || {}).map(([num, p]) =>
+      `<g class="asist-pto z${num}${Number(num) === elegida ? ' on' : ''}" data-asist-mapa-zona="${esc(idPorNum[num])}"><circle cx="${p.x}" cy="${p.y}" r="13"/><text x="${p.x}" y="${p.y}">${esc(num)}</text></g>`).join('');
+    return `<svg viewBox="0 0 ${ancho} ${alto}" role="img" aria-label="${esc(TEXTOS.p1.mapaAlt)}">${deps}${puntos}</svg>
+      <figcaption>${esc(TEXTOS.p1.mapaPie)}</figcaption>`;
+  }
 
   // ------------------------------------------------------------------ Ventana
   let ventana = null;
@@ -136,7 +150,7 @@
           <span class="asist-zt"><strong>${esc(z.lugar)}</strong><span>${esc(z.nombre)}</span></span>
           <span class="asist-ok" aria-hidden="true">${on ? '✓' : ''}</span></button>`;
       }).join('');
-      const mapa = opciones.mapa ? htmlMapa(opciones.mapa, r.zona, zonas) : '';
+      const mapa = htmlMapa(opciones.mapa, r.zona, zonas);
       return `<div class="asist-p1${mapa ? '' : ' sin-mapa'}">${mapa ? `<figure class="asist-mapa">${mapa}</figure>` : ''}
         <div class="asist-zonas" role="radiogroup" aria-label="${esc(TEXTOS.p1.grupo)}">${botones}</div></div>`;
     }

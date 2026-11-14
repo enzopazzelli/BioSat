@@ -768,7 +768,7 @@ async function cargarImagenes(){
 }
 
 async function cargarDatos(){
-  const [clima, rotVale, rotBorrador, suelo, diag, arduino, zonif, desmonte] = await Promise.all([
+  const [clima, rotVale, rotBorrador, suelo, diag, arduino, zonif, desmonte, mapa] = await Promise.all([
     cargarJSON('../data/clima_zonas.json'),
     cargarJSON('../data/rotaciones_santiago.json').catch(() => ({zonas:{}})),
     cargarJSON('datos-borrador/rotaciones_borrador.json'),
@@ -776,10 +776,11 @@ async function cargarDatos(){
     cargarJSON('../data/diagnostico_landsat_ia.json').catch(() => ({})),
     cargarJSON('../data/arduino_bandejas_demo.json').catch(() => null),
     cargarJSON('../data/zonificacion_aizal.json').catch(() => ({})),
-    cargarJSON('../data/desmonte_zonas.json').catch(() => ({}))
+    cargarJSON('../data/desmonte_zonas.json').catch(() => ({})),
+    cargarJSON('../data/santiago_mapa.json').catch(() => null)
   ]);
   CLIMA = adaptarClima(clima);
-  SUELO_Z = suelo; DIAG = diag; ARDUINO = arduino; ZONIF = zonif; DESMONTE = desmonte;
+  SUELO_Z = suelo; DIAG = diag; ARDUINO = arduino; ZONIF = zonif; DESMONTE = desmonte; MAPA = mapa;
   for (const z of Object.keys(ZONAS)){
     const v = (rotVale.zonas || {})[z], b = (rotBorrador.zonas || {})[z];
     const deVale = v && Array.isArray(v.rotaciones) && v.rotaciones.length >= 3;

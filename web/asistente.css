@@ -1,13 +1,14 @@
 /* BioSat · asistente de inicio. Usa los tokens de estilos.css (tema claro y oscuro).
    Pensado para gente grande: letra de 18 px o más y botones de 48 px o más. */
 :root{
-  /* Colores de las 5 zonas (se validan con el script de la skill dataviz; ver el plan, tarea 5). */
+  /* Colores de las 5 zonas, validados con el script de la skill dataviz (claro y oscuro). El ámbar de la Zona 2 queda
+   bajo 3:1 contra el fondo claro: se compensa con el número en el círculo y el nombre en cada botón. */
   --zona-1:#2C86B5; --zona-2:#D19A1E; --zona-3:#1F7A44; --zona-4:#8E6BB5; --zona-5:#B8461F;
 }
 @media (prefers-color-scheme: dark){
-  :root:not([data-theme="light"]){--zona-1:#4FA3D1; --zona-2:#E0B23C; --zona-3:#3E9C5F; --zona-4:#A98BD0; --zona-5:#D9704A}
+  :root:not([data-theme="light"]){--zona-1:#3A86B5; --zona-2:#B07A24; --zona-3:#3E9C5F; --zona-4:#9070B8; --zona-5:#D2643F}
 }
-:root[data-theme="dark"]{--zona-1:#4FA3D1; --zona-2:#E0B23C; --zona-3:#3E9C5F; --zona-4:#A98BD0; --zona-5:#D9704A}
+:root[data-theme="dark"]{--zona-1:#3A86B5; --zona-2:#B07A24; --zona-3:#3E9C5F; --zona-4:#9070B8; --zona-5:#D2643F}
 
 .asist{position:fixed;inset:0;z-index:1000;overflow:auto;background:var(--bg);color:var(--ink);
   font-family:var(--font-text);font-size:18px;line-height:1.5;-webkit-overflow-scrolling:touch}
@@ -42,6 +43,14 @@
 .asist-mapa svg{width:100%;height:auto;max-height:40vh;border-radius:10px;background:var(--surface-2)}
 @media (min-width:700px){.asist-mapa svg{max-height:62vh}}
 .asist-mapa figcaption{font-size:16px;color:var(--muted)}
+.asist-dep{stroke:var(--surface);stroke-width:1.2;stroke-linejoin:round;fill-opacity:.5;cursor:pointer}
+.asist-dep.z1{fill:var(--zona-1)}.asist-dep.z2{fill:var(--zona-2)}.asist-dep.z3{fill:var(--zona-3)}.asist-dep.z4{fill:var(--zona-4)}.asist-dep.z5{fill:var(--zona-5)}
+.asist-dep.on{fill-opacity:1}
+.asist-pto{cursor:pointer}
+.asist-pto circle{fill:var(--surface);stroke:var(--ink);stroke-width:2.5}
+.asist-pto text{fill:var(--ink);font:700 15px var(--font-text);text-anchor:middle;dominant-baseline:central}
+.asist-pto.on circle{fill:var(--ink)}
+.asist-pto.on text{fill:var(--bg)}
 .asist-zonas{display:grid;gap:10px}
 .asist-zona,.asist-tarjeta,.asist-tema{background:var(--surface);border:2px solid var(--line);border-radius:12px;text-align:left}
 .asist-zona{display:flex;align-items:center;gap:12px;padding:10px 14px;min-height:64px}
