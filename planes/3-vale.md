@@ -38,9 +38,9 @@ Que las 3 rotaciones de cada zona sean creíbles para un productor santiagueño 
 - [x] Guardar las 5 zonas (15 rotaciones) en `data/rotaciones_santiago.json`
 
 ### Congelamiento · Dom 15:00
-- [ ] Revisar los textos agronómicos de la app: que no haya errores ni promesas de más
-- [ ] Revisar "qué falta saber" y los riesgos de cada rotación (arman la lista del paso 5)
-- [ ] Sumar al glosario los términos agronómicos nuevos
+- [x] Revisar los textos agronómicos de la app: que no haya errores ni promesas de más
+- [x] Revisar "qué falta saber" y los riesgos de cada rotación (arman la lista del paso 5)
+- [x] Sumar al glosario los términos agronómicos nuevos
 
 ### Entrega · Dom 19:00
 - [x] Pasarle a Sara una frase o testimonio del productor (con su permiso) para el pitch
