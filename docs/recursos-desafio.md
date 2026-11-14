@@ -29,9 +29,11 @@ De los **26 enlaces oficiales** que da la NASA en la pestaña *Resources*:
   - **Temperaturas diarias a 2 metros:** Máxima (`T2M_MAX`), mínima (`T2M_MIN`), media (`T2M`) y punto de rocío (`T2MDEW`) → para contar **días de golpe de calor (> 35 °C y > 40 °C)** y **días con riesgo de helada (≤ 3 °C)**.
   - **Lluvia diaria corregida (`PRECTOTCORR`):** Milímetros por día → para calcular lluvia mensual, rachas de sequía y tormentas torrenciales (> 30 mm/día).
   - **Humedad del suelo:** En la zona de raíces hasta ~1 m (`GWETROOT`), en la capa superficial de 0–5 cm (`GWETTOP`) y perfil total (`GWETPROF`), expresados de `0` (seco) a `1` (saturado).
-  - **Evapotranspiración / Transpiración (`EVPTRNS`):** Milímetros de agua que pierde/consume el lote por día.
+  - **Evapotranspiración (`EVPTRNS`):** viene como **flujo de energía (MJ/m²/día), no en milímetros** (D-16). Para la demanda de agua en mm usamos la ET0 (Hargreaves) calculada con `T2M_MAX` y `T2M_MIN`.
   - **Radiación solar (`ALLSKY_SFC_SW_DWN`) y Humedad Relativa (`RH2M`).**
-- **Estado en BioSat:** ✅ **YA DESCARGADO Y PROCESADO** para las 4 zonas de Santiago del Estero (`2020–2025`, 8.768 días) en [`data/nasa_power_santiago_zonas.json`](../data/nasa_power_santiago_zonas.json) y [`data/resumen_mensual_santiago.csv`](../data/resumen_mensual_santiago.csv).
+- **Estado en BioSat:**
+  - ✅ **Descargado** para las 4 zonas (`2020–2025`) en [`data/nasa_power_santiago_zonas.json`](../data/nasa_power_santiago_zonas.json) y [`data/resumen_mensual_santiago.csv`](../data/resumen_mensual_santiago.csv).
+  - ⏳ **Por ampliar** a 1981-2025 y a la Zona 5, con el balance de agua corregido (Frente 1 del [PLAN](../PLAN.md)).
 
 ---
 
@@ -98,7 +100,7 @@ De los **26 enlaces oficiales** que da la NASA en la pestaña *Resources*:
   - Modelo Digital de Elevación (DEM) global en 3D a **30 metros de resolución** tomado por el radar del Transbordador Espacial Endeavour.
 - **Qué se puede sacar de ahí:**
   - **Altura sobre el nivel del mar (m s.n.m.) y porcentaje de pendiente de cada lote:**
-    - En **Zona 3 (Guasayán / Ojo de Agua)**: detecta pendientes donde el suelo pelado sufre **erosión hídrica y cárcavas** cuando llueve fuerte.
+    - En **Zona 5 (Guasayán / Ojo de Agua, sur serrano)**: detecta pendientes donde el suelo pelado sufre **erosión hídrica y cárcavas** cuando llueve fuerte.
     - En **Zona 1 (Río Dulce) y Zona 4 (Añatuya / Bajos Submeridionales)**: confirma pendientes de **< 0,1 % (llanura deprimida)** donde el agua no escurre, se encharca y sube la napa salina.
 
 ---

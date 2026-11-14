@@ -93,3 +93,13 @@ Según la página oficial de premios (`NASA Space Apps Challenge - awards.mhtml`
   - Se crean [`scripts/gee_visor_biosat.js`](../scripts/gee_visor_biosat.js) y [`scripts/gee_exportar_zonas.js`](../scripts/gee_exportar_zonas.js). El primero es el visor interactivo: comparación 2000 contra 2025, NDVI, suelo pelado, desmonte, relieve y zonas IA; se puede publicar como Earth Engine App. El segundo exporta estadísticas e imágenes por zona.
   - El mockup usa las mismas imágenes Landsat, bajadas de Microsoft Planetary Computer.
   - La app final mostrará imágenes exportadas desde Earth Engine, así funciona sin internet.
+- **D-20 (Zona 5 operativa y revisión de la documentación):**
+  - **Zona 5 en el mockup:** pasa a ser una zona completa, con clima diario real de NASA POWER 1981-2025 (calendario, simulador y riesgo), imágenes Landsat y 3 rotaciones borrador (rastrojo pastoreado, verdeo de invierno, silvopastoril con pastura tolerante al frío) que hay que validar.
+  - **Documentos revisados:**
+    - [`zonas-santiago-y-kit-arduino.md`](zonas-santiago-y-kit-arduino.md): Zona 3 solo norte, nueva sección Zona 5, textos del kit corregidos.
+    - [`glosario.md`](glosario.md): términos nuevos y corrección de `EVPTRNS`.
+    - [`analisis-datos-nasa-santiago.md`](analisis-datos-nasa-santiago.md): aviso de errores conocidos.
+    - [`recursos-desafio.md`](recursos-desafio.md): unidad de `EVPTRNS` y estado de los datos.
+    - [`contratos-de-datos.md`](contratos-de-datos.md): Zona 5 y la relación con la exportación de Earth Engine.
+    - [`resena-desafio.md`](resena-desafio.md) y [`ESTRUCTURA_DATOS.md`](../ESTRUCTURA_DATOS.md): notas de vigencia.
+    - README y PLAN.

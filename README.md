@@ -34,7 +34,7 @@ En la demo, un **kit Arduino con 3 bandejas de suelo** mide en vivo lo que el sa
 4. **App web estática** (HTML + JavaScript): se publica en GitHub Pages, funciona sin internet y lee el Arduino por Web Serial.
 
 **Por qué es diferente y qué aporta:**
-- **Hecha para un lugar real:** está pensada para las 4 zonas de Santiago del Estero, con rotaciones revisadas por un productor de la zona. No es un mapa genérico "para cualquier punto del mundo".
+- **Hecha para un lugar real:** está pensada para las zonas de Santiago del Estero (4, más una quinta en evaluación), con rotaciones revisadas por un productor de la zona. No es un mapa genérico "para cualquier punto del mundo".
 - **Espacio + tierra:** une los datos satelitales de la NASA con mediciones en el suelo, en vivo.
 - **IA que se puede medir:** no da por buena la IA; la compara contra un método simple y muestra los números.
 - **Suelo del Gran Chaco:** usa datos locales de suelo (AIZAL), que fuera de EE. UU. casi nadie tiene a mano.
@@ -49,25 +49,25 @@ Avance por frente, contado desde las casillas de [PLAN.md](PLAN.md):
 <!-- AUTO:AVANCE:INICIO -->
 | Frente | Avance | Tareas |
 |---|---|---|
-| F1 · Clima con datos bien medidos (Enzo) | `░░░░░░░░░░` 0% | 0/9 |
+| F1 · Clima con datos bien medidos (Enzo) | `░░░░░░░░░░` 0% | 0/10 |
 | F2 · Suelo y paisaje con AIZAL (Santi) | `░░░░░░░░░░` 0% | 0/8 |
 | F3 · IA con Landsat: suelo pelado y desmonte (Santi) | `░░░░░░░░░░` 0% | 0/12 |
-| F4 · Rotaciones y agronomía (Tercer integrante) | `░░░░░░░░░░` 0% | 0/8 |
+| F4 · Rotaciones y agronomía (Tercer integrante) | `▓░░░░░░░░░` 11% | 1/9 |
 | F5 · App web y motor de reglas (Enzo) | `░░░░░░░░░░` 0% | 0/15 |
 | F6 · Kit Arduino "Espacio vs. Tierra" (Enzo, con armado del tercer integrante) | `░░░░░░░░░░` 0% | 0/5 |
 | F7 · Entrega y presentación (todos; coordina el tercer integrante) | `░░░░░░░░░░` 0% | 0/11 |
-| **Total** | `░░░░░░░░░░` **0%** | **0/68** |
+| **Total** | `░░░░░░░░░░` **1%** | **1/70** |
 <!-- AUTO:AVANCE:FIN -->
 
 **Últimas decisiones:**
 
 <!-- AUTO:DECISIONES:INICIO -->
+- **D-20**: Zona 5 operativa y revisión de la documentación
 - **D-19**: Visor GIS con Google Earth Engine
 - **D-18**: Análisis de zonas
 - **D-17**: Lectura del video del desafío
 - **D-16**: Correcciones científicas a los datos de clima
 - **D-15**: Unificación del repositorio y plan para 3 integrantes
-- **D-14**: Actualización integral de la guía de recursos oficiales + IA Landsat
 
 Todas las decisiones están en la [bitácora](docs/reglas-y-bitacora.md).
 <!-- AUTO:DECISIONES:FIN -->
@@ -122,7 +122,7 @@ BioSat/
 │   ├── reglas-y-bitacora.md                                  <-- Reglas de oro y bitácora de decisiones
 │   ├── resena-desafio.md                                     <-- Reseña del desafío y guía de entrevista
 │   ├── transcripcion-video-desafio.md                        <-- Transcripción del video del desafío (los 4 verbos)
-│   └── zonas-santiago-y-kit-arduino.md                       <-- Las 4 zonas, sus rotaciones y el kit Arduino
+│   └── zonas-santiago-y-kit-arduino.md                       <-- Zonas (4 + Zona 5 en evaluación), rotaciones y kit Arduino
 └── scripts/                                                  <-- Herramientas para bajar y procesar datos
     ├── actualizar_readme.py                                  <-- Regenera las secciones automáticas del README
     ├── descargar_nasa_power.py                               <-- Descarga y resume NASA POWER por zona

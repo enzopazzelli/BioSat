@@ -3,7 +3,7 @@
 > **Para qué sirve:** es el **único plan del equipo**. Dice qué vamos a mostrar, quién hace cada cosa, en qué orden y cuándo nos juntamos a integrar.
 > **Cómo se usa:** cuando termines una tarea, cambiá `- [ ]` por `- [x]` y subilo. El avance del [README](README.md) se actualiza solo.
 > **Reemplaza a:** `docs/plan-de-pasos-y-agentes.md` (decisión D-15 de la [bitácora](docs/reglas-y-bitacora.md)).
-> **Última revisión:** sábado 14/11/2026, 13:00.
+> **Última revisión:** sábado 14/11/2026, 15:00.
 
 ---
 
@@ -156,7 +156,7 @@ gantt
 |---|---|---|
 | Sáb 13:30 | **Arranque** (15 min juntos) | Roles confirmados, contratos acordados, hora de entrega confirmada |
 | Sáb 20:30 | **Checkpoint 1** | App v1 publicada con calendario y fichas de la zona protagonista, con datos reales |
-| Dom 09:30 | **Checkpoint 2** | Decisión de IA (modelo o método simple), las 4 zonas cargadas |
+| Dom 09:30 | **Checkpoint 2** | Decisión de IA (modelo o método simple), las zonas cargadas (4 + Zona 5 si se confirma) |
 | Dom 15:00 | **Congelamiento** | No se suman funciones nuevas: solo se arregla y se pule |
 | Dom 19:00 | **Entrega** | Proyecto subido a Space Apps, con margen antes del cierre oficial |
 
@@ -176,6 +176,7 @@ gantt
 - [ ] Agregar las fechas típicas de primera y última helada
 - [ ] Mostrar la humedad en raíces (`GWETROOT`) como anomalía contra lo normal, no con umbrales fijos
 - [ ] Decidir las zonas. El análisis de [`docs/cruce-de-datos.md`](docs/cruce-de-datos.md) §4 muestra que el sur (Ojo de Agua, Sumampa) tiene otro clima: propuesta, separarlo como Zona 5
+- [ ] Incluir la Zona 5 (Ojo de Agua, -29.50, -63.69) en la descarga
 - [ ] Generar `data/clima_zonas.json` según el contrato
 - [ ] Corregir `docs/analisis-datos-nasa-santiago.md`: comparar contra 1991-2020 y decir "modelo de reanálisis", no "lo detectó el satélite"
 
@@ -223,7 +224,8 @@ gantt
 - [ ] Escribir las rotaciones de las otras 3 zonas (versión corta, a partir de [`docs/zonas-santiago-y-kit-arduino.md`](docs/zonas-santiago-y-kit-arduino.md))
 - [ ] Citar la fuente de cada afirmación agronómica (INTA, trabajos publicados)
 - [ ] Guardar `data/rotaciones_santiago.json` según el contrato
-- [ ] Corregir los textos del kit: el sensor de agua no distingue salitre de humedad sin calibrar, y el LDR mide luz, no NDVI
+- [x] Corregir los textos del kit: el sensor de agua no distingue salitre de humedad sin calibrar, y el LDR mide luz, no NDVI
+- [ ] Validar con productores del sur (o con el INTA) las rotaciones borrador de la Zona 5
 
 ### F5 · App web y motor de reglas (Enzo)
 
@@ -325,6 +327,9 @@ El detalle de cada campo está en [`docs/contratos-de-datos.md`](docs/contratos-
 - **Motor transparente:** usa las secciones A/B/C/D de Santi.
 - **El productor vuelve al centro:** su zona es la protagonista y él revisa las fichas.
 - **Contratos de datos para los 4 archivos compartidos:** antes solo había uno.
+- **Video del desafío (D-17):** se suman los cuatro verbos (comparar, compensaciones, riesgo, incertidumbre) y el zoom de escalas para el pitch.
+- **Zona 5 (D-18, D-20):** el sur serrano tiene otro clima. Se separa de la Zona 3 y queda en evaluación, con clima real y rotaciones borrador.
+- **Visor GIS (D-19):** scripts de Google Earth Engine para el visor y la exportación por zona; el mockup ya muestra imágenes Landsat reales.
 - **Prototipo en Santiago del Estero:** prevalece sobre la nota de [`docs/documentacion-tecnica-agronomica.md`](docs/documentacion-tecnica-agronomica.md) que proponía hacerlo en EE. UU. (D-09).
 
 ---

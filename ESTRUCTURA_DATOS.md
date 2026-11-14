@@ -2,6 +2,11 @@
 
 Este documento describe la organización de las carpetas de datos del proyecto **BioSat**, su origen satelital/edáfico y su articulación con el motor agronómico para la recomendación y simulación de rotaciones de cultivos resilientes.
 
+> **Nota:**
+> - **Árbol de archivos:** el completo y siempre al día está en el [README](README.md) y se genera solo. El árbol de abajo muestra solo la parte de datos.
+> - **Qué sale de cruzar los datos:** está en [`docs/cruce-de-datos.md`](docs/cruce-de-datos.md).
+> - **Formatos de los JSON compartidos:** están en [`docs/contratos-de-datos.md`](docs/contratos-de-datos.md).
+
 ---
 
 ## 1. Visión General de la Estructura de Datos

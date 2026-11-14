@@ -3,6 +3,8 @@
 *NASA Space Apps Challenge 2026 · Dificultad: Intermedio / Avanzado · Temas: Earth Science, Software, Arts & Multimedia*
 *Fuente: enunciado oficial guardado en `NASA Space Apps Challenge.pdf`. Detalle de datos en `docs/recursos-desafio.md`.*
 
+> **Reseña inicial (13/11).** Varias cosas que acá figuran "a decidir" ya se decidieron. Por ejemplo, el enfoque por zonas (D-09) y las zonas (D-18). Ver la [bitácora](reglas-y-bitacora.md) y el [PLAN](../PLAN.md). La guía de entrevista de la sección 10 sigue vigente.
+
 ---
 
 ## 1. El desafío en una frase

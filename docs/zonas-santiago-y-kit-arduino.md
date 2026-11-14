@@ -1,4 +1,9 @@
-# Kit Arduino + 4 Zonas de Santiago del Estero — Diseño Funcional BioSat
+# Kit Arduino + Zonas de Santiago del Estero — Diseño Funcional BioSat
+
+> **Actualización (D-18 y D-20):**
+> - **Zona 3:** pasa a ser solo el norte chaqueño (Campo Gallo, Monte Quemado).
+> - **Zona 5 "Sur serrano y salinas":** el sur se separa en esta zona nueva, en evaluación, porque su clima es muy distinto (ver [`cruce-de-datos.md`](cruce-de-datos.md) §4).
+> - **Kit:** se corrigieron los textos de los sensores de agua y de luz para no prometer más de lo que miden.
 
 > **Propósito de este documento:** Dejar documentado el inventario real de nuestro kit de hardware (**AltaNet Arduino Uno R3 + ESP32 USB-C**) y cómo se articula con los datos satelitales de la **NASA** para cubrir las **4 grandes zonas y problemáticas agroecológicas de Santiago del Estero**.
 
@@ -19,10 +24,10 @@ Este kit combina la sencillez clásica de Arduino con conectividad moderna e inc
 
 | Componente del Kit | Qué mide electrónicamente | Qué mide en el campo (Aplicación BioSat) | Cómo se cruza con los datos de la NASA |
 |---|---|---|---|
-| **Módulo Sensor de Agua / Conductividad** *(placa roja/azul con pistas paralelas)* | Mide cuánta corriente eléctrica pasa entre las pistas metálicas según la humedad y los iones disueltos en el agua. | **Doble sensor: Humedad superficial + Detector de Salitre.**<br>• En tierra húmeda dulce: lectura media.<br>• En tierra húmeda **con salitre (sales disueltas)**: la conductividad se dispara al máximo. | Cruza con **NASA POWER (`GWETROOT` / `EVPTRNS`)** y **SMAP**: cuando la NASA muestra alta evaporación y suelo pelado en la zona de riego, este sensor confirma en el lote si ya subió el salitre a la superficie. |
+| **Módulo Sensor de Agua / Conductividad** *(placa roja/azul con pistas paralelas)* | Mide cuánta corriente eléctrica pasa entre las pistas metálicas según la humedad y los iones disueltos en el agua. | **Humedad superficial y conductividad.**<br>• Tierra seca: lectura baja.<br>• Tierra húmeda: lectura media.<br>• Tierra húmeda **con sales disueltas**: lectura muy alta.<br>La lectura sube con el agua **y** con la sal: para separar salitre de humedad hay que calibrarlo con las bandejas. Es una alerta, no reemplaza un análisis de conductividad. | Cruza con **NASA POWER (`GWETROOT` / `EVPTRNS`)** y **SMAP**: cuando la NASA muestra alta evaporación y suelo pelado en la zona de riego, este sensor confirma en el lote si ya subió el salitre a la superficie. |
 | **Sensor de Temperatura `LM35`** | Termómetro analógico de precisión (10 mV por cada °C) por contacto directo. | **Temperatura de la tierra (cama de siembra).**<br>En Santiago del Estero, con 38 °C de aire, un suelo pelado al sol supera los **50 °C** (mata raíces y bacterias), mientras que bajo rastrojo o sombra de monte se mantiene fresco (~32 °C). | Cruza con **NASA POWER (`T2M_MAX`)** y **ECOSTRESS**: muestra la diferencia real entre la temperatura regional del aire y lo que sufre el suelo cuando no tiene cobertura. |
 | **Sensor `DHT11`** | Temperatura (0–50 °C) y Humedad Relativa del aire (20–90 %). | **Microclima a la altura del cultivo.**<br>Mide qué tan seco y caluroso está el aire que rodea las hojas. | Cruza con **NASA POWER (`EVPTRNS`)**: explica de forma tangible por qué en los días secos y ventosos de Santiago el cultivo transpira y gasta más agua. |
-| **Fotorresistencia `LDR`** | Varía su resistencia según cuánta luz recibe. | **El "NDVI de bolsillo" (% de Sombra / Cobertura del suelo).**<br>Colocado al ras de la tierra:<br>• **Mucha luz** = Suelo pelado/desnudo.<br>• **Poca luz** = Suelo protegido por rastrojo, cultivo de cobertura o árboles del monte. | Cruza directamente con **MODIS / Sentinel-2 / Landsat (NDVI)**: traduce el índice satelital de verdor a algo que el agricultor ve con sus ojos (¿le pega el sol directo a la tierra o está tapada?). |
+| **Fotorresistencia `LDR`** | Varía su resistencia según cuánta luz recibe. | **Indicador de cobertura del suelo (sombra).**<br>Colocado al ras de la tierra:<br>• **Mucha luz** = Suelo pelado/desnudo.<br>• **Poca luz** = Suelo protegido por rastrojo, cultivo de cobertura o árboles del monte.<br>No mide NDVI: solo ve luz visible, no infrarrojo. | Se compara con el **NDVI de Landsat / MODIS**: el satélite dice qué tan verde está la zona; el LDR muestra si al sol le pega directo a la tierra en ese metro cuadrado. |
 | **Pantalla `LCD 16x2` + LEDs (Verde, Amarillo, Rojo) + Buzzer** | Salidas visuales y sonoras en la protoboard. | **Diagnóstico autónomo en el lote:**<br>• **LED Verde:** Suelo cubierto y húmedo.<br>• **LED Amarillo:** Alerta de calor o pérdida de humedad.<br>• **LED Rojo + Buzzer:** ¡Suelo pelado al sol o alerta de salitre! | Permite que el agricultor (y el jurado en la mesa) vea la alerta física al instante sin depender solo del monitor. |
 | **Potenciómetro (10kΩ) y Botones** | Entradas manuales analógicas y digitales. | Permiten seleccionar qué zona de Santiago del Estero se está evaluando o simular un escenario de sequía/calor desde la propia maqueta. | Conecta la maqueta física con los *sliders* de escenarios de la interfaz web. |
 
@@ -87,9 +92,9 @@ Para no depender de un único lote y lograr el máximo **Impacto Local (*Local I
 
 ---
 
-### Zona 3: Chaco Semiárido y Monte Santiagueño (Escasez Hídrica y Sistemas Silvopastoriles)
-- **Departamentos representativos:** Ojo de Agua, Choya, Guasayán, Loreto, Atamisqui, Figueroa, Copo, Pellegrini (ej. Villa Ojo de Agua, Frías, Monte Quemado, Campo Gallo).
-- **Coordenada de referencia NASA:** `Lat -29.50, Lon -63.69` *(Sur/Suroeste)* y `Lat -26.58, Lon -62.85` *(Norte/Monte)*
+### Zona 3: Chaco Semiárido Norte y Monte Santiagueño (Escasez Hídrica y Sistemas Silvopastoriles)
+- **Departamentos representativos:** Copo, Alberdi, Pellegrini, Figueroa (ej. Monte Quemado, Campo Gallo). *El sur (Ojo de Agua, Choya, Guasayán) pasó a la Zona 5.*
+- **Coordenada de referencia NASA:** `Lat -26.58, Lon -62.85` *(Norte/Monte)*
 - **Problemática principal:**
   - Menor régimen de lluvias (450 a 600 mm al año) y estación seca muy larga (hasta 6–7 meses sin lluvias importantes).
   - Si se elimina todo el monte nativo y el suelo queda expuesto al sol y al viento norte, se degrada y erosiona rápidamente.
@@ -123,6 +128,21 @@ Para no depender de un único lote y lograr el máximo **Impacto Local (*Local I
      - *Por qué se sugiere:* El girasol explora el suelo con raíz pivotante y se cosecha en diciembre/enero antes de las lluvias que anegan los bajos, y el sorgo tolera tanto sequía como encharcamientos temporales.
   3. **Alternativa 2 (Biodrenaje y Regeneración Salina):** *Consociación de **Melilotus alba (Trébol de olor)** + **Agropiro / Grama Rhodes** en rotación con **Sorgo forrajero**.*
      - *Por qué se sugiere:* Las raíces del *Melilotus* y la *Grama Rhodes* abren poros en el suelo arcilloso (mejoran la infiltración para que no se encharque), cubren el suelo todo el año para frenar el salitre y fijan nitrógeno.
+
+---
+
+### Zona 5: Sur Serrano y Salinas (en evaluación: más heladas, menos calor extremo y pendientes)
+- **Departamentos representativos:** Ojo de Agua, Quebrachos, Choya, Guasayán (ej. Villa Ojo de Agua, Sumampa, Frías).
+- **Coordenada de referencia NASA:** `Lat -29.50, Lon -63.69`
+- **Por qué es otra zona (NASA POWER, normal 1991-2020):**
+  - Unos **20 días de helada por año**, contra 5 a 10 en las otras zonas.
+  - Solo **2,2 días por año de más de 40 °C**, contra 14 a 17.
+  - Lluvia de 739 mm.
+- **Problemática principal:** sierras con pendientes que se erosionan si quedan peladas, salinas al oeste (Ambargasta), ganadería de cría y caprina y bache de forraje en invierno.
+- **Las 3 Estrategias de Rotación (borrador, a validar con productores del sur y el INTA):**
+  1. **Rotación Actual (Línea base):** *Maíz o sorgo de verano → pastoreo del rastrojo hasta dejar el suelo pelado.*
+  2. **Alternativa 1 (Verdeo de invierno):** *Sorgo forrajero → centeno o avena de pastoreo, que toleran las heladas y dan pasto verde en el bache de invierno.*
+  3. **Alternativa 2 (Silvopastoril con pastura que aguante el frío):** *Monte + pasto llorón o gatton panic, con franjas de sorgo forrajero.* El buffel grass, que se usa en el norte, sufre con heladas fuertes.
 
 ---
 

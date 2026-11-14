@@ -62,7 +62,7 @@ Para la demo, sí. Para cubrir la provincia, el clima dice que no. Comparamos la
 
 **Qué dicen los números:**
 
-1. **El sur es otra zona.** Ojo de Agua y Sumampa tienen 8 veces menos días de más de 40 °C y el doble de heladas que el resto. Hoy aparecen dentro de la Zona 3 (en [`zonas-santiago-y-kit-arduino.md`](zonas-santiago-y-kit-arduino.md)), pero el dato de la Zona 3 es del norte (Campo Gallo). **Propuesta: Zona 5 "Sur serrano y salinas"** (Ojo de Agua, Sumampa, Quebrachos, Choya, Guasayán).
+1. **El sur es otra zona.** Ojo de Agua y Sumampa tienen 8 veces menos días de más de 40 °C y el doble de heladas que el resto. Hoy aparecen dentro de la Zona 3 (en [`zonas-santiago-y-kit-arduino.md`](zonas-santiago-y-kit-arduino.md)), pero el dato de la Zona 3 es del norte (Campo Gallo). **Propuesta: Zona 5 "Sur serrano y salinas"** (Ojo de Agua, Sumampa, Quebrachos, Choya, Guasayán). Ya está cargada en el mockup como zona en evaluación, con clima real y rotaciones borrador (D-20).
 2. **El norte es uno solo.** Monte Quemado y Campo Gallo son casi iguales, así que la Zona 3 queda como "Chaco semiárido norte".
 3. **El oeste (Pellegrini, Jiménez) y el sureste (Selva, Mar Chiquita)** son más húmedos y menos calurosos. Son candidatos a zonas 6 y 7 si sobra tiempo. Si no, se nombran como "fuera del alcance de la demo".
 4. **Los Bañados de Figueroa** tienen el mismo clima que la Zona 1. Lo que los distingue es el agua y el suelo, que se ve con AIZAL y Landsat, no con NASA POWER.

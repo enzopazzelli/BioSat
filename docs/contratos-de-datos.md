@@ -15,6 +15,7 @@ Todos los archivos:
 | `zona_2_secano_este` | Secano agrícola del este | -27.65, -62.42 |
 | `zona_3_monte_semiarido` | Chaco semiárido y monte | -26.58, -62.85 |
 | `zona_4_bajos_submeridionales` | Bajos submeridionales | -28.46, -62.83 |
+| `zona_5_sur_serrano` | Sur serrano y salinas (**en evaluación**, D-18) | -29.50, -63.69 |
 
 Cada archivo lleva arriba un bloque `meta` con `fuente`, `generado_por` (script o persona), `fecha` y `notas`.
 
@@ -145,7 +146,7 @@ Resultado del módulo de IA con Landsat. **Solo valores calculados por el modelo
 }
 ```
 
-- `meses_suelo_pelado` tiene 12 valores (enero a diciembre): `true` si en ese mes la zona suele tener el suelo pelado. Va directo al calendario.
+- `meses_suelo_pelado` tiene 12 valores (enero a diciembre): `true` si en ese mes la zona suele tener el suelo pelado. Va directo al calendario. Si el dato sale de [`scripts/gee_exportar_zonas.js`](../scripts/gee_exportar_zonas.js), vale `true` cuando `prob_pelado_mXX` es 0,5 o más.
 - `indice_fragilidad_0_100` se calcula con una **fórmula visible** (por ejemplo, meses pelados × días de calor × lluvias intensas), escrita en `formula_fragilidad`.
 
 ---

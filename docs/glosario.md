@@ -10,7 +10,7 @@
 |---|---|---|
 | **NDVI** (*Normalized Difference Vegetation Index*) | Índice óptico (de -1 a +1) que calcula cuánta luz roja absorbe la clorofila y cuánta infrarroja rebota la hoja sana. Valores < 0,2 indican suelo desnudo o rastrojo seco; > 0,6 indican cultivo cerrado y vigoroso. | **"Qué tan verde y cubierto está el lote"**. Sirve para ver desde arriba qué meses el campo quedó pelado y cuándo el cultivo estuvo en su pico o sufrió estrés. |
 | **EVI** (*Enhanced Vegetation Index*) | Similar al NDVI, pero corrige distorsiones de la atmósfera y del brillo del suelo, y no se satura tan rápido cuando el cultivo tiene mucha biomasa. | **"Vigor del cultivo"**, especialmente útil cuando el cultivo ya cerró el surco y es muy denso. |
-| **Evapotranspiración (ET / `EVPTRNS`)** | Suma del agua que se evapora directamente de la tierra más el agua que transpiran las plantas por sus hojas hacia el aire (medida en mm/día o mm/mes). | **"El agua que gasta el lote"** (lo que transpira el cultivo + lo que se evapora del suelo por el sol y el viento). |
+| **Evapotranspiración (ET / `EVPTRNS`)** | Suma del agua que se evapora directamente de la tierra más el agua que transpiran las plantas por sus hojas hacia el aire (medida en mm/día o mm/mes). **Ojo:** `EVPTRNS` de NASA POWER viene en energía (MJ/m²/día), no en mm (D-16). Para la demanda de agua usamos la ET0. | **"El agua que gasta el lote"** (lo que transpira el cultivo + lo que se evapora del suelo por el sol y el viento). |
 | **Humedad en zona de raíces (`GWETROOT`)** | Parámetro de NASA POWER (de 0 a 1, o 0 % a 100 %) que estima qué tan llenos de agua están los poros del suelo hasta donde llegan las raíces (~1 metro). | **"El tanque de agua guardado bajo tierra"** disponible para que las raíces tomen. |
 | **Humedad superficial (`GWETTOP` / SMAP)** | Agua contenida en los primeros 5 cm del suelo. Cambia muy rápido después de una lluvia o un día de sol fuerte. | **"Humedad en la cama de siembra"** (los primeros centímetros de tierra donde germina la semilla). |
 | **Anomalía de humedad** | Diferencia entre la humedad actual del suelo y el promedio histórico para esa misma fecha en los últimos 20–40 años. | **"Si el suelo hoy está más seco o más húmedo de lo normal para esta época del año"**. |
@@ -71,7 +71,30 @@
 | **Placas Arduino Uno R3 y ESP32 USB-C** | Los microcontroladores del kit. El Uno R3 conecta directo por USB (5V) y el **ESP32** suma **Wi-Fi y Bluetooth** integrados. | Reciben las lecturas de los sensores en la tierra y las mandan en vivo a la aplicación para compararlas con la NASA. |
 | **Sensor DHT11** | Mide **temperatura y humedad relativa del aire** a la altura del cultivo. | Detecta el **microclima real del lote** (ej. cuánto baja la temperatura del aire bajo cobertura/monte frente al promedio regional de 50 km de NASA POWER). |
 | **Sensor de temperatura LM35** | Sensor analógico de precisión para medir la **temperatura directa de contacto con el suelo**. | En Santiago del Estero, un suelo pelado al sol puede pasar los **50 °C** aunque el aire esté a 38 °C. El LM35 muestra cómo el rastrojo protege la tierra del golpe de calor. |
-| **Módulo sensor de agua / humedad / conductividad** | Placa con pistas metálicas paralelas que mide cuánta corriente pasa por el agua/barro del suelo (entrada analógica `A0`). | **Doble función clave:** 1) Detecta presencia de agua en suelo superficial; 2) Como funciona por conductividad eléctrica, **detecta suelos salitrosos** (el agua con salitre conduce mucha más corriente que el agua dulce). |
-| **Fotorresistencia (LDR)** | Mide cuánta luz solar llega hasta el ras del suelo. | Es el **"NDVI de bolsillo"**: si al suelo le da el sol directo (mucha luz = suelo pelado), se evapora el agua y sube el salitre; si hay rastrojo o cultivo cubriendo (poca luz), el suelo está protegido. |
+| **Módulo sensor de agua / humedad / conductividad** | Placa con pistas metálicas paralelas que mide cuánta corriente pasa por el agua/barro del suelo (entrada analógica `A0`). | Detecta agua en el suelo superficial. Como el agua con sal conduce más, una lectura muy alta **puede** indicar salitre; para separar sal de humedad hay que calibrarlo con las bandejas. Es una alerta, no un análisis de conductividad. |
+| **Fotorresistencia (LDR)** | Mide cuánta luz solar llega hasta el ras del suelo. | **Indicador de cobertura:** si al suelo le da el sol directo (mucha luz = suelo pelado), se evapora el agua y sube el salitre; si hay rastrojo o cultivo cubriendo (poca luz), el suelo está protegido. No mide NDVI: no ve infrarrojo. |
 | **Pantalla LCD 16x2 + LEDs (Verde/Amarillo/Rojo) + Buzzer** | Indicadores visuales y sonoros del kit en terreno. | Permite que el productor (y el jurado en la mesa) vea al instante el diagnóstico en la pantalla física y el semáforo de riesgo sin siquiera mirar la computadora. |
 | **Potenciómetro / Botones** | Controles manuales analógicos y digitales incluidos en el kit. | Permiten cambiar de zona de Santiago del Estero o simular escenarios de sequía/lluvia directamente desde la maqueta física durante la demo. |
+
+---
+
+## 5. Términos sumados el 14/11 (datos, IA y la app)
+
+| Término | Qué significa (para el equipo) | Cómo se traduce al agricultor |
+|---|---|---|
+| **ET0 (evapotranspiración de referencia)** | Agua que pediría un pasto bien regado con el clima del día. La calculamos con la fórmula de **Hargreaves**, usando temperatura máxima y mínima. | **"La sed del clima"**: cuánta agua se lleva el aire en ese mes. |
+| **Balance de agua (lluvia − ET0)** | Diferencia entre lo que llueve y lo que pide el clima. En Santiago del Estero da entre −660 y −1.040 mm por año. | **"Cuánta agua falta en el año"**. |
+| **Normal climática (1991-2020)** | Promedio de 30 años que se usa como referencia de "lo normal". | **"Cómo era el clima de siempre"**, para comparar con los últimos años. |
+| **Reanálisis** | Modelo que combina observaciones de satélites y estaciones para estimar el clima de cada día en una grilla. NASA POWER es un reanálisis (MERRA-2). | **"Una estimación muy buena para tu zona"**, no una medición en tu lote. |
+| **Celda / resolución de NASA POWER** | Cuadrado de ½° × ⅝° (unos 50 km) que comparte los mismos números de clima. | **"Todo lo que está dentro del recuadro tiene el mismo clima en el dato"**. |
+| **Percentil / "1 de cada 5 años"** | Valor que se supera en el 20 % de los años (percentil 80). | **"Un año malo"**: lo que pasa 1 de cada 5 años. |
+| **Compensación (*tradeoff*)** | Lo que se gana en un aspecto se paga en otro. Ej.: una cobertura protege el suelo pero pide agua. | **"Lo que ganás y lo que te cuesta"**. |
+| **Etiqueta de confianza** | Alta, media o baja según la calidad y la escala del dato. | **"Qué tan seguros estamos de este número"**. |
+| **NBR** (*Normalized Burn Ratio*) | Índice de Landsat con infrarrojo cercano y de onda corta. Cae de golpe cuando se desmonta o se quema. | **"La huella del desmonte"**. |
+| **BSI** (*Bare Soil Index*) | Índice que resalta el suelo desnudo en imágenes satelitales. | **"Dónde la tierra quedó pelada"**. |
+| **Google Earth Engine (GEE)** | Plataforma de Google para procesar imágenes satelitales en la nube (Landsat, MODIS, Hansen, AlphaEarth). | **"La computadora en la nube que mira el satélite por nosotros"**. |
+| **Planetary Computer** | Catálogo de Microsoft con imágenes Landsat que se pueden bajar sin cuenta. Lo usamos para el mockup. | (Uso interno.) |
+| **Embeddings AlphaEarth** | Resumen de 64 números por píxel que hace la IA de Google DeepMind con un año de imágenes y datos. | **"La huella digital de cada lugar"**: dos lugares con huellas parecidas se comportan parecido. |
+| **k-means (agrupamiento)** | Método de IA que junta píxeles parecidos en grupos sin que nadie le diga cuáles son. | **"Zonas parecidas"** encontradas por los datos. |
+| **Hansen Global Forest Change** | Mapa mundial de pérdida de bosque por año, hecho con imágenes Landsat (Universidad de Maryland). | **"Dónde y cuándo se desmontó"**. |
+| **Coeficiente de cultivo (Kc)** | Fracción de la ET0 que usa un cultivo según su estado (FAO-56). Lo usamos simplificado para comparar rotaciones. | **"Cuánta agua pide cada etapa"**. |

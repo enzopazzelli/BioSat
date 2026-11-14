@@ -1,5 +1,10 @@
 # Informe Detallado: Qué Descubrimos en los Datos Reales de la NASA sobre Santiago del Estero
 
+> ⚠️ **Este informe tiene errores conocidos (D-16) y se corrige en el Frente 1 del [PLAN](../PLAN.md). No usar sus cifras en el pitch hasta entonces.**
+> - **Evapotranspiración y balance de agua:** están mal. `EVPTRNS` viene en MJ/m²/día, no en mm, así que los "mm" de evapotranspiración y el balance positivo son incorrectos. El balance real (lluvia − ET0) da entre −660 y −1.040 mm por año (ver [`cruce-de-datos.md`](cruce-de-datos.md) §4).
+> - **"Lo normal" y las tendencias:** salen de 6 años (2020-2025), que fueron más secos que lo normal en varias zonas. Contra la normal 1991-2020 el aumento del calor extremo sí se confirma: en la Zona 3, 17 días al año de más de 40 °C en 1991-2020 contra 38 en 2021-2025.
+> - **Zona 3:** el informe la describe con departamentos del sur que ahora pasaron a la Zona 5.
+
 > **Fuente de los datos:** API Agroclimatológica **NASA POWER** (Modelo MERRA-2 de la NASA).
 > **Volumen procesado:** **8.768 registros diarios** (**2.192 días seguidos por cada una de las 4 zonas**, desde el `01/01/2020` hasta el `31/12/2025`), guardados en [`data/nasa_power_santiago_zonas.json`](../data/nasa_power_santiago_zonas.json) y [`data/resumen_mensual_santiago.csv`](../data/resumen_mensual_santiago.csv).
 
