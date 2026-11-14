@@ -30,7 +30,7 @@ Que un productor recorra los 5 pasos de la app sin ayuda, con números de clima 
 - [x] Agregar rangos entre años, probabilidad y fechas típicas de helada, y la humedad en raíces como anomalía
 - [x] Generar `data/clima_zonas.json` según el contrato
 - [x] Paso 1 (zona, prioridades, límites) y paso 2 (calendario del lote) con datos reales
-- [ ] Paso 3 (comparador de 3 rotaciones con los 5 puntos) con las rotaciones de la zona protagonista de Vale
+- [x] Paso 3 (comparador de 3 rotaciones con los 5 puntos) con las rotaciones de la zona protagonista de Vale
 - [x] Integrar en `main` lo que esté listo y publicar la app v1 en GitHub Pages
 - [x] Pasar a la bitácora las decisiones anotadas en los planes de cada uno
 
@@ -42,7 +42,7 @@ Que un productor recorra los 5 pasos de la app sin ayuda, con números de clima 
 - [x] Visor GIS del lote con las imágenes de `data/imagenes/` (de Santi)
 - [x] Las 5 zonas cargadas con suelo y diagnóstico de IA (lo que haya; el resto, "sin dato")
 - [x] Panel "presión de desmonte en tu zona" (lee `data/desmonte_zonas.json`) y zonificación AIZAL como capa del visor
-- [ ] Integrar en `main` y pasar decisiones a la bitácora
+- [x] Integrar en `main` y pasar decisiones a la bitácora
 
 ### Congelamiento · Dom 15:00
 - [x] Paso 4 (simulador de lluvia y temperatura) y paso 5 (lista para el agrónomo)

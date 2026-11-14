@@ -24,6 +24,7 @@ En la demo, un **kit Arduino con 3 bandejas de suelo** mide en vivo lo que el sa
 | Imágenes de 30 m | Landsat 5/7/8/9 (NASA/USGS) | Meses de suelo pelado y visor del lote |
 | Historia de desmontes | LART desde 1976 (si se consigue) · MapBiomas Chaco · Hansen | Etiquetas del modelo predictivo de desmontes |
 | Suelo y paisaje (38 variables, 500 m) | AIZAL V4 (SoilGrids, TerraClimate, OSM) | pH, textura, carbono, nitrógeno, distancias; zonificación y predictores del desmonte |
+| Pronóstico a 7-10 días | Meteomatics (ECMWF, cuenta del hackathon) | Alertas de helada y lluvia próximas (en integración) |
 | Sensores en tierra | Kit Arduino (suelo, humedad/conductividad, luz, aire) | Comparar satélite y suelo |
 | El productor | Entrevista y formulario de la app | Rotación actual, prioridades y límites (riego, maquinaria, mercado) |
 
@@ -34,7 +35,7 @@ En la demo, un **kit Arduino con 3 bandejas de suelo** mide en vivo lo que el sa
 4. **App web estática** (HTML + JavaScript): se publica en GitHub Pages, funciona sin internet y lee el Arduino por Web Serial.
 
 **Por qué es diferente y qué aporta:**
-- **Hecha para un lugar real:** está pensada para las 5 zonas de Santiago del Estero, con rotaciones revisadas por un productor de la zona. No es un mapa genérico "para cualquier punto del mundo".
+- **Hecha para un lugar real:** está pensada para las 5 zonas de Santiago del Estero, con las rotaciones de la Zona 5 revisadas por un productor de la zona (las otras cuatro, todavía sin validar). No es un mapa genérico "para cualquier punto del mundo".
 - **Espacio + tierra:** une los datos satelitales de la NASA con mediciones en el suelo, en vivo.
 - **IA que se puede medir:** no da por buena la IA; la compara contra un método simple y muestra los números.
 - **Suelo del Gran Chaco:** usa datos locales de suelo (AIZAL), que fuera de EE. UU. casi nadie tiene a mano.
@@ -44,16 +45,16 @@ En la demo, un **kit Arduino con 3 bandejas de suelo** mide en vivo lo que el sa
 
 ## Estado del proyecto
 
-Avance de cada integrante, contado desde las casillas de su plan en [`planes/`](planes/README.md). Se actualiza cuando cada uno integra su rama a `main`:
+Avance de cada integrante, contado desde las casillas de su plan en [`planes/`](planes/README.md). Se actualiza cuando cada uno integra su rama a `main`. **Panorama completo, con lo que falta y los riesgos: [docs/estado-del-proyecto.md](docs/estado-del-proyecto.md).**
 
 <!-- AUTO:AVANCE:INICIO -->
 | Persona | Rama | Avance | Tareas |
 |---|---|---|---|
-| [Enzo · Integración y app](planes/1-enzo.md) | `enzo-app` | `▓▓▓▓▓▓▓▓░░` 80% | 24/30 |
+| [Enzo · Integración y app](planes/1-enzo.md) | `enzo-app` | `▓▓▓▓▓▓▓▓▓░` 87% | 26/30 |
 | [Santi · Suelo, satélite e IA](planes/2-santi.md) | `santi-datos-ia` | `▓▓▓▓▓▓░░░░` 57% | 12/21 |
 | [Vale · Campo y agronomía](planes/3-vale.md) | `vale-rotaciones` | `▓▓▓▓▓▓▓▓░░` 78% | 14/18 |
 | [Sara · Kit Arduino y relato](planes/4-sara.md) | `sara-arduino-entrega` | `▓░░░░░░░░░` 5% | 1/19 |
-| **Total** | | `▓▓▓▓▓▓░░░░` **58%** | **51/88** |
+| **Total** | | `▓▓▓▓▓▓░░░░` **60%** | **53/88** |
 <!-- AUTO:AVANCE:FIN -->
 
 **Últimas decisiones:**
@@ -91,6 +92,7 @@ El detalle de tareas, la ruta de trabajo y los diagramas están en **[PLAN.md](P
 <!-- AUTO:ESTRUCTURA:INICIO -->
 ```text
 BioSat/
+├── arduino.jpeg
 ├── CONTEXTO.md                                               <-- Contexto inicial del 13/11 (histórico)
 ├── ESTRUCTURA_DATOS.md                                       <-- Arquitectura de datos y módulos AIZAL
 ├── NASA Space Apps Challenge - awards.mhtml                  <-- Premios globales y datos del equipo
@@ -99,15 +101,15 @@ BioSat/
 ├── PLAN.md                                                   <-- Plan de trabajo: roles, ruta y tareas
 ├── README.md                                                 <-- Portada del proyecto (se actualiza sola)
 ├── data/                                                     <-- Datos y contratos JSON que lee la app
-│   ├── arduino_bandejas_demo.json                            <-- Lecturas grabadas del kit (Sara) · plantilla hasta tener datos
+│   ├── arduino_bandejas_demo.json                            <-- Lecturas grabadas del kit (Sara) · plantilla vacía
 │   ├── clima_zonas.json                                      <-- Clima NASA POWER 1981-2025 de las 5 zonas (lo lee la app)
-│   ├── desmonte_zonas.json                                   <-- Riesgo y proyección de desmonte por zona (Santi) · plantilla
-│   ├── diagnostico_landsat_ia.json                           <-- Meses de suelo pelado por umbral (Santi) · plantilla
-│   ├── meteomatics_santiago_zonas.json
+│   ├── desmonte_zonas.json                                   <-- Riesgo, proyección y métricas del modelo de desmontes (Santi) · cargado
+│   ├── diagnostico_landsat_ia.json                           <-- Meses de suelo pelado por umbral (Santi) · casi vacío: falta correr Earth Engine
+│   ├── meteomatics_santiago_zonas.json                       <-- Pronóstico y clima de Meteomatics por zona (Santi)
 │   ├── resumen_mensual_santiago.csv                          <-- Normal 1991-2020 por mes y zona, para planilla
-│   ├── rotaciones_santiago.json                              <-- Rotaciones de las 5 zonas (Vale) · plantilla hasta tener datos
-│   ├── suelo_zonas.json                                      <-- Suelo por zona (Santi) · plantilla hasta tener datos
-│   ├── zonificacion_aizal.json                               <-- Zonificación k-means con AIZAL (Santi) · plantilla hasta tener datos
+│   ├── rotaciones_santiago.json                              <-- 15 rotaciones de las 5 zonas (Vale) · Zona 5 validada por un productor, el resto sin validar
+│   ├── suelo_zonas.json                                      <-- Suelo por zona (Santi) · parcial: 58 de 169 valores
+│   ├── zonificacion_aizal.json                               <-- Zonificación k-means con AIZAL, 5 grupos (Santi) · cargada
 │   └── datos_cruzados_aizal/                                 <-- Catálogo AIZAL V4: 38 variables de suelo, clima y paisaje
 │       ├── CATALOGO_MAESTRO_VARIABLES.md                     <-- Índice de módulos y reglas que disparan
 │       ├── 01_Clima_y_Balance_Hidrico/ (2 archivos)          <-- B01-B08: agua, lluvia, sequía, temperatura
@@ -116,8 +118,8 @@ BioSat/
 │       ├── 04_Fisica_Suelo_y_Topografia/ (2 archivos)        <-- B10, B12, B17-B18, B24-B25: textura, relieve
 │       ├── 05_Logistica_Antropico_y_Servicios/ (2 archivos)  <-- B26-B29, B32-B37: caminos, población
 │       └── 06_Embeddings_IA_AlphaEarth/ (2 archivos)         <-- Embeddings AlphaEarth 64D (DeepMind)
-├── docs/ (18 archivos)                                       <-- Documentación del equipo
-├── ia_desmonte/
+├── docs/ (19 archivos)                                       <-- Documentación del equipo
+├── ia_desmonte/                                              <-- IA de Santi: zonificación AIZAL, modelo de desmontes, gráficos e informes
 │   ├── BioSat_IA_Zonificacion_y_Desmonte.ipynb
 │   ├── INSTRUCCIONES_PIPELINE.md                             <-- 🛰️ Instrucciones de Operación del Pipeline Automatizado B...
 │   ├── README.md                                             <-- 🛰️ Espacio de Trabajo: santi-task
@@ -159,7 +161,7 @@ BioSat/
 │   └── README.md                                             <-- Objetivo común, ramas, reglas e hitos de integración
 ├── scripts/                                                  <-- Herramientas para bajar y procesar datos
 │   ├── actualizar_readme.py                                  <-- Regenera las secciones automáticas del README
-│   ├── descargar_meteomatics.py
+│   ├── descargar_meteomatics.py                              <-- Descarga datos de Meteomatics por zona
 │   ├── descargar_nasa_power.py                               <-- Descarga y resume NASA POWER por zona
 │   ├── earth_engine_embeddings.js                            <-- Ejemplo GEE de embeddings (falta adaptar a SdE)
 │   ├── gee_exportar_zonas.js                                 <-- Earth Engine: estadísticas e imágenes por zona para la app
@@ -177,7 +179,7 @@ BioSat/
     ├── kit.css                                               <-- Estilos de la pantalla del kit (tema oscuro de alto contraste)
     ├── kit.html                                              <-- Pantalla del kit para la mesa del jurado (3 bandejas en vivo)
     ├── kit.js                                                <-- Pantalla del kit: teclado, Arduino y dibujo de las bandejas
-    ├── datos-borrador/                                       <-- Rotaciones borrador hasta que Vale cargue las validadas
+    ├── datos-borrador/                                       <-- Rotaciones borrador: respaldo si una zona no tiene sus 3 rotaciones
     │   └── rotaciones_borrador.json
     ├── img/ (22 archivos)                                    <-- Imágenes Landsat de vista previa (Planetary Computer)
     └── vendor/                                               <-- Leaflet, para el mapa sin internet
@@ -192,13 +194,18 @@ BioSat/
 
 **Ver la app publicada:** https://enzopazzelli.github.io/BioSat/web/
 
+- **Pantalla del kit** (mesa del jurado, teclas A, B y C): https://enzopazzelli.github.io/BioSat/web/kit.html
+- **Guía "Del kit al campo":** https://enzopazzelli.github.io/BioSat/web/campo.html
+
+**Pruebas** (Node 22): `node --test tests/*.test.js`
+
 **Bajar y resumir el clima de NASA POWER** (no necesita cuenta; genera `data/clima_zonas.json`):
 
 ```bash
 python scripts/descargar_nasa_power.py
 ```
 
-**Ver la app en tu compu** (cuando exista `web/`). Hay que abrirla con un servidor local, porque el navegador no deja leer los JSON si abrís el HTML con doble clic:
+**Ver la app en tu compu.** Hay que abrirla con un servidor local, porque el navegador no deja leer los JSON si abrís el HTML con doble clic:
 
 ```bash
 python -m http.server 8000
@@ -224,12 +231,15 @@ python scripts/actualizar_readme.py
 
 | Para… | Leer |
 |---|---|
+| Ver cómo viene todo y qué falta | [docs/estado-del-proyecto.md](docs/estado-del-proyecto.md) |
 | Saber qué hacer y quién lo hace | [PLAN.md](PLAN.md) |
 | Saber el formato de los datos compartidos | [docs/contratos-de-datos.md](docs/contratos-de-datos.md) |
 | Entender el desafío | [docs/resena-desafio.md](docs/resena-desafio.md) · [docs/recursos-desafio.md](docs/recursos-desafio.md) |
 | Ver los datos y su arquitectura | [ESTRUCTURA_DATOS.md](ESTRUCTURA_DATOS.md) · [catálogo AIZAL](data/datos_cruzados_aizal/CATALOGO_MAESTRO_VARIABLES.md) · [análisis NASA](docs/analisis-datos-nasa-santiago.md) |
 | Entender la agronomía y las reglas | [docs/documentacion-tecnica-agronomica.md](docs/documentacion-tecnica-agronomica.md) · [docs/zonas-santiago-y-kit-arduino.md](docs/zonas-santiago-y-kit-arduino.md) |
 | Conocer las reglas del equipo y las decisiones | [docs/reglas-y-bitacora.md](docs/reglas-y-bitacora.md) · [docs/glosario.md](docs/glosario.md) |
+| Ver la entrevista al productor de la Zona 5 | [docs/entrevista-productor-bella-criolla.md](docs/entrevista-productor-bella-criolla.md) |
+| Ver el modelo de IA de desmontes | [ia_desmonte/README.md](ia_desmonte/README.md) · [docs/integracion-meteomatics.md](docs/integracion-meteomatics.md) |
 | Ver el contexto del primer día | [CONTEXTO.md](CONTEXTO.md) |
 
 ---
