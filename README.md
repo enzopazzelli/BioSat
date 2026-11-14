@@ -51,10 +51,10 @@ Avance de cada integrante, contado desde las casillas de su plan en [`planes/`](
 | Persona | Rama | Avance | Tareas |
 |---|---|---|---|
 | [Enzo · Integración y app](planes/1-enzo.md) | `enzo-app` | `▓▓▓▓▓▓▓░░░` 72% | 26/36 |
-| [Santi · Suelo, satélite e IA](planes/2-santi.md) | `santi-datos-ia` | `▓▓▓▓░░░░░░` 44% | 12/27 |
+| [Santi · Suelo, satélite e IA](planes/2-santi.md) | `santi-datos-ia` | `▓▓▓▓▓▓▓▓░░` 81% | 22/27 |
 | [Vale · Campo y agronomía](planes/3-vale.md) | `vale-rotaciones` | `▓▓▓▓▓▓░░░░` 64% | 14/22 |
 | [Sara · Kit Arduino y relato](planes/4-sara.md) | `sara-arduino-entrega` | `░░░░░░░░░░` 4% | 1/23 |
-| **Total** | | `▓▓▓▓▓░░░░░` **49%** | **53/108** |
+| **Total** | | `▓▓▓▓▓▓░░░░` **58%** | **63/108** |
 <!-- AUTO:AVANCE:FIN -->
 
 ### Lo más urgente
@@ -87,23 +87,13 @@ Sale solo de las casillas sin tildar de cada plan. Panorama completo y riesgos: 
 </details>
 
 <details>
-<summary><b>Santi</b>: 15 pendientes (<a href="planes/2-santi.md">plan completo</a>)</summary>
+<summary><b>Santi</b>: 5 pendientes (<a href="planes/2-santi.md">plan completo</a>)</summary>
 
-- Subir `docs/CONTEXTONASA.md` o sacar su link del catálogo AIZAL _(Hito 0)_
 - Correr `scripts/gee_visor_biosat.js`, publicarlo como Earth Engine App y pasarles el link a Enzo y a Sara _(Checkpoint 1)_
-- Correr `scripts/gee_exportar_zonas.js`: imágenes en `data/imagenes/` y meses de suelo pelado por umbral en `data/diagnostico_landsat_ia.json` _(Checkpoint 1)_
-- Extraer de AIZAL por zona: pH, textura, carbono, nitrógeno, densidad aparente, PDSI, distancias y % de monte, y guardarlo en `data/suelo_zonas.json` _(Checkpoint 1)_
-- Definir el índice de fragilidad como fórmula visible, sumando el riesgo de desmonte _(Checkpoint 2)_
 - Sumar lo que responda la profesora al audio y al documento _(Congelamiento)_
 - Pasarle a Sara las métricas, el mapa de riesgo, una captura del visor y la comparación 2000 contra 2025 _(Congelamiento)_
 - Opcional: usar los embeddings AlphaEarth como variable extra del modelo o de la zonificación _(Congelamiento)_
 - Ayudar con el video y la página: explicar el modelo en 20 segundos _(Entrega)_
-- **Urgente:** cambiar la contraseña de Meteomatics y leerla de una variable de entorno (está escrita en `scripts/descargar_meteomatics.py` y el repo es público) _(Agregadas por Enzo)_
-- Crear `data/imagenes/escenas.json` con las imágenes exportadas de Earth Engine (sin ese archivo la app no las usa; formato en contratos §5) _(Agregadas por Enzo)_
-- Confirmar de dónde salen los números de `ia_desmonte/data/zonas_bioclima_suelo.csv`: no coinciden con `data/clima_zonas.json`. Si fueron estimaciones, no usarlos para `data/suelo_zonas.json` _(Agregadas por Enzo)_
-- Dejar un solo juego de métricas: el plan dice AUC 0,986 y 0,973; `data/desmonte_zonas.json` dice 0,984 y 0,971. Completar también la silueta de `data/zonificacion_aizal.json` _(Agregadas por Enzo)_
-- Abrir un PR por cada avance: la rama `santi-datos-ia` del repo quedó vieja porque el PR #5 vino de un fork _(Agregadas por Enzo)_
-- Explicar en una página cómo se usa Meteomatics en BioSat y qué falta para integrarlo _(Agregadas por Enzo)_
 
 </details>
 
@@ -202,14 +192,15 @@ BioSat/
 │   ├── rotaciones_santiago.json                              <-- 15 rotaciones de las 5 zonas (Vale) · Zona 5 validada por un productor, el resto sin validar
 │   ├── suelo_zonas.json                                      <-- Suelo por zona (Santi) · plantilla vacía: falta extraer de AIZAL
 │   ├── zonificacion_aizal.json                               <-- Zonificación k-means con AIZAL, 5 grupos (Santi) · cargada
-│   └── datos_cruzados_aizal/                                 <-- Catálogo AIZAL V4: 38 variables de suelo, clima y paisaje
-│       ├── CATALOGO_MAESTRO_VARIABLES.md                     <-- Índice de módulos y reglas que disparan
-│       ├── 01_Clima_y_Balance_Hidrico/ (2 archivos)          <-- B01-B08: agua, lluvia, sequía, temperatura
-│       ├── 02_Vegetacion_Fenologia_y_Paisaje/ (2 archivos)   <-- B19-B23, B30-B31: paisaje, NDVI, monte
-│       ├── 03_Quimica_Nutricion_Suelo/ (2 archivos)          <-- B09, B11, B13-B16: nitrógeno, pH, carbono
-│       ├── 04_Fisica_Suelo_y_Topografia/ (2 archivos)        <-- B10, B12, B17-B18, B24-B25: textura, relieve
-│       ├── 05_Logistica_Antropico_y_Servicios/ (2 archivos)  <-- B26-B29, B32-B37: caminos, población
-│       └── 06_Embeddings_IA_AlphaEarth/ (2 archivos)         <-- Embeddings AlphaEarth 64D (DeepMind)
+│   ├── datos_cruzados_aizal/                                 <-- Catálogo AIZAL V4: 38 variables de suelo, clima y paisaje
+│   │   ├── CATALOGO_MAESTRO_VARIABLES.md                     <-- Índice de módulos y reglas que disparan
+│   │   ├── 01_Clima_y_Balance_Hidrico/ (2 archivos)          <-- B01-B08: agua, lluvia, sequía, temperatura
+│   │   ├── 02_Vegetacion_Fenologia_y_Paisaje/ (2 archivos)   <-- B19-B23, B30-B31: paisaje, NDVI, monte
+│   │   ├── 03_Quimica_Nutricion_Suelo/ (2 archivos)          <-- B09, B11, B13-B16: nitrógeno, pH, carbono
+│   │   ├── 04_Fisica_Suelo_y_Topografia/ (2 archivos)        <-- B10, B12, B17-B18, B24-B25: textura, relieve
+│   │   ├── 05_Logistica_Antropico_y_Servicios/ (2 archivos)  <-- B26-B29, B32-B37: caminos, población
+│   │   └── 06_Embeddings_IA_AlphaEarth/ (2 archivos)         <-- Embeddings AlphaEarth 64D (DeepMind)
+│   └── imagenes/ (22 archivos)                               <-- Imágenes del visor exportadas de Earth Engine (Santi)
 ├── docs/ (19 archivos)                                       <-- Documentación del equipo
 ├── ia_desmonte/                                              <-- IA de Santi: zonificación AIZAL, modelo de desmontes, gráficos e informes
 │   ├── BioSat_IA_Zonificacion_y_Desmonte.ipynb

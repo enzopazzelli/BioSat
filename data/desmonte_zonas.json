@@ -20,16 +20,16 @@
   "evaluacion": {
     "metodos": {
       "regresion_logistica": {
-        "auc": 0.984,
-        "f1": 0.925,
-        "accuracy": 0.924,
-        "kappa": 0.848
+        "auc": 0.986,
+        "f1": 0.934,
+        "accuracy": 0.934,
+        "kappa": 0.867
       },
       "random_forest": {
-        "auc": 0.971,
-        "f1": 0.899,
-        "accuracy": 0.899,
-        "kappa": 0.798,
+        "auc": 0.973,
+        "f1": 0.903,
+        "accuracy": 0.903,
+        "kappa": 0.807,
         "importancia_variables": {
           "dist_caminos_m": 0.2841,
           "dist_desmonte_previo_m": 0.243,

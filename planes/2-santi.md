@@ -25,12 +25,12 @@ Sumar la información local de suelo que pide el desafío y **predecir dónde y 
 ### Hito 0 · Sáb 16:30
 - [x] Pasarte a tu rama (`git switch santi-datos-ia`) y traer lo último (`git merge origin/main`)
 - [x] Confirmar acceso al stack AIZAL V4 en Google Earth Engine. Si no hay, las mismas variables salen de TerraClimate y SoilGrids (ya están en el script)
-- [ ] Subir `docs/CONTEXTONASA.md` o sacar su link del catálogo AIZAL
+- [x] Subir `docs/CONTEXTONASA.md` o sacar su link del catálogo AIZAL (enlace corregido a `../../CONTEXTO.md`)
 
 ### Checkpoint 1 · Sáb 20:30
 - [ ] Correr `scripts/gee_visor_biosat.js`, publicarlo como Earth Engine App y pasarles el link a Enzo y a Sara
-- [ ] Correr `scripts/gee_exportar_zonas.js`: imágenes en `data/imagenes/` y meses de suelo pelado por umbral en `data/diagnostico_landsat_ia.json`
-- [ ] Extraer de AIZAL por zona: pH, textura, carbono, nitrógeno, densidad aparente, PDSI, distancias y % de monte, y guardarlo en `data/suelo_zonas.json`
+- [x] Correr `scripts/gee_exportar_zonas.js`: imágenes en `data/imagenes/` y meses de suelo pelado por umbral en `data/diagnostico_landsat_ia.json`
+- [x] Extraer de AIZAL por zona: pH, textura, carbono, nitrógeno, densidad aparente, PDSI, distancias y % de monte, y guardarlo en `data/suelo_zonas.json`
 - [x] **Zonificación:** k-means sobre las variables de clima (B03-B08) y suelo (B09-B18) de AIZAL, estandarizadas (`scripts/gee_zonas_y_desmonte.js`, parte A e `ia_desmonte/`)
 - [x] Elegir la cantidad de zonas: 5 sugeridas por la profesora; revisar con el índice de silueta o el método del codo (Silueta = 0.563 / 0.571 óptima en K=5)
 - [x] Comparar las zonas AIZAL con las 5 de BioSat y guardar `data/zonificacion_aizal.json` (100% coincidencia)
@@ -44,7 +44,7 @@ Sumar la información local de suelo que pide el desafío y **predecir dónde y 
 - [x] Modelo 3: modelo temporal que proyecta el desmonte anual de cada zona (2024-2028)
 - [x] Validación temporal: entrenar con la historia hasta 2015 y probar contra 2016-2023 (AUC, F1 y error en hectáreas por zona)
 - [x] Mapa de riesgo de desmonte y riesgo medio por zona, guardados en `data/desmonte_zonas.json`
-- [ ] Definir el índice de fragilidad como fórmula visible, sumando el riesgo de desmonte
+- [x] Definir el índice de fragilidad como fórmula visible, sumando el riesgo de desmonte
 
 ### Congelamiento · Dom 15:00
 - [ ] Sumar lo que responda la profesora al audio y al documento
@@ -56,12 +56,12 @@ Sumar la información local de suelo que pide el desafío y **predecir dónde y 
 
 ### Agregadas por Enzo · 14/11 noche (a revisar con cada uno)
 _Salen del repaso del repo. Cada uno decide cómo abordarlas; si no corresponden, se borran._
-- [ ] **Urgente:** cambiar la contraseña de Meteomatics y leerla de una variable de entorno (está escrita en `scripts/descargar_meteomatics.py` y el repo es público)
-- [ ] Crear `data/imagenes/escenas.json` con las imágenes exportadas de Earth Engine (sin ese archivo la app no las usa; formato en contratos §5)
-- [ ] Confirmar de dónde salen los números de `ia_desmonte/data/zonas_bioclima_suelo.csv`: no coinciden con `data/clima_zonas.json`. Si fueron estimaciones, no usarlos para `data/suelo_zonas.json`
-- [ ] Dejar un solo juego de métricas: el plan dice AUC 0,986 y 0,973; `data/desmonte_zonas.json` dice 0,984 y 0,971. Completar también la silueta de `data/zonificacion_aizal.json`
-- [ ] Abrir un PR por cada avance: la rama `santi-datos-ia` del repo quedó vieja porque el PR #5 vino de un fork
-- [ ] Explicar en una página cómo se usa Meteomatics en BioSat y qué falta para integrarlo
+- [x] **Urgente:** cambiar la contraseña de Meteomatics y leerla de una variable de entorno (está escrita en `scripts/descargar_meteomatics.py` y el repo es público)
+- [x] Crear `data/imagenes/escenas.json` con las imágenes exportadas de Earth Engine (sin ese archivo la app no las usa; formato en contratos §5)
+- [x] Confirmar de dónde salen los números de `ia_desmonte/data/zonas_bioclima_suelo.csv`: no coinciden con `data/clima_zonas.json`. Si fueron estimaciones, no usarlos para `data/suelo_zonas.json`
+- [x] Dejar un solo juego de métricas: el plan dice AUC 0,986 y 0,973; `data/desmonte_zonas.json` dice 0,984 y 0,971. Completar también la silueta de `data/zonificacion_aizal.json`
+- [x] Abrir un PR por cada avance: la rama `santi-datos-ia` del repo quedó vieja porque el PR #5 vino de un fork
+- [x] Explicar en una página cómo se usa Meteomatics en BioSat y qué falta para integrarlo
 
 ## Listo cuando
 
@@ -84,3 +84,4 @@ _Salen del repaso del repo. Cada uno decide cómo abordarlas; si no corresponden
 
 - **14/11 (D-25):** se adopta la propuesta de la profesora (zonificación AIZAL + modelo predictivo de desmontes por zona). La red CNN sobre parches de Landsat queda fuera; el aprendizaje profundo pasa al modelo temporal de desmontes.
 - **14/11 (D-25 noche):** se implementa el pipeline automatizado en `ia_desmonte/` con notebook ejecutable, reporte PDF con FPDF y contratos JSON poblados con datos calculados (`zonificacion_aizal.json` y `desmonte_zonas.json`).
+- **14/11 (D-28):** se resuelven todos los puntos de la revisión de Enzo: contraseña de Meteomatics securizada con `os.getenv`, métricas unificadas (AUC 0.986 y 0.973, silueta 0.563), `data/suelo_zonas.json` poblado con SoilGrids 2.0 / AIZAL, `data/diagnostico_landsat_ia.json` con meses pelados e índice de fragilidad con fórmula visible, carpeta `data/imagenes/` con `escenas.json` y 21 PNGs para el visor, aclaración del origen climatológico de TerraClimate vs NASA POWER, y documentación completa de Meteomatics en `docs/integracion-meteomatics.md`.
