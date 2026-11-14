@@ -1,7 +1,7 @@
 # Cruce de datos: NASA POWER × AIZAL V4 × Landsat
 
 > **Para qué sirve:** resume qué sale de juntar las fuentes, para qué decisión del productor sirve cada cruce y en qué archivo queda. Es corto a propósito. Los formatos están en [`contratos-de-datos.md`](contratos-de-datos.md) y las tareas en el [PLAN](../PLAN.md).
-> **Última actualización:** 14/11/2026. BioSat trabaja con **5 zonas** (D-21).
+> **Última actualización:** 14/11/2026. BioSat trabaja con **5 zonas** (D-21) y suma la zonificación AIZAL y el modelo predictivo de desmontes (D-25).
 
 ---
 
@@ -21,6 +21,7 @@
 | Hansen Global Forest Change | Desmonte por año, hecho con Landsat |
 | ESA WorldCover | Dónde hay lotes agrícolas |
 | AlphaEarth | Zonas parecidas, con IA |
+| Historia de desmontes | Base del LART (FAUBA-INTA) desde 1976 (monitoreodesmonte.com.ar, hoy caído) · MapBiomas Chaco 1985-2023 · Hansen 2001-2023 |
 | Kit Arduino | Medición en tierra |
 
 ---
@@ -41,6 +42,8 @@
 | 10 | NASADEM (pendiente) × Landsat (meses pelados) × POWER (tormentas) | **Riesgo de erosión**: suelo pelado en pendiente justo cuando llegan las lluvias fuertes | Tapar el suelo antes del verano en lomas y sierras (Zona 5) | Tarjetas, avisos |
 | 11 | POWER (heladas: cuántas y cuándo) × especies de cada rotación | **¿Aguanta el frío?**: ventana de heladas contra coberturas, pasturas y siembras tempranas | Elegir especies tolerantes. En la Zona 5, centeno, avena o pasto llorón antes que buffel | Motor de reglas, tarjetas |
 | 12 | Kit Arduino × Landsat × POWER | **Escalera de escalas**: 1 m² contra 30 m contra 50 km | Mostrar qué ve cada uno y qué se pierde | Panel "Espacio contra tierra" |
+| 13 | AIZAL (clima B03-B08 + suelo B09-B18) | **Zonificación**: k-means en 5 grupos (propuesta de la profesora) | Validar o ajustar las 5 zonas de BioSat | `zonificacion_aizal.json` |
+| 14 | Historia de desmontes × AIZAL (distancias, suelo, clima, áreas protegidas, población) | **Riesgo de desmonte por zona** (modelo predictivo) | En las zonas con más presión, priorizar las rotaciones que conservan el monte | `desmonte_zonas.json` |
 
 **La escalera de escalas (para el pitch):** NASA POWER 50 km → TerraClimate 4,6 km → AIZAL 500 m → Landsat 30 m → sensor 1 m² → el productor.
 
@@ -91,12 +94,40 @@ Comparamos los 4 puntos originales con 6 puntos más de la provincia:
 
 **Pendiente:**
 - **Rotaciones de la Zona 5:** son un borrador. Hay que validarlas con productores del sur o con el INTA (Frente 4).
-- **Límites de las zonas:** validarlos con el agrupamiento AlphaEarth en Earth Engine (Frente 2).
+- **Límites de las zonas:** validarlos con la zonificación AIZAL, un k-means sobre clima y suelo propuesto por la profesora (D-25, Frente 2, sección 6).
 - **Zonas del INTA:** compararlas con las oficiales. No encontramos una lista publicada de las zonas agroeconómicas homogéneas de la provincia; conviene pedirla a la EEA Santiago del Estero o a la EEA Quimilí.
 
 ---
 
-## 5. De dónde salen las imágenes del visor
+## 5. Zonificación AIZAL y modelo predictivo de desmontes (D-25)
+
+Propuesta de la profesora de Sistemas de IA, con el acuerdo del equipo. La base es [`scripts/gee_zonas_y_desmonte.js`](../scripts/gee_zonas_y_desmonte.js).
+
+**Zonificación:**
+- **Método:** k-means sobre las variables de clima (B03-B08) y suelo (B09-B18) de AIZAL, estandarizadas. Si no hay acceso a AIZAL, se usan TerraClimate y SoilGrids.
+- **Cantidad de zonas:** 5, como sugiere la profesora. Se revisa con el índice de silueta.
+- **Uso:** se compara con las 5 zonas de BioSat.
+
+**Modelo predictivo de desmontes:**
+- **Historia:** la base del LART desde 1976, si se consigue; si no, MapBiomas Chaco (1985-2023) o Hansen (2001-2023).
+- **Predictores:**
+  - distancia a zonas sin monte y a desmontes previos;
+  - pendiente y áreas protegidas;
+  - población;
+  - clima y suelo de AIZAL;
+  - la zona.
+- **Tres modelos:**
+  - regresión logística, como referencia;
+  - random forest;
+  - un modelo temporal (LSTM o Transformer) que proyecta el desmonte anual de cada zona.
+- **Validación temporal:** entrenar con la historia hasta 2015 y probar contra 2016-2023, con AUC, F1 y error en hectáreas por zona.
+- **Salida:** un mapa de riesgo y el riesgo medio por zona (`data/desmonte_zonas.json`). En la app se muestra como "presión de desmonte" y empuja las rotaciones que conservan el monte.
+
+**Qué cambia respecto del plan anterior:** la red CNN sobre parches de Landsat queda fuera, porque no tenía etiquetas buenas y no entraba en 48 horas. El aprendizaje profundo pasa al modelo temporal de desmontes. Los meses de suelo pelado del calendario se calculan con el método simple de umbral.
+
+---
+
+## 6. De dónde salen las imágenes del visor
 
 - **Mockup:** recortes de las 5 zonas, bajados con la API abierta de Microsoft Planetary Computer, sin cuenta:
   - Landsat 8/9 de 2025, en verano e invierno.

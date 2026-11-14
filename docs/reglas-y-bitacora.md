@@ -130,3 +130,10 @@ Según la página oficial de premios (`NASA Space Apps Challenge - awards.mhtml`
   - **Motor:** los puntajes salen de reglas fijas sobre los atributos y el calendario de cada rotación (la leguminosa suma solo si no es monocultivo).
   - **Datos que faltan:** mientras Vale no cargue las rotaciones, la app usa el borrador del equipo y lo avisa. Las imágenes del visor salen de Planetary Computer hasta que Santi exporte las de Earth Engine.
   - **Sin internet:** Leaflet y las imágenes van dentro de `web/`. La caché cruda de NASA POWER no se sube al repo.
+- **D-25 (Propuesta de la profesora: zonificación AIZAL y modelo predictivo de desmontes):**
+  - La profesora de Sistemas de IA propone zonificar la provincia en 5 zonas con las variables de clima y suelo de AIZAL, y hacer un modelo predictivo de desmontes por zona. Santi está de acuerdo.
+  - **Zonificación:** k-means sobre clima (B03-B08) y suelo (B09-B18) estandarizados, comparado con las 5 zonas de BioSat → `data/zonificacion_aizal.json`.
+  - **Historia de desmontes:** el mapa que menciona (desde 1976) es casi seguro la base del LART (FAUBA-INTA), publicada en monitoreodesmonte.com.ar, que hoy da error de base de datos. Mientras tanto se usa MapBiomas Chaco (1985-2023) o Hansen (2001-2023).
+  - **Modelo:** regresión logística, random forest y un modelo temporal (LSTM o Transformer), con validación temporal (entrena hasta 2015, prueba 2016-2023) → `data/desmonte_zonas.json`. Base en `scripts/gee_zonas_y_desmonte.js`.
+  - **Qué queda fuera:** la CNN sobre parches de Landsat. Los meses de suelo pelado se calculan con el método de umbral.
+  - **Cómo se lo contamos a la profesora:** se le manda un audio con este enfoque y el documento de validación actualizado.

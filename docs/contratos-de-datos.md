@@ -119,6 +119,8 @@ Suelo y paisaje por zona, a partir de AIZAL V4 (o de SoilGrids como plan B).
 
 Resultado del módulo de IA con Landsat. **Solo valores calculados por el modelo o el método simple.**
 
+> **Desde D-25:** este archivo guarda los **meses de suelo pelado** calculados con el método de umbral. La comparación de modelos de IA pasó al modelo de desmonte (§8), así que el bloque `evaluacion` de acá puede quedar en `null`.
+
 ```json
 {
   "meta": {
@@ -272,3 +274,72 @@ Lecturas **reales** grabadas durante la calibración. La app las usa si el Ardui
   }
 }
 ```
+
+---
+
+## 7. `data/zonificacion_aizal.json` (F2 · Santi)
+
+Zonificación de la provincia con k-means sobre clima y suelo de AIZAL, propuesta por la profesora (D-25). Lo genera [`scripts/gee_zonas_y_desmonte.js`](../scripts/gee_zonas_y_desmonte.js), parte A.
+
+```json
+{
+  "meta": {
+    "fuente": "AIZAL V4 (o TerraClimate + SoilGrids si no hay acceso)",
+    "variables": ["b03", "b04", "b05", "b06", "b07", "b08", "b09", "b10", "b11", "b12", "b13", "b14", "b15", "b16", "b17a", "b17b", "b18"],
+    "metodo": "k-means sobre variables estandarizadas",
+    "k": 5,
+    "criterio_k": "silueta | codo | propuesta de la cátedra",
+    "escala_m": 500,
+    "generado_por": "scripts/gee_zonas_y_desmonte.js",
+    "fecha": null
+  },
+  "grupos": [
+    {"id": 0, "nombre": null, "area_pct": null,
+     "perfil": {"lluvia_mm": null, "tmax_c": null, "tmin_c": null, "ph": null, "arcilla_pct": null, "carbono_organico_g_kg": null}}
+  ],
+  "comparacion_biosat": {
+    "zona_1_riego_salitre": {"grupo_mayoritario": null, "coincidencia_pct": null}
+  }
+}
+```
+
+- **`grupos`:** un elemento por grupo. `nombre` lo pone el equipo mirando el perfil (por ejemplo, "Sur fresco y serrano").
+- **`comparacion_biosat`:** dice qué grupo AIZAL domina en la celda de cada zona de BioSat y en qué porcentaje. Sirve para validar las 5 zonas.
+
+---
+
+## 8. `data/desmonte_zonas.json` (F3 · Santi)
+
+Modelo predictivo de desmontes por zona (D-25). Lo genera la parte B de [`scripts/gee_zonas_y_desmonte.js`](../scripts/gee_zonas_y_desmonte.js), y los modelos de Python completan las métricas.
+
+```json
+{
+  "meta": {
+    "historia": "LART (desde 1976) | MapBiomas Chaco | Hansen GFC v1.11 (2001-2023)",
+    "predictores": ["dist_sin_monte", "dist_desmonte_previo", "pendiente", "area_protegida", "poblacion", "clima y suelo AIZAL", "zona_aizal"],
+    "validacion": "entrena con predictores al 2008 y desmonte 2009-2015; prueba con predictores al 2015 y desmonte 2016-2023",
+    "generado_por": "scripts/gee_zonas_y_desmonte.js + notebook de Santi",
+    "fecha": null
+  },
+  "evaluacion": {
+    "metodos": {
+      "regresion_logistica": {"auc": null, "f1": null},
+      "random_forest": {"auc": null, "f1": null},
+      "temporal_lstm_o_transformer": {"error_ha_pct": null}
+    },
+    "metodo_elegido": null
+  },
+  "zonas": {
+    "zona_3_monte_semiarido": {
+      "monte_actual_pct": null,
+      "desmonte_ha_por_anio": {"desde": null, "valores": null},
+      "riesgo_medio_0_1": null,
+      "proyeccion_ha": {"anios": null, "valores": null},
+      "confianza": null
+    }
+  }
+}
+```
+
+- **`riesgo_medio_0_1`:** probabilidad media de desmonte del monte que queda en la celda de la zona. La app la muestra como "presión de desmonte".
+- **`proyeccion_ha`:** sale del modelo temporal (LSTM o Transformer). Si no llega a tiempo, queda en `null`.

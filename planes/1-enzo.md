@@ -41,6 +41,7 @@ Que un productor recorra los 5 pasos de la app sin ayuda, con números de clima 
 - [x] Etiquetas de confianza en cada dato
 - [x] Visor GIS del lote con las imágenes de `data/imagenes/` (de Santi)
 - [x] Las 5 zonas cargadas con suelo y diagnóstico de IA (lo que haya; el resto, "sin dato")
+- [ ] Panel "presión de desmonte en tu zona" (lee `data/desmonte_zonas.json`) y zonificación AIZAL como capa del visor
 - [ ] Integrar en `main` y pasar decisiones a la bitácora
 
 ### Congelamiento · Dom 15:00
