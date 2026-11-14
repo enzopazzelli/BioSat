@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>BioSat · Del kit al campo</title>
+<meta name="description" content="Cómo se lleva el kit de las bandejas a un campo real: estaciones fijas que miden en tierra lo que el satélite no ve.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Hanken+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="estilos.css">
+<link rel="stylesheet" href="campo.css">
+</head>
+<body>
+<header class="top">
+  <div class="wrap top-row">
+    <a class="brand" href="index.html" aria-label="BioSat, volver a la app">
+      <svg viewBox="0 0 32 32" aria-hidden="true">
+        <ellipse cx="16" cy="12" rx="13" ry="5" style="fill:none;stroke:var(--accent)" stroke-width="1.6" transform="rotate(-18 16 12)"/>
+        <circle cx="27" cy="7.5" r="2.4" style="fill:var(--heat)"/>
+        <path d="M4 27h24" style="stroke:var(--ink)" stroke-width="2" stroke-linecap="round"/>
+        <path d="M16 27v-8" style="stroke:var(--st-cultivo)" stroke-width="2" stroke-linecap="round"/>
+        <path d="M16 21c-3.5 0-5.5-2-5.5-5 3.2 0 5.5 1.8 5.5 5zM16 20c3 0 5-1.8 5-4.6-2.9 0-5 1.7-5 4.6z" style="fill:var(--st-cultivo)"/>
+      </svg>
+      <span class="brand-name">BioSat</span>
+    </a>
+    <nav class="campo-volver" aria-label="Volver">
+      <a href="kit.html">Volver a la pantalla del kit</a>
+      <a href="index.html">Volver a la app</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap guia">
+  <section class="campo-intro" aria-labelledby="t-campo">
+    <p class="campo-eyebrow">Después de las bandejas</p>
+    <h1 id="t-campo">Del kit al campo</h1>
+    <p class="campo-enlace">Lo que vieron en las bandejas, llevado a un campo de verdad: unas pocas estaciones fijas que miden en tierra lo que el satélite no ve.</p>
+  </section>
+
+  <section aria-labelledby="t-recorrido">
+    <h2 id="t-recorrido" class="campo-h2">El recorrido del dato</h2>
+    <ol class="recorrido">
+      <li class="nodo">
+        <svg viewBox="0 0 48 48" aria-hidden="true"><rect x="19" y="19" width="10" height="10" rx="1.5"/><path d="M4 18h12v12H4zM32 18h12v12H32zM16 24h3M29 24h3M24 29v6M19 39a7 7 0 0 1 10 0"/></svg>
+        <h3>Satélite</h3>
+        <p>NASA POWER 50 km · Landsat 30 m</p>
+      </li>
+      <li class="nodo">
+        <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M24 44V14M14 44h20M16 8h16l-3 6H19z"/><rect x="18" y="22" width="12" height="9" rx="1.5"/><path d="M24 44v-4M20 40h8"/></svg>
+        <h3>3 a 6 estaciones</h3>
+        <p>suelo y aire cada 15-30 min</p>
+      </li>
+      <li class="nodo">
+        <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M24 22v22M18 44h12M24 22l-5 22M24 22l5 22"/><circle cx="24" cy="18" r="3"/><path d="M16 12a11 11 0 0 1 16 0M11 7a18 18 0 0 1 26 0"/></svg>
+        <h3>Receptor en el casco</h3>
+        <p>radio LoRa, 5-15 km en llano</p>
+      </li>
+      <li class="nodo nodo-app">
+        <svg viewBox="0 0 48 48" aria-hidden="true"><rect x="14" y="4" width="20" height="40" rx="3"/><path d="M19 30l4-6 4 3 4-7M21 39h6"/></svg>
+        <h3>App BioSat</h3>
+        <p>tu lote contra tu zona</p>
+      </li>
+    </ol>
+  </section>
+
+  <section aria-labelledby="t-pasos">
+    <h2 id="t-pasos" class="campo-h2">Los 5 pasos</h2>
+    <ol class="pasos">
+      <li class="paso card"><span class="paso-n">1</span><h3>Elegí los ambientes</h3><p>Loma, bajo, salitre, monte y agrícola. Los marcan Landsat y AIZAL.</p></li>
+      <li class="paso card"><span class="paso-n">2</span><h3>Instalá las estaciones</h3><p>Una por ambiente y un par cubierto contra pelado.</p></li>
+      <li class="paso card"><span class="paso-n">3</span><h3>Conectalas</h3><p>Por LoRa al casco; por Wi-Fi si están cerca.</p></li>
+      <li class="paso card"><span class="paso-n">4</span><h3>Calibrá</h3><p>Muestras de suelo y conductímetro al instalar.</p></li>
+      <li class="paso card"><span class="paso-n">5</span><h3>Mirá tu lote</h3><p>Alertas de calor, humedad y salitre junto al dato del satélite.</p></li>
+    </ol>
+  </section>
+
+  <div class="campo-dos">
+    <section class="card campo-caja" aria-labelledby="t-estacion">
+      <h2 id="t-estacion" class="campo-h2">Lo que hace falta por estación</h2>
+      <table class="campo-tabla">
+        <thead><tr><th scope="col">Pieza</th><th scope="col">Para qué</th></tr></thead>
+        <tbody>
+          <tr><td>ESP32 con LoRa</td><td>mide y manda el dato al casco</td></tr>
+          <tr><td>Sondas de temperatura del suelo a 5 y 20 cm</td><td>el calor en la superficie y en la raíz</td></tr>
+          <tr><td>Sensor de humedad capacitivo</td><td>el agua del suelo</td></tr>
+          <tr><td>Sensor de aire y pluviómetro</td><td>el aire y la lluvia del lote</td></tr>
+          <tr><td>Panel solar, batería, caja y poste</td><td>energía y resguardo todo el año</td></tr>
+        </tbody>
+      </table>
+      <dl class="campo-costos">
+        <div><dt>Estación</dt><dd><span class="mono">USD 150-400</span> <span class="tag">a confirmar</span></dd></div>
+        <div><dt>Receptor en el casco</dt><dd><span class="mono">USD 200-500</span> <span class="tag">a confirmar</span></dd></div>
+      </dl>
+      <p class="campo-nota">Costos aproximados: son estimaciones, no presupuestos.</p>
+    </section>
+
+    <section class="card campo-caja campo-no" aria-labelledby="t-no">
+      <h2 id="t-no" class="campo-h2">Lo que no reemplaza</h2>
+      <ul>
+        <li>El análisis de suelo.</li>
+        <li>La prueba de pala.</li>
+        <li>El criterio del productor.</li>
+        <li>La consulta al agrónomo.</li>
+      </ul>
+    </section>
+  </div>
+
+  <nav class="campo-volver campo-pie" aria-label="Volver">
+    <a class="btn" href="kit.html">Volver a la pantalla del kit</a>
+    <a href="index.html">Volver a la app</a>
+  </nav>
+</main>
+</body>
+</html>
