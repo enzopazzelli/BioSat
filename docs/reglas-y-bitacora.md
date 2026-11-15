@@ -176,6 +176,6 @@ Según la página oficial de premios (`NASA Space Apps Challenge - awards.mhtml`
     - La zonificación real da una silueta más baja que la del prototipo, y el JSON lo dice.
   - **Resultados principales:**
     - Random forest elegido por validación cruzada (AUC 0,78); en la prueba 2016-2025 da 0,63, con una tasa base del 9 %.
-    - La caída entre las dos cifras se explica como hipótesis (Ley de Bosques), no como hecho.
+    - La caída entre las dos cifras se explica como hipótesis (Ley de Bosques), no como hecho. Para probarla hay un plan listo para que lo ejecute alguien más adelante: `docs/superpowers/plans/2026-11-15-validacion-ley-de-bosques.md` (entrenar dentro del régimen de la ley, 2012 → 2017, y sumar la categoría del OTBN como predictor).
     - Las etiquetas de Hansen se leen a 30 m: a 250 m el promedio inflaba la tasa de desmonte al 23 %.
   - **Diseño y plan:** `docs/superpowers/specs/2026-11-14-datos-reales-design.md` y `docs/superpowers/plans/2026-11-14-datos-reales.md`.
