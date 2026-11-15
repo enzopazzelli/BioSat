@@ -130,3 +130,11 @@ test('D-33: sensibilidad al umbral, calculada con los datos del mes (sin número
   assert.equal(L.sensibilidadPelado(dz, 0, null, 'enero'), null, 'sin los umbrales del archivo: no se escribe');
   assert.equal(L.sensibilidadPelado(undefined, 0, [0.2, 0.25, 0.3], 'enero'), null);
 });
+
+// D-37 (hallazgo de la hoja de ruta de Vale): la señal es lluvia − ET0, una referencia climática,
+// no lo que pide un cultivo concreto (eso sería ET0 × Kc, que la app usa para cada rotación).
+test('la señal de agua dice lluvia contra la evaporación de referencia (ET0), no "lo que pide el cultivo"', () => {
+  const s = L.semaforoZona(10, {falta: 110, d35: 0, helada: 0}, null);
+  assert.equal(s.razon, 'La lluvia típica queda unos 110 mm por debajo de la evaporación de referencia (ET0).');
+  assert.doesNotMatch(s.razon, /pide el cultivo/);
+});

@@ -106,3 +106,8 @@ test('D-33: la frase de sensibilidad al umbral tiene su inglés, con las mismas 
   assert.ok(en, 'falta modulos.inicio.sensibilidad: en inglés quedaría "en November, con un NDVI menor a 0.20"');
   assert.deepEqual(marcas(en), marcas(es));
 });
+
+test('D-37: en inglés, la señal de agua habla de la evapotranspiración de referencia (ET0), no de lo que necesita el cultivo', () => {
+  assert.match(EN.modulos.inicio.senal.falta, /short of reference evapotranspiration \(ET0\)/);
+  assert.doesNotMatch(EN.modulos.inicio.senal.falta, /crops need/);
+});

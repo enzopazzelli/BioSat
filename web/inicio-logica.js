@@ -11,7 +11,8 @@
     nivel: ['BIEN', 'ATENCIÓN', 'CUIDADO'],
     rotulo: {zona: 'Tu zona en {mes} · lo típico', sonda: 'Tu lote, medido hoy'},
     senal: {
-      falta: 'faltan unos {n} mm de agua para lo que pide el cultivo',
+      // D-37: es lluvia − ET0 (referencia climática), no la demanda de un cultivo concreto (ET0 × Kc).
+      falta: 'la lluvia típica queda unos {n} mm por debajo de la evaporación de referencia (ET0)',
       // D-33: el satélite ve poca vegetación verde (NDVI bajo): puede ser suelo descubierto o rastrojo seco.
       pelado: 'unos {n} de cada 10 lotes de la zona están sin cobertura vegetal activa (suelo descubierto o rastrojo seco)',
       d35: 'hay unos {n} días de más de 35 °C',

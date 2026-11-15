@@ -149,3 +149,9 @@ test('el visor vuelve a medir el mapa al mostrar el Reporte y no da por encuadra
   assert.match(vista, /invalidateSize/, 'mostrarVista tiene que avisarle a Leaflet que el mapa cambió de tamaño');
   assert.match(app, /visor\.zonaVista = visor\.map\.getSize\(\)\.x \? state\.zona : null/, 'con el mapa en 0 px, la zona se encuadra al mostrarlo');
 });
+
+test('D-37: la explicación del semáforo aclara que la falta de agua es lluvia contra ET0, no la demanda de un cultivo', () => {
+  const metodo = index.slice(index.indexOf('id="semaforoMetodo"'), index.indexOf('</p>', index.indexOf('id="semaforoMetodo"')));
+  assert.match(metodo, /evaporación de referencia \(ET0\)/);
+  assert.match(metodo, /no es lo que pide un cultivo concreto/);
+});

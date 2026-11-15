@@ -102,7 +102,7 @@
         nivel: ['GOOD', 'CAUTION', 'WARNING'],
         rotulo: {zona: 'Your area in {mes} · typical', sonda: 'Your field, measured today'},
         senal: {
-          falta: 'crops need about {n} mm more water than the rain gives',
+          falta: 'typical rain falls about {n} mm short of reference evapotranspiration (ET0)',
           pelado: 'about {n} out of 10 fields in the area are without active green cover (bare soil or dry crop residue)',
           d35: 'there are about {n} days above 35 °C',
           helada: 'there are about {n} frost days'
