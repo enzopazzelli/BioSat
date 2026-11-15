@@ -46,7 +46,7 @@
     const r = max > min ? max - min : 1;
     return lienzo(datos.ancho, datos.alto, i => {
       const v = banda[i];
-      if (!Number.isFinite(v) || v === sinDato) return null;
+      if (!Number.isFinite(v) || v === sinDato || (datos.mascara && datos.mascara[i] === 0)) return null;
       const g = Math.round((v - min) / r * 255);
       return [g, g, g];
     });
@@ -124,18 +124,31 @@
       const recuadro = L.recuadroLatLon(img.getBoundingBox(), aLonLat);
       const w0 = img.getWidth(), h0 = img.getHeight(), k = Math.min(1, MAX_LADO / Math.max(w0, h0));
       const ancho = Math.max(1, Math.round(w0 * k)), alto = Math.max(1, Math.round(h0 * k));
-      const rasters = await leerAchicado(img, w0, h0, ancho, alto, bandas);
+      // Un COG trae versiones reducidas y máscaras: se lee la más chica que alcanza y su máscara de área válida.
+      const imagenes = [];
+      for (let i = 0, n = await tiff.getImageCount(); i < n; i++) {
+        const im = i === 0 ? img : await tiff.getImage(i);
+        imagenes.push({i, im, ancho: im.getWidth(), alto: im.getHeight(), bandas: im.getSamplesPerPixel(), sub: im.fileDirectory.NewSubfileType || 0});
+      }
+      const vista = imagenes[L.elegirVista(imagenes, ancho)];
+      const rasters = await leerAchicado(vista.im, vista.ancho, vista.alto, ancho, alto, bandas);
+      const iMasc = L.elegirMascara(imagenes, vista.ancho, vista.alto);
+      let mascara = null;
+      if (iMasc !== null) {
+        try { mascara = (await leerAchicado(imagenes[iMasc].im, vista.ancho, vista.alto, ancho, alto, 1))[0]; }
+        catch (e) { console.warn('BioSat dron: no se pudo leer la máscara', e); }
+      }
       const sinDato = img.getGDALNoData();
       const tipo = L.tipoImagen(ficha);
       datos = {bandas: Array.from(rasters), ancho, alto, sinDato: sinDato === null ? null : Number(sinDato),
-        mascara: tipo === 'rgb' && bandas === 4 ? rasters[3] : null};
+        mascara: tipo === 'rgb' && bandas === 4 ? rasters[3] : mascara};
       Object.assign(estado, {ficha, epsg, recuadro, anchoOriginal: w0, altoOriginal: h0, anchoCalculo: ancho,
         metrosPixel: L.metrosPorPixel(recuadro, ancho), fecha: L.fechaDeTiff(fd.DateTime), leyendo: false,
         descripciones: L.descripcionesBandas(fd.GDAL_METADATA, bandas)}, ubicar(recuadro));
       if (tipo === 'rgb') {
-        const [r, g, b] = datos.bandas, m = datos.mascara;
+        const [r, g, b] = datos.bandas, m = datos.mascara, ycc = ficha.fotometrica === 6;
         estado.tipo = 'rgb';
-        estado.url = lienzo(ancho, alto, i => (m && m[i] === 0) ? null : [r[i], g[i], b[i]]);
+        estado.url = lienzo(ancho, alto, i => (m && m[i] === 0) ? null : (ycc ? L.ycbcrARgb(r[i], g[i], b[i]) : [r[i], g[i], b[i]]));
       } else if (tipo === 'multi') {
         const s = L.bandasSugeridas(estado.descripciones);
         if (s.rojo !== null && s.nir !== null)

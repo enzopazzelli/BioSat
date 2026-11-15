@@ -50,11 +50,11 @@ Avance de cada integrante, contado desde las casillas de su plan en [`planes/`](
 <!-- AUTO:AVANCE:INICIO -->
 | Persona | Rama | Avance | Tareas |
 |---|---|---|---|
-| [Enzo · Integración y app](planes/1-enzo.md) | `enzo-app` | `▓▓▓▓▓▓▓▓░░` 82% | 45/55 |
+| [Enzo · Integración y app](planes/1-enzo.md) | `enzo-app` | `▓▓▓▓▓▓▓▓░░` 82% | 46/56 |
 | [Santi · Suelo, satélite e IA](planes/2-santi.md) | `santi-datos-ia` | `▓▓▓▓▓▓▓▓░░` 76% | 22/29 |
 | [Vale · Campo y agronomía](planes/3-vale.md) | `vale-rotaciones` | `▓▓▓▓▓▓▓░░░` 72% | 18/25 |
 | [Sara · Kit Arduino y relato](planes/4-sara.md) | `sara-arduino-entrega` | `▓▓░░░░░░░░` 19% | 5/26 |
-| **Total** | | `▓▓▓▓▓▓▓░░░` **67%** | **90/135** |
+| **Total** | | `▓▓▓▓▓▓▓░░░` **67%** | **91/136** |
 <!-- AUTO:AVANCE:FIN -->
 
 ### Lo más urgente
@@ -95,7 +95,7 @@ Sale solo de las casillas sin tildar de cada plan. Panorama completo y riesgos: 
 - Ensayar `web/kit.html` y `web/campo.html` en la pantalla grande de la demo, con el kit conectado _(Agregadas por Enzo)_
 - Cerrar `PLAN.md`: sumar kit y guía en la sección 1 y contestar las preguntas abiertas _(Agregadas por Enzo)_
 - Probar de nuevo la app publicada en el celular y sin internet después del último merge _(Agregadas por Enzo)_
-- Probar la etapa 1 con un .tif real (lo consigue Enzo): tamaño, bandas, sistema de coordenadas, tiempo de lectura en la PC y en el celular _(Lector de imágenes de dron)_
+- Probarlo en un celular de verdad _(Lector de imágenes de dron)_
 - Etapa 2: marcar sectores, guardarlos en el navegador, exportarlos e importarlos (GeoJSON) y sacarlos en el PDF _(Lector de imágenes de dron)_
 
 </details>

@@ -159,3 +159,36 @@ test('tramos: lee el archivo de a franjas que cubren todas las filas, sin huecos
   assert.ok(t.every(x => x.r1 - x.r0 <= 512 + 5 && x.o1 > x.o0 && x.r1 > x.r0));
   assert.deepEqual(D.tramos(60, 60, 512), [{o0: 0, o1: 60, r0: 0, r1: 60}]);
 });
+
+// Archivo real de Enzo (drone.tif, 15/11): JPEG en YCbCr, con máscara interna y versiones reducidas (COG).
+// [indice, ancho, alto, bandas, NewSubfileType] tal como los lee geotiff.js.
+const REAL = [[0, 18990, 13321, 3, 0], [1, 18990, 13321, 1, 4], [2, 9495, 6661, 3, 1], [3, 4748, 3331, 3, 1], [4, 2374, 1666, 3, 1],
+  [5, 1187, 833, 3, 1], [6, 594, 417, 3, 1], [7, 297, 209, 3, 1], [8, 9495, 6661, 1, 5], [9, 4748, 3331, 1, 5], [10, 2374, 1666, 1, 5],
+  [11, 1187, 833, 1, 5], [12, 594, 417, 1, 5], [13, 297, 209, 1, 5]].map(([i, ancho, alto, bandas, sub]) => ({i, ancho, alto, bandas, sub}));
+
+test('una foto en YCbCr (JPEG) también es RGB', () => {
+  assert.equal(D.tipoImagen({bandas: 3, bits: [8, 8, 8], formato: 'uint', fotometrica: 6}), 'rgb');
+});
+
+test('ycbcrARgb da lo mismo que readRGB de geotiff.js', () => {
+  assert.deepEqual(D.ycbcrARgb(192, 109, 134), [200, 194, 158]);
+  assert.deepEqual(D.ycbcrARgb(171, 109, 134), [179, 173, 137]);
+  assert.deepEqual(D.ycbcrARgb(255, 128, 128), [255, 255, 255]);
+  assert.deepEqual(D.ycbcrARgb(0, 255, 0), [0, 48, 225]);
+});
+
+test('elegirVista usa la versión reducida más chica que alcanza, y elegirMascara la de su mismo tamaño', () => {
+  assert.equal(D.elegirVista(REAL, 2048), 4);
+  assert.equal(D.elegirMascara(REAL, 2374, 1666), 10);
+  assert.equal(D.elegirMascara(REAL, 18990, 13321), 1);
+  assert.equal(D.elegirVista(REAL, 30000), 0);
+  const chico = [{i: 0, ancho: 100, alto: 60, bandas: 5, sub: 0}];
+  assert.equal(D.elegirVista(chico, 100), 0);
+  assert.equal(D.elegirMascara(chico, 100, 60), null);
+});
+
+test('fichaTecnica de una foto RGB no habla de números calculados', () => {
+  const t = D.fichaTecnica({tipo: 'rgb', bandas: null, epsg: 32721, metrosPixel: 0.211, anchoOriginal: 18990, altoOriginal: 13321, anchoCalculo: 2048});
+  assert.ok(t.includes('Archivo de 18990 × 13321 píxeles. Se muestra una versión de 2048 píxeles de ancho, de unos 21 cm por píxel.'));
+  assert.ok(!t.some(s => /números/.test(s)));
+});

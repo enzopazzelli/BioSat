@@ -378,6 +378,23 @@ Según la página oficial de premios (`NASA Space Apps Challenge - awards.mhtml`
     - una foto RGB con `GDAL_NODATA` y sin banda alfa dibuja el borde en negro;
     - un GeoTIFF ubicado con `ModelTransformation` puede mostrar "no se pudo leer como GeoTIFF" sin decir la causa;
     - el aviso de más de 1 GB aparece mientras se lee, no antes;
-    - no se aprovechan las vistas reducidas (overviews) de un COG.
-  - Las pruebas de la app son 180. **Ojo:** un commit de esta rama (`bfe1377`) quedó con 2 pruebas fallando; lo arregla el siguiente (`e74d3c0`).
-  - **Pendiente:** probar con un .tif real. Es el criterio para dar por terminada la etapa 1. La etapa 2 (sectores) viene después.
+    - con el lote fuera de la zona elegida, la cortina "Landsat contra dron" sigue disponible, aunque abajo no hay Landsat de ese lugar.
+  - Las pruebas de la app son 184. **Ojo:** un commit de esta rama (`bfe1377`) quedó con 2 pruebas fallando; lo arregla el siguiente (`e74d3c0`).
+  - **Prueba con el .tif real de Enzo (15/11, `drone.tif` en la raíz, no va a Git):**
+    - **El archivo:**
+      - 33,6 MB, 18 990 × 13 321 px, 2,25 cm por píxel;
+      - 3 bandas de 8 bits: **foto en color, sin infrarrojo**, así que no hay NDVI;
+      - comprimido en JPEG y guardado en **YCbCr**;
+      - con máscara interna del área válida y 6 versiones reducidas (un COG);
+      - EPSG:32721 (UTM 21 S), vuelo del 07/03/2024.
+    - **Dónde cae:** en −27,67; −58,75, cerca de la ciudad de Corrientes, **fuera de Santiago del Estero**. Mide unos 428 × 300 m.
+    - **Lo que mostró y se arregló, con pruebas:**
+      - el lector solo reconocía la foto como color si estaba guardada en RGB: la trataba como gris y los colores salían cambiados. Ahora el YCbCr también es foto en color y se pasa a RGB con la misma fórmula que `readRGB` de geotiff.js;
+      - no usaba las versiones reducidas: decodificaba 250 millones de píxeles. Ahora lee la más chica que alcanza (2374 px de ancho);
+      - no usaba la máscara: el borde fuera del vuelo salía en negro. Ahora queda transparente;
+      - "Para tu ingeniero" decía "los números se calculan" en una foto sin NDVI. Ahora dice "se muestra una versión de…".
+    - **Resultado:** se lee en 1,2 a 1,6 s en Chrome (en la PC y emulando un celular de 390 px), con colores naturales. La línea del Inicio dice "Tu lote, según el dron (07/03): foto en color, sin NDVI. Está fuera de Santiago del Estero."; en inglés, la fecha sale 03/07. Sin errores de JavaScript. 184 pruebas en verde.
+  - **Pendiente:**
+    - probarlo en un celular de verdad;
+    - para mostrar NDVI hace falta un vuelo con cámara multiespectral;
+    - la etapa 2 (sectores) viene después.

@@ -52,6 +52,7 @@
     fichaCalibracion: 'Si el mosaico no está calibrado a reflectancia, el NDVI es aproximado.',
     fichaSistema: 'Sistema de coordenadas: EPSG:{epsg}.',
     fichaTamano: 'Archivo de {ancho} × {alto} píxeles. Los números se calculan sobre una versión de {calculo} píxeles de ancho, de unos {res} por píxel.',
+    fichaTamanoVista: 'Archivo de {ancho} × {alto} píxeles. Se muestra una versión de {calculo} píxeles de ancho, de unos {res} por píxel.',
     fichaRecuadro: 'La imagen se ubica con un recuadro recto en latitud y longitud: en un lote de pocos kilómetros, el desvío es de centímetros a pocos metros.',
     // Línea del Inicio (app.js)
     inicioSinVuelo: '¿Tenés una imagen de dron? Abrila en el Reporte',
@@ -109,7 +110,8 @@
   // ficha = {bandas, bits: [...], formato: 'uint'|'int'|'float', fotometrica} (PhotometricInterpretation: 2 = RGB).
   function tipoImagen(f) {
     const bits = f.bits || [];
-    if ((f.bandas === 3 || f.bandas === 4) && bits.length && bits.every(b => b === 8) && f.fotometrica === 2) return 'rgb';
+    // 2 = RGB; 6 = YCbCr (fotos comprimidas en JPEG, como las que arma GDAL): también es una foto en color.
+    if ((f.bandas === 3 || f.bandas === 4) && bits.length && bits.every(b => b === 8) && (f.fotometrica === 2 || f.fotometrica === 6)) return 'rgb';
     if (f.bandas >= 4) return 'multi';
     if (f.bandas === 1 && f.formato === 'float') return 'una_decimal';
     return 'gris';
@@ -175,6 +177,27 @@
     const m = /^(\d{4}):(\d{2}):(\d{2})/.exec(s || '');
     if (!m || +m[2] < 1 || +m[2] > 12 || +m[3] < 1 || +m[3] > 31) return null;
     return `${m[1]}-${m[2]}-${m[3]}`;
+  }
+
+  // YCbCr (JPEG, JFIF) → RGB, igual que readRGB de geotiff.js.
+  function ycbcrARgb(y, cb, cr) {
+    const c = v => Math.max(0, Math.min(255, Math.round(v)));
+    return [c(y + 1.402 * (cr - 128)), c(y - 0.344136 * (cb - 128) - 0.714136 * (cr - 128)), c(y + 1.772 * (cb - 128))];
+  }
+
+  // Imágenes del archivo: [{i, ancho, alto, bandas, sub}] (sub = NewSubfileType: 1 = versión reducida, 4 = máscara).
+  // Para leer se usa la versión reducida más chica que tenga al menos `objetivo` px de ancho (un COG trae varias);
+  // si ninguna alcanza, la más grande. Así un ortomosaico de 19 000 px se lee desde una de 2 400 px.
+  function elegirVista(imagenes, objetivo) {
+    const fotos = imagenes.filter(x => !(x.sub & 4));
+    const alcanzan = fotos.filter(x => x.ancho >= objetivo);
+    const pool = alcanzan.length ? alcanzan : fotos;
+    return pool.reduce((m, x) => (alcanzan.length ? x.ancho < m.ancho : x.ancho > m.ancho) ? x : m).i;
+  }
+  // Máscara de área válida del mismo tamaño que la vista elegida (0 = fuera del vuelo), o null.
+  function elegirMascara(imagenes, ancho, alto) {
+    const m = imagenes.find(x => (x.sub & 4) && x.ancho === ancho && x.alto === alto);
+    return m ? m.i : null;
   }
 
   // Franjas para leer un archivo grande sin cargarlo entero: cada una cubre filas [r0, r1) del original y llena
@@ -303,7 +326,7 @@
     if (f.epsg) out.push(fmt(TEXTOS.fichaSistema, {epsg: f.epsg}));
     if (f.anchoOriginal) {
       const m = f.metrosPixel, res = m < 1 ? `${Math.max(1, Math.round(m * 100))} cm` : `${num(m, 1)} m`;
-      out.push(fmt(TEXTOS.fichaTamano, {ancho: f.anchoOriginal, alto: f.altoOriginal, calculo: f.anchoCalculo, res}));
+      out.push(fmt(f.tipo === 'ndvi' ? TEXTOS.fichaTamano : TEXTOS.fichaTamanoVista, {ancho: f.anchoOriginal, alto: f.altoOriginal, calculo: f.anchoCalculo, res}));
     }
     out.push(TEXTOS.fichaRecuadro);
     return out;
@@ -311,7 +334,7 @@
 
   const L = {TEXTOS, defProj4, epsgDe, recuadroLatLon, metrosPorPixel, tipoImagen, pareceNdvi, descripcionesBandas,
     bandasSugeridas, ndvi, resumenNdvi, fechaDeTiff, avisoTamano, transformacionMapa, parsearPath, zonaDelPunto,
-    lineaInicio, comparacion, fichaTecnica, fechaCorta: diaMes, tramos};
+    lineaInicio, comparacion, fichaTecnica, fechaCorta: diaMes, tramos, ycbcrARgb, elegirVista, elegirMascara};
   if (typeof module !== 'undefined' && module.exports) module.exports = L;
   else window.DronLogica = L;
 })();

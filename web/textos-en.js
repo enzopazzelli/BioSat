@@ -302,6 +302,7 @@
         fichaCalibracion: 'If the mosaic is not calibrated to reflectance, the NDVI is approximate.',
         fichaSistema: 'Coordinate system: EPSG:{epsg}.',
         fichaTamano: 'File of {ancho} × {alto} pixels. The numbers are calculated on a version {calculo} pixels wide, about {res} per pixel.',
+        fichaTamanoVista: 'File of {ancho} × {alto} pixels. A version {calculo} pixels wide is shown, about {res} per pixel.',
         fichaRecuadro: 'The image is placed with a straight latitude/longitude box: for a field a few kilometers across, the offset is centimeters to a few meters.',
         inicioSinVuelo: 'Do you have a drone image? Open it in the Report',
         inicioPendiente: 'Your drone image needs one more step in the Report.',
