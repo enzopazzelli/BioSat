@@ -119,14 +119,6 @@ test('umbrales y textos fijados en el diseño', () => {
   assert.equal(P.TEXTOS.hoja, '{n} noches con hoja mojada (favorece hongos)');
 });
 
-test('máxima de hoy para la pantalla del kit: la del día de hoy, no la del archivo fechado hoy', () => {
-  assert.equal(P.maximaDeHoy(P.resumen(Z2_14NOV, '2026-11-15'), '2026-11-15'), 31.2);
-  assert.equal(P.maximaDeHoy(P.resumen(Z2_14NOV, '2026-11-21'), '2026-11-21'), null);
-  assert.equal(P.maximaDeHoy(P.resumen([dia('2026-11-17', 30, 20, 0, 0, 0, 1)], '2026-11-15'), '2026-11-15'), null);
-  assert.equal(P.maximaDeHoy(P.resumen([dia('2026-11-16', -999, 20, 0, 0, 0, 1)], '2026-11-15'), '2026-11-15'), null);
-  assert.equal(P.TEXTOS.kitHoy, 'Pronóstico para hoy (Meteomatics, 9 km): máxima {t} °C.');
-});
-
 test('hayViento dice si hay promedio de viento: sin dato, la tarjeta no puede decir "0 días con viento bajo"', () => {
   assert.equal(P.resumen(Z2_14NOV, '2026-11-15').hayViento, false);
   assert.equal(P.resumen([{fecha: '2026-11-16T00:00:00Z', 'wind_speed_mean_10m_24h:ms': 2}], '2026-11-15').hayViento, true);

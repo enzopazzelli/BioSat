@@ -1,4 +1,4 @@
-// Pruebas de la lógica del Inicio (web/inicio-logica.js): semáforo de la zona y de la sonda,
+// Pruebas de la lógica del Inicio (web/inicio-logica.js): semáforo de la zona,
 // próxima siembra, meses de suelo pelado y texto de WhatsApp.
 // Diseño: docs/superpowers/specs/2026-11-15-app-celular-y-reporte-design.md (4.3 a 4.8).
 // Los casos de la Zona 5 usan datos reales: clima 2021-2025 de NASA POWER y lotes pelados de Landsat 2021-2025.
@@ -45,14 +45,6 @@ test('un dato de clima que falta no rompe el semáforo', () => {
   assert.deepEqual(s.senales.map(x => x.id).sort(), ['d35', 'pelado']);
 });
 
-test('la sonda manda: rojo es CUIDADO, verde es BIEN y sin semáforo devuelve null', () => {
-  assert.equal(L.semaforoSonda({semaforo: 'rojo', temp_suelo_c: 41.2, agua_raw: 300}).nivel, 2);
-  assert.equal(L.semaforoSonda({semaforo: 'verde', temp_suelo_c: 24, agua_raw: 600}).nivel, 0);
-  assert.equal(L.semaforoSonda({temp_suelo_c: 30}), null);
-  assert.equal(L.semaforoSonda(null), null);
-  assert.ok(!/undefined|NaN/.test(L.semaforoSonda({semaforo: 'amarillo'}).razon));
-});
-
 test('la próxima siembra es circular e incluye el mes actual', () => {
   const sec = [{cultivo: 'Pastura', siembra_mes: 11}, {cultivo: 'Verdeo', siembra_mes: 3}];
   assert.deepEqual(L.proximaSiembra(sec, 10), {cultivo: 'Pastura', mes: 11});   // noviembre
@@ -80,10 +72,6 @@ test('el texto de WhatsApp sin próxima siembra no deja huecos', () => {
   assert.ok(!/undefined|null|\{|\}|\(\)/.test(t));
 });
 
-test('hay un aviso para cuando el navegador no puede leer la sonda', () => {
-  assert.match(L.TEXTOS.sondaNoDisponible, /Chrome|Edge/);
-});
-
 test('razón corta para WhatsApp: hasta 2 señales en atención o cuidado', () => {
   const s = L.semaforoZona(9, {falta: 131, d35: 4, helada: 0}, 0.525);
   assert.equal(L.razonCorta(s.senales), 'falta agua y lotes sin cobertura activa');
@@ -95,11 +83,6 @@ test('hay un aviso para cuando no hay conexión', () => {
   assert.match(L.TEXTOS.sinConexion, /conexión/);
 });
 
-test('el error de la sonda se explica en lenguaje simple', () => {
-  assert.match(L.TEXTOS.sondaError, /USB/);
-  assert.doesNotMatch(L.TEXTOS.sondaError, /Failed|requestPort/);
-});
-
 test('la razón del semáforo une las señales con TEXTOS.y y formatea con TEXTOS.locale (para el inglés, D-35)', () => {
   const y = L.TEXTOS.y, loc = L.TEXTOS.locale;
   assert.equal(y, ' y ');
@@ -107,7 +90,6 @@ test('la razón del semáforo une las señales con TEXTOS.y y formatea con TEXTO
   try {
     L.TEXTOS.y = ' and '; L.TEXTOS.locale = 'en-US';
     assert.match(L.semaforoZona(10, {falta: 92, d35: 8, helada: 0}, 0.382).razon, / and /);
-    assert.match(L.semaforoSonda({semaforo: 'rojo', temp_suelo_c: 38.5}).razon, /38\.5/);
   } finally { L.TEXTOS.y = y; L.TEXTOS.locale = loc; }
 });
 

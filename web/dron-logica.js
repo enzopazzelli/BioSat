@@ -72,14 +72,25 @@
     fichaTamano: 'Archivo de {ancho} × {alto} píxeles. Los números se calculan sobre una versión de {calculo} píxeles de ancho, de unos {res} por píxel.',
     fichaTamanoVista: 'Archivo de {ancho} × {alto} píxeles. Se muestra una versión de {calculo} píxeles de ancho, de unos {res} por píxel.',
     fichaRecuadro: 'La imagen se ubica con un recuadro recto en latitud y longitud: en un lote de pocos kilómetros, el desvío es de centímetros a pocos metros.',
-    // Línea del Inicio (app.js)
-    inicioSinVuelo: '¿Tenés una imagen de dron? Abrila en el Reporte',
-    inicioPendiente: 'Tu imagen de dron necesita un paso más en el Reporte.',
+    // Tarjeta del Inicio (app.js, D-44): el dron es el dato de hoy del lote, en el lugar que tenía la sonda.
+    tarjetaEyebrow: 'Tu lote, desde el dron',
+    tarjetaSin: 'Todavía no abriste un vuelo',
+    tarjetaSinNota: 'Abrí el .tif de tu último vuelo: vas a ver tu lote en el mapa y qué sectores conviene recorrer. El archivo no sale de tu equipo.',
+    tarjetaLeyendo: 'Leyendo el vuelo…',
+    tarjetaError: 'No se pudo abrir el vuelo',
+    tarjetaPendiente: 'Tu vuelo necesita un paso más',
+    tarjetaPendienteNota: 'Elegí las bandas o confirmá el NDVI en el Reporte.',
+    tarjetaVuelo: 'Vuelo del {fecha}',
+    tarjetaSinFecha: 'Vuelo sin fecha',
+    tarjetaSinFechaNota: 'Sin la fecha del vuelo no se sabe de cuándo es: escribila en el Reporte.',
+    tarjetaViejo: 'Es de {mes} de {anio}: muestra cómo estaba tu lote ese día, no hoy.',
+    cifraNdvi: 'NDVI mediano',
+    cifraSinCobertura: 'Sin cobertura activa',
+    cifraPct: '{pct} %',
     verEnMapa: 'Ver en el mapa →',
-    linea: 'Tu lote, según el dron ({fecha}): {detalle}.',
-    lineaNdvi: 'NDVI mediano {ndvi} · {pct} % sin cobertura activa',
-    lineaRgb: 'foto en color, sin NDVI',
-    lineaGris: 'imagen sin NDVI',
+    completar: 'Completar en el Reporte →',
+    botonAbrir: 'Abrir un vuelo de dron',
+    botonOtro: 'Abrir otro vuelo',
     lineaOtraZona: 'Está en la Zona {n}, no en la elegida.',
     lineaFuera: 'Está fuera de Santiago del Estero.'
   };
@@ -337,16 +348,33 @@
   const enOtraZona = r => r.zonaLote !== null && r.zonaLote !== undefined && r.zonaLote !== r.zonaElegida;
   const fuera = r => r.zonaLote === null || r.zonaLote === undefined;
 
-  function lineaInicio(r) {
-    if (!r) return TEXTOS.inicioSinVuelo;
-    if (r.tipo === 'pendiente') return TEXTOS.inicioPendiente;
-    const detalle = r.tipo === 'ndvi' && r.mediana !== null && r.mediana !== undefined
-      ? fmt(TEXTOS.lineaNdvi, {ndvi: num(r.mediana, 2), pct: pct(r.fraccionBajo)})
-      : (r.tipo === 'rgb' ? TEXTOS.lineaRgb : TEXTOS.lineaGris);
-    const partes = [fmt(TEXTOS.linea, {fecha: diaMes(r.fecha), detalle})];
-    if (fuera(r)) partes.push(TEXTOS.lineaFuera);
-    else if (enOtraZona(r)) partes.push(fmt(TEXTOS.lineaOtraZona, {n: r.zonaLote}));
-    return partes.join(' ');
+  // D-44: la tarjeta "Tu lote, desde el dron" del Inicio. r es el resumen del vuelo (arriba) o
+  // {tipo: 'leyendo'} / {tipo: 'error', error}; ctx = {hoy: 'AAAA-MM-DD', meses: [12 nombres]}.
+  // Solo muestra lo que el vuelo midió: un vuelo de otro mes dice de cuándo es (no describe el lote hoy, D-33).
+  function tarjetaInicio(r, ctx) {
+    const t = {estado: 'sin', eyebrow: TEXTOS.tarjetaEyebrow, titulo: TEXTOS.tarjetaSin, cifras: [], notas: [],
+      enlace: null, boton: TEXTOS.botonAbrir};
+    if (!r) return Object.assign(t, {notas: [TEXTOS.tarjetaSinNota]});
+    if (r.tipo === 'leyendo') return Object.assign(t, {estado: 'leyendo', titulo: TEXTOS.tarjetaLeyendo, notas: []});
+    if (r.tipo === 'error') return Object.assign(t, {estado: 'error', titulo: TEXTOS.tarjetaError, notas: r.error ? [r.error] : []});
+    t.boton = TEXTOS.botonOtro;
+    if (r.tipo === 'pendiente') return Object.assign(t, {estado: 'pendiente', titulo: TEXTOS.tarjetaPendiente,
+      notas: [TEXTOS.tarjetaPendienteNota], enlace: TEXTOS.completar});
+    Object.assign(t, {estado: 'vuelo', enlace: TEXTOS.verEnMapa,
+      titulo: r.fecha ? fmt(TEXTOS.tarjetaVuelo, {fecha: diaMes(r.fecha)}) : TEXTOS.tarjetaSinFecha});
+    if (r.tipo === 'ndvi' && valido(r.mediana) && valido(r.fraccionBajo)) {
+      t.cifras = [{rotulo: TEXTOS.cifraNdvi, valor: num(r.mediana, 2)},
+        {rotulo: TEXTOS.cifraSinCobertura, valor: fmt(TEXTOS.cifraPct, {pct: pct(r.fraccionBajo)})}];
+    } else if (r.tipo === 'rgb') t.notas.push(TEXTOS.cmpRgb);
+    else if (r.tipo === 'gris') t.notas.push(TEXTOS.cmpGris);
+    const hoy = ctx && ctx.hoy, meses = (ctx && ctx.meses) || [];
+    if (!r.fecha) t.notas.push(TEXTOS.tarjetaSinFechaNota);
+    else if (hoy && r.fecha.slice(0, 7) < hoy.slice(0, 7)) {
+      t.notas.push(fmt(TEXTOS.tarjetaViejo, {mes: meses[Number(r.fecha.slice(5, 7)) - 1] || r.fecha.slice(5, 7), anio: r.fecha.slice(0, 4)}));
+    }
+    if (fuera(r)) t.notas.push(TEXTOS.lineaFuera);
+    else if (enOtraZona(r)) t.notas.push(fmt(TEXTOS.lineaOtraZona, {n: r.zonaLote}));
+    return t;
   }
 
   // z = {fraccionZonaMes, mesNombre, periodo, umbral}. Landsat cuenta lotes; el dron mide superficie: no se mezclan.
@@ -387,7 +415,7 @@
 
   const L = {TEXTOS, defProj4, epsgDe, recuadroLatLon, metrosPorPixel, tipoImagen, pareceNdvi, descripcionesBandas,
     bandasSugeridas, ndvi, resumenNdvi, fechaDeTiff, avisoTamano, transformacionMapa, parsearPath, zonaDelPunto,
-    lineaInicio, comparacion, fichaTecnica, fechaCorta: diaMes, tramos, ycbcrARgb, elegirVista, elegirMascara,
+    tarjetaInicio, comparacion, fichaTecnica, fechaCorta: diaMes, tramos, ycbcrARgb, elegirVista, elegirMascara,
     idVuelo, paqueteVuelo, vueloDePaquete, clasificar, validarClases, textoClases};
   if (typeof module !== 'undefined' && module.exports) module.exports = L;
   else window.DronLogica = L;

@@ -14,7 +14,7 @@
 - **3 rotaciones comparadas:** su rotación actual y 2 alternativas. Cada una explica por qué se sugiere, qué evidencia la respalda, qué beneficios tiene, qué falta saber y qué riesgos debe revisar un agrónomo local.
 - **Un simulador:** "¿y si llueve menos o hace más calor?".
 
-En la demo, un **kit Arduino con 3 bandejas de suelo** mide en vivo lo que el satélite no ve de cerca.
+Y el dato de hoy de **tu lote**: la app abre la imagen de tu **vuelo de dron** (un .tif que no sale de tu equipo) y muestra el NDVI, la superficie sin cobertura vegetal activa y los sectores para recorrer (D-38 a D-40 y D-44).
 
 **Qué consume:**
 
@@ -25,14 +25,14 @@ En la demo, un **kit Arduino con 3 bandejas de suelo** mide en vivo lo que el sa
 | Historia de desmontes | LART desde 1976 (si se consigue) · MapBiomas Chaco · Hansen | Etiquetas del modelo predictivo de desmontes |
 | Suelo y paisaje (38 variables, 500 m) | AIZAL V4 (SoilGrids, TerraClimate, OSM) | pH, textura, carbono, nitrógeno, distancias; zonificación y predictores del desmonte |
 | Pronóstico a 7-10 días | Meteomatics (ECMWF, cuenta del hackathon) | Alertas de helada y lluvia próximas (en integración) |
-| Sensores en tierra | Kit Arduino (suelo, humedad/conductividad, luz, aire) | Comparar satélite y suelo |
+| Imagen de dron | El vuelo de cada productor (GeoTIFF RGB o multiespectral), leído en el navegador | El lote a centímetros: NDVI, cobertura activa y sectores para revisar. Reemplaza al kit Arduino, archivado (D-44) |
 | El productor | Entrevista y formulario de la app | Rotación actual, prioridades y límites (riego, maquinaria, mercado) |
 
 **Cómo funciona, técnicamente:**
 1. **Datos:** scripts en Python bajan y resumen cada fuente en archivos JSON por zona (`data/`, ver [contratos](docs/contratos-de-datos.md)).
 2. **IA:** con las variables de AIZAL se **zonifica la provincia** (k-means) y se entrena un **modelo predictivo de desmontes por zona**. Se comparan una regresión logística, un random forest y un modelo temporal (LSTM o Transformer), validados con años que el modelo no vio. Los meses de suelo pelado salen de Landsat con un método simple.
 3. **Motor de reglas transparente:** usa secciones de cultivo (A gramíneas, B leguminosas, C raíces profundas, D coberturas) y las prioridades del productor para ordenar las rotaciones **y explicar por qué**.
-4. **App web estática** (HTML + JavaScript): se publica en GitHub Pages, funciona sin internet y lee el Arduino por Web Serial.
+4. **App web estática** (HTML + JavaScript): se publica en GitHub Pages, funciona sin internet y abre la imagen del dron en el navegador, sin subirla.
 
 **Por qué es diferente y qué aporta:**
 - **Hecha para un lugar real:** está pensada para las 5 zonas de Santiago del Estero, con las rotaciones de la Zona 5 revisadas por un productor de la zona (las otras cuatro, todavía sin validar). No es un mapa genérico "para cualquier punto del mundo".
@@ -50,16 +50,16 @@ Avance de cada integrante, contado desde las casillas de su plan en [`planes/`](
 <!-- AUTO:AVANCE:INICIO -->
 | Persona | Rama | Avance | Tareas |
 |---|---|---|---|
-| [Enzo · Integración y app](planes/1-enzo.md) | `enzo-app` | `▓▓▓▓▓▓▓▓░░` 84% | 53/63 |
+| [Enzo · Integración y app](planes/1-enzo.md) | `enzo-app` | `▓▓▓▓▓▓▓▓▓░` 86% | 54/63 |
 | [Santi · Suelo, satélite e IA](planes/2-santi.md) | `santi-datos-ia` | `▓▓▓▓▓▓▓▓░░` 76% | 22/29 |
 | [Vale · Campo y agronomía](planes/3-vale.md) | `vale-rotaciones` | `▓▓▓▓▓▓▓░░░` 72% | 18/25 |
-| [Sara · Kit Arduino y relato](planes/4-sara.md) | `sara-arduino-entrega` | `▓▓░░░░░░░░` 19% | 5/26 |
-| **Total** | | `▓▓▓▓▓▓▓░░░` **69%** | **98/143** |
+| [Sara · Relato y entrega](planes/4-sara.md) | `sara-arduino-entrega` | `▓▓▓░░░░░░░` 26% | 5/19 |
+| **Total** | | `▓▓▓▓▓▓▓░░░` **73%** | **99/136** |
 <!-- AUTO:AVANCE:FIN -->
 
 ### Lo más urgente
 
-1. **Kit Arduino: está programado, falta armarlo y probarlo.** El sketch, el lector Web Serial, el esquema y la [guía de armado en protoboard](arduino/GUIA-PROTOBOARD.md) están en [`arduino/`](arduino/README.md) (Enzo se hizo cargo; D-32: el kit para principiantes alcanza). Falta armar el kit, sellar el LM35, calibrar y grabar lecturas reales. **La entrega** (guion, video y página del proyecto) sigue sin empezar: congelamiento hoy a las 15:00, entrega a las 19:00.
+1. **Kit Arduino: archivado (D-44).** Enzo decidió trabajar con imágenes de dron: el kit (programas, lector, pantalla y guías) quedó en [`archivo/kit-arduino/`](archivo/kit-arduino/README.md) y el Inicio muestra la tarjeta "Tu lote, desde el dron" en su lugar. **La entrega** (guion, video y página del proyecto) sigue sin empezar.
 2. **La app muestra cosas que no son ciertas (D-33). Para quien lo tome antes de las 15:00 (Vale preguntó).**
    - **El problema:** el semáforo y la sección 4 dicen "suelo pelado", pero el satélite (NDVI < 0,25) no lo distingue del rastrojo ni del pasto seco. Además, el número depende mucho del umbral: en la Zona 2, en noviembre, da 11 %, 84 % o 92 % de lotes con NDVI 0,20, 0,25 o 0,30. También hay otras cosas falsas:
      - la tabla de métodos muestra "CNN + LSTM" y "CNN + Transformer", que nunca se corrieron;
@@ -74,7 +74,7 @@ Avance de cada integrante, contado desde las casillas de su plan en [`planes/`](
    - **Plan con los pasos y los lugares exactos del código:** [`docs/superpowers/plans/2026-11-15-app-sin-datos-falsos.md`](docs/superpowers/plans/2026-11-15-app-sin-datos-falsos.md).
 3. **Datos reales de Earth Engine (D-30):** suelo, desmontes, zonificación, suelo pelado e imágenes ahora salen de fuentes reales (`ia_desmonte/`). **Las métricas del pitch cambian:** usar solo las de [`docs/datos-y-metodos.md`](docs/datos-y-metodos.md). El visor de Earth Engine sigue sin publicar.
 4. **Vale: confirmar `requiere_hacienda` y el permiso del productor.** Enzo completó 7 valores según el texto de cada rotación, y la entrevista deja pendiente el permiso por escrito para usar sus frases.
-5. **Enzo: probar el lector con el Arduino real, ensayar la pantalla del kit en la pantalla grande y probar la app nueva sin internet en el celular.**
+5. **Enzo: probar la app nueva sin internet en el celular y ensayar la demo con un vuelo de dron real en la pantalla grande.**
    - La app para el celular (D-31) ya está en `main` y se probó en un celular de verdad.
    - Con D-34, el Inicio va en dos columnas en la PC y el pronóstico de Meteomatics entra en la app. Se renueva solo todos los días a las 06:00; el secreto ya está cargado.
    - Con D-35, el botón `ES | EN` pasa a inglés el asistente, el Inicio, el marco del Reporte, el kit y la guía del campo. Para mandarle la app a un jurado: `https://enzopazzelli.github.io/BioSat/web/?lang=en`. Lo que sigue en español (el cuerpo del Reporte y la vista detallada) lo avisa en inglés.
@@ -85,15 +85,14 @@ Sale solo de las casillas sin tildar de cada plan. Panorama completo y riesgos: 
 
 <!-- AUTO:PENDIENTE:INICIO -->
 <details>
-<summary><b>Enzo</b>: 10 pendientes (<a href="planes/1-enzo.md">plan completo</a>)</summary>
+<summary><b>Enzo</b>: 9 pendientes (<a href="planes/1-enzo.md">plan completo</a>)</summary>
 
 - Último merge de funciones a `main` _(Congelamiento)_
 - Revisar el README final con Sara _(Entrega)_
 - Dejar `main` estable con la app publicada _(Entrega)_
 - Idioma, etapa 2: el cuerpo del Reporte (textos dentro de `app.js`), los plegables, la vista detallada y los textos largos de las rotaciones (con la revisión de Vale) _(Sugerencias de la organización)_
 - Mostrar en la app y en el README el link del visor de Earth Engine cuando Santi lo publique _(Agregadas por Enzo)_
-- Ensayar `web/kit.html` y `web/campo.html` en la pantalla grande de la demo, con el kit conectado _(Agregadas por Enzo)_
-- Cerrar `PLAN.md`: sumar kit y guía en la sección 1 y contestar las preguntas abiertas _(Agregadas por Enzo)_
+- Cerrar `PLAN.md`: contestar las preguntas abiertas (el kit y la guía ya no van: se archivaron, D-44) _(Agregadas por Enzo)_
 - Probar de nuevo la app publicada en el celular y sin internet después del último merge _(Agregadas por Enzo)_
 - Probarlo en un celular de verdad _(Lector de imágenes de dron)_
 - Cargar los cortes reales del ingeniero y anotar el resultado _(Clases del ingeniero)_
@@ -127,14 +126,11 @@ Sale solo de las casillas sin tildar de cada plan. Panorama completo y riesgos: 
 </details>
 
 <details>
-<summary><b>Sara</b>: 21 pendientes (<a href="planes/4-sara.md">plan completo</a>)</summary>
+<summary><b>Sara</b>: 14 pendientes (<a href="planes/4-sara.md">plan completo</a>)</summary>
 
 - Pasarte a tu rama (`git switch sara-arduino-entrega`) _(Hito 0)_
 - Confirmar la hora exacta y el formato de la entrega en la guía del participante (desde el celular, porque en la PC falla el sitio) y avisar al grupo _(Hito 0)_
-- Armar las 3 bandejas: pelada y seca, salitrosa y con rastrojo _(Checkpoint 1)_
-- Calibrar los umbrales con las bandejas reales _(Checkpoint 1)_
 - Guion borrador de 2-3 minutos con el zoom de escalas del video de la NASA (50 km → 500 m → 30 m → 1 m² → el productor) y los 4 verbos _(Checkpoint 1)_
-- Grabar lecturas reales de las 3 bandejas en `data/arduino_bandejas_demo.json` _(Checkpoint 2)_
 - Buscar una foto de astronauta del Chaco santiagueño (eol.jsc.nasa.gov) _(Checkpoint 2)_
 - Preparar la comparación 2000 contra 2025 de Campo Gallo (desmonte) para el pitch _(Checkpoint 2)_
 - Video o diapositivas, según el formato que pidan _(Congelamiento)_
@@ -144,11 +140,7 @@ Sale solo de las casillas sin tildar de cada plan. Panorama completo y riesgos: 
 - Hacer 2 ensayos completos de la demo con todo el equipo _(Entrega)_
 - Revisar el README final con Enzo _(Entrega)_
 - Subir la entrega con margen antes del cierre _(Entrega)_
-- Armar el kit con el esquema de `arduino/esquema/`: sellar el LM35, conectar el LCD en paralelo y comprobar 5 V y GND antes de enchufar _(Armado y prueba del kit)_
-- Probar el sketch en la placa con todos los sensores y verificar que la pantalla del kit lo lee (cerrar antes el Monitor serie del IDE) _(Armado y prueba del kit)_
-- Calibrar el LM35 con 2 temperaturas y el umbral de salitre con las bandejas A, B y C (pasos en `arduino/README.md`) _(Armado y prueba del kit)_
 - Crear la carpeta `entrega/` con el guion, el video o las diapositivas y la página del proyecto _(Agregadas por Enzo)_
-- Decidir el plan B del kit: si las bandejas no llegan, grabar lecturas reales en `data/arduino_bandejas_demo.json` y marcarlas como grabadas _(Agregadas por Enzo)_
 - Cerrar el guion con "cómo seguimos" (D-37): de la zona al lote, con el dron como el escalón que sigue después de Landsat. Base: `docs/superpowers/plans/2026-11-15-hoja-de-ruta-producto-vi... _(Agregadas por Enzo)_
 
 </details>
@@ -157,12 +149,12 @@ Sale solo de las casillas sin tildar de cada plan. Panorama completo y riesgos: 
 **Últimas decisiones:**
 
 <!-- AUTO:DECISIONES:INICIO -->
+- **D-44**: El kit Arduino se archiva y el dron toma su lugar, 15/11, 20:00
+- **D-43**: El kit Arduino sale de la app mientras se termina de armar, 15/11, 18:15
 - **D-42**: Tarjetas de las alternativas, barras de lo que se gana y se paga, y accesibilidad
 - **D-41**: Clases del ingeniero
 - **D-40**: Rótulo honesto de Landsat y recorte satelital del lote
 - **D-39**: Sectores del lote, etapa 2 del dron
-- **D-38**: Lector de imágenes de dron, etapa 1
-- **D-37**: Sugerencia de un ingeniero: imágenes de dron y pasar de la zona al lote; hoja de ruta de Vale
 
 Todas las decisiones están en la [bitácora](docs/reglas-y-bitacora.md).
 <!-- AUTO:DECISIONES:FIN -->
@@ -176,7 +168,7 @@ Todas las decisiones están en la [bitácora](docs/reglas-y-bitacora.md).
 | 1 | Enzo | Integración y app | F1 Clima · F5 App y motor | `enzo-app` | [planes/1-enzo.md](planes/1-enzo.md) |
 | 2 | Santi | Suelo, satélite e IA | F2 Suelo y zonificación AIZAL · F3 Modelo de desmontes | `santi-datos-ia` | [planes/2-santi.md](planes/2-santi.md) |
 | 3 | Vale | Campo y agronomía | F4 Rotaciones | `vale-rotaciones` | [planes/3-vale.md](planes/3-vale.md) |
-| 4 | Sara | Kit Arduino y relato | F6 Arduino · F7 Entrega (coordina) | `sara-arduino-entrega` | [planes/4-sara.md](planes/4-sara.md) |
+| 4 | Sara | Relato y entrega | F7 Entrega (coordina) · ~~F6 Arduino~~ (archivado, D-44) | `sara-arduino-entrega` | [planes/4-sara.md](planes/4-sara.md) |
 
 Cómo trabajamos en paralelo (ramas, reglas e hitos de integración): **[planes/README.md](planes/README.md)**.
 
@@ -197,25 +189,9 @@ BioSat/
 ├── PLAN.md                                                   <-- Plan de trabajo: roles, ruta y tareas
 ├── README.md                                                 <-- Portada del proyecto (se actualiza sola)
 ├── archivo/                                                  <-- Material archivado que no alimenta la app
+│   ├── kit-arduino/ (28 archivos)                            <-- Kit Arduino archivado el 15/11 (D-44): programas, lector, pantalla del kit y guías; ver su README.md
 │   └── prototipo-ia-simulado/ (38 archivos)                  <-- Primer prototipo de IA con datos SIMULADOS (no se usa; ver LEEME-PRIMERO.md)
-├── arduino/                                                  <-- Kit Arduino: sketch, lector Web Serial, esquema y guía de armado
-│   ├── GUIA-PROTOBOARD-HUMEDAD-SUELO.md                      <-- Guía de armado en protoboard · Variante con sensor de hum...
-│   ├── GUIA-PROTOBOARD.md                                    <-- Guía de armado en protoboard · Estación de campo BioSat
-│   ├── lector-web-serial.js                                  <-- Lee el Arduino por USB desde Chrome o Edge (window.BioSatArduino)
-│   ├── README.md                                             <-- Guía del kit: cómo armarlo, cargarlo, calibrarlo y usarlo con la app
-│   ├── biosat_estacion_campo/                                <-- Sketch del Arduino Uno (línea JSON cada 2 s, LCD y LEDs)
-│   │   └── biosat_estacion_campo.ino
-│   ├── biosat_estacion_humedad_suelo/
-│   │   └── biosat_estacion_humedad_suelo.ino
-│   └── esquema/                                              <-- Esquema de conexiones: pines.json es la fuente; el resto se genera
-│       ├── componentes-disponibles.webp                      <-- Las piezas que tiene el equipo
-│       ├── concepto-original.jpeg                            <-- Imagen del plan inicial (con LCD I2C; no es la que se arma)
-│       ├── esquema-conexiones.svg                            <-- Esquema de conexiones (generado)
-│       ├── generar-esquema.js                                <-- Regenera el esquema SVG y la tabla desde pines.json
-│       ├── pines.json                                        <-- Fuente única de los pines y cables del kit
-│       └── tabla-de-conexiones.md                            <-- Tabla de cables por pin y por componente (generada)
 ├── data/                                                     <-- Datos y contratos JSON que lee la app
-│   ├── arduino_bandejas_demo.json                            <-- Lecturas grabadas del kit (Sara) · plantilla vacía
 │   ├── clima_zonas.json                                      <-- Clima NASA POWER 1981-2025 de las 5 zonas (lo lee la app)
 │   ├── desmonte_zonas.json                                   <-- Desmontes Hansen 2001-2025, modelo validado en el tiempo y riesgo por zona · real
 │   ├── diagnostico_landsat_ia.json                           <-- Meses de suelo pelado con Landsat 2021-2025 y fragilidad (Earth Engine) · real
@@ -234,7 +210,7 @@ BioSat/
 │   │   ├── 05_Logistica_Antropico_y_Servicios/ (2 archivos)  <-- B26-B29, B32-B37: caminos, población
 │   │   └── 06_Embeddings_IA_AlphaEarth/ (2 archivos)         <-- Embeddings AlphaEarth 64D (DeepMind)
 │   └── imagenes/ (29 archivos)                               <-- Compuestos de mediana Landsat del visor y mapa de la zonificación (Earth Engine)
-├── docs/ (46 archivos)                                       <-- Documentación del equipo
+├── docs/ (47 archivos)                                       <-- Documentación del equipo
 ├── ia_desmonte/                                              <-- Pipeline de datos reales con Earth Engine: suelo, desmontes, zonificación, suelo pelado e imágenes
 │   ├── __init__.py
 │   ├── comun.py
@@ -266,7 +242,7 @@ BioSat/
 │   ├── 1-enzo.md                                             <-- Plan de Enzo · integración y app (rama enzo-app)
 │   ├── 2-santi.md                                            <-- Plan de Santi · suelo, satélite e IA (rama santi-datos-ia)
 │   ├── 3-vale.md                                             <-- Plan de Vale · campo y agronomía (rama vale-rotaciones)
-│   ├── 4-sara.md                                             <-- Plan de Sara · Arduino y relato (rama sara-arduino-entrega)
+│   ├── 4-sara.md                                             <-- Plan de Sara · relato y entrega (el kit se archivó, D-44)
 │   └── README.md                                             <-- Objetivo común, ramas, reglas e hitos de integración
 ├── scripts/                                                  <-- Herramientas para bajar y procesar datos
 │   ├── actualizar_readme.py                                  <-- Regenera las secciones automáticas del README
@@ -280,8 +256,28 @@ BioSat/
 │   ├── generar_mapa_santiago.py                              <-- Genera data/santiago_mapa.json desde geoBoundaries
 │   └── pruebas/                                              <-- Pruebas de Python de los scripts (pytest, sin internet)
 │       └── test_descargar_meteomatics.py
-├── tests/ (24 archivos)                                      <-- Pruebas de Node (node --test tests/*.test.js)
-└── web/ (54 archivos)                                        <-- App web BioSat (abrir con un servidor: ver Inicio rápido)
+├── tests/                                                    <-- Pruebas de Node (node --test tests/*.test.js)
+│   ├── asistente-logica.test.js
+│   ├── datos-contratos.test.js                               <-- Prueba la forma de los datos reales de ia_desmonte/
+│   ├── dron-logica.test.js
+│   ├── frases-logica.test.js
+│   ├── idioma-logica.test.js                                 <-- Prueba la lógica del idioma: solo español e inglés (D-35)
+│   ├── inicio-logica.test.js                                 <-- Prueba el semáforo, la próxima siembra y el WhatsApp del Inicio
+│   ├── kit-archivado.test.js
+│   ├── mapa-santiago.test.js
+│   ├── pronostico-logica.test.js                             <-- Prueba el resumen y el vencimiento del pronóstico de Meteomatics
+│   ├── satelite-logica.test.js
+│   ├── sectores-logica.test.js
+│   ├── textos-en.test.js                                     <-- Prueba que el inglés no tenga huecos ni claves sobrantes (D-35)
+│   ├── vistas.test.js                                        <-- Prueba las vistas Inicio, Reporte y la vista detallada (completo.html)
+│   └── fixtures/
+│       ├── dron_multi_utm20s.tif
+│       ├── dron_ndvi_4326.tif
+│       ├── dron_rgb_utm20s.tif
+│       ├── dron_sin_coordenadas.tif
+│       ├── generar_tif_prueba.py
+│       └── lotes/ (4 archivos)
+└── web/ (48 archivos)                                        <-- App web BioSat (abrir con un servidor: ver Inicio rápido)
 ```
 <!-- AUTO:ESTRUCTURA:FIN -->
 
@@ -291,8 +287,8 @@ BioSat/
 
 **Ver la app publicada:** https://enzopazzelli.github.io/BioSat/web/
 
-- **Pantalla del kit** (mesa del jurado, teclas A, B y C): https://enzopazzelli.github.io/BioSat/web/kit.html
-- **Guía "Del kit al campo":** https://enzopazzelli.github.io/BioSat/web/campo.html
+- **Imagen de dron:** en el Inicio, "Abrir un vuelo de dron" (o en el Reporte, sección 4). Para probar sin un vuelo propio: `tests/fixtures/dron_ndvi_4326.tif`.
+- La pantalla del kit y la guía "Del kit al campo" se archivaron con el kit (D-44).
 - **Reporte completo:** https://enzopazzelli.github.io/BioSat/web/#reporte · **Vista detallada** (la página de antes): https://enzopazzelli.github.io/BioSat/web/completo.html
 - **Saltear el asistente** (para links de demo): agregar `?asistente=0` a la dirección.
 

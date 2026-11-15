@@ -106,15 +106,69 @@ test('zonaDelPunto: el punto de cada zona cae en su zona; Buenos Aires queda afu
 
 const R = {tipo: 'ndvi', fecha: '2026-11-03', mediana: 0.41, fraccionBajo: 0.18, zonaLote: 2, departamento: 'Moreno', zonaElegida: 2};
 
-test('lineaInicio en sus casos', () => {
-  assert.equal(D.lineaInicio(null), '¿Tenés una imagen de dron? Abrila en el Reporte');
-  assert.equal(D.lineaInicio(R), 'Tu lote, según el dron (03/11): NDVI mediano 0,41 · 18 % sin cobertura activa.');
-  assert.equal(D.lineaInicio({...R, tipo: 'rgb'}), 'Tu lote, según el dron (03/11): foto en color, sin NDVI.');
-  assert.equal(D.lineaInicio({...R, tipo: 'gris'}), 'Tu lote, según el dron (03/11): imagen sin NDVI.');
-  assert.equal(D.lineaInicio({...R, tipo: 'pendiente'}), 'Tu imagen de dron necesita un paso más en el Reporte.');
-  assert.equal(D.lineaInicio({...R, fecha: null}), 'Tu lote, según el dron (fecha sin dato): NDVI mediano 0,41 · 18 % sin cobertura activa.');
-  assert.equal(D.lineaInicio({...R, zonaLote: 5}), 'Tu lote, según el dron (03/11): NDVI mediano 0,41 · 18 % sin cobertura activa. Está en la Zona 5, no en la elegida.');
-  assert.equal(D.lineaInicio({...R, zonaLote: null, departamento: null}), 'Tu lote, según el dron (03/11): NDVI mediano 0,41 · 18 % sin cobertura activa. Está fuera de Santiago del Estero.');
+// D-44: la tarjeta del dron es el dato de hoy del Inicio (reemplaza a la línea de D-38 y a la sonda).
+const MESES = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
+const CTX = {hoy: '2026-11-15', meses: MESES};
+
+test('D-44: tarjetaInicio sin vuelo invita a abrir uno y no muestra cifras', () => {
+  const t = D.tarjetaInicio(null, CTX);
+  assert.equal(t.estado, 'sin');
+  assert.equal(t.eyebrow, 'Tu lote, desde el dron');
+  assert.equal(t.titulo, 'Todavía no abriste un vuelo');
+  assert.deepEqual(t.cifras, []);
+  assert.deepEqual(t.notas, ['Abrí el .tif de tu último vuelo: vas a ver tu lote en el mapa y qué sectores conviene recorrer. El archivo no sale de tu equipo.']);
+  assert.equal(t.enlace, null);
+  assert.equal(t.boton, 'Abrir un vuelo de dron');
+});
+
+test('D-44: con un vuelo con NDVI de este mes, las dos cifras y el mapa', () => {
+  const t = D.tarjetaInicio(R, CTX);
+  assert.equal(t.estado, 'vuelo');
+  assert.equal(t.titulo, 'Vuelo del 03/11');
+  assert.deepEqual(t.cifras, [{rotulo: 'NDVI mediano', valor: '0,41'}, {rotulo: 'Sin cobertura activa', valor: '18 %'}]);
+  assert.deepEqual(t.notas, []);
+  assert.equal(t.enlace, 'Ver en el mapa →');
+  assert.equal(t.boton, 'Abrir otro vuelo');
+});
+
+test('D-44: un vuelo de otro mes dice de cuándo es; sin fecha, pide escribirla', () => {
+  assert.deepEqual(D.tarjetaInicio({...R, fecha: '2026-07-17'}, CTX).notas,
+    ['Es de julio de 2026: muestra cómo estaba tu lote ese día, no hoy.']);
+  assert.deepEqual(D.tarjetaInicio({...R, fecha: '2025-11-03'}, CTX).notas,
+    ['Es de noviembre de 2025: muestra cómo estaba tu lote ese día, no hoy.']);
+  const sf = D.tarjetaInicio({...R, fecha: null}, CTX);
+  assert.equal(sf.titulo, 'Vuelo sin fecha');
+  assert.deepEqual(sf.notas, ['Sin la fecha del vuelo no se sabe de cuándo es: escribila en el Reporte.']);
+  assert.equal(sf.cifras.length, 2, 'las cifras se muestran igual');
+});
+
+test('D-44: foto en color, imagen en grises, otra zona y fuera de la provincia', () => {
+  const rgb = D.tarjetaInicio({...R, tipo: 'rgb'}, CTX);
+  assert.deepEqual(rgb.cifras, []);
+  assert.deepEqual(rgb.notas, ['Este archivo es una foto en color (RGB): no trae la banda infrarroja que hace falta para el NDVI.']);
+  assert.deepEqual(D.tarjetaInicio({...R, tipo: 'gris'}, CTX).notas, ['Este archivo no trae las bandas para calcular el NDVI: se muestra en grises.']);
+  assert.deepEqual(D.tarjetaInicio({...R, zonaLote: 5}, CTX).notas, ['Está en la Zona 5, no en la elegida.']);
+  assert.deepEqual(D.tarjetaInicio({...R, zonaLote: null, departamento: null}, CTX).notas, ['Está fuera de Santiago del Estero.']);
+  // Un NDVI sin mediana (todo sin dato) no inventa cifras.
+  assert.deepEqual(D.tarjetaInicio({...R, mediana: null, fraccionBajo: null}, CTX).cifras, []);
+});
+
+test('D-44: mientras lee, si falla y si falta un paso', () => {
+  const ley = D.tarjetaInicio({tipo: 'leyendo'}, CTX);
+  assert.equal(ley.estado, 'leyendo');
+  assert.equal(ley.titulo, 'Leyendo el vuelo…');
+  assert.equal(ley.enlace, null);
+  const err = D.tarjetaInicio({tipo: 'error', error: 'El archivo no es un GeoTIFF.'}, CTX);
+  assert.equal(err.estado, 'error');
+  assert.equal(err.titulo, 'No se pudo abrir el vuelo');
+  assert.deepEqual(err.notas, ['El archivo no es un GeoTIFF.']);
+  assert.equal(err.boton, 'Abrir un vuelo de dron');
+  const pen = D.tarjetaInicio({...R, tipo: 'pendiente'}, CTX);
+  assert.equal(pen.estado, 'pendiente');
+  assert.equal(pen.titulo, 'Tu vuelo necesita un paso más');
+  assert.deepEqual(pen.notas, ['Elegí las bandas o confirmá el NDVI en el Reporte.']);
+  assert.equal(pen.enlace, 'Completar en el Reporte →');
+  assert.equal(pen.boton, 'Abrir otro vuelo');
 });
 
 const Z = {fraccionZonaMes: 0.843, mesNombre: 'noviembre', periodo: '2021-2025', umbral: 0.25};
@@ -142,13 +196,15 @@ test('fichaTecnica: bandas desde 1, calibración y recuadro', () => {
   assert.ok(t.some(s => s.includes('9000 × 6000') && s.includes('2048')));
 });
 
-test('la fecha de la línea sigue el idioma (en inglés, mes/día)', () => {
+test('la fecha de la tarjeta y sus números siguen el idioma (en inglés, mes/día y punto decimal)', () => {
   const antes = D.TEXTOS.locale;
   try {
     D.TEXTOS.locale = 'en-US';
-    assert.match(D.lineaInicio({...R, tipo: 'rgb'}), /\(11\/03\)/);
+    const t = D.tarjetaInicio(R, CTX);
+    assert.match(t.titulo, /11\/03$/);
+    assert.equal(t.cifras[0].valor, '0.41');
   } finally { D.TEXTOS.locale = antes; }
-  assert.match(D.lineaInicio({...R, tipo: 'rgb'}), /\(03\/11\)/);
+  assert.match(D.tarjetaInicio(R, CTX).titulo, /03\/11$/);
 });
 
 test('tramos: lee el archivo de a franjas que cubren todas las filas, sin huecos ni solapes', () => {

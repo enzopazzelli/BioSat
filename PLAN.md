@@ -4,6 +4,8 @@
 > **Cómo se usa:** este es el plan general. Las tareas de cada uno, con sus casillas, están en su plan personal en [`planes/`](planes/README.md). Cuando termines una, tildala en tu plan; el avance del [README](README.md) se actualiza solo al integrar a `main`.
 > **Reemplaza a:** `docs/plan-de-pasos-y-agentes.md` (decisión D-15 de la [bitácora](docs/reglas-y-bitacora.md)).
 > **Última revisión:** sábado 14/11/2026, noche (kit para el jurado y guía del campo, D-27; ver el [estado del proyecto](docs/estado-del-proyecto.md)).
+>
+> **15/11, 20:00 (D-44): el kit Arduino se archivó** en [`archivo/kit-arduino/`](archivo/kit-arduino/README.md). Lo que este plan dice del kit, de su pantalla, de la guía del campo y del frente F6 queda como historia. El dato de hoy del lote sale del vuelo del dron.
 
 ---
 

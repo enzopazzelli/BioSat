@@ -50,7 +50,6 @@ DESCRIPCIONES = {
     "data/zonificacion_aizal.json": "Zonificación k-means sobre TerraClimate y SoilGrids, 5 grupos (Earth Engine) · real",
     "data/desmonte_zonas.json": "Desmontes Hansen 2001-2025, modelo validado en el tiempo y riesgo por zona · real",
     "data/rotaciones_santiago.json": "15 rotaciones de las 5 zonas (Vale) · Zona 5 validada por un productor, el resto sin validar",
-    "data/arduino_bandejas_demo.json": "Lecturas grabadas del kit (Sara) · plantilla vacía",
     "data/meteomatics_santiago_zonas.json": "Pronóstico de 7 días de Meteomatics por zona (Santi) · lo lee la app y se renueva todos los días (D-34)",
     "docs/entrevista-productor-bella-criolla.md": "Entrevista al productor de la Zona 5 y cruce con los datos (Vale)",
     "docs/integracion-meteomatics.md": "Cómo se integra Meteomatics (Santi)",
@@ -62,6 +61,7 @@ DESCRIPCIONES = {
     "ia_desmonte/pruebas": "Pruebas de Python del pipeline (pytest)",
     "archivo": "Material archivado que no alimenta la app",
     "archivo/prototipo-ia-simulado": "Primer prototipo de IA con datos SIMULADOS (no se usa; ver LEEME-PRIMERO.md)",
+    "archivo/kit-arduino": "Kit Arduino archivado el 15/11 (D-44): programas, lector, pantalla del kit y guías; ver su README.md",
     "docs/datos-y-metodos.md": "Fuentes, métodos, métricas reales y limitaciones de los datos (se genera solo)",
     "tests/datos-contratos.test.js": "Prueba la forma de los datos reales de ia_desmonte/",
     "tests/inicio-logica.test.js": "Prueba el semáforo, la próxima siembra y el WhatsApp del Inicio",
@@ -78,7 +78,7 @@ DESCRIPCIONES = {
     "planes/1-enzo.md": "Plan de Enzo · integración y app (rama enzo-app)",
     "planes/2-santi.md": "Plan de Santi · suelo, satélite e IA (rama santi-datos-ia)",
     "planes/3-vale.md": "Plan de Vale · campo y agronomía (rama vale-rotaciones)",
-    "planes/4-sara.md": "Plan de Sara · Arduino y relato (rama sara-arduino-entrega)",
+    "planes/4-sara.md": "Plan de Sara · relato y entrega (el kit se archivó, D-44)",
     "docs/BioSat-cruce-de-datos-validacion.docx": "Documento para que la profesora valide el enfoque",
     ".gitignore": "Archivos que git no sube",
     "data/raw_nasa_power": "Descargas crudas de NASA POWER",
@@ -120,33 +120,16 @@ DESCRIPCIONES = {
     "web/frases-logica.js": "Frases simples que resumen cada paso (con pruebas)",
     "data/santiago_mapa.json": "Mapa de Santiago del Estero: 27 departamentos pintados por zona (IGN, vía geoBoundaries)",
     "scripts/generar_mapa_santiago.py": "Genera data/santiago_mapa.json desde geoBoundaries",
-    "web/kit.html": "Pantalla del kit para la mesa del jurado (3 bandejas en vivo)",
-    "web/kit.js": "Pantalla del kit: teclado, Arduino y dibujo de las bandejas",
-    "web/kit-logica.js": "Lógica de la pantalla del kit, sin interfaz (con pruebas)",
-    "web/kit.css": "Estilos de la pantalla del kit (tema oscuro de alto contraste)",
-    "web/campo.html": "Guía Del kit al campo: del kit a estaciones fijas en el lote",
-    "web/campo.css": "Estilos de la guía Del kit al campo",
     "tests": "Pruebas de Node (node --test tests/*.test.js)",
     "web/img": "Imágenes Landsat de vista previa (Planetary Computer)",
     "web/vendor": "Leaflet, para el mapa sin internet",
     "web/datos-borrador": "Rotaciones borrador: respaldo si una zona no tiene sus 3 rotaciones",
-    "arduino": "Kit Arduino: sketch, lector Web Serial, esquema y guía de armado",
-    "arduino/README.md": "Guía del kit: cómo armarlo, cargarlo, calibrarlo y usarlo con la app",
-    "arduino/biosat_estacion_campo": "Sketch del Arduino Uno (línea JSON cada 2 s, LCD y LEDs)",
-    "arduino/lector-web-serial.js": "Lee el Arduino por USB desde Chrome o Edge (window.BioSatArduino)",
-    "arduino/esquema": "Esquema de conexiones: pines.json es la fuente; el resto se genera",
-    "arduino/esquema/pines.json": "Fuente única de los pines y cables del kit",
-    "arduino/esquema/generar-esquema.js": "Regenera el esquema SVG y la tabla desde pines.json",
-    "arduino/esquema/esquema-conexiones.svg": "Esquema de conexiones (generado)",
-    "arduino/esquema/tabla-de-conexiones.md": "Tabla de cables por pin y por componente (generada)",
-    "arduino/esquema/concepto-original.jpeg": "Imagen del plan inicial (con LCD I2C; no es la que se arma)",
-    "arduino/esquema/componentes-disponibles.webp": "Las piezas que tiene el equipo",
     "ia_landsat": "Módulo de IA con imágenes Landsat",
     "entrega": "Material para la presentación y la entrega",
 }
 
 # Carpetas que se muestran resumidas ("(N archivos)") aunque estén arriba.
-COLAPSAR = {"data/raw_nasa_power", "archivo/prototipo-ia-simulado", "ia_desmonte/salidas"}
+COLAPSAR = {"data/raw_nasa_power", "archivo/prototipo-ia-simulado", "archivo/kit-arduino", "ia_desmonte/salidas"}
 # Las carpetas a esta profundidad o más se muestran resumidas.
 PROFUNDIDAD_MAX = 2
 # Una carpeta con más elementos que esto se muestra resumida.

@@ -12,7 +12,6 @@
 <link rel="stylesheet" href="estilos.css">
 <link rel="stylesheet" href="asistente.css">
 <script src="vendor/leaflet.js"></script>
-<script src="../arduino/lector-web-serial.js" defer onerror="this.remove()"></script>
 <script src="idioma-logica.js" defer></script>
 <script src="textos-en.js" defer></script>
 <script src="idioma.js" defer></script>
@@ -128,17 +127,6 @@
         </div>
       </div>
 
-      <!-- El sensor queda a la vista: es lo que se muestra en la demo (ver el ledger de la tarea 6). -->
-      <article class="card panel panel-sensor">
-          <div class="panel-h"><h3>Lo que mide el sensor</h3><span class="src">Kit Arduino · 1 m²</span></div>
-          <div class="trays" role="group" aria-label="Bandeja de demostración" id="trays"></div>
-          <div class="read" id="read"></div>
-          <div class="semaforo" id="semaforo"></div>
-          <div class="vs" id="vs"></div>
-          <button type="button" class="btn-off" id="btnArduino" disabled title="No se encontró el lector (arduino/lector-web-serial.js)">Conectar Arduino por USB</button>
-          <div class="kit-links"><a class="btn" id="linkKit" href="kit.html">Pantalla del kit</a><a class="capa" href="campo.html">Del kit al campo</a></div>
-          <p class="pending" id="sensorNota"></p>
-        </article>
 
       <details class="detalle-tecnico" id="detalleTecnico">
         <summary id="detalleResumen"></summary>
@@ -302,7 +290,6 @@
       <ul>
         <li>Real: los números de clima (NASA POWER), el calendario, el simulador, las imágenes del visor (compuestos de Landsat hechos en Earth Engine), el suelo (SoilGrids 2.0), los meses sin cobertura vegetal activa (Landsat 2021-2025), la historia y el riesgo de desmonte (Hansen v1.13) y la zonificación del equipo con las variables de AIZAL. Fuentes y métodos: docs/datos-y-metodos.md.</li>
         <li>Revisado: las rotaciones de la Zona 5 las revisó un productor de la zona. Las de las zonas 1 a 4 todavía no están validadas. Los puntajes salen de reglas visibles.</li>
-        <li>Pendiente: las lecturas grabadas del kit Arduino.</li>
       </ul>
     </div>
     <div>

@@ -1,5 +1,5 @@
 /* BioSat · app web v1. Lee los JSON de data/ (ver docs/contratos-de-datos.md). */
-let CLIMA = {}, IMG = {}, ROT = {}, FUENTE_ROT = {}, VALIDADA = {}, SUELO_Z = {}, DIAG = {}, ARDUINO = null, FUENTE_IMG = '', ZONIF = {}, DESMONTE = {}, METEO = null;
+let CLIMA = {}, IMG = {}, ROT = {}, FUENTE_ROT = {}, VALIDADA = {}, SUELO_Z = {}, DIAG = {}, FUENTE_IMG = '', ZONIF = {}, DESMONTE = {}, METEO = null;
 
 const MES = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
 const MES_L = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
@@ -35,14 +35,8 @@ const SUELO = [
   ['Distancia a caminos', 'distancia_caminos_km', 'km', 'B36', 'Lejos de un camino, cuesta vender un cultivo nuevo.']
 ];
 
-const BANDEJAS = {
-  A:{nombre:'A · Pelada y seca', clave:'A_pelada_seca'},
-  B:{nombre:'B · Salitrosa', clave:'B_salitrosa'},
-  C:{nombre:'C · Con rastrojo', clave:'C_rastrojo'}
-};
-
 const state = {zona:'zona_2_secano_este', prio:new Set(['agua','suelo']), riego:false, ganado:true, maq:false,
-  periodo:'normal', dT:0, dP:0, elegida:null, bandeja:'A', vivo:null};
+  periodo:'normal', dT:0, dP:0, elegida:null};
 
 const $ = s => document.querySelector(s);
 // Números con el formato del idioma elegido (D-35): 33,7 en español y 33.7 en inglés.
@@ -343,7 +337,7 @@ function renderVisor(){
   aplicarCortina();
 }
 
-/* ---------- Imagen de dron: tarjeta del Reporte y línea del Inicio (D-38) ---------- */
+/* ---------- Imagen de dron: tarjeta del Reporte (D-38) y tarjeta del Inicio (D-44) ---------- */
 // Resumen del vuelo para DronLogica (tipo 'pendiente' mientras espera las bandas o la confirmación del NDVI).
 function resumenDron(){
   const d = window.BioSatDron && BioSatDron.estado();
@@ -352,15 +346,45 @@ function resumenDron(){
     mediana: d.resumen ? d.resumen.mediana : null, fraccionBajo: d.resumen ? d.resumen.fraccionBajo : null,
     zonaLote: d.zonaLote, departamento: d.departamento, zonaElegida: Number(state.zona[5])};
 }
+// D-44: la tarjeta "Tu lote, desde el dron" del Inicio y el botón de la barra, en el lugar que tenía la sonda.
+// El vuelo no cambia el semáforo (que es lo típico de la zona): la tarjeta dice de cuándo es el vuelo.
+function estadoDronInicio(){
+  const d = window.BioSatDron && BioSatDron.estado();
+  if (d && d.leyendo) return {tipo: 'leyendo'};
+  if (d && d.error && !d.url) return {tipo: 'error', error: d.error};
+  return resumenDron();
+}
+function hoyISO(){
+  const h = new Date(), dos = n => String(n).padStart(2, '0');
+  return `${h.getFullYear()}-${dos(h.getMonth() + 1)}-${dos(h.getDate())}`;
+}
+function renderDronInicio(){
+  const box = $('#inicioDron');
+  if (!box || !window.DronLogica) return;
+  const t = DronLogica.tarjetaInicio(estadoDronInicio(), {hoy: hoyISO(), meses: MES_L});
+  if (t.estado === 'vuelo' && window.SectoresLogica && window.BioSatSectores){
+    const s = SectoresLogica.lineaSectores(BioSatSectores.lista()).trim();
+    if (s) t.notas.push(s);
+  }
+  box.dataset.estado = t.estado;
+  $('#inicioDronT').textContent = t.eyebrow;
+  $('#inicioDronTitulo').textContent = t.titulo;
+  const cf = $('#inicioDronCifras');
+  cf.innerHTML = t.cifras.map(c => `<div class="ini-cifra"><span>${esc(c.rotulo)}</span><strong>${esc(c.valor)}</strong></div>`).join('');
+  cf.hidden = !t.cifras.length;
+  $('#inicioDronNotas').innerHTML = t.notas.map(n => `<li>${esc(n)}</li>`).join('');
+  const a = $('#inicioDronLink');
+  a.textContent = t.enlace || '';
+  a.hidden = !t.enlace;
+  if ($('#btnDronTxt')) $('#btnDronTxt').textContent = t.boton;
+}
+// Al elegir un archivo, dron.js empieza a leerlo: la tarjeta del Inicio muestra "Leyendo el vuelo…" enseguida.
+document.addEventListener('change', e => { if (e.target.id === 'dronArchivo') setTimeout(renderDronInicio, 0); });
 function renderDron(){
   if (!window.DronLogica) return;
   if (window.BioSatDron) BioSatDron.render();   // la caja del visor, ya con el idioma registrado
   const D = DronLogica, T = D.TEXTOS, d = window.BioSatDron && BioSatDron.estado(), r = resumenDron();
-  if ($('#inicioDron')){
-    const pendientes = window.SectoresLogica && window.BioSatSectores ? SectoresLogica.lineaSectores(BioSatSectores.lista()) : '';
-    $('#inicioDronTxt').textContent = r ? D.lineaInicio(r) + pendientes : '';
-    $('#inicioDronLink').textContent = r ? T.verEnMapa : D.lineaInicio(null) + ' →';
-  }
+  renderDronInicio();
   const box = $('#dronFicha');
   if (!box) return;
   box.hidden = !r;
@@ -502,18 +526,6 @@ function renderDesmonte(){
     : 'Validación prevista: entrenar con la historia hasta 2015 y probar con 2016-2023.';
 }
 
-/* ---------- Lector del Arduino (lo aporta Sara: arduino/lector-web-serial.js) ---------- */
-function botonArduino(){
-  const lector = window.BioSatArduino, btn = $('#btnArduino');
-  if (lector && typeof lector.soportado === 'function' && lector.soportado()){
-    btn.disabled = false; btn.className = 'btn'; btn.title = '';
-    btn.textContent = state.vivo ? 'Arduino conectado' : 'Conectar Arduino por USB';
-  } else {
-    btn.disabled = true; btn.className = 'btn-off';
-    btn.title = lector ? 'Este navegador no permite leer el puerto USB: usá Chrome o Edge' : 'No se encontró el lector (arduino/lector-web-serial.js)';
-  }
-}
-
 /* ---------- Paso 1 ---------- */
 /* ---------- Paso 1 y asistente de inicio ---------- */
 // Lo que respondió la persona (ver asistente-logica.js). El asistente le pasa las respuestas a `state`.
@@ -545,7 +557,7 @@ function iniciarRespuestas(){
 }
 /* ---------- Vistas (D-31): Inicio y Reporte en index.html; completo.html es la página de antes ---------- */
 // Hash (sin el numeral) de cada sección del Reporte: con cualquiera de ellos se muestra la vista Reporte.
-const SECCIONES_REPORTE = ['reporte', 'calendario', 'comparar', 'simulador', 'satelite', 'sonda', 'antes-de-decidir', 'datos'];
+const SECCIONES_REPORTE = ['reporte', 'calendario', 'comparar', 'simulador', 'satelite', 'antes-de-decidir', 'datos'];
 const hayVistas = () => !!document.getElementById('vista-inicio');
 function mostrarVista(){
   if (!hayVistas()) return;
@@ -723,30 +735,6 @@ function renderPaneles(){
   $('#satNota').textContent = mp
     ? [`Método usado: ${NOMBRES[ev.metodo_elegido] || 'sin dato'}.`, ev.datos_de_prueba ? cap(ev.datos_de_prueba) + '.' : '', sens].filter(Boolean).join(' ')
     : 'Sin datos del satélite para esta zona.';
-
-  // Sensor en tierra (lecturas grabadas por Sara)
-  $('#trays').innerHTML = Object.entries(BANDEJAS).map(([k, b]) =>
-    `<button type="button" aria-pressed="${k === state.bandeja}" data-bandeja="${k}">${b.nombre}</button>`).join('');
-  const b = BANDEJAS[state.bandeja];
-  const lect = (ARDUINO && ARDUINO.bandejas && ARDUINO.bandejas[b.clave]) || [];
-  const u = state.vivo || (lect.length ? lect[lect.length - 1] : null);
-  const val = (v, suf = '') => v === null || v === undefined ? '—' : (typeof v === 'number' ? nf(v, Number.isInteger(v) ? 0 : 1) : esc(v)) + suf;
-  $('#read').innerHTML = `<div><b>${val(u && u.temp_suelo_c, ' °C')}</b><span>Temperatura del suelo (LM35)</span></div>
-    <div><b>${val(u && u.agua_raw)}</b><span>Humedad y conductividad (0 a 1023)</span></div>
-    <div><b>${val(u && u.luz_raw)}</b><span>Luz al ras del suelo (0 a 1023)</span></div>
-    <div><b>${val(u && u.temp_aire_c, ' °C')} · ${val(u && u.hum_aire_pct, ' %')}</b><span>Aire (DHT11)</span></div>`;
-  const sem = u && u.semaforo;
-  $('#semaforo').innerHTML = `<span class="luces" aria-hidden="true"><i class="r ${sem === 'rojo' ? 'on' : ''}"></i><i class="a ${sem === 'amarillo' ? 'on' : ''}"></i><i class="v ${sem === 'verde' ? 'on' : ''}"></i></span>`
-    + `<span>${sem ? '<strong>' + esc(sem.charAt(0).toUpperCase() + sem.slice(1)) + '</strong>' : 'Sin lecturas todavía.'}</span>`;
-  const c = clima();
-  $('#vs').innerHTML = `<strong>Espacio contra tierra</strong>
-    <span>NASA POWER ve tu zona en celdas de 50 km: en enero la máxima media del aire es ${nf(c[0].tmax, 1)} °C.</span>
-    <span>El sensor mide un metro cuadrado${u && u.temp_suelo_c != null ? `: la bandeja marca ${val(u.temp_suelo_c, ' °C')} en el suelo` : ''}. Juntos dicen cuánto pesa la cobertura.</span>`;
-  botonArduino();
-  $('#linkKit').href = 'kit.html?zona=' + encodeURIComponent(state.zona);
-  $('#sensorNota').textContent = state.vivo ? 'En vivo desde el Arduino (Web Serial).' : lect.length
-    ? `Lecturas grabadas del kit (${(ARDUINO.meta && ARDUINO.meta.fecha) || 'sin fecha'}).`
-    : 'Sin lecturas grabadas todavía: las carga Sara. En la demo se leen en vivo por Web Serial.';
 }
 
 /* ---------- Paso 3 ---------- */
@@ -885,7 +873,7 @@ function renderFrases(){
   setFrase('#fraseSim', FrasesLogica.fraseCalorMas(ZONAS[state.zona].lugar, g, sum(clima('normal', 0, 0), m => m.d40), sum(clima('normal', g, 0), m => m.d40)));
 }
 
-/* ---------- Inicio (D-31): semáforo, lo que mejor encaja y la sonda. Diseño 4.2 a 4.4 ---------- */
+/* ---------- Inicio (D-31): semáforo y lo que mejor encaja (el lote, desde el dron: D-44). Diseño 4.2 a 4.4 ---------- */
 const MES_HOY = new Date().getMonth();
 const TEXTOS_INICIO = {
   eyebrow: 'Tu campo · Zona {num}',
@@ -894,8 +882,7 @@ const TEXTOS_INICIO = {
   validada: 'Revisada por un productor de la zona', sinValidar: 'Todavía sin validar en la zona',
   sinDato: 'sin dato', tira: 'Suelo mes a mes. {detalle}',
   mesesPeladosAria: '{nom}: {n} meses de suelo pelado',
-  seguir: 'seguir con tu rotación de hoy',
-  abrirKit: 'Abrir la pantalla del kit'
+  seguir: 'seguir con tu rotación de hoy'
 };
 const ICONO_NIVEL = [
   '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.7 2.7L16 9.8"/></svg>',
@@ -909,11 +896,10 @@ function datosInicio(){
   const frac = ((DIAG.zonas || {})[state.zona] || {}).fraccion_pelado;
   const fp = Array.isArray(frac) ? frac[MES_HOY] : null;
   const sz = L.semaforoZona(MES_HOY, {falta: c ? c.et0 - c.lluvia : null, d35: c && c.d35, helada: c && c.helada}, fp ?? null);
-  const ss = L.semaforoSonda(state.vivo);
   const rk = ranking(), mejor = rk.length ? rk[0].r : null;
   const actual = (ROT[state.zona] || []).find(r => r.tipo === 'Actual') || null;
   const ps = mejor ? L.proximaSiembra(mejor.seq.map(x => ({cultivo:x.n, siembra_mes:x.siembra})), MES_HOY) : null;
-  return {sz, ss, sem: ss || sz, mejor, actual, esActual: !!(mejor && actual && mejor.id === actual.id), ps};
+  return {sz, sem: sz, mejor, actual, esActual: !!(mejor && actual && mejor.id === actual.id), ps};
 }
 function tiraHTML(filas){
   const cab = MES.map((m, i) => `<span class="${i === MES_HOY ? 'hoy' : ''}">${m[0]}</span>`).join('');
@@ -929,10 +915,10 @@ function renderInicio(){
   $('#inicioZona').textContent = z.nombre;
   $('#inicioLocalidades').textContent = z.zona;
   $('#inicioBanda').dataset.nivel = n;
-  const rotulo = d.ss ? L.TEXTOS.rotulo.sonda : L.TEXTOS.rotulo.zona.replace('{mes}', MES_L[MES_HOY]);
+  const rotulo = L.TEXTOS.rotulo.zona.replace('{mes}', MES_L[MES_HOY]);
   $('#inicioNivel').innerHTML = `${ICONO_NIVEL[n]}<span class="ini-nivel-txt"><strong>${L.TEXTOS.nivel[n]}</strong><span>${esc(rotulo)}</span></span>`;
   $('#inicioRazon').textContent = d.sem.razon;
-  $('#inicioAccion').textContent = d.ss ? (n ? L.TEXTOS.accion.pelado : L.TEXTOS.accion.bien) : d.sz.accion;
+  $('#inicioAccion').textContent = d.sz.accion;
   if (!d.mejor){
     $('#inicioRotacion').textContent = TEXTOS_INICIO.sinDato;
     $('#inicioSiembra').textContent = $('#inicioPelados').textContent = '—';
@@ -951,22 +937,10 @@ function renderInicio(){
   $('#inicioValidacion').dataset.validada = VALIDADA[state.zona] ? 'si' : 'no';
 }
 
-/* ---------- Botones del Inicio (D-31): sonda y WhatsApp. Diseño 4.7 y 4.8 ---------- */
+/* ---------- Botones del Inicio: el vuelo del dron (D-44, antes la sonda) y WhatsApp. Diseño 4.7 y 4.8 ---------- */
 function avisoInicio(html){ const a = $('#inicioAviso'); a.innerHTML = html || ''; a.hidden = !html; }
-async function medirConSonda(){
-  const L = window.InicioLogica, lector = window.BioSatArduino;
-  if (!lector || typeof lector.soportado !== 'function' || !lector.soportado()){
-    avisoInicio(`${esc(L.TEXTOS.sondaNoDisponible)} <a href="kit.html?zona=${encodeURIComponent(state.zona)}">${esc(TEXTOS_INICIO.abrirKit)}</a>`);
-    return;
-  }
-  try {
-    await lector.conectar(lectura => { state.vivo = lectura; renderPaneles(); renderInicio(); renderConclusiones(); });
-    avisoInicio('');
-  } catch (err) {
-    console.warn('Sonda:', err);   // el detalle técnico queda en la consola
-    avisoInicio(esc(L.TEXTOS.sondaError));
-  }
-}
+// El botón abre el mismo selector de archivos que el Reporte (sección 4): dron.js lee el .tif en el equipo.
+function abrirVueloDron(){ const i = $('#dronArchivo'); if (i) i.click(); }
 
 /* ---------- Pronóstico de Meteomatics (D-34): "Esta semana en tu zona", en el Inicio y en el Reporte ----------
    Lo calcula web/pronostico-logica.js. Un pronóstico sin días vigentes se muestra como vencido, sin números. */
@@ -1021,7 +995,7 @@ async function mandarWhatsapp(){
   window.open('https://wa.me/?text=' + encodeURIComponent(texto), '_blank', 'noopener');
 }
 document.addEventListener('click', e => {
-  if (e.target.closest('#btnSonda')){ medirConSonda(); return; }
+  if (e.target.closest('#btnDron')){ abrirVueloDron(); return; }
   if (e.target.closest('#btnWhatsapp')){ mandarWhatsapp(); }
 });
 
@@ -1037,7 +1011,7 @@ const TEXTOS_REPORTE = {
   conRiego: 'con riego', sinRiego: 'sin riego', conHacienda: 'con hacienda', sinHacienda: 'sin hacienda',
   concl: {
     1: 'Tu año, mes a mes', 2: 'Tu rotación y 2 alternativas', 3: '¿Y si el clima viene peor? Probá con menos lluvia o más calor.',
-    4: 'Tu suelo y tu monte, desde el satélite', 5: 'Todavía no mediste tu lote.', 5.1: 'La sonda midió tu lote hoy.',
+    4: 'Tu suelo y tu monte, desde el satélite',
     6: 'Para charlar con tu ingeniero', 7: 'De dónde salen los datos'
   },
   copiado: 'Enlace copiado.', noCopiado: 'No se pudo copiar: copiá la dirección de la barra del navegador.'
@@ -1057,9 +1031,10 @@ function renderConclusiones(){
   const concl = {
     1: FrasesLogica.fraseMesesDuros(meses), 2: textoDe('#fraseMejor'), 3: escenario() ? textoDe('#fraseSim') : '',
     4: FrasesLogica.fraseSueloMonte(sz.ph && sz.ph.valor, dz.monte_actual_pct ?? (sz.monte_nativo_pct && sz.monte_nativo_pct.valor)),
-    5: state.vivo ? T.concl[5.1] : '', 6: textoDe('#fraseListo'), 7: ''
+    6: textoDe('#fraseListo'), 7: ''
   };
-  for (let i = 1; i <= 7; i++) document.getElementById('concl-' + i).textContent = concl[i] || T.concl[i];
+  // D-44: la sección 5 (la sonda) se archivó con el kit; las claves 6 y 7 se conservan (en pantalla, 5 y 6).
+  for (const i of [1, 2, 3, 4, 6, 7]) document.getElementById('concl-' + i).textContent = concl[i] || T.concl[i];
 }
 document.addEventListener('click', async e => {
   if (e.target.closest('#btnPdf')){
@@ -1091,19 +1066,8 @@ $('#cortina').addEventListener('input', e => { visor.cortina = Number(e.target.v
 document.addEventListener('click', e => {
   if (e.target.closest('[data-zonif]')){ visor.zonif = !visor.zonif; renderVisor(); }
 });
-$('#btnArduino').addEventListener('click', async () => {
-  try {
-    await window.BioSatArduino.conectar(lectura => { state.vivo = lectura; renderPaneles(); renderInicio(); renderConclusiones(); });
-  } catch (err) {
-    $('#sensorNota').textContent = 'No se pudo conectar el Arduino: ' + err.message;
-  }
-});
-
-
 document.addEventListener('click', e => {
   if (e.target.closest('#btnCambiar') || e.target.closest('#btnCambiarInicio')){ abrirAsistente(); return; }
-  const tb = e.target.closest('[data-bandeja]');
-  if (tb){ state.bandeja = tb.dataset.bandeja; renderPaneles(); return; }
   const ps = e.target.closest('#presets button');
   if (ps){ state.dP = Number(ps.dataset.p); state.dT = Number(ps.dataset.t); renderClima(); return; }
   if (e.target.closest('#escReset')){ state.dP = 0; state.dT = 0; renderClima(); return; }
@@ -1224,20 +1188,19 @@ async function cargarImagenes(){
 }
 
 async function cargarDatos(){
-  const [clima, rotVale, rotBorrador, suelo, diag, arduino, zonif, desmonte, mapa, meteo] = await Promise.all([
+  const [clima, rotVale, rotBorrador, suelo, diag, zonif, desmonte, mapa, meteo] = await Promise.all([
     cargarJSON('../data/clima_zonas.json'),
     cargarJSON('../data/rotaciones_santiago.json').catch(() => ({zonas:{}})),
     cargarJSON('datos-borrador/rotaciones_borrador.json'),
     cargarJSON('../data/suelo_zonas.json').catch(() => ({})),
     cargarJSON('../data/diagnostico_landsat_ia.json').catch(() => ({})),
-    cargarJSON('../data/arduino_bandejas_demo.json').catch(() => null),
     cargarJSON('../data/zonificacion_aizal.json').catch(() => ({})),
     cargarJSON('../data/desmonte_zonas.json').catch(() => ({})),
     cargarJSON('../data/santiago_mapa.json').catch(() => null),
     cargarJSON('../data/meteomatics_santiago_zonas.json').catch(() => null)
   ]);
   CLIMA = adaptarClima(clima);
-  SUELO_Z = suelo; DIAG = diag; ARDUINO = arduino; ZONIF = zonif; DESMONTE = desmonte; MAPA = mapa; METEO = meteo;
+  SUELO_Z = suelo; DIAG = diag; ZONIF = zonif; DESMONTE = desmonte; MAPA = mapa; METEO = meteo;
   for (const z of Object.keys(ZONAS)){
     const v = (rotVale.zonas || {})[z], b = (rotBorrador.zonas || {})[z];
     const deVale = v && Array.isArray(v.rotaciones) && v.rotaciones.length >= 3;

@@ -70,8 +70,9 @@ _Salen del repaso del repo. Cada uno decide cómo abordarlas; si no corresponden
 - [ ] Mostrar en la app y en el README el link del visor de Earth Engine cuando Santi lo publique
 - [x] Verificar que el visor use las imágenes de Earth Engine cuando Santi suba `data/imagenes/escenas.json` *(D-30: compuestos reales de Earth Engine)*
 - [x] Decidir si Meteomatics entra en la app (alertas a 7-10 días, `data/meteomatics_santiago_zonas.json`) o queda fuera de la demo *(15/11: entra como tarjeta "Esta semana en tu zona", D-34)*
-- [ ] Ensayar `web/kit.html` y `web/campo.html` en la pantalla grande de la demo, con el kit conectado
-- [ ] Cerrar `PLAN.md`: sumar kit y guía en la sección 1 y contestar las preguntas abiertas
+- ~~Ensayar `web/kit.html` y `web/campo.html` en la pantalla grande de la demo, con el kit conectado~~ *(archivado con el kit, D-44: ya no cuenta)*
+- [ ] Cerrar `PLAN.md`: contestar las preguntas abiertas (el kit y la guía ya no van: se archivaron, D-44)
+- [x] Archivar el kit Arduino y poner el dron en su lugar: tarjeta "Tu lote, desde el dron" en el Inicio y botón "Abrir un vuelo de dron" (D-44)
 - [ ] Probar de nuevo la app publicada en el celular y sin internet después del último merge
 
 ### App para el celular y reporte completo · 15/11 (D-31)
