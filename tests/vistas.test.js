@@ -223,3 +223,8 @@ test('en la PC el mapa del visor se estira con la columna de botones, que tiene 
   assert.match(css, /@media \(min-width:901px\)\{#mapaGis\{height:auto;min-height:460px\}\.visor-side\{max-height:760px;overflow-y:auto\}\}/);
   assert.match(app, /new ResizeObserver\(\(\) => visor\.map && visor\.map\.invalidateSize/);
 });
+
+test('la cortina: arrastrar hacia el nombre de una capa muestra más de esa capa (Enzo, 15/11: estaba al revés)', () => {
+  const f = app.slice(app.indexOf('function aplicarCortina'), app.indexOf('function aplicarCortina') + 800);
+  assert.match(f, /inset\(0 0 0 \$\{100 - visor\.cortina\}%\)/);
+});
