@@ -304,20 +304,20 @@ Según la página oficial de premios (`NASA Space Apps Challenge - awards.mhtml`
   - **Arreglo:** `mostrarVista` llama a `invalidateSize` al mostrar el Reporte, y `renderVisor` solo da por encuadrada la zona si el mapa medía más de 0 px; si no, la vuelve a encuadrar al mostrarlo. Así no se pierde el zoom del usuario al moverse entre secciones del Reporte.
   - **Verificado** en Chrome a 390 px por tres caminos: abriendo `#satelite` directo, entrando desde el Inicio, y cambiando de zona desde el Inicio antes de volver al Reporte. Los tres dan una imagen de 347 × 293 px con zoom 9,25, igual que la vista detallada. Prueba nueva en `tests/vistas.test.js` (155 en verde).
   - **Confirmado en la app publicada** (Enzo, 15/11), después de recargar con Ctrl + Shift + R. Al principio no se veía porque GitHub Pages sirve los archivos con `Cache-Control: max-age=600` y el navegador siguió usando el `app.js` viejo hasta 10 minutos después del deploy. **Para la demo:** después de cada push, recargar forzado (en el celular, abrir en incógnito) antes de mostrar la app o de dar algo por roto.
-- **D-37 (Sugerencia: imágenes de dron actualizadas; esperando los archivos de Vale):**
-  - **Por qué:** nos sugirieron sumar imágenes de dron recientes. Enzo: "nuestra app solo trabaja con datos históricos, pero se necesita mejorar la toma de decisión". Hoy todo lo que ve el productor es típico o pasado: el clima de NASA POWER (1991-2025), las medianas de Landsat (2021-2025) y la historia de desmontes. Lo único del presente son el pronóstico de Meteomatics (D-34) y la sonda.
+- **D-37 (Sugerencia de un ingeniero: imágenes de dron actualizadas; esperando la transcripción de Vale):**
+  - **Por qué:** un ingeniero nos sugirió sumar imágenes de dron recientes y lo planteó como un posible gran diferencial. Enzo: "nuestra app solo trabaja con datos históricos, pero se necesita mejorar la toma de decisión". Hoy todo lo que ve el productor es típico o pasado: el clima de NASA POWER (1991-2025), las medianas de Landsat (2021-2025) y la historia de desmontes. Lo único del presente son el pronóstico de Meteomatics (D-34) y la sonda.
   - **Dónde encaja:** completa la escalera de escalas que ya cuenta la app: NASA POWER (50 km), Meteomatics (9 km), Landsat (30 m), **dron (centímetros, un lote, una fecha reciente)** y la sonda (un punto del suelo, hoy).
-  - **Lo que sabemos:** Vale va a subir los archivos y probablemente sean .tif.
-  - **Cómo podría entrar en la app (hipótesis, a confirmar con los archivos):**
+  - **Lo que sabemos:** Vale va a subir la transcripción de lo que comentó el ingeniero. Es documentación: **todavía no hay imágenes de dron ni archivos .tif.** Primero se lee la transcripción y después se decide qué se hace.
+  - **Cómo podría entrar en la app, si más adelante hay imágenes (hipótesis, a confirmar con la transcripción y con los archivos):**
     - Si el .tif es un GeoTIFF (un ortomosaico con coordenadas), un script en Python lo convierte en una imagen liviana para la web (PNG o WebP, como las de `data/imagenes/`) más su recuadro en latitud y longitud. El visor del Reporte lo muestra con Leaflet, igual que Landsat. Para leerlo ya están instalados `tifffile`, `numpy` y `Pillow`. No están GDAL, rasterio ni pyproj: si viene en UTM, hace falta pyproj para pasar el recuadro a latitud y longitud.
     - Si la cámara es multiespectral (tiene banda del infrarrojo cercano), se puede calcular el NDVI del lote y compararlo con el de Landsat. Si es solo RGB, no hay NDVI, y la app no tiene que decir que lo hay (D-33).
     - **Los .tif originales no van a Git:** GitHub corta en 100 MB por archivo y un ortomosaico suele pesar más. Se guardan aparte, por ejemplo en Drive, y en el repositorio solo quedan la imagen para la web y sus datos.
-  - **Qué hace falta saber de Vale:**
+  - **Qué haría falta saber si llegan imágenes:**
     - qué lote es y en qué zona de BioSat está;
     - la fecha del vuelo;
     - el dron y la cámara (RGB o multiespectral) y la resolución;
     - si el .tif tiene coordenadas o es una foto suelta;
     - si el dueño del campo deja publicarlo;
-    - dónde lo sube (su rama `vale-rotaciones` o Drive).
+    - dónde se suben (la rama `vale-rotaciones` o Drive).
   - **Regla (D-33):** la fecha, el lugar, el sensor y la resolución salen del archivo o de Vale. No se inventan, y si falta un dato, la app lo dice.
-  - **Pendiente:** decidir si entra antes del congelamiento (domingo 15:00) y cómo se presenta. Se integra a `main` con la aprobación de Enzo, como el resto.
+  - **Pendiente:** leer la transcripción y decidir si la idea entra en la app, en la presentación o en las dos. Se integra a `main` con la aprobación de Enzo, como el resto.

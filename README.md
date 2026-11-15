@@ -120,7 +120,7 @@ Sale solo de las casillas sin tildar de cada plan. Panorama completo y riesgos: 
 - Validar las zonas 1 a 4 con un productor o un agrónomo del INTA, o dejarlas "sin validar" a propósito y decirlo en la presentación _(Agregadas por Enzo)_
 - Corregir en la evidencia de la Zona 5 el dato que cita humedad en raíces: hoy apunta a los meses de clima, que no tienen ese campo _(Agregadas por Enzo)_
 - Revisar los 15 nombres de las rotaciones en inglés (`web/textos-en.js`, sección `rotaciones`, D-35): los tradujo el equipo y falta tu revisión agronómica _(Agregadas por Enzo)_
-- Subir las imágenes de dron (D-37) con su ficha: lote y zona, fecha del vuelo, dron y cámara (RGB o multiespectral), si el .tif tiene coordenadas y el permiso del dueño del campo. Los .tif... _(Agregadas por Enzo)_
+- Subir la transcripción de lo que comentó el ingeniero sobre las imágenes de dron (D-37), por ejemplo en `docs/` _(Agregadas por Enzo)_
 
 </details>
 
@@ -154,7 +154,7 @@ Sale solo de las casillas sin tildar de cada plan. Panorama completo y riesgos: 
 **Últimas decisiones:**
 
 <!-- AUTO:DECISIONES:INICIO -->
-- **D-37**: Sugerencia: imágenes de dron actualizadas; esperando los archivos de Vale
+- **D-37**: Sugerencia de un ingeniero: imágenes de dron actualizadas; esperando la transcripción de Vale
 - **D-36**: Corrección: el visor del Reporte no mostraba la imagen Landsat
 - **D-35**: Botón de idioma ES/EN, etapa 1: lo que se ve primero, en inglés
 - **D-34**: Inicio en la PC y el pronóstico de Meteomatics entra en la app
