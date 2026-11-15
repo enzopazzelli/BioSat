@@ -22,6 +22,7 @@
     hoja: '{n} días con hoja mojada (favorece hongos)',
     viento: '{n} días con viento de menos de 15 km/h (para pulverizar)',
     criterio: 'Más de 38 °C y viento de menos de 15 km/h son criterios del equipo.',
+    kitHoy: 'Pronóstico para hoy (Meteomatics, 9 km): máxima {t} °C.',
     tabla: {dia: 'Día', temp: 'Máx / mín', lluvia: 'Lluvia', helada: 'Helada', hoja: 'Hoja mojada', si: 'Sí', no: '—'}
   };
   const DIAS_SEMANA = ['dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb'];
@@ -70,7 +71,14 @@
     };
   }
 
-  const P = {UMBRALES, TEXTOS, hoyLocalISO, fechaCorta, resumen};
+  // Máxima pronosticada para hoy (pantalla del kit: el escalón de 9 km entre NASA POWER y la sonda).
+  // null si el pronóstico no trae el día de hoy o no tiene la máxima.
+  function maximaDeHoy(r, hoyISO) {
+    const d = r && r.vigente ? r.dias.find(x => x.fecha === hoyISO) : null;
+    return d ? d.tmax : null;
+  }
+
+  const P = {UMBRALES, TEXTOS, hoyLocalISO, fechaCorta, resumen, maximaDeHoy};
   if (typeof module !== 'undefined' && module.exports) module.exports = P;
   else window.PronosticoLogica = P;
 })();

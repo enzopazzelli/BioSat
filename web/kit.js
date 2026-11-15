@@ -92,9 +92,10 @@
   }
 
   async function iniciar() {
-    const [clima, grabadas] = await Promise.all([
+    const [clima, grabadas, meteo] = await Promise.all([
       cargarJSON('../data/clima_zonas.json').catch(() => null),
-      cargarJSON('../data/arduino_bandejas_demo.json').catch(() => null)
+      cargarJSON('../data/arduino_bandejas_demo.json').catch(() => null),
+      cargarJSON('../data/meteomatics_santiago_zonas.json').catch(() => null)
     ]);
     demo = grabadas;
     umbral = K.umbralSalitre(demo);
@@ -102,8 +103,14 @@
     const mes = new Date().getMonth() + 1;
     const aire = clima ? K.aireSatelite(clima, zona, mes) : null;
     $('#titulo').textContent = aire ? aire.nombreZona : 'Zona sin datos de clima';
+    // Escalera de escalas (D-34): NASA POWER a 50 km (lo típico) → Meteomatics a 9 km (hoy) → la sonda en el suelo.
+    // La línea de 9 km aparece solo si el pronóstico trae el día de hoy: uno vencido no se muestra.
+    const P = window.PronosticoLogica, hoy = P ? P.hoyLocalISO(new Date()) : null;
+    const zm = P && meteo && Array.isArray(meteo.zonas) ? meteo.zonas.find(x => x.id === zona) : null;
+    const tHoy = zm ? P.maximaDeHoy(P.resumen(zm.pronostico_7_dias, hoy), hoy) : null;
+    const nueveKm = tHoy === null ? '' : ` ${P.TEXTOS.kitHoy.replace('{t}', nf(tHoy, 1))}`;
     $('#satelite').textContent = aire
-      ? `Satélite (NASA POWER, celda de 50 km): máxima media del aire en ${MES_L[mes - 1]}, ${nf(aire.tmax_c, 1)} °C. ¿Y el suelo?`
+      ? `Satélite (NASA POWER, celda de 50 km): máxima media del aire en ${MES_L[mes - 1]}, ${nf(aire.tmax_c, 1)} °C.${nueveKm} ¿Y el suelo?`
       : 'Sin datos de NASA POWER para esta zona.';
     prepararArduino();
     dibujar();

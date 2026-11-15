@@ -100,3 +100,11 @@ test('umbrales y textos fijados en el diseño', () => {
   assert.equal(P.TEXTOS.vencido, 'Pronóstico vencido (bajado el {fecha}). Se actualiza todos los días.');
   assert.equal(P.TEXTOS.criterio, 'Más de 38 °C y viento de menos de 15 km/h son criterios del equipo.');
 });
+
+test('máxima de hoy para la pantalla del kit: solo si el pronóstico trae el día de hoy', () => {
+  assert.equal(P.maximaDeHoy(P.resumen(Z2_14NOV, '2026-11-15'), '2026-11-15'), 35.3);
+  assert.equal(P.maximaDeHoy(P.resumen(Z2_14NOV, '2026-11-22'), '2026-11-22'), null);
+  assert.equal(P.maximaDeHoy(P.resumen([dia('2026-11-16', 30, 20, 0, 0, 0, 1)], '2026-11-15'), '2026-11-15'), null);
+  assert.equal(P.maximaDeHoy(P.resumen([dia('2026-11-15', -999, 20, 0, 0, 0, 1)], '2026-11-15'), '2026-11-15'), null);
+  assert.equal(P.TEXTOS.kitHoy, 'Pronóstico para hoy (Meteomatics, 9 km): máxima {t} °C.');
+});
