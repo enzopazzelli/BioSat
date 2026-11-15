@@ -278,6 +278,8 @@ function renderVisor(){
   const acento = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim() || '#0E5E4B';
   if (!visor.map){
     visor.map = L.map('mapaGis', {zoomSnap:0.25, attributionControl:true});
+    // Si el alto del mapa cambia (en la PC se estira con la columna de botones), Leaflet tiene que volver a medirlo.
+    if (window.ResizeObserver) new ResizeObserver(() => visor.map && visor.map.invalidateSize({animate:false})).observe($('#mapaGis'));
     L.control.scale({imperial:false}).addTo(visor.map);
     visor.map.attributionControl.setPrefix(false).addAttribution('Landsat (NASA/USGS) vía ' + FUENTE_IMG);
     $('#gisNota').textContent = FUENTE_IMG === 'Google Earth Engine' ? TEXTOS_PASOS.imagenesGee : TEXTOS_PASOS.imagenesPc;

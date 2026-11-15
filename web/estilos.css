@@ -292,6 +292,9 @@ input[type=range]{width:100%;accent-color:var(--accent)}
 @media (max-width:900px){.visor{grid-template-columns:1fr}}
 #mapaGis{height:460px;background:var(--surface-2);min-width:0}
 @media (max-width:560px){#mapaGis{height:340px}}
+/* En la PC el mapa se estira hasta el alto de la columna de botones (con el dron y el recorte del lote hay muchos);
+   la columna tiene un alto máximo y se desplaza por dentro. Así no queda espacio en blanco debajo del mapa. */
+@media (min-width:901px){#mapaGis{height:auto;min-height:460px}.visor-side{max-height:760px;overflow-y:auto}}
 .visor-side{padding:16px;display:grid;gap:12px;align-content:start;border-left:1px solid var(--line)}
 @media (max-width:900px){.visor-side{border-left:0;border-top:1px solid var(--line)}}
 .visor-t{font-weight:700;font-size:.85rem;margin-bottom:6px;display:block}

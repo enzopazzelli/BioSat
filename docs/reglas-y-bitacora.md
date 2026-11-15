@@ -519,5 +519,6 @@ Según la página oficial de premios (`NASA Space Apps Challenge - awards.mhtml`
       - restaurar al recargar;
       - foto RGB sin bloque.
     - Con el `NDVI.tif` real y **cortes de prueba** (0,30 y 0,50), no del ingeniero: Maleza 18 % · Zona afectada 54 % · Vigoroso 28 %.
+  - **Espacio en blanco bajo el mapa (Enzo, 15/11):** con el dron, el recorte y las clases, la columna de botones del visor llegaba a 1350 px y el mapa medía 460, así que quedaban 890 px en blanco en la PC. Ahora el mapa se estira con la columna, que tiene un máximo de 760 px y se desplaza por dentro. Leaflet vuelve a medir el mapa con un `ResizeObserver`. En el celular no cambia (340 px).
   - **Pendiente:** los cortes reales del ingeniero.
 
