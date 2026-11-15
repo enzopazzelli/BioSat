@@ -1,0 +1,62 @@
+# Baja todos los días el pronóstico de 7 días de Meteomatics para las 5 zonas (D-34) y lo sube a main,
+# así la app publicada muestra el de ese día. La contraseña vive solo en el secreto METEOMATICS_PASSWORD
+# (Settings → Secrets and variables → Actions): nunca llega al navegador ni al repo.
+# Si la descarga falla o queda incompleta, no se sube nada: la app muestra el pronóstico anterior como vencido
+# cuando ya no le quedan días, nunca como actual.
+name: Actualizar pronostico de Meteomatics
+
+on:
+  schedule:
+    - cron: '0 9 * * *'   # 06:00 de Argentina
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: actualizar-meteomatics
+  cancel-in-progress: false
+
+jobs:
+  pronostico:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Bajar el pronóstico
+        env:
+          METEOMATICS_PASSWORD: ${{ secrets.METEOMATICS_PASSWORD }}
+        run: |
+          if [ -z "$METEOMATICS_PASSWORD" ]; then
+            echo "::error::Falta el secreto METEOMATICS_PASSWORD en Settings → Secrets and variables → Actions."
+            exit 1
+          fi
+          python3 scripts/descargar_meteomatics.py
+
+      - name: Revisar la forma del JSON antes de subirlo
+        run: node --test tests/datos-contratos.test.js
+
+      - name: Subir el pronóstico si cambió
+        run: |
+          if git diff --quiet -- data/meteomatics_santiago_zonas.json; then
+            echo "Pronóstico sin cambios, no hay nada que subir."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/meteomatics_santiago_zonas.json
+          git commit -m "Actualizar pronostico de Meteomatics automaticamente"
+          for intento in 1 2 3; do
+            if git pull --rebase origin main; then
+              git push origin HEAD:main && exit 0
+            else
+              git rebase --abort || true
+            fi
+            sleep 5
+          done
+          echo "No se pudo subir el pronóstico tras 3 intentos."
+          exit 1

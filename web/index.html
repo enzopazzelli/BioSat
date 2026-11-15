@@ -17,6 +17,7 @@
 <script src="asistente.js" defer></script>
 <script src="frases-logica.js" defer></script>
 <script src="inicio-logica.js" defer></script>
+<script src="pronostico-logica.js" defer></script>
 <script src="app.js" defer></script>
 </head>
 <body>
@@ -53,6 +54,8 @@
         <div class="ini-tira" id="inicioTira" role="img"></div>
         <p class="ini-validacion" id="inicioValidacion"></p>
       </section>
+      <!-- Pronóstico de Meteomatics (D-34): lo que se anuncia para estos días -->
+      <section class="prono" id="inicioPronostico" aria-label="Esta semana en tu zona" hidden></section>
       <p class="ini-pie">Apoya, no reemplaza, el criterio de tu ingeniero.</p>
     </div>
 
@@ -102,6 +105,7 @@
         </div>
       <div class="stats" id="stats"></div>
       <div class="esc-chip" id="escChip" hidden></div>
+      <div class="prono prono-rep" id="repPronostico" hidden></div>
 
       <div class="card cal-box">
         <div class="cal-scroll"><div class="cal" id="cal"></div></div>

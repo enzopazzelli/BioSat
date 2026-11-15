@@ -116,3 +116,16 @@ test('la app lee las claves que existen en desmonte_zonas.json', () => {
   for (const k of claves) assert.ok(k in met, `la app pide evaluacion.metodos.${k} y no está`);
   assert.ok(claves.includes('temporal') && claves.includes('gradient_boosting'));
 });
+
+test('meteomatics_santiago_zonas.json: 5 zonas con los ids de la app y días con fecha', () => {
+  const j = leer('meteomatics_santiago_zonas.json');
+  assert.deepEqual(j.zonas.map(z => z.id), ZONAS);
+  for (const z of j.zonas) {
+    assert.ok(Array.isArray(z.pronostico_7_dias) && z.pronostico_7_dias.length >= 1, z.id);
+    for (const d of z.pronostico_7_dias) {
+      assert.ok(!Number.isNaN(Date.parse(d.fecha)), `${z.id}: fecha`);
+      assert.ok('precip_24h:mm' in d, `${z.id}: precip_24h:mm`);
+    }
+  }
+  assert.ok(!Number.isNaN(Date.parse(j.fecha_generacion)));
+});

@@ -50,11 +50,11 @@ Avance de cada integrante, contado desde las casillas de su plan en [`planes/`](
 <!-- AUTO:AVANCE:INICIO -->
 | Persona | Rama | Avance | Tareas |
 |---|---|---|---|
-| [Enzo · Integración y app](planes/1-enzo.md) | `enzo-app` | `▓▓▓▓▓▓▓▓░░` 80% | 37/46 |
-| [Santi · Suelo, satélite e IA](planes/2-santi.md) | `santi-datos-ia` | `▓▓▓▓▓▓▓▓░░` 81% | 22/27 |
+| [Enzo · Integración y app](planes/1-enzo.md) | `enzo-app` | `▓▓▓▓▓▓▓▓░░` 82% | 42/51 |
+| [Santi · Suelo, satélite e IA](planes/2-santi.md) | `santi-datos-ia` | `▓▓▓▓▓▓▓▓░░` 76% | 22/29 |
 | [Vale · Campo y agronomía](planes/3-vale.md) | `vale-rotaciones` | `▓▓▓▓▓▓▓▓░░` 77% | 17/22 |
 | [Sara · Kit Arduino y relato](planes/4-sara.md) | `sara-arduino-entrega` | `▓▓░░░░░░░░` 20% | 5/25 |
-| **Total** | | `▓▓▓▓▓▓▓░░░` **68%** | **81/120** |
+| **Total** | | `▓▓▓▓▓▓▓░░░` **68%** | **86/127** |
 <!-- AUTO:AVANCE:FIN -->
 
 ### Lo más urgente
@@ -74,7 +74,9 @@ Avance de cada integrante, contado desde las casillas de su plan en [`planes/`](
    - **Plan con los pasos y los lugares exactos del código:** [`docs/superpowers/plans/2026-11-15-app-sin-datos-falsos.md`](docs/superpowers/plans/2026-11-15-app-sin-datos-falsos.md).
 3. **Datos reales de Earth Engine (D-30):** suelo, desmontes, zonificación, suelo pelado e imágenes ahora salen de fuentes reales (`ia_desmonte/`). **Las métricas del pitch cambian:** usar solo las de [`docs/datos-y-metodos.md`](docs/datos-y-metodos.md). El visor de Earth Engine sigue sin publicar.
 4. **Vale: confirmar `requiere_hacienda` y el permiso del productor.** Enzo completó 7 valores según el texto de cada rotación, y la entrevista deja pendiente el permiso por escrito para usar sus frases.
-5. **Enzo: probar el lector con el Arduino real, decidir si Meteomatics entra en la demo, ensayar la pantalla del kit en la pantalla grande y probar la app nueva sin internet en el celular.** La app para el celular (D-31) ya está en `main` y se probó en un celular de verdad.
+5. **Enzo: cargar el secreto `METEOMATICS_PASSWORD` en GitHub, probar el lector con el Arduino real, ensayar la pantalla del kit en la pantalla grande y probar la app nueva sin internet en el celular.**
+   - La app para el celular (D-31) ya está en `main` y se probó en un celular de verdad.
+   - Con D-34, el Inicio va en dos columnas en la PC y el pronóstico de Meteomatics entra en la app. Se renueva solo todos los días cuando el secreto esté cargado.
 
 ### Lo que falta, por persona
 
@@ -89,21 +91,23 @@ Sale solo de las casillas sin tildar de cada plan. Panorama completo y riesgos: 
 - Dejar `main` estable con la app publicada _(Entrega)_
 - Botón de idioma EN/ES en toda la app *(etapa siguiente, con su propio diseño)* _(Sugerencias de la organización)_
 - Mostrar en la app y en el README el link del visor de Earth Engine cuando Santi lo publique _(Agregadas por Enzo)_
-- Decidir si Meteomatics entra en la app (alertas a 7-10 días, `data/meteomatics_santiago_zonas.json`) o queda fuera de la demo _(Agregadas por Enzo)_
 - Ensayar `web/kit.html` y `web/campo.html` en la pantalla grande de la demo, con el kit conectado _(Agregadas por Enzo)_
 - Cerrar `PLAN.md`: sumar kit y guía en la sección 1 y contestar las preguntas abiertas _(Agregadas por Enzo)_
 - Probar de nuevo la app publicada en el celular y sin internet después del último merge _(Agregadas por Enzo)_
+- Cargar el secreto `METEOMATICS_PASSWORD` en GitHub (Settings → Secrets and variables → Actions) y correr una vez el workflow "Actualizar pronostico de Meteomatics" _(Inicio en la PC y pronóstico de Meteomatics)_
 
 </details>
 
 <details>
-<summary><b>Santi</b>: 5 pendientes (<a href="planes/2-santi.md">plan completo</a>)</summary>
+<summary><b>Santi</b>: 7 pendientes (<a href="planes/2-santi.md">plan completo</a>)</summary>
 
 - Correr `scripts/gee_visor_biosat.js`, publicarlo como Earth Engine App y pasarles el link a Enzo y a Sara _(Checkpoint 1)_
 - Sumar lo que responda la profesora al audio y al documento _(Congelamiento)_
 - Pasarle a Sara las métricas, el mapa de riesgo, una captura del visor y la comparación 2000 contra 2025 _(Congelamiento)_
 - Opcional: usar los embeddings AlphaEarth como variable extra del modelo o de la zonificación _(Congelamiento)_
 - Ayudar con el video y la página: explicar el modelo en 20 segundos _(Entrega)_
+- En `scripts/descargar_meteomatics.py`, cambiar `wind_speed_10m:ms` (instantáneo, a las 21 h de Argentina) por `wind_speed_mean_10m_24h:ms`, el promedio del día. Sin eso, la tarjeta de la... _(Agregadas por Enzo)_
+- Confirmar con la documentación o el soporte de Meteomatics si `frost_warning_24h:idx` mira las 24 h anteriores o las siguientes. Hoy la app la cuenta como de las 24 h anteriores, como los... _(Agregadas por Enzo)_
 
 </details>
 
@@ -148,12 +152,12 @@ Sale solo de las casillas sin tildar de cada plan. Panorama completo y riesgos: 
 **Últimas decisiones:**
 
 <!-- AUTO:DECISIONES:INICIO -->
+- **D-34**: Inicio en la PC y el pronóstico de Meteomatics entra en la app
 - **D-33**: Hallazgo: la app muestra cosas que no son ciertas; plan para corregirlas antes de la demo
 - **D-32**: El kit para principiantes alcanza para la estación de BioSat: guía de protoboard
 - **D-31**: App para el celular: Inicio simple y Reporte completo
 - **D-30**: Datos reales de Earth Engine reemplazan al prototipo simulado
 - **D-29**: Contraseña de Meteomatics: se deja como está, por practicidad
-- **D-28**: Sugerencias de la organización: asistente de inicio, mapa real y app más fácil
 
 Todas las decisiones están en la [bitácora](docs/reglas-y-bitacora.md).
 <!-- AUTO:DECISIONES:FIN -->
@@ -207,7 +211,7 @@ BioSat/
 │   ├── clima_zonas.json                                      <-- Clima NASA POWER 1981-2025 de las 5 zonas (lo lee la app)
 │   ├── desmonte_zonas.json                                   <-- Desmontes Hansen 2001-2025, modelo validado en el tiempo y riesgo por zona · real
 │   ├── diagnostico_landsat_ia.json                           <-- Meses de suelo pelado con Landsat 2021-2025 y fragilidad (Earth Engine) · real
-│   ├── meteomatics_santiago_zonas.json                       <-- Pronóstico y clima de Meteomatics por zona (Santi)
+│   ├── meteomatics_santiago_zonas.json                       <-- Pronóstico de 7 días de Meteomatics por zona (Santi) · lo lee la app y se renueva todos los días (D-34)
 │   ├── resumen_mensual_santiago.csv                          <-- Normal 1991-2020 por mes y zona, para planilla
 │   ├── rotaciones_santiago.json                              <-- 15 rotaciones de las 5 zonas (Vale) · Zona 5 validada por un productor, el resto sin validar
 │   ├── santiago_mapa.json                                    <-- Mapa de Santiago del Estero: 27 departamentos pintados por zona (IGN, vía geoBoundaries)
@@ -222,7 +226,7 @@ BioSat/
 │   │   ├── 05_Logistica_Antropico_y_Servicios/ (2 archivos)  <-- B26-B29, B32-B37: caminos, población
 │   │   └── 06_Embeddings_IA_AlphaEarth/ (2 archivos)         <-- Embeddings AlphaEarth 64D (DeepMind)
 │   └── imagenes/ (23 archivos)                               <-- Compuestos de mediana Landsat del visor y mapa de la zonificación (Earth Engine)
-├── docs/ (30 archivos)                                       <-- Documentación del equipo
+├── docs/ (32 archivos)                                       <-- Documentación del equipo
 ├── ia_desmonte/                                              <-- Pipeline de datos reales con Earth Engine: suelo, desmontes, zonificación, suelo pelado e imágenes
 │   ├── __init__.py
 │   ├── comun.py
@@ -255,14 +259,16 @@ BioSat/
 │   └── README.md                                             <-- Objetivo común, ramas, reglas e hitos de integración
 ├── scripts/                                                  <-- Herramientas para bajar y procesar datos
 │   ├── actualizar_readme.py                                  <-- Regenera las secciones automáticas del README
-│   ├── captura-movil.mjs                                     <-- Captura la app emulando un celular de 390 px (Chrome)
-│   ├── descargar_meteomatics.py                              <-- Descarga datos de Meteomatics por zona
+│   ├── captura-movil.mjs                                     <-- Captura la app emulando un celular de 390 px, u otro ancho con ANCHO (Chrome)
+│   ├── descargar_meteomatics.py                              <-- Descarga el pronóstico de Meteomatics por zona; no pisa el archivo si falla una zona
 │   ├── descargar_nasa_power.py                               <-- Descarga y resume NASA POWER por zona
 │   ├── earth_engine_embeddings.js                            <-- Ejemplo GEE de embeddings (falta adaptar a SdE)
 │   ├── gee_exportar_zonas.js                                 <-- Earth Engine: estadísticas e imágenes por zona para la app
 │   ├── gee_visor_biosat.js                                   <-- Visor GIS en Earth Engine: 2000 vs 2025, NDVI, desmonte, zonas IA
 │   ├── gee_zonas_y_desmonte.js                               <-- Earth Engine: zonificación AIZAL y modelo predictivo de desmontes
-│   └── generar_mapa_santiago.py                              <-- Genera data/santiago_mapa.json desde geoBoundaries
+│   ├── generar_mapa_santiago.py                              <-- Genera data/santiago_mapa.json desde geoBoundaries
+│   └── pruebas/                                              <-- Pruebas de Python de los scripts (pytest, sin internet)
+│       └── test_descargar_meteomatics.py
 ├── tests/                                                    <-- Pruebas de Node (node --test tests/*.test.js)
 │   ├── arduino-pines.test.js
 │   ├── asistente-logica.test.js
@@ -272,8 +278,9 @@ BioSat/
 │   ├── kit-logica.test.js
 │   ├── lector-serial.test.js
 │   ├── mapa-santiago.test.js
+│   ├── pronostico-logica.test.js                             <-- Prueba el resumen y el vencimiento del pronóstico de Meteomatics
 │   └── vistas.test.js                                        <-- Prueba las vistas Inicio, Reporte y la vista detallada (completo.html)
-└── web/ (40 archivos)                                        <-- App web BioSat (abrir con un servidor: ver Inicio rápido)
+└── web/ (41 archivos)                                        <-- App web BioSat (abrir con un servidor: ver Inicio rápido)
 ```
 <!-- AUTO:ESTRUCTURA:FIN -->
 

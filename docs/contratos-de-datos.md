@@ -426,3 +426,31 @@ El contorno de Santiago del Estero con sus 27 departamentos, pintados por zona, 
 - **Es una aproximación:** las zonas se dibujan por departamento, pero el clima de cada una sale de un punto de NASA POWER (una celda de unos 50 km). La app lo dice debajo del mapa.
 - **Fuente y licencia:** Instituto Geográfico Nacional (IGN), vía geoBoundaries, CC BY 3.0 IGO. La app tiene que citarla junto al mapa.
 - El archivo original de geoBoundaries (5,5 MB, todo el país) **no se sube al repositorio**.
+
+## 10. `data/meteomatics_santiago_zonas.json` (pronóstico de 7 días · Santi, en la app desde D-34)
+
+Pronóstico diario de Meteomatics (modelo europeo ECMWF, 9 km) para el punto de cada zona. Lo genera [`scripts/descargar_meteomatics.py`](../scripts/descargar_meteomatics.py) y lo renueva todos los días el workflow `.github/workflows/actualizar-meteomatics.yml` (06:00 de Argentina). Detalle de los 10 parámetros en [`integracion-meteomatics.md`](integracion-meteomatics.md).
+
+```json
+{
+  "fuente": "Meteomatics Weather & Agro API (ECMWF IFS 9 km / Modelos Globales)",
+  "fecha_generacion": "2026-11-14T18:16:30+00:00",
+  "parametros_incluidos": {"t_max_2m_24h:C": "…"},
+  "zonas": [
+    {"id": "zona_2_secano_este", "nombre": "…", "lat": -27.65, "lon": -62.42,
+     "pronostico_7_dias": [
+       {"fecha": "2026-11-15T00:00:00Z", "t_max_2m_24h:C": 35.3, "t_min_2m_24h:C": 20.5, "precip_24h:mm": 136.06,
+        "frost_warning_24h:idx": 0, "leaf_wetness:idx": 1, "wind_speed_10m:ms": 0.6, "…": "…"}
+     ]}
+  ]
+}
+```
+
+- **`zonas[].id`:** los mismos ids que el resto de los JSON. Tienen que estar las 5 zonas: si falta una, el script no escribe el archivo.
+- **Claves que lee la app** (`web/pronostico-logica.js`): `fecha`, `t_max_2m_24h:C`, `t_min_2m_24h:C`, `precip_24h:mm`, `frost_warning_24h:idx` (1 = alerta), `leaf_wetness:idx` (1 = hoja mojada) y, si viene, `wind_speed_mean_10m_24h:ms` (promedio de 24 h; la app lo pasa a km/h).
+- **Cada fila describe el día ANTERIOR a su `fecha`.** Los parámetros de intervalo de Meteomatics son "right-bounded": `precip_24h:mm` fechado el 16/11 00:00 UTC es la lluvia del 15/11 00 UTC al 16/11 00 UTC. Los valores instantáneos de esa fila (`leaf_wetness:idx`) son de las 00 UTC, o sea las 21 h de Argentina, del mismo día anterior.
+- **`wind_speed_10m:ms` no se usa:** es instantáneo (21 h de Argentina) y no dice si el día sirve para pulverizar. Para eso hace falta pedir `wind_speed_mean_10m_24h:ms` en el script (pendiente de Santi). Sin ese dato, la tarjeta no muestra la línea del viento.
+- **Sin dato:** `-999` (el valor de Meteomatics para "sin dato") o `null`. La app no los suma ni los cuenta.
+- **Vigencia:** la app solo cuenta los días (ya corridos al día anterior) de hoy en adelante, con la fecha local. Si no queda ninguno, muestra "Pronóstico vencido (bajado el {fecha_generacion})" sin números.
+- **Contraseña:** solo en la variable `METEOMATICS_PASSWORD` (secreto de GitHub Actions o variable local). Nunca va en el repo ni en el navegador (D-29).
+- La forma del archivo se prueba en `tests/datos-contratos.test.js`, y el workflow corre esa prueba antes de subir un pronóstico nuevo.

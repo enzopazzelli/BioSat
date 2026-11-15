@@ -1,5 +1,5 @@
 /* BioSat · app web v1. Lee los JSON de data/ (ver docs/contratos-de-datos.md). */
-let CLIMA = {}, IMG = {}, ROT = {}, FUENTE_ROT = {}, VALIDADA = {}, SUELO_Z = {}, DIAG = {}, ARDUINO = null, FUENTE_IMG = '', ZONIF = {}, DESMONTE = {};
+let CLIMA = {}, IMG = {}, ROT = {}, FUENTE_ROT = {}, VALIDADA = {}, SUELO_Z = {}, DIAG = {}, ARDUINO = null, FUENTE_IMG = '', ZONIF = {}, DESMONTE = {}, METEO = null;
 
 const MES = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
 const MES_L = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
@@ -753,6 +753,46 @@ async function medirConSonda(){
     avisoInicio(esc(L.TEXTOS.sondaError));
   }
 }
+
+/* ---------- Pronóstico de Meteomatics (D-34): "Esta semana en tu zona", en el Inicio y en el Reporte ----------
+   Lo calcula web/pronostico-logica.js. Un pronóstico sin días vigentes se muestra como vencido, sin números. */
+function bajadoEl(iso){
+  const d = new Date(iso), dos = n => String(n).padStart(2, '0');
+  return Number.isNaN(d.getTime()) ? '—' : `${dos(d.getDate())}/${dos(d.getMonth() + 1)} ${dos(d.getHours())}:${dos(d.getMinutes())}`;
+}
+function renderPronostico(){
+  const P = window.PronosticoLogica, cajas = [$('#inicioPronostico'), $('#repPronostico')].filter(Boolean);
+  if (!cajas.length) return;   // completo.html no lleva la tarjeta
+  const z = P && METEO && Array.isArray(METEO.zonas) ? METEO.zonas.find(x => x.id === state.zona) : null;
+  if (!z){ cajas.forEach(c => { c.hidden = true; c.innerHTML = ''; }); return; }
+  const T = P.TEXTOS, r = P.resumen(z.pronostico_7_dias, P.hoyLocalISO(new Date()));
+  const fmt = (t, o) => t.replace(/\{(\w+)\}/g, (_, k) => o[k]);
+  const dias = (t, n) => fmt(t, {n}).replace(/^1 días/, '1 día').replace(/^1 noches/, '1 noche');   // singular
+  const fecha = bajadoEl(METEO.fecha_generacion), cab = `<p class="prono-titulo">${esc(T.titulo)}</p>`;
+  let tarjeta, tabla = '';
+  if (!r.vigente) tarjeta = `${cab}<p class="prono-vencido">${esc(fmt(T.vencido, {fecha}))}</p>`;
+  else {
+    const renglones = [];
+    if (r.lluviaTotal !== null) renglones.push(Math.round(r.lluviaTotal) === 0 ? T.sinLluvia
+      : fmt(T.lluvia, {mm: nf(r.lluviaTotal), dia: P.fechaCorta(r.diaMasLluvia.fecha), mmDia: nf(r.diaMasLluvia.mm)}));
+    renglones.push(dias(T.calor, r.diasCalor), dias(T.helada, r.diasHelada), dias(T.hoja, r.diasHojaMojada));
+    // Sin el promedio de viento de 24 h no hay dato: decir "0 días con viento bajo" sería falso.
+    if (r.hayViento) renglones.push(dias(T.viento, r.diasVientoBajo));
+    tarjeta = `${cab}<p class="prono-sub">${esc(r.n === 1 ? 'Hoy' : fmt(T.sub, {n: r.n}))}</p>
+      <ul class="prono-lista">${renglones.map(t => `<li>${esc(t)}</li>`).join('')}</ul>
+      <p class="prono-nota">${esc(fmt(T.complemento, {mes: MES_L[MES_HOY]}))} ${esc(r.hayViento ? T.criterio : T.criterioCalor)}</p>
+      <p class="prono-fuente">${esc(fmt(T.fuente, {fecha}))}</p>`;
+    const TT = T.tabla, num = (v, d = 0) => v === null ? '—' : nf(v, d);
+    tabla = `<div class="prono-tabla-wrap"><table class="prono-tabla">
+      <thead><tr><th>${TT.dia}</th><th>${TT.temp}</th><th>${TT.lluvia}</th><th>${TT.helada}</th><th>${TT.hoja}</th></tr></thead>
+      <tbody>${r.dias.map(d => `<tr><td>${P.fechaCorta(d.fecha)}</td><td>${num(d.tmax)}° / ${num(d.tmin)}°</td>
+        <td>${d.lluvia === null ? '—' : `${num(d.lluvia, d.lluvia < 10 ? 1 : 0)} mm`}</td>
+        <td>${d.helada ? TT.si : TT.no}</td><td>${d.hojaMojada ? TT.si : TT.no}</td></tr>`).join('')}</tbody></table></div>`;
+  }
+  const ini = $('#inicioPronostico'), rep = $('#repPronostico');
+  if (ini){ ini.innerHTML = tarjeta; ini.hidden = false; }
+  if (rep){ rep.innerHTML = tarjeta + tabla; rep.hidden = false; }
+}
 async function mandarWhatsapp(){
   const L = window.InicioLogica, d = datosInicio(), z = ZONAS[state.zona];
   const texto = L.textoWhatsApp({zona: z.nombre, mes: MES_L[MES_HOY], nivelTexto: L.TEXTOS.nivel[d.sem.nivel],
@@ -818,7 +858,7 @@ document.addEventListener('click', async e => {
 });
 
 /* ---------- Render general y eventos ---------- */
-function renderTodo(){ renderInicio(); renderTuCampo(); renderFrases(); renderStats(); renderCalendario(); renderPaneles(); renderDesmonte(); renderTrade(); renderCards(); renderSim(); renderDecidir(); renderVisor(); renderConclusiones(); }
+function renderTodo(){ renderInicio(); renderPronostico(); renderTuCampo(); renderFrases(); renderStats(); renderCalendario(); renderPaneles(); renderDesmonte(); renderTrade(); renderCards(); renderSim(); renderDecidir(); renderVisor(); renderConclusiones(); }
 function renderClima(){ renderFrases(); renderStats(); renderCalendario(); renderPaneles(); renderTrade(); renderCards(); renderSim(); renderConclusiones(); }
 document.addEventListener('click', e => {
   const cb = e.target.closest('[data-capa]');
@@ -963,7 +1003,7 @@ async function cargarImagenes(){
 }
 
 async function cargarDatos(){
-  const [clima, rotVale, rotBorrador, suelo, diag, arduino, zonif, desmonte, mapa] = await Promise.all([
+  const [clima, rotVale, rotBorrador, suelo, diag, arduino, zonif, desmonte, mapa, meteo] = await Promise.all([
     cargarJSON('../data/clima_zonas.json'),
     cargarJSON('../data/rotaciones_santiago.json').catch(() => ({zonas:{}})),
     cargarJSON('datos-borrador/rotaciones_borrador.json'),
@@ -972,10 +1012,11 @@ async function cargarDatos(){
     cargarJSON('../data/arduino_bandejas_demo.json').catch(() => null),
     cargarJSON('../data/zonificacion_aizal.json').catch(() => ({})),
     cargarJSON('../data/desmonte_zonas.json').catch(() => ({})),
-    cargarJSON('../data/santiago_mapa.json').catch(() => null)
+    cargarJSON('../data/santiago_mapa.json').catch(() => null),
+    cargarJSON('../data/meteomatics_santiago_zonas.json').catch(() => null)
   ]);
   CLIMA = adaptarClima(clima);
-  SUELO_Z = suelo; DIAG = diag; ARDUINO = arduino; ZONIF = zonif; DESMONTE = desmonte; MAPA = mapa;
+  SUELO_Z = suelo; DIAG = diag; ARDUINO = arduino; ZONIF = zonif; DESMONTE = desmonte; MAPA = mapa; METEO = meteo;
   for (const z of Object.keys(ZONAS)){
     const v = (rotVale.zonas || {})[z], b = (rotBorrador.zonas || {})[z];
     const deVale = v && Array.isArray(v.rotaciones) && v.rotaciones.length >= 3;

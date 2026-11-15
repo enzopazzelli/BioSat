@@ -11,11 +11,11 @@ Este panorama se escribió a mano a partir de `main`, los planes de [`planes/`](
 | Frente | Quién | Estado | Qué hay | Qué falta |
 |---|---|---|---|---|
 | F1 · Clima | Enzo | **Listo** | `clima_zonas.json` completo (1981-2025, 5 zonas, ET0, normal contra reciente) | Nada |
-| F5 · App y motor | Enzo | **Listo, en `main`** | Inicio simple para el celular, Reporte completo con PDF y vista detallada (D-31). Probado en un celular de verdad (Enzo, 15/11: se ve bien) | Probar la app publicada sin internet en el celular después del último merge; decidir si Meteomatics entra; ensayar la demo en la pantalla grande |
+| F5 · App y motor | Enzo | **Listo** | Inicio simple para el celular, Reporte completo con PDF y vista detallada (D-31). Probado en un celular de verdad (Enzo, 15/11: se ve bien). En la PC, el Inicio va en dos columnas, y el pronóstico de Meteomatics de los próximos días aparece en el Inicio, el Reporte y la pantalla del kit (D-34) | Cargar el secreto `METEOMATICS_PASSWORD` en GitHub; probar la app publicada sin internet en el celular después del último merge; ensayar la demo en la pantalla grande |
 | F4 · Rotaciones | Vale | **Casi listo** | 15 rotaciones (5 zonas × 3). Zona 5 revisada por un productor | Validar las zonas 1 a 4 (o decir que no lo están); confirmar `requiere_hacienda` y el permiso del productor; corregir un dato de la evidencia de la Zona 5; revisar el guion |
 | F2 · Suelo y zonificación | Santi + Enzo (D-30) | **Listo, con datos reales** | Zonificación AIZAL en 5 grupos, suelo de SoilGrids 0-30 cm y meses de suelo pelado con Landsat 2021-2025 | Publicar el visor de Earth Engine; sumar lo que responda la profesora; nombrar los 5 grupos y corregir cómo la app presenta el suelo pelado (D-33) |
 | F3 · Modelo de desmontes | Santi + Enzo (D-30) | **Listo, con datos reales** | Random forest validado en el tiempo, riesgo y proyección por zona, índice de fragilidad con fórmula visible | Pasarle a Sara las métricas reales, el mapa de riesgo y la comparación 2000 contra 2025 |
-| F6 · Arduino | Enzo (toma el frente de Sara) | **Código listo, falta el armado** | Sketch compilado, lector Web Serial sumado a la app y probado con un puerto simulado, esquema y guía de armado en protoboard con el kit para principiantes (D-32) | Armar y sellar el LM35, probar en la placa, calibrar, grabar lecturas |
+| F6 · Arduino | Sara (en un simulador web) y Enzo | **Código listo, armado en curso** | Sketch compilado, lector Web Serial sumado a la app y probado con un puerto simulado, esquema y guía de armado en protoboard con el kit para principiantes (D-32). El 15/11 Sara lo está armando en un simulador web; Enzo avanzó con el kit el 14/11 | Probar en la placa real, calibrar y grabar lecturas reales. Si la demo usa el simulador, sus lecturas son simuladas y la pantalla del kit tiene que decirlo (D-33) |
 | F7 · Entrega | Sara (coordina) | **Sin empezar** | Nada | Guion, video o diapositivas, página del proyecto, declaración de IA, ensayos |
 
 Avance contado de las casillas de los planes: **Enzo 80%, Santi 81%, Vale 77%, Sara 20%** (81 de 120 casillas, 68%). Los planes pasaron de 108 a 120 casillas desde el corte del sábado; entre las nuevas están las de la app para el celular (D-31). Las 3 casillas del armado del kit están en el plan de Sara, pero las hace Enzo. Es una medida aproximada: no pesa igual cada tarea.
@@ -77,6 +77,8 @@ Los `null` se muestran en la app como "sin dato". No hay que rellenarlos a mano:
 - **Zonas 1 a 4 de Vale:** siguen "sin validar", y la app lo avisa. La confianza queda en "baja".
 - **Qué predice la IA:** el modelo de Santi predice desmontes por zona. El suelo pelado sale por umbral, no por IA, y ese umbral no tiene exactitud medida. Conviene decirlo así en el pitch.
 - **Semáforo del Inicio (D-31):** los umbrales son un criterio del equipo, no una norma agronómica. La app lo dice; el pitch también debería decirlo.
+- **Pronóstico de Meteomatics (D-34):** hasta que Enzo cargue el secreto `METEOMATICS_PASSWORD` en GitHub, el pronóstico no se renueva. El que hay (bajado el 14/11) vence el 21/11; desde ahí la tarjeta dice "Pronóstico vencido". El workflow va a fallar en rojo todos los días hasta que el secreto esté cargado.
+- **Kit en el simulador web:** si en la demo se muestra el kit del simulador, las lecturas son simuladas. Para no mostrar cosas falsas (D-33), la pantalla del kit tiene que aclararlo.
 
 ---
 
@@ -94,7 +96,8 @@ Los `null` se muestran en la app como "sin dato". No hay que rellenarlos a mano:
 - Datos reales de Earth Engine en lugar del prototipo simulado: suelo, desmontes, zonificación, suelo pelado e imágenes (D-30).
 - App para el celular: Inicio simple, Reporte completo con PDF, vista detallada y asistente corregido (D-31), integrada en `main` y probada en un celular.
 - Guía de armado en protoboard con el kit para principiantes (D-32).
-- Revisión de ramas: `santi-datos-ia`, `vale-rotaciones` y `sara-arduino-entrega` no tienen nada fuera de `main`, y `enzo-app` quedó integrada entera. **Hoy no queda trabajo sin integrar.**
+- Revisión de ramas: `santi-datos-ia`, `vale-rotaciones` y `sara-arduino-entrega` no tienen nada fuera de `main`, y `enzo-app` quedó integrada entera.
+- El Inicio en dos columnas en la PC y el pronóstico de Meteomatics en la app, con actualización diaria (D-34).
 
 ---
 

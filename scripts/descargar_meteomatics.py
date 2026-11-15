@@ -8,6 +8,7 @@ Cuenta: hackathon_nasa_space_apps_gallardo_santiagoignacio
 
 import json
 import os
+import sys
 import urllib.request
 import base64
 from datetime import datetime, timezone, timedelta
@@ -82,16 +83,18 @@ def descargar_pronostico_zona(zona):
         print(f"Error descargando {zona['nombre']}: {e}")
         return None
 
-def main():
+def main(out_file=None):
     if not PASS:
         print("Aviso de Seguridad: La variable de entorno METEOMATICS_PASSWORD no está definida.")
         print("Uso: export METEOMATICS_PASSWORD='tu_clave_de_meteomatics'")
         print("El archivo existente data/meteomatics_santiago_zonas.json se conserva intacto.")
         return
 
-    base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    data_dir = os.path.join(base_dir, "data")
-    os.makedirs(data_dir, exist_ok=True)
+    if out_file is None:
+        base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        data_dir = os.path.join(base_dir, "data")
+        os.makedirs(data_dir, exist_ok=True)
+        out_file = os.path.join(data_dir, "meteomatics_santiago_zonas.json")
 
     salida = {
         "fuente": "Meteomatics Weather & Agro API (ECMWF IFS 9 km / Modelos Globales)",
@@ -136,7 +139,14 @@ def main():
                 "pronostico_7_dias": list(dias_dict.values())
             })
 
-    out_file = os.path.join(data_dir, "meteomatics_santiago_zonas.json")
+    # D-34: si falta alguna zona o alguna vino sin días, no se pisa el pronóstico anterior.
+    # La app muestra el anterior como vencido cuando ya no le quedan días, nunca como actual.
+    faltan = [z["id"] for z in ZONAS
+              if not any(s["id"] == z["id"] and s["pronostico_7_dias"] for s in salida["zonas"])]
+    if faltan:
+        print(f"\nDescarga incompleta: faltan {', '.join(faltan)}. No se escribe {out_file}.")
+        sys.exit(1)
+
     with open(out_file, "w", encoding="utf-8") as f:
         json.dump(salida, f, indent=2, ensure_ascii=False)
 
