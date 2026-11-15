@@ -33,14 +33,14 @@ Cómo se conecta: `app.js` lee los JSON de `../data/`; las respuestas del asiste
 |---|---|---|---|
 | `clima_zonas.json` | Clima diario 1981-2025 de las 5 zonas, ET0, normal 1991-2020 contra 2021-2025 | Enzo | NASA POWER (MERRA-2, ~50 km). Completo |
 | `rotaciones_santiago.json` | 15 rotaciones (5 zonas × 3) | Vale | Zona 5 validada por un productor (audio); zonas 1 a 4 **sin validar**. `requiere_hacienda` lo completó Enzo según el texto: Vale debe confirmarlo |
-| `suelo_zonas.json` | 11 variables por zona | Santi | **Estimación zonal de referencia**, confianza "media", no extraída píxel a píxel de Earth Engine |
-| `diagnostico_landsat_ia.json` | Meses de suelo pelado por umbral NDVI < 0,25, fragilidad | Santi | Exactitud y F1 en `null`. Fragilidad y meses figuran "alta" sin que se haya podido comprobar |
-| `zonificacion_aizal.json` | k-means con 5 grupos sobre AIZAL | Santi | Silueta 0,563 |
-| `desmonte_zonas.json` | Riesgo, proyección y métricas del modelo de desmontes | Santi | Regresión logística AUC 0,986 / F1 0,934; random forest 0,973 / 0,903 (coinciden con los registros del pipeline) |
+| `suelo_zonas.json` | 11 variables por zona, con rango del 10 al 90 % | `ia_desmonte/suelo.py` | SoilGrids 2.0 de 0 a 30 cm sobre tierra agropecuaria (Earth Engine). Confianza media |
+| `diagnostico_landsat_ia.json` | Meses de suelo pelado (NDVI < 0,25, con meses dudosos), fragilidad | `ia_desmonte/suelo_pelado.py` | Landsat 8 y 9 2021-2025 en 3.000 puntos de cultivo. Meses: confianza media; fragilidad: baja |
+| `zonificacion_aizal.json` | k-means con 5 grupos sobre clima y suelo | `ia_desmonte/zonificacion.py` | TerraClimate + SoilGrids + NASADEM, 6.000 píxeles. Silueta 0,27 (la mejor, 0,34 con k=2) |
+| `desmonte_zonas.json` | Historia 2001-2025, riesgo, proyección y métricas | `ia_desmonte/desmonte.py` | Hansen v1.13 (30 m). Random forest: AUC 0,78 en validación cruzada y 0,63 en la prueba 2016-2025 |
 | `meteomatics_santiago_zonas.json` | Pronóstico a 7 días por zona | Santi | Meteomatics (ECMWF 9 km). **Todavía no entra en la app** |
 | `arduino_bandejas_demo.json` | Lecturas grabadas de las 3 bandejas | Enzo (kit) | Plantilla **vacía**; `meta.umbrales.conductividad_salitre_raw` (700 por defecto) |
 | `santiago_mapa.json` | 27 departamentos pintados por zona | Enzo | IGN vía geoBoundaries (CC BY 3.0 IGO). Lo genera `scripts/generar_mapa_santiago.py` |
-| `imagenes/` | 22 imágenes de compuestos Landsat de Earth Engine + `escenas.json` | Santi | Earth Engine. Unos 10 MB |
+| `imagenes/` | 21 compuestos de mediana Landsat + mapa de la zonificación + `escenas.json` | `ia_desmonte/imagenes.py` | Earth Engine (D-30). Unos 6 MB |
 | `datos_cruzados_aizal/`, `raw_nasa_power/`, `resumen_mensual_santiago.csv` | Catálogo AIZAL V4 (38 variables), descargas crudas, resumen para planilla | Santi / Enzo | |
 
 El formato de cada archivo está en [`contratos-de-datos.md`](contratos-de-datos.md): §1 clima, §2 suelo, §3 diagnóstico, §4 rotaciones, §5 imágenes, §6 Arduino, §7 zonificación, §8 desmontes, §9 mapa.
@@ -100,7 +100,7 @@ Fuera de `docs/`: `PLAN.md` (plan general y ruta), `planes/` (plan y checklist d
 - **Idioma EN/ES:** última etapa de las sugerencias de la organización; necesita diseño propio. Las rotaciones de Vale en inglés pasan por su revisión.
 - **Kit Arduino:** armado, sellado del LM35, calibración y lecturas reales (sin ellas, la pantalla del kit solo anda en vivo).
 - **Entrega:** guion, video o diapositivas, página del proyecto en Space Apps, declaración de uso de IA, 2 ensayos, hora y formato de entrega.
-- **Santi:** cambiar la contraseña de Meteomatics **en el sitio de Meteomatics** (la vieja sigue en el historial público de Git); publicar el visor de Earth Engine; verificar la fragilidad y los meses de suelo pelado.
+- **Santi:** publicar el visor de Earth Engine; verificar la fragilidad y los meses de suelo pelado. La contraseña de Meteomatics no se cambia, por practicidad (D-29).
 - **Vale:** confirmar los 7 `requiere_hacienda`, conseguir por escrito el permiso del productor y validar (o declarar sin validar) las zonas 1 a 4.
 - **Enzo:** decidir si Meteomatics entra en la demo, ensayar la pantalla del kit en la pantalla grande y cerrar `PLAN.md`.
 - **Detalles menores de la última revisión** (no impiden nada): flechita de los plegables, tamaños de letra y botones menores a 44 px, tema elegido en la pregunta 3 solo por color, zonas del asistente sin flechas del teclado, restos en `app.js` y la carpeta `web/` colapsada en el README.

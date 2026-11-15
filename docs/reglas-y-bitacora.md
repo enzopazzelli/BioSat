@@ -156,3 +156,26 @@ Según la página oficial de premios (`NASA Space Apps Challenge - awards.mhtml`
   - **App más fácil:** una frase simple al comienzo de los pasos 2 y 3, calculada con los datos; suelo, satélite y desmonte dentro de un "Ver el detalle técnico" plegado; letra base de 17 px. El panel del sensor se deja a la vista porque es lo que se muestra en la demo.
   - **Idioma EN/ES:** queda para la etapa siguiente, con su propio diseño. Los textos nuevos ya viven en objetos con claves para poder traducirlos.
   - **Diseño y plan:** `docs/superpowers/specs/2026-11-14-asistente-y-mapa-design.md` y `docs/superpowers/plans/2026-11-14-asistente-y-mapa.md`.
+- **D-29 (Contraseña de Meteomatics: se deja como está, por practicidad):**
+  - **Situación:** la clave de la cuenta de Meteomatics del hackathon entró en el código con el PR #5 (commit `6488ad7`) y salió en `ce7f282`. Desde entonces el script la lee de `METEOMATICS_PASSWORD`, pero la clave vieja sigue en el historial público de Git.
+  - **Decisión (Enzo):** no se cambia la contraseña. Es una decisión de practicidad: es la cuenta del hackathon, Meteomatics no entra en la app y cambiarla no suma nada a la demo. Deja de figurar como urgente.
+  - **Si cambia algo:** si se viera un uso indebido de la cuenta, se cambia la clave en el sitio de Meteomatics en ese momento.
+- **D-30 (Datos reales de Earth Engine reemplazan al prototipo simulado):**
+  - **Qué se encontró:** en el repaso del 14/11 apareció que el modelo de desmontes, la historia de desmontes, el riesgo por zona, el suelo y la zonificación de `main` salían de un prototipo con **datos simulados** (`np.random` y valores escritos a mano), y que las imágenes "de Earth Engine" eran copias de las de Planetary Computer.
+  - **Decisión (Enzo):** rehacer todo con datos reales, con lo que más confianza dé y simulando lo menos posible. Se usa Google Earth Engine desde Python, con el proyecto de Enzo (nivel Comunidad, no comercial).
+  - **Qué cambia:**
+    - El pipeline vive en `ia_desmonte/`.
+    - El prototipo pasa a `archivo/prototipo-ia-simulado/`, con un aviso.
+    - **Fuentes:** Hansen v1.13 (desmontes 2001-2025), SoilGrids 2.0, TerraClimate, Landsat 2021-2025, ESA WorldCover, GRIP4, WDPA, WorldPop y NASADEM.
+    - **Validación del modelo:** entrena con el monte de 2008 y se prueba con el desmonte 2016-2025.
+    - Cada número lleva su fuente, su método y su confianza (alta, media o baja).
+  - **Las métricas cambian:** las del prototipo (AUC 0,986) no eran reales. Las nuevas son más bajas y defendibles. Están en `docs/datos-y-metodos.md`, que se genera solo a partir de los JSON. Antes de grabar el pitch, Santi y Sara tienen que usar estas.
+  - **Hallazgos de la corrida:**
+    - En Earth Engine, el nitrógeno de SoilGrids viene en mg/kg (se verificó contra la API de ISRIC).
+    - GRIP4 está en `GRIP4/Central-South-America`.
+    - La zonificación real da una silueta más baja que la del prototipo, y el JSON lo dice.
+  - **Resultados principales:**
+    - Random forest elegido por validación cruzada (AUC 0,78); en la prueba 2016-2025 da 0,63, con una tasa base del 9 %.
+    - La caída entre las dos cifras se explica como hipótesis (Ley de Bosques), no como hecho. Para probarla hay un plan listo para que lo ejecute alguien más adelante: `docs/superpowers/plans/2026-11-15-validacion-ley-de-bosques.md` (entrenar dentro del régimen de la ley, 2012 → 2017, y sumar la categoría del OTBN como predictor).
+    - Las etiquetas de Hansen se leen a 30 m: a 250 m el promedio inflaba la tasa de desmonte al 23 %.
+  - **Diseño y plan:** `docs/superpowers/specs/2026-11-14-datos-reales-design.md` y `docs/superpowers/plans/2026-11-14-datos-reales.md`.

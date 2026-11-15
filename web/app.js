@@ -304,11 +304,11 @@ function renderDesmonte(){
   }
 
   const ev = DESMONTE.evaluacion || {}, met = ev.metodos || {};
-  const NOM = {regresion_logistica:'Regresión logística', random_forest:'Random forest', temporal_lstm_o_transformer:'LSTM o Transformer'};
+  const NOM = {regresion_logistica:'Regresión logística', random_forest:'Random forest', gradient_boosting:'Gradient boosting', temporal:'Proyección (método simple)'};
   const num = v => v === null || v === undefined ? '—' : nf(v, 2);
   $('#desmonteMetodos').innerHTML = Object.entries(NOM).map(([k, nom]) => {
     const x = met[k] || {};
-    const ultima = k === 'temporal_lstm_o_transformer' ? (x.error_ha_pct == null ? '—' : `error ${nf(x.error_ha_pct)} %`) : num(x.f1);
+    const ultima = k === 'temporal' ? (x.error_ha_pct == null ? '—' : `error ${nf(x.error_ha_pct)} %`) : num(x.f1);
     return `<tr><td>${nom}${k === ev.metodo_elegido ? ' ✓' : ''}</td><td>${num(x.auc)}</td><td>${ultima}</td></tr>`;
   }).join('');
   $('#desmonteNota').textContent = DESMONTE.meta && DESMONTE.meta.validacion

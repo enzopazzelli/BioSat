@@ -51,19 +51,18 @@ Avance de cada integrante, contado desde las casillas de su plan en [`planes/`](
 | Persona | Rama | Avance | Tareas |
 |---|---|---|---|
 | [Enzo · Integración y app](planes/1-enzo.md) | `enzo-app` | `▓▓▓▓▓▓▓▓░░` 75% | 30/40 |
-| [Santi · Suelo, satélite e IA](planes/2-santi.md) | `santi-datos-ia` | `▓▓▓▓▓▓▓▓░░` 78% | 21/27 |
+| [Santi · Suelo, satélite e IA](planes/2-santi.md) | `santi-datos-ia` | `▓▓▓▓▓▓▓▓░░` 81% | 22/27 |
 | [Vale · Campo y agronomía](planes/3-vale.md) | `vale-rotaciones` | `▓▓▓▓▓▓▓▓░░` 77% | 17/22 |
 | [Sara · Kit Arduino y relato](planes/4-sara.md) | `sara-arduino-entrega` | `▓▓░░░░░░░░` 20% | 5/25 |
-| **Total** | | `▓▓▓▓▓▓░░░░` **64%** | **73/114** |
+| **Total** | | `▓▓▓▓▓▓░░░░` **65%** | **74/114** |
 <!-- AUTO:AVANCE:FIN -->
 
 ### Lo más urgente
 
-1. **Santi: cambiar la contraseña de Meteomatics en el sitio de Meteomatics.** El script ya la lee de una variable de entorno (`METEOMATICS_PASSWORD`) y no está más en el código, pero **la clave vieja sigue en el historial público de Git**: hay que cambiarla igual.
-2. **Kit Arduino: está programado, falta armarlo y probarlo.** El sketch, el lector Web Serial y el esquema están en [`arduino/`](arduino/README.md) (Enzo se hizo cargo). Falta armar el kit, sellar el LM35, calibrar y grabar lecturas reales. **La entrega** (guion, video y página del proyecto) sigue sin empezar.
-3. **Santi: suelo y Landsat ya están cargados, pero el suelo es una estimación zonal de referencia** (confianza "media", todavía sin extraer píxel a píxel de Earth Engine) y el visor de Earth Engine sigue sin publicar. Los pasos están en [su plan](planes/2-santi.md).
-4. **Vale: confirmar `requiere_hacienda` y el permiso del productor.** Enzo completó 7 valores según el texto de cada rotación, y la entrevista deja pendiente el permiso por escrito para usar sus frases.
-5. **Enzo: sumar el lector de Sara apenas llegue, decidir si Meteomatics entra en la demo y ensayar la pantalla del kit en la pantalla grande.**
+1. **Kit Arduino: está programado, falta armarlo y probarlo.** El sketch, el lector Web Serial y el esquema están en [`arduino/`](arduino/README.md) (Enzo se hizo cargo). Falta armar el kit, sellar el LM35, calibrar y grabar lecturas reales. **La entrega** (guion, video y página del proyecto) sigue sin empezar.
+2. **Datos reales de Earth Engine (D-30):** suelo, desmontes, zonificación, suelo pelado e imágenes ahora salen de fuentes reales (`ia_desmonte/`). **Las métricas del pitch cambian:** usar solo las de [`docs/datos-y-metodos.md`](docs/datos-y-metodos.md). El visor de Earth Engine sigue sin publicar.
+3. **Vale: confirmar `requiere_hacienda` y el permiso del productor.** Enzo completó 7 valores según el texto de cada rotación, y la entrevista deja pendiente el permiso por escrito para usar sus frases.
+4. **Enzo: sumar el lector de Sara apenas llegue, decidir si Meteomatics entra en la demo y ensayar la pantalla del kit en la pantalla grande.**
 
 ### Lo que falta, por persona
 
@@ -87,14 +86,13 @@ Sale solo de las casillas sin tildar de cada plan. Panorama completo y riesgos: 
 </details>
 
 <details>
-<summary><b>Santi</b>: 6 pendientes (<a href="planes/2-santi.md">plan completo</a>)</summary>
+<summary><b>Santi</b>: 5 pendientes (<a href="planes/2-santi.md">plan completo</a>)</summary>
 
 - Correr `scripts/gee_visor_biosat.js`, publicarlo como Earth Engine App y pasarles el link a Enzo y a Sara _(Checkpoint 1)_
 - Sumar lo que responda la profesora al audio y al documento _(Congelamiento)_
 - Pasarle a Sara las métricas, el mapa de riesgo, una captura del visor y la comparación 2000 contra 2025 _(Congelamiento)_
 - Opcional: usar los embeddings AlphaEarth como variable extra del modelo o de la zonificación _(Congelamiento)_
 - Ayudar con el video y la página: explicar el modelo en 20 segundos _(Entrega)_
-- **Urgente:** cambiar la contraseña de Meteomatics en el sitio de Meteomatics. *El script ya la lee de `METEOMATICS_PASSWORD` y no está en el código (se tomó del PR #7), pero la clave viej... _(Agregadas por Enzo)_
 
 </details>
 
@@ -139,12 +137,12 @@ Sale solo de las casillas sin tildar de cada plan. Panorama completo y riesgos: 
 **Últimas decisiones:**
 
 <!-- AUTO:DECISIONES:INICIO -->
+- **D-30**: Datos reales de Earth Engine reemplazan al prototipo simulado
+- **D-29**: Contraseña de Meteomatics: se deja como está, por practicidad
 - **D-28**: Sugerencias de la organización: asistente de inicio, mapa real y app más fácil
 - **D-27**: Pantalla del kit para el jurado, guía "Del kit al campo" y Arduino Uno por USB
 - **D-26**: Informe de clima corregido y app lista para los datos de D-25
 - **D-25**: Propuesta de la profesora: zonificación AIZAL y modelo predictivo de desmontes
-- **D-24**: Checkpoint 1: clima 1981-2025 y app v1 publicada
-- **D-23**: Trabajo en paralelo con ramas y planes individuales
 
 Todas las decisiones están en la [bitácora](docs/reglas-y-bitacora.md).
 <!-- AUTO:DECISIONES:FIN -->
@@ -178,6 +176,8 @@ BioSat/
 ├── NASA Space Apps Challenge.pdf                             <-- Enunciado oficial (pestaña Details)
 ├── PLAN.md                                                   <-- Plan de trabajo: roles, ruta y tareas
 ├── README.md                                                 <-- Portada del proyecto (se actualiza sola)
+├── archivo/                                                  <-- Material archivado que no alimenta la app
+│   └── prototipo-ia-simulado/ (38 archivos)                  <-- Primer prototipo de IA con datos SIMULADOS (no se usa; ver LEEME-PRIMERO.md)
 ├── arduino/                                                  <-- Kit Arduino: sketch, lector Web Serial, esquema y guía de armado
 │   ├── lector-web-serial.js                                  <-- Lee el Arduino por USB desde Chrome o Edge (window.BioSatArduino)
 │   ├── README.md                                             <-- Guía del kit: cómo armarlo, cargarlo, calibrarlo y usarlo con la app
@@ -193,14 +193,14 @@ BioSat/
 ├── data/                                                     <-- Datos y contratos JSON que lee la app
 │   ├── arduino_bandejas_demo.json                            <-- Lecturas grabadas del kit (Sara) · plantilla vacía
 │   ├── clima_zonas.json                                      <-- Clima NASA POWER 1981-2025 de las 5 zonas (lo lee la app)
-│   ├── desmonte_zonas.json                                   <-- Riesgo, proyección y métricas del modelo de desmontes (Santi) · cargado
-│   ├── diagnostico_landsat_ia.json                           <-- Meses de suelo pelado por umbral (Santi) · plantilla vacía: falta correr Earth Engine
+│   ├── desmonte_zonas.json                                   <-- Desmontes Hansen 2001-2025, modelo validado en el tiempo y riesgo por zona · real
+│   ├── diagnostico_landsat_ia.json                           <-- Meses de suelo pelado con Landsat 2021-2025 y fragilidad (Earth Engine) · real
 │   ├── meteomatics_santiago_zonas.json                       <-- Pronóstico y clima de Meteomatics por zona (Santi)
 │   ├── resumen_mensual_santiago.csv                          <-- Normal 1991-2020 por mes y zona, para planilla
 │   ├── rotaciones_santiago.json                              <-- 15 rotaciones de las 5 zonas (Vale) · Zona 5 validada por un productor, el resto sin validar
 │   ├── santiago_mapa.json                                    <-- Mapa de Santiago del Estero: 27 departamentos pintados por zona (IGN, vía geoBoundaries)
-│   ├── suelo_zonas.json                                      <-- Suelo por zona (Santi) · plantilla vacía: falta extraer de AIZAL
-│   ├── zonificacion_aizal.json                               <-- Zonificación k-means con AIZAL, 5 grupos (Santi) · cargada
+│   ├── suelo_zonas.json                                      <-- Suelo por zona: SoilGrids 0-30 cm sobre tierra agropecuaria (Earth Engine) · real
+│   ├── zonificacion_aizal.json                               <-- Zonificación k-means sobre TerraClimate y SoilGrids, 5 grupos (Earth Engine) · real
 │   ├── datos_cruzados_aizal/                                 <-- Catálogo AIZAL V4: 38 variables de suelo, clima y paisaje
 │   │   ├── CATALOGO_MAESTRO_VARIABLES.md                     <-- Índice de módulos y reglas que disparan
 │   │   ├── 01_Clima_y_Balance_Hidrico/ (2 archivos)          <-- B01-B08: agua, lluvia, sequía, temperatura
@@ -209,42 +209,32 @@ BioSat/
 │   │   ├── 04_Fisica_Suelo_y_Topografia/ (2 archivos)        <-- B10, B12, B17-B18, B24-B25: textura, relieve
 │   │   ├── 05_Logistica_Antropico_y_Servicios/ (2 archivos)  <-- B26-B29, B32-B37: caminos, población
 │   │   └── 06_Embeddings_IA_AlphaEarth/ (2 archivos)         <-- Embeddings AlphaEarth 64D (DeepMind)
-│   └── imagenes/ (22 archivos)                               <-- Imágenes del visor exportadas de Earth Engine (Santi)
-├── docs/ (23 archivos)                                       <-- Documentación del equipo
-├── ia_desmonte/                                              <-- IA de Santi: zonificación AIZAL, modelo de desmontes, gráficos e informes
-│   ├── BioSat_IA_Zonificacion_y_Desmonte.ipynb
-│   ├── INSTRUCCIONES_PIPELINE.md                             <-- 🛰️ Instrucciones de Operación del Pipeline Automatizado B...
-│   ├── README.md                                             <-- 🛰️ Espacio de Trabajo: santi-task
-│   ├── data/
-│   │   ├── desmonte_entrenamiento_2001_2015.csv
-│   │   ├── desmonte_prueba_2016_2023.csv
-│   │   ├── desmonte_zonas.json
-│   │   ├── serie_historica_desmonte_zonas.csv
-│   │   ├── zonas_bioclima_suelo.csv
-│   │   └── zonificacion_aizal.json
-│   ├── gee/
-│   │   ├── biosat_gee_pipeline_completo.js
-│   │   └── README_GEE.md                                     <-- Módulo Google Earth Engine (GEE): Extracción y Procesamie...
-│   ├── graficos_y_resultados/
-│   │   ├── 01_codo_y_silueta_kmeans.png
-│   │   ├── 02_heatmap_perfiles_clusters.png
-│   │   ├── 03_matriz_correspondencia_zonas.png
-│   │   ├── 04_curvas_roc_modelos.png
-│   │   ├── 05_matrices_confusion.png
-│   │   ├── 06_importancia_variables_rf.png
-│   │   ├── 07_serie_historica_desmonte.png
-│   │   ├── 08_riesgo_desmonte_por_zona.png
-│   │   ├── resumen_metricas_modelos.csv
-│   │   ├── explicaciones/ (9 archivos)
-│   │   └── historial/ (2 archivos)
-│   ├── python/
-│   │   ├── compilar_notebook.py
-│   │   ├── extraer_metricas_pdf.py
-│   │   └── pipeline_automatizado.py
-│   └── registros/
-│       ├── INDICE_REGISTROS.md                               <-- 📂 Índice Histórico de Registros y Reportes PDF
-│       ├── registro_metricas_20261114_151536.json
-│       └── Reporte_IA_BioSat_20261114_151536.pdf
+│   └── imagenes/ (23 archivos)                               <-- Compuestos de mediana Landsat del visor y mapa de la zonificación (Earth Engine)
+├── docs/ (26 archivos)                                       <-- Documentación del equipo
+├── ia_desmonte/                                              <-- Pipeline de datos reales con Earth Engine: suelo, desmontes, zonificación, suelo pelado e imágenes
+│   ├── __init__.py
+│   ├── comun.py
+│   ├── correr_todo.py
+│   ├── desmonte.py
+│   ├── imagenes.py
+│   ├── informe.py
+│   ├── proyeccion.py
+│   ├── README.md                                             <-- iadesmonte/ · Datos reales de suelo, desmonte, zonificaci...
+│   ├── suelo.py
+│   ├── suelo_pelado.py
+│   ├── zonas.py
+│   ├── zonificacion.py
+│   ├── pruebas/                                              <-- Pruebas de Python del pipeline (pytest)
+│   │   ├── __init__.py
+│   │   ├── test_comun.py
+│   │   ├── test_desmonte.py
+│   │   ├── test_informe.py
+│   │   ├── test_proyeccion.py
+│   │   ├── test_suelo.py
+│   │   ├── test_suelo_pelado.py
+│   │   ├── test_zonas.py
+│   │   └── test_zonificacion.py
+│   └── salidas/ (12 archivos)                                <-- Muestras de Earth Engine y registro de la corrida (permiten reentrenar sin cuenta)
 ├── planes/                                                   <-- Plan de cada integrante y cómo trabajamos en ramas
 │   ├── 1-enzo.md                                             <-- Plan de Enzo · integración y app (rama enzo-app)
 │   ├── 2-santi.md                                            <-- Plan de Santi · suelo, satélite e IA (rama santi-datos-ia)
@@ -263,6 +253,7 @@ BioSat/
 ├── tests/                                                    <-- Pruebas de Node (node --test tests/*.test.js)
 │   ├── arduino-pines.test.js
 │   ├── asistente-logica.test.js
+│   ├── datos-contratos.test.js                               <-- Prueba la forma de los datos reales de ia_desmonte/
 │   ├── frases-logica.test.js
 │   ├── kit-logica.test.js
 │   ├── lector-serial.test.js

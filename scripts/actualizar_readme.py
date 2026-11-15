@@ -45,10 +45,10 @@ DESCRIPCIONES = {
     "data": "Datos y contratos JSON que lee la app",
     "data/clima_zonas.json": "Clima NASA POWER 1981-2025 de las 5 zonas (lo lee la app)",
     "data/resumen_mensual_santiago.csv": "Normal 1991-2020 por mes y zona, para planilla",
-    "data/suelo_zonas.json": "Suelo por zona (Santi) · plantilla vacía: falta extraer de AIZAL",
-    "data/diagnostico_landsat_ia.json": "Meses de suelo pelado por umbral (Santi) · plantilla vacía: falta correr Earth Engine",
-    "data/zonificacion_aizal.json": "Zonificación k-means con AIZAL, 5 grupos (Santi) · cargada",
-    "data/desmonte_zonas.json": "Riesgo, proyección y métricas del modelo de desmontes (Santi) · cargado",
+    "data/suelo_zonas.json": "Suelo por zona: SoilGrids 0-30 cm sobre tierra agropecuaria (Earth Engine) · real",
+    "data/diagnostico_landsat_ia.json": "Meses de suelo pelado con Landsat 2021-2025 y fragilidad (Earth Engine) · real",
+    "data/zonificacion_aizal.json": "Zonificación k-means sobre TerraClimate y SoilGrids, 5 grupos (Earth Engine) · real",
+    "data/desmonte_zonas.json": "Desmontes Hansen 2001-2025, modelo validado en el tiempo y riesgo por zona · real",
     "data/rotaciones_santiago.json": "15 rotaciones de las 5 zonas (Vale) · Zona 5 validada por un productor, el resto sin validar",
     "data/arduino_bandejas_demo.json": "Lecturas grabadas del kit (Sara) · plantilla vacía",
     "data/meteomatics_santiago_zonas.json": "Pronóstico y clima de Meteomatics por zona (Santi)",
@@ -57,9 +57,15 @@ DESCRIPCIONES = {
     "docs/memoria-del-proyecto.md": "Memoria de todo lo que hay en el repo: partes, datos, decisiones y pendientes",
     "docs/mockup/biosat-mockup.html": "Mockup original de la app (reemplazado por web/)",
     "docs/estado-del-proyecto.md": "Panorama general: qué está hecho, qué falta y qué riesgos hay",
-    "ia_desmonte": "IA de Santi: zonificación AIZAL, modelo de desmontes, gráficos e informes",
+    "ia_desmonte": "Pipeline de datos reales con Earth Engine: suelo, desmontes, zonificación, suelo pelado e imágenes",
+    "ia_desmonte/salidas": "Muestras de Earth Engine y registro de la corrida (permiten reentrenar sin cuenta)",
+    "ia_desmonte/pruebas": "Pruebas de Python del pipeline (pytest)",
+    "archivo": "Material archivado que no alimenta la app",
+    "archivo/prototipo-ia-simulado": "Primer prototipo de IA con datos SIMULADOS (no se usa; ver LEEME-PRIMERO.md)",
+    "docs/datos-y-metodos.md": "Fuentes, métodos, métricas reales y limitaciones de los datos (se genera solo)",
+    "tests/datos-contratos.test.js": "Prueba la forma de los datos reales de ia_desmonte/",
     "scripts/descargar_meteomatics.py": "Descarga datos de Meteomatics por zona",
-    "data/imagenes": "Imágenes del visor exportadas de Earth Engine (Santi)",
+    "data/imagenes": "Compuestos de mediana Landsat del visor y mapa de la zonificación (Earth Engine)",
     "planes": "Plan de cada integrante y cómo trabajamos en ramas",
     "planes/README.md": "Objetivo común, ramas, reglas e hitos de integración",
     "planes/1-enzo.md": "Plan de Enzo · integración y app (rama enzo-app)",
@@ -133,7 +139,7 @@ DESCRIPCIONES = {
 }
 
 # Carpetas que se muestran resumidas ("(N archivos)") aunque estén arriba.
-COLAPSAR = {"data/raw_nasa_power"}
+COLAPSAR = {"data/raw_nasa_power", "archivo/prototipo-ia-simulado", "ia_desmonte/salidas"}
 # Las carpetas a esta profundidad o más se muestran resumidas.
 PROFUNDIDAD_MAX = 2
 # Una carpeta con más elementos que esto se muestra resumida.

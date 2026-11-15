@@ -13,8 +13,8 @@ Este panorama se escribió a mano a partir de `main`, los planes de [`planes/`](
 | F1 · Clima | Enzo | **Listo** | `clima_zonas.json` completo (1981-2025, 5 zonas, ET0, normal contra reciente) | Nada |
 | F5 · App y motor | Enzo | **Casi listo** | App publicada con calendario, 3 rotaciones, simulador, visor, desmonte, zonificación, pantalla del kit y guía del campo | Integrar el lector de Sara, ensayar la demo |
 | F4 · Rotaciones | Vale | **Casi listo** | 15 rotaciones (5 zonas × 3). Zona 5 validada por un productor | Validar las zonas 1 a 4; revisar textos de la app; glosario |
-| F2 · Suelo y zonificación | Santi | **A medias** | Zonificación AIZAL en 5 grupos, cargada | `suelo_zonas.json` y `diagnostico_landsat_ia.json` vacíos; visor de Earth Engine sin publicar |
-| F3 · Modelo de desmontes | Santi | **Listo, con ajustes** | Modelo validado en el tiempo, riesgo y proyección por zona | Índice de fragilidad; revisar métricas (ver 4) |
+| F2 · Suelo y zonificación | Santi + Enzo (D-30) | **Listo, con datos reales** | Zonificación AIZAL en 5 grupos, cargada | `suelo_zonas.json` y `diagnostico_landsat_ia.json` vacíos; visor de Earth Engine sin publicar |
+| F3 · Modelo de desmontes | Santi + Enzo (D-30) | **Listo, con datos reales** | Modelo validado en el tiempo, riesgo y proyección por zona | Índice de fragilidad; revisar métricas (ver 4) |
 | F6 · Arduino | Enzo (toma el frente de Sara) | **Código listo, falta el armado** | Sketch compilado, lector Web Serial con pruebas, esquema regenerable y guía de armado en `arduino/` | Armar y sellar el LM35, probar en la placa, calibrar, grabar lecturas |
 | F7 · Entrega | Sara (coordina) | **Sin empezar** | Nada | Guion, video o diapositivas, página del proyecto, ensayos |
 
@@ -42,8 +42,8 @@ Se verificó en Chrome sin internet, a 390 px de ancho y con 13 pruebas automát
 | `rotaciones_santiago.json` | 100% | Vale; 1 de 5 zonas validada |
 | `desmonte_zonas.json` | 100% | Santi |
 | `zonificacion_aizal.json` | 100% | Santi |
-| `suelo_zonas.json` | 0% (ninguna medición de las 55) | Plantilla vacía: la app muestra "sin dato" |
-| `diagnostico_landsat_ia.json` | 0% (sin meses de suelo pelado) | Plantilla vacía: falta correr Earth Engine; la app dice "pendiente" |
+| `suelo_zonas.json` | 100% | SoilGrids 0-30 cm en Earth Engine, con rango y confianza media (D-30) |
+| `diagnostico_landsat_ia.json` | 100% | Meses de suelo pelado con Landsat 2021-2025 y fragilidad (D-30) |
 | `arduino_bandejas_demo.json` | plantilla vacía | Lo carga Sara |
 
 ---
@@ -52,22 +52,21 @@ Se verificó en Chrome sin internet, a 390 px de ancho y con 13 pruebas automát
 
 1. **El kit está programado, pero no armado ni probado en la placa.** El sketch compila y el lector funciona con un puerto simulado, pero falta armarlo, sellar el LM35, calibrar y grabar lecturas reales en `data/arduino_bandejas_demo.json`. Es lo que más tiempo físico necesita y no se puede hacer desde la PC.
 2. **La entrega no empezó.** Falta el guion, el video o las diapositivas, la página del proyecto en Space Apps y la declaración de uso de IA. Solo Sara los tiene asignados.
-3. **Faltan el suelo y el suelo pelado por Landsat** (`suelo_zonas.json` y `diagnostico_landsat_ia.json`). Hoy la app los muestra como "sin dato" o "pendiente": el panel de suelo está vacío.
 
 ---
 
 ## 4. Alertas y cosas para revisar
 
-**Urgente**
+**Decidido**
 
-- **Hay una contraseña escrita en el código de un repo público.** Está en `scripts/descargar_meteomatics.py` (cuenta de Meteomatics de Santi). Aunque se borre ahora, queda en el historial de Git. Hay que **cambiarla en Meteomatics** y hacer que el script la lea de una variable de entorno. Es de Santi, pero no puede esperar.
+- **Contraseña de Meteomatics (D-29):** el script ya la lee de una variable de entorno y no está en el código. La clave vieja queda en el historial de Git y, **por practicidad, no se cambia**: es la cuenta del hackathon y Meteomatics no entra en la app. Si se viera un uso indebido, se cambia en ese momento.
 
 **Para confirmar con el equipo**
 
 - **Permiso del productor:** la entrevista dice que falta confirmar por escrito que se puede nombrar el campo y usar sus frases. El plan de Vale ya pasó una frase al pitch. Conviene tener la confirmación antes de usarla.
 - **Validación de la Zona 5:** sale de un audio de un productor. Está bien como "revisada por un productor", pero no como validación del INTA.
 - **`requiere_hacienda`:** lo completó Enzo según el texto de cada rotación (7 en `true`). Vale debe confirmarlo.
-- **Métricas del modelo:** el plan de Santi dice regresión logística AUC 0,986 y random forest AUC 0,973; `desmonte_zonas.json` dice 0,984 y 0,971. Hay que dejar un solo juego de números. También: el plan nombra una silueta de 0,563 y `zonificacion_aizal.json` la tiene en `null`.
+- **Métricas del modelo (D-30):** las del prototipo (AUC 0,986) eran de datos simulados. Las reales: random forest con AUC 0,78 en validación cruzada y 0,63 en la prueba 2016-2025, con una tasa base del 9 %. Detalle e interpretación en `docs/datos-y-metodos.md`. **Santi y Sara: usar solo esas en el pitch.**
 - **Zonas 1 a 4 de Vale:** siguen "sin validar", y la app lo avisa. La confianza queda en "baja".
 - **Qué predice la IA:** el modelo de Santi predice desmontes por zona. El suelo pelado sale por umbral, no por IA. Conviene decirlo así en el pitch.
 
