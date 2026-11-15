@@ -767,7 +767,7 @@ function renderPronostico(){
   if (!z){ cajas.forEach(c => { c.hidden = true; c.innerHTML = ''; }); return; }
   const T = P.TEXTOS, r = P.resumen(z.pronostico_7_dias, P.hoyLocalISO(new Date()));
   const fmt = (t, o) => t.replace(/\{(\w+)\}/g, (_, k) => o[k]);
-  const dias = (t, n) => fmt(t, {n}).replace(/^1 días/, '1 día');   // "1 día", no "1 días"
+  const dias = (t, n) => fmt(t, {n}).replace(/^1 días/, '1 día').replace(/^1 noches/, '1 noche');   // singular
   const fecha = bajadoEl(METEO.fecha_generacion), cab = `<p class="prono-titulo">${esc(T.titulo)}</p>`;
   let tarjeta, tabla = '';
   if (!r.vigente) tarjeta = `${cab}<p class="prono-vencido">${esc(fmt(T.vencido, {fecha}))}</p>`;
@@ -775,10 +775,12 @@ function renderPronostico(){
     const renglones = [];
     if (r.lluviaTotal !== null) renglones.push(Math.round(r.lluviaTotal) === 0 ? T.sinLluvia
       : fmt(T.lluvia, {mm: nf(r.lluviaTotal), dia: P.fechaCorta(r.diaMasLluvia.fecha), mmDia: nf(r.diaMasLluvia.mm)}));
-    renglones.push(dias(T.calor, r.diasCalor), dias(T.helada, r.diasHelada), dias(T.hoja, r.diasHojaMojada), dias(T.viento, r.diasVientoBajo));
+    renglones.push(dias(T.calor, r.diasCalor), dias(T.helada, r.diasHelada), dias(T.hoja, r.diasHojaMojada));
+    // Sin el promedio de viento de 24 h no hay dato: decir "0 días con viento bajo" sería falso.
+    if (r.hayViento) renglones.push(dias(T.viento, r.diasVientoBajo));
     tarjeta = `${cab}<p class="prono-sub">${esc(r.n === 1 ? 'Hoy' : fmt(T.sub, {n: r.n}))}</p>
       <ul class="prono-lista">${renglones.map(t => `<li>${esc(t)}</li>`).join('')}</ul>
-      <p class="prono-nota">${esc(fmt(T.complemento, {mes: MES_L[MES_HOY]}))} ${esc(T.criterio)}</p>
+      <p class="prono-nota">${esc(fmt(T.complemento, {mes: MES_L[MES_HOY]}))} ${esc(r.hayViento ? T.criterio : T.criterioCalor)}</p>
       <p class="prono-fuente">${esc(fmt(T.fuente, {fecha}))}</p>`;
     const TT = T.tabla, num = (v, d = 0) => v === null ? '—' : nf(v, d);
     tabla = `<div class="prono-tabla-wrap"><table class="prono-tabla">

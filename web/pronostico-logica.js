@@ -19,11 +19,12 @@
     sinLluvia: 'Sin lluvia anunciada',
     calor: '{n} días de más de 38 °C',
     helada: '{n} días con alerta de helada',
-    hoja: '{n} días con hoja mojada (favorece hongos)',
+    hoja: '{n} noches con hoja mojada (favorece hongos)',
     viento: '{n} días con viento de menos de 15 km/h (para pulverizar)',
     criterio: 'Más de 38 °C y viento de menos de 15 km/h son criterios del equipo.',
+    criterioCalor: 'Más de 38 °C es un criterio del equipo.',
     kitHoy: 'Pronóstico para hoy (Meteomatics, 9 km): máxima {t} °C.',
-    tabla: {dia: 'Día', temp: 'Máx / mín', lluvia: 'Lluvia', helada: 'Helada', hoja: 'Hoja mojada', si: 'Sí', no: '—'}
+    tabla: {dia: 'Día', temp: 'Máx / mín', lluvia: 'Lluvia', helada: 'Helada', hoja: 'Hoja mojada (noche)', si: 'Sí', no: '—'}
   };
   const DIAS_SEMANA = ['dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb'];
 
@@ -41,10 +42,21 @@
     return `${DIAS_SEMANA[new Date(a, m - 1, d).getDay()]} ${dos(d)}/${dos(m)}`;
   }
 
+  // Meteomatics: los parámetros de intervalo son "right-bounded" (docs de la API, Date/Time, "Interval parameters").
+  // precip_24h:mm fechado el 16/11 00:00 UTC es la lluvia del 15/11 00 UTC al 16/11 00 UTC: cada fila describe
+  // el día ANTERIOR a su fecha. Los valores instantáneos de esa fila (hoja mojada) son de las 00 UTC = 21 h de
+  // Argentina de ese mismo día anterior, o sea de su noche.
+  function diaAnterior(iso) {
+    const [a, m, d] = iso.split('-').map(Number), f = new Date(Date.UTC(a, m - 1, d - 1));
+    return `${f.getUTCFullYear()}-${dos(f.getUTCMonth() + 1)}-${dos(f.getUTCDate())}`;
+  }
+
   function leerDia(x) {
-    const viento = dato(x['wind_speed_10m:ms']);
+    // Solo el promedio de 24 h sirve para "viento bajo para pulverizar". wind_speed_10m:ms es instantáneo
+    // (21 h de Argentina) y no se usa: sin promedio, el viento queda sin dato.
+    const viento = dato(x['wind_speed_mean_10m_24h:ms']);
     return {
-      fecha: String(x.fecha).slice(0, 10),
+      fecha: diaAnterior(String(x.fecha).slice(0, 10)),
       tmax: dato(x['t_max_2m_24h:C']),
       tmin: dato(x['t_min_2m_24h:C']),
       lluvia: dato(x['precip_24h:mm']),
@@ -67,7 +79,8 @@
       diasCalor: vig.filter(d => d.tmax !== null && d.tmax > UMBRALES.calorC).length,
       diasHelada: vig.filter(d => d.helada).length,
       diasHojaMojada: vig.filter(d => d.hojaMojada).length,
-      diasVientoBajo: vig.filter(d => d.vientoKmh !== null && d.vientoKmh < UMBRALES.vientoKmh).length
+      diasVientoBajo: vig.filter(d => d.vientoKmh !== null && d.vientoKmh < UMBRALES.vientoKmh).length,
+      hayViento: vig.some(d => d.vientoKmh !== null)
     };
   }
 
