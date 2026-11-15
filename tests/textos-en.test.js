@@ -81,11 +81,9 @@ test('el asistente y el kit en inglés no traducen claves que no existen en espa
     const w = cargarEnVm('asistente.js', {AsistenteLogica: {}});
     assert.deepEqual(I.clavesSobrantes(w.BioSatAsistente.TEXTOS, EN.modulos.asistente), [], 'asistente');
   }
-  if (EN.modulos.kit) {
-    const w = cargarEnVm('kit.js', {KitLogica: {}});
-    assert.ok(w.BioSatKit && w.BioSatKit.TEXTOS, 'kit.js expone BioSatKit.TEXTOS');
-    assert.deepEqual(I.clavesSobrantes(w.BioSatKit.TEXTOS, EN.modulos.kit), [], 'kit');
-  }
+  assert.ok(EN.modulos.kit, 'falta modulos.kit');
+  assert.deepEqual(I.clavesSobrantes(require('../web/kit-logica.js').TEXTOS, EN.modulos.kit), [], 'kit');
+  assert.equal(EN.modulos.kit.meses.length, 12);
 });
 
 test('el asistente está traducido entero (comun y las 4 preguntas)', () => {

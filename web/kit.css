@@ -53,3 +53,8 @@ button:disabled{opacity:.5;cursor:not-allowed}
 .kit-cierre{margin:0;background:var(--vivo);color:#111;border-radius:8px;padding:16px 20px;font-weight:800;font-size:clamp(22px,3vw,40px);line-height:1.2;text-wrap:balance}
 .kit-ayuda{margin:0;color:var(--suave);font-size:14px}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+
+/* Botón de idioma ES | EN (D-35), con los colores del tema oscuro del kit */
+.idioma{display:inline-flex;border:1px solid var(--linea);border-radius:999px;overflow:hidden}
+.idioma button{font:700 14px var(--f-texto);letter-spacing:.05em;min-height:40px;min-width:44px;padding:0 12px;border:0;background:transparent;color:var(--suave);cursor:pointer}
+.idioma button[aria-pressed="true"]{background:var(--texto);color:var(--fondo)}
