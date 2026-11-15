@@ -15,7 +15,22 @@
       iniPie: 'Supports, does not replace, your agronomist’s judgment.',
       iniSonda: 'Measure with the probe',
       iniIrReporte: 'See the full report →',
-      iniPronoAria: 'This week in your area'
+      iniPronoAria: 'This week in your area',
+      repVolver: '← Back',
+      repEyebrow: 'Report for your farm',
+      repPdf: 'Save PDF',
+      repCompartir: 'Share',
+      repChipsAria: 'Go to a section',
+      repChip1: '1 · Your year', repChip2: '2 · Rotations', repChip3: '3 · Worse climate', repChip4: '4 · Soil and forest',
+      repChip5: '5 · The probe', repChip6: '6 · Your agronomist', repChip7: '7 · The data',
+      repSec1: '1 · Your year, month by month',
+      repSec2: '2 · Your rotation and 2 alternatives',
+      repSec3: '3 · What if the climate gets worse?',
+      repSec4: '4 · Your soil and your forest, from the satellite',
+      repSec5: '5 · What the probe measured',
+      repSec6: '6 · To talk over with your agronomist',
+      repSec7: '7 · Where the data comes from',
+      completoVolver: '← Back to the start'
     },
 
     // Objetos de textos de cada módulo, con las mismas claves que en español.
@@ -141,6 +156,41 @@
         seguir: 'keep your current rotation',
         abrirKit: 'Open the kit screen'
       },
+
+      // web/frases-logica.js · FrasesLogica.TEXTOS (conclusiones del Reporte)
+      frases: {
+        calor: 'In {pueblo}, days above 40 °C went from {a} to {b} a year.',
+        calorIgual: 'In {pueblo}, there are about {a} days a year above 40 °C.',
+        mejor: 'For what you chose, the first option is “{nombre}”.',
+        mejorDefecto: 'For what usually matters most (water and soil), the first option is “{nombre}”.',
+        calorMas: 'With {g} °C more, days above 40 °C in {pueblo} would go from {a} to {b} a year.',
+        calorMasIgual: 'With {g} °C more, days above 40 °C in {pueblo} would barely change: about {a} a year.',
+        antesUna: 'If you choose “{nombre}”, there is 1 thing to check with your agronomist before deciding.',
+        antesVarias: 'If you choose “{nombre}”, there are {n} things to check with your agronomist before deciding.',
+        mesesDuros: '{a} and {b} are the toughest months in your area.',
+        mesesTranquilos: 'No month stands out for heat, frost, water shortage or bare soil in your area.',
+        sueloMonte: 'Soil with pH {ph} and native forest on {monte} % of the area.',
+        meses: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+        locale: 'en-US'
+      },
+
+      // web/app.js · TEXTOS_REPORTE (marco del Reporte)
+      appReporte: {
+        sub: 'Zone {num} · {riego} · {hacienda} · {mes} {anio}',
+        conRiego: 'with irrigation', sinRiego: 'no irrigation', conHacienda: 'with livestock', sinHacienda: 'no livestock',
+        concl: {
+          1: 'Your year, month by month', 2: 'Your rotation and 2 alternatives', 3: 'What if the climate gets worse? Try less rain or more heat.',
+          4: 'Your soil and your forest, from the satellite', 5: 'You have not measured your field yet.', 5.1: 'The probe measured your field today.',
+          6: 'To talk over with your agronomist', 7: 'Where the data comes from'
+        },
+        copiado: 'Link copied.', noCopiado: 'Could not copy: copy the address from the browser bar.'
+      },
+
+      // web/app.js · TEXTOS_CAMPO (tarjeta "Tu campo" del Reporte)
+      appCampo: {titulo: 'Your farm', zona: 'Zone', tiene: 'You have', preocupa: 'You worry about', nada: 'Nothing in particular', cambiar: 'Change my answers'},
+
+      // web/app.js · TEXTOS_PASOS (solo la ficha de la zona; el resto es de la etapa 2)
+      appPasos: {fichaMas: 'More about the area', fichaDeptos: 'Departments', fichaPunto: 'NASA POWER point'},
 
       // web/app.js · MES_L, MES y ESTADO
       meses: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],

@@ -57,7 +57,8 @@
       el.setAttribute(attr, actual === 'en' && en ? en : el.dataset[guarda]);
     });
     document.querySelectorAll('[data-solo-en]').forEach(el => { el.hidden = actual !== 'en'; });
-    document.documentElement.lang = actual;
+    // Una página que sigue en español (data-idioma-fijo="es", la vista detallada) no cambia su lang.
+    if (!document.documentElement.hasAttribute('data-idioma-fijo')) document.documentElement.lang = actual;
     pintarBotones();
   }
 

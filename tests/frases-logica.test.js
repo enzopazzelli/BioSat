@@ -92,3 +92,20 @@ test('fraseSueloMonte usa el pH y el % de monte, y sin datos devuelve null', () 
   assert.equal(F.fraseSueloMonte(7.06, 30.29), 'Suelo con pH 7,1 y monte en el 30 % de la zona.');
   assert.equal(F.fraseSueloMonte(null, 30), null);
 });
+
+test('los meses y el formato de números salen de TEXTOS (para el inglés, D-35)', () => {
+  const meses = F.TEXTOS.meses, loc = F.TEXTOS.locale;
+  assert.equal(meses.length, 12);
+  assert.equal(meses[8], 'septiembre');
+  assert.equal(loc, 'es-AR');
+  try {
+    F.TEXTOS.meses = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december'];
+    F.TEXTOS.mesesDuros = '{a} and {b} are the toughest months in your area.';
+    F.TEXTOS.locale = 'en-US';
+    assert.match(F.fraseMesesDuros([{nivel: 0}, {nivel: 0}, {nivel: 0}, {nivel: 0}, {nivel: 0}, {nivel: 0}, {nivel: 0}, {nivel: 0}, {nivel: 2, falta: 200}, {nivel: 2, falta: 150}, {nivel: 0}, {nivel: 0}]) || '', /September and october/);
+    assert.match(F.fraseSueloMonte(6.91, 1234.5), /1,235/);
+  } finally {
+    F.TEXTOS.meses = meses; F.TEXTOS.locale = loc;
+    F.TEXTOS.mesesDuros = '{a} y {b} son los meses más duros en tu zona.';
+  }
+});

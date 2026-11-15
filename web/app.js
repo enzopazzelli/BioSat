@@ -403,7 +403,7 @@ function renderTuCampo(){
       <div><dt>${TEXTOS_CAMPO.preocupa}</dt><dd>${esc(preocupa || TEXTOS_CAMPO.nada)}</dd></div></dl>
       <button type="button" class="btn" id="btnCambiar">${TEXTOS_CAMPO.cambiar}</button>`;
   }
-  $('#zonaFicha').innerHTML = `<strong>Zona ${z.num} · ${esc(z.nombre)}</strong> <small>${esc(z.zona)}</small><p>${esc(z.problema)}</p>
+  $('#zonaFicha').innerHTML = `<strong>${TEXTOS_CAMPO.zona} ${z.num} · ${esc(z.nombre)}</strong> <small>${esc(z.zona)}</small><p>${esc(z.problema)}</p>
     <details class="ficha-tecnica"><summary>${TEXTOS_PASOS.fichaMas}</summary>
       <span class="mono">${TEXTOS_PASOS.fichaDeptos}: ${esc(z.deptos)} · ${TEXTOS_PASOS.fichaPunto} ${nf(c.lat,2)}°, ${nf(c.lon,2)}°</span>${zonifTexto()}</details>`;
   $('#detalleResumen').textContent = TEXTOS_PASOS.detalle;
@@ -1049,6 +1049,10 @@ function prepararIdioma(){
   Idioma.registrar('pronostico', window.PronosticoLogica && PronosticoLogica.TEXTOS);
   Idioma.registrar('appInicio', TEXTOS_INICIO);
   Idioma.registrar('asistente', window.BioSatAsistente && BioSatAsistente.TEXTOS);
+  Idioma.registrar('frases', window.FrasesLogica && FrasesLogica.TEXTOS);
+  Idioma.registrar('appReporte', TEXTOS_REPORTE);
+  Idioma.registrar('appCampo', TEXTOS_CAMPO);
+  Idioma.registrar('appPasos', TEXTOS_PASOS);
   Idioma.registrar('meses', MES_L);
   Idioma.registrar('mesesCortos', MES);
   Idioma.registrar('estado', ESTADO);

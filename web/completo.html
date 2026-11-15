@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="es">
+<html lang="es" data-idioma-fijo="es">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -13,6 +13,9 @@
 <link rel="stylesheet" href="asistente.css">
 <script src="vendor/leaflet.js"></script>
 <script src="../arduino/lector-web-serial.js" defer onerror="this.remove()"></script>
+<script src="idioma-logica.js" defer></script>
+<script src="textos-en.js" defer></script>
+<script src="idioma.js" defer></script>
 <script src="asistente-logica.js" defer></script>
 <script src="asistente.js" defer></script>
 <script src="frases-logica.js" defer></script>
@@ -51,6 +54,10 @@
 </header>
 
 <main>
+  <!-- D-35: esta vista sigue en español en la etapa 1; en inglés solo se avisa -->
+  <div class="wrap aviso-en" data-solo-en hidden lang="en">
+    <p>This detailed view is only in Spanish for now. <a href="index.html" data-i18n="completoVolver">← Volver al inicio</a></p>
+  </div>
   <!-- PASO 1 -->
   <section id="tu-campo" class="sec">
     <div class="wrap">
