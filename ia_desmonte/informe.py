@@ -139,7 +139,8 @@ def generar():
                  f'pero al predecir la década siguiente baja a {_n(el["auc"])}: el patrón del desmonte cambió entre '
                  'los dos períodos. Una hipótesis, que este trabajo no prueba, es la entrada en vigencia de la Ley de '
                  'Bosques (26.331) y el ordenamiento territorial de la provincia hacia 2009-2010. Por eso el riesgo por '
-                 'zona sirve para **comparar zonas**, no como pronóstico exacto de cada lote.\n')
+                 'zona sirve para **comparar zonas**, no como pronóstico exacto de cada lote. Plan para probar la '
+                 'hipótesis: [`validacion-ley-de-bosques`](superpowers/plans/2026-11-15-validacion-ley-de-bosques.md).\n')
     s.append(f'**Riesgo por zona** ({desm["meta"]["horizonte_riesgo"]}):\n')
     s.append(_tabla(['Zona', 'Riesgo medio', 'Puntos de monte', 'Confianza'],
                     [[NOMBRE_ZONA[z], _n(desm['zonas'][z]['riesgo_medio_0_1'], 3), desm['zonas'][z]['riesgo_n'],

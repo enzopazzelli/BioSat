@@ -97,7 +97,7 @@ Entre paréntesis, el rango del 10 al 90 % de los píxeles: muestra cuánto var�
 
 Se eligió random forest porque tiene el AUC más alto en la validación cruzada del entrenamiento (0,78, contra 0,77 de gradient boosting y 0,71 de regresión logística). En la prueba 2016-2025, que no se usó para elegir, mide AUC 0,63 (gradient boosting 0,63, regresión logística 0,62).
 
-**Cómo leer la diferencia.** Dentro de su época el modelo distingue bien (0,78), pero al predecir la década siguiente baja a 0,63: el patrón del desmonte cambió entre los dos períodos. Una hipótesis, que este trabajo no prueba, es la entrada en vigencia de la Ley de Bosques (26.331) y el ordenamiento territorial de la provincia hacia 2009-2010. Por eso el riesgo por zona sirve para **comparar zonas**, no como pronóstico exacto de cada lote.
+**Cómo leer la diferencia.** Dentro de su época el modelo distingue bien (0,78), pero al predecir la década siguiente baja a 0,63: el patrón del desmonte cambió entre los dos períodos. Una hipótesis, que este trabajo no prueba, es la entrada en vigencia de la Ley de Bosques (26.331) y el ordenamiento territorial de la provincia hacia 2009-2010. Por eso el riesgo por zona sirve para **comparar zonas**, no como pronóstico exacto de cada lote. Plan para probar la hipótesis: [`validacion-ley-de-bosques`](superpowers/plans/2026-11-15-validacion-ley-de-bosques.md).
 
 **Riesgo por zona** (probabilidad de que un píxel de monte se desmonte en los próximos ~10 años si sigue el patrón 2016-2025):
 
