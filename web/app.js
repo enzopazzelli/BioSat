@@ -190,13 +190,13 @@ const ZKEY = {zona_1_riego_salitre:'z1', zona_2_secano_este:'z2', zona_3_monte_s
 const CAPAS = [
   {id:'invierno_rgb', label:'Color real · invierno'},
   {id:'verano_rgb', label:'Color real · verano'},
-  {id:'invierno_ndvi', label:'Verdor (NDVI) · invierno'},
-  {id:'verano_ndvi', label:'Verdor (NDVI) · verano'},
+  {id:'invierno_ndvi', label:'Índice de vegetación (NDVI) · invierno'},
+  {id:'verano_ndvi', label:'Índice de vegetación (NDVI) · verano'},
   {id:'2000_rgb', label:'Color real · año 2000'}
 ];
 const CMP = [
   {id:'no', label:'Sin comparar'},
-  {id:'estacion', label:'Verano contra invierno (verdor)', a:'verano_ndvi', b:'invierno_ndvi', izq:'← Verano', der:'Invierno →'},
+  {id:'estacion', label:'Verano contra invierno (NDVI)', a:'verano_ndvi', b:'invierno_ndvi', izq:'← Verano', der:'Invierno →'},
   {id:'desmonte', label:'2000 contra 2025 (desmonte)', a:'2000_rgb', b:'invierno_rgb', izq:'← 2000', der:'2025 →'}
 ];
 const visor = {map:null, capa:'invierno_rgb', cmp:'no', cortina:50, layers:[], zonaVista:null};
