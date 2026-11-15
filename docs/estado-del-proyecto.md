@@ -24,7 +24,7 @@ Avance contado de las casillas de los planes: **Enzo 85%, Santi 76%, Vale 72%, S
 
 ## 2. Qué funciona hoy en la app
 
-Las **198 pruebas automáticas de la app** (`node --test "tests/*.test.js"`) y las 39 de `ia_desmonte/pruebas` están en verde, con D-33 y D-36 a D-39 incluidos. La versión nueva se revisó a 390 px con `scripts/captura-movil.mjs` y en un celular de verdad. **Falta probarla sin internet en el celular.**
+Las **205 pruebas automáticas de la app** (`node --test "tests/*.test.js"`) y las 44 de `ia_desmonte/pruebas` están en verde, con D-33 y D-36 a D-40 incluidos. La versión nueva se revisó a 390 px con `scripts/captura-movil.mjs` y en un celular de verdad. **Falta probarla sin internet en el celular.**
 
 - **Asistente de inicio:** 4 preguntas con el mapa real de Santiago del Estero. La pregunta 1 nombra la característica de la zona y abajo sus localidades.
 - **Inicio** (`web/index.html`): semáforo de la zona en el mes actual (o de la sonda, después de medir), lo que mejor encaja con la próxima siembra y la tira de 12 meses, y la barra con Medir con la sonda y WhatsApp.
@@ -38,7 +38,8 @@ Las **198 pruebas automáticas de la app** (`node --test "tests/*.test.js"`) y l
 - **Pantalla del kit** (`web/kit.html`): las 3 bandejas para la mesa del jurado. Hoy solo anda con el Arduino en vivo, porque no hay lecturas grabadas.
 - **Guía "Del kit al campo"** (`web/campo.html`): una pantalla para el jurado.
 - **Imagen de dron (D-38, etapa 1, en la rama `enzo-dron`):** en la sección 4 del Reporte se abre un .tif de dron, que se ve sobre el mapa y se compara con Landsat. Si la cámara lo permite, muestra el NDVI del lote al lado de lo que Landsat dice de la zona, y una línea en el Inicio. El archivo no sale del equipo. Probado con un .tif real (foto RGB de 33,6 MB, se lee en menos de 2 s). Falta probarlo en un celular de verdad.
-- **Sectores del lote (D-39, etapa 2 del dron, en la rama `enzo-sectores`):** se marcan sectores sobre el mapa, cada uno con superficie, NDVI, nota, estado (para revisar, revisado o descartado) y "Qué se encontró". El vuelo y los sectores quedan guardados en el navegador para el campo sin internet. Se exportan e importan en GeoJSON. Falta probarlo con el `NDVI.tif` real.
+- **Satélite del lote (D-40, en la rama `enzo-satelite-lote`):** el visor dice la resolución real de Landsat (unos 120 m por píxel, no 30 m). Si el vuelo del dron cae sobre un recorte satelital del lote, se ven Sentinel-2 (10 m) y Landsat (30 m) de una pasada cercana al vuelo, con la cortina y la comparación del NDVI en la misma superficie. **Falta correr el recorte real** (ID del proyecto de Earth Engine y fecha del vuelo).
+- **Sectores del lote (D-39, etapa 2 del dron, en `main`):** se marcan sectores sobre el mapa, cada uno con superficie, NDVI, nota, estado (para revisar, revisado o descartado) y "Qué se encontró". El vuelo y los sectores quedan guardados en el navegador para el campo sin internet. Se exportan e importan en GeoJSON. Falta probarlo con el `NDVI.tif` real.
 
 ### Qué datos están cargados
 

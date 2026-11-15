@@ -440,7 +440,51 @@ Según la página oficial de premios (`NASA Space Apps Challenge - awards.mhtml`
       - `localStorage` lleno y sin IndexedDB;
       - restaurar después de recargar y borrar el vuelo guardado;
       - exportar, importar e importar repetido.
+  - **Prueba con el `NDVI.tif` real (15/11, `D:\User\Desktop\NDVI.tif`, no va a Git):**
+    - **El archivo:** 382,6 MB, 9 371 × 18 614 px, 1 banda float32, unos 5 cm por píxel, EPSG:4326, sin dato = 0, sin fecha y sin versiones reducidas.
+    - **Dónde cae:** Zona 1, departamento Capital, unos 500 × 1000 m (≈ 50 ha), en el mismo lugar que `fertilizer.tfw`.
+    - **Lectura:** unos 15 s en Chrome en la PC. La app preguntó "¿Es un mapa de NDVI?" y con el sí calculó todo:
+      - NDVI mediano 0,42, con valores de −0,19 a 0,89;
+      - 9 % de la superficie sin cobertura vegetal activa;
+      - 37 % del archivo sin dato (fuera del vuelo), que no se cuenta.
+    - **Guardado:** quedó en el navegador. Sin la fecha del vuelo no se compara con la zona, y la app lo dice.
+    - **Lectura del ingeniero (para este lote):** rojo = maleza, amarillo = zona afectada, verde = vigoroso.
+      - La app no lo generaliza: el NDVI solo mide verdor, y un rojo puede ser maleza en este lote y un camino o suelo descubierto en otro.
+      - Se aprovecha con los sectores: marcar con la nota "según el ingeniero" y confirmar con "Qué se encontró".
+      - Para mostrar el % del lote en cada clase hacen falta sus valores de corte, que pueden no coincidir con la escala de la app (0 a 0,8).
+    - **Para el celular:** el vuelo queda guardado en el navegador donde se abrió. Para tenerlo en el celular hay que abrir ahí el archivo de 382 MB. Una mejora posible es pasar la versión liviana (unos 10 MB) de la PC al celular.
   - **Pendiente:**
-    - probarlo con el `NDVI.tif` real y en un celular de verdad;
+    - probarlo en un celular de verdad;
     - `fertilizer.tfw` llegó sin su `.tif`: por el nombre, puede ser una prescripción de DJI Terra (dosis, no NDVI), que queda fuera de esta etapa.
+- **D-40 (Rótulo honesto de Landsat y recorte satelital del lote):**
+  - **Por qué:** Enzo, 15/11: "que el Landsat mejore la imagen porque no se ve en muy buena calidad; el lote del .tif queda abajo del recuadro punteado".
+  - **Qué se encontró:**
+    - las imágenes de Landsat del visor se exportaron de 640 px para unos 80 km (`ia_desmonte/imagenes.py`), así que **cada píxel mide unos 120 a 140 m**, no 30 m como decía el rótulo;
+    - son **medianas de 4 a 5 meses**, no de una fecha;
+    - el recuadro punteado es la **celda de clima de NASA POWER**, no la imagen. El lote del `NDVI.tif` está a 32 km del punto de La Banda: fuera de la celda, y dentro de la imagen de Landsat a 1,9 km de su borde sur.
+  - **Hallazgo de paso:** `imagenes.py` pinta el NDVI de Landsat con **otra paleta** (de marrón a verde azulado, `8c510a … 01665a`), que **no coincide con la leyenda** del visor (de rojo a verde, `.ramp`). En D-38 se había escrito que el dron usaba "los mismos colores que Landsat", y se corrigió. Arreglarlo del todo pide volver a exportar las imágenes de las zonas (pendiente). Los recortes nuevos usan la paleta de la leyenda.
+  - **Decisión de Enzo:** opciones 1 y 2. No se hacen las imágenes de zona con más resolución (3) ni un fondo satelital por internet (4).
+  - **Diseño y plan:** `docs/superpowers/specs/2026-11-15-satelite-del-lote-design.md` y `docs/superpowers/plans/2026-11-15-satelite-del-lote.md`.
+  - **1. Rótulo honesto:**
+    - el visor dice "Landsat · unos 120 m por píxel en este visor (original de 30 m)" (medido con la imagen que carga);
+    - el panel del satélite dice "Landsat 8/9 · NDVI a 100 m";
+    - con una capa del dron o de un recorte arriba, el rótulo dice la resolución de esa capa.
+  - **2. Recorte satelital del lote:**
+    - **Script** `ia_desmonte/recorte_lote.py --tif <GeoTIFF del dron> --nombre <lote> [--fecha]`:
+      - Sentinel-2 a 10 m (`S2_SR_HARMONIZED`, nubes con `SCL`, ±20 días) y Landsat 8/9 a 30 m (`QA_PIXEL`, ±30 días);
+      - una sola pasada con al menos 95 % limpio, la más cercana al vuelo;
+      - sin fecha, la limpia más reciente de los últimos 120 días;
+      - guarda color real, NDVI (paleta de la leyenda) y la grilla del NDVI en `data/imagenes/lotes/`.
+    - **App:**
+      - si el vuelo abierto cae sobre un recorte, el visor suma sus capas ("Sentinel-2 · 10 m · verdor (NDVI) · fecha") y la cortina "Satélite contra dron";
+      - la tarjeta del dron dice "En la misma superficie: NDVI mediano X con el dron y Y con Sentinel-2 (10 m, fecha, N días antes del vuelo)". Solo cuentan las celdas del satélite donde al menos la mitad de los píxeles del dron tiene dato;
+      - una fuente sin pasada limpia muestra su motivo;
+      - sin `lotes.json`, la app sigue igual.
+  - **Pruebas:**
+    - 5 de Python (sin internet) y `tests/satelite-logica.test.js` (4): 205 de JS y 44 de Python en verde;
+    - en el navegador, con un lote **sintético** de prueba (`tests/fixtures/lotes/`): capas, cortina, línea de comparación, motivo de Landsat, un vuelo que no cae sobre el recorte, sin `lotes.json` y en inglés.
+  - **Pendiente:**
+    - **correr el recorte real**: falta el ID del proyecto de Earth Engine (`EE_PROJECT`), que no está anotado en el repositorio, y la fecha del vuelo;
+    - el permiso para publicar el recorte del lote;
+    - el motivo de una fuente sin pasada sale en español también en inglés (lo escribe el script).
 

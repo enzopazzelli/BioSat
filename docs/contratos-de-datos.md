@@ -495,3 +495,32 @@ No es un archivo de `data/`: lo genera la app cuando alguien toca **Exportar** e
   - el vuelo achicado, en IndexedDB (base `biosat`, almacén `vuelo`, clave `actual`).
 - La lógica y sus pruebas están en `web/sectores-logica.js` y `tests/sectores-logica.test.js`.
 
+---
+
+## 12. `data/imagenes/lotes/` (recorte satelital del lote, D-40)
+
+Lo genera `ia_desmonte/recorte_lote.py` (Earth Engine), uno por lote con vuelo de dron.
+
+- **Índice `lotes.json`:** `{"lotes": [{"nombre": "capital_zona1", "recuadro": [oeste, sur, este, norte], "ruta": "capital_zona1/lote.json"}]}`.
+- **`<lote>/lote.json`:**
+
+```json
+{
+  "version": 1, "nombre": "capital_zona1", "recuadro": [-64.2345, -28.0189, -64.2250, -28.0066],
+  "fecha_vuelo": "2026-11-03", "generado_por": "ia_desmonte/recorte_lote.py", "fecha": "2026-11-15", "notas": "…",
+  "fuentes": {
+    "s2": {"escena": "20261101T140051_…", "fecha": "2026-11-01", "dias_al_vuelo": -2, "limpio": 0.998,
+           "resolucion_m": 10, "rgb": "s2_rgb.png", "ndvi_png": "s2_ndvi.png",
+           "ndvi": {"ancho": 95, "alto": 137, "recuadro": [-64.2345, -28.0189, -64.2250, -28.0066], "valores": [0.41, null, …]}},
+    "l8": null
+  },
+  "motivos": {"l8": "sin pasada limpia a ±30 días del vuelo"}
+}
+```
+
+- **`dias_al_vuelo`:** la fecha de la pasada menos la del vuelo (negativo = antes). Es `null` si el vuelo no tiene fecha (entonces es la pasada limpia más reciente).
+- **`ndvi.valores`:** la grilla de NDVI a la resolución nativa, fila por fila con el norte arriba. Vale `null` donde hay nube o falta dato.
+- **Los PNG del NDVI** usan la paleta de la leyenda de la app (de 0 a 0,8, `a50026 … 006837`).
+- **Una fuente en `null`:** no hubo pasada con al menos 95 % limpio en la ventana (±20 días para Sentinel-2, ±30 para Landsat), y `motivos` dice por qué.
+- **Prueba:** `tests/fixtures/lotes/` tiene un lote **sintético**, que no es un recorte real.
+
