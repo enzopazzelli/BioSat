@@ -50,11 +50,11 @@ Avance de cada integrante, contado desde las casillas de su plan en [`planes/`](
 <!-- AUTO:AVANCE:INICIO -->
 | Persona | Rama | Avance | Tareas |
 |---|---|---|---|
-| [Enzo · Integración y app](planes/1-enzo.md) | `enzo-app` | `▓▓▓▓▓▓▓▓░░` 83% | 52/63 |
+| [Enzo · Integración y app](planes/1-enzo.md) | `enzo-app` | `▓▓▓▓▓▓▓▓░░` 84% | 53/63 |
 | [Santi · Suelo, satélite e IA](planes/2-santi.md) | `santi-datos-ia` | `▓▓▓▓▓▓▓▓░░` 76% | 22/29 |
 | [Vale · Campo y agronomía](planes/3-vale.md) | `vale-rotaciones` | `▓▓▓▓▓▓▓░░░` 72% | 18/25 |
 | [Sara · Kit Arduino y relato](planes/4-sara.md) | `sara-arduino-entrega` | `▓▓░░░░░░░░` 19% | 5/26 |
-| **Total** | | `▓▓▓▓▓▓▓░░░` **68%** | **97/143** |
+| **Total** | | `▓▓▓▓▓▓▓░░░` **69%** | **98/143** |
 <!-- AUTO:AVANCE:FIN -->
 
 ### Lo más urgente
@@ -85,7 +85,7 @@ Sale solo de las casillas sin tildar de cada plan. Panorama completo y riesgos: 
 
 <!-- AUTO:PENDIENTE:INICIO -->
 <details>
-<summary><b>Enzo</b>: 11 pendientes (<a href="planes/1-enzo.md">plan completo</a>)</summary>
+<summary><b>Enzo</b>: 10 pendientes (<a href="planes/1-enzo.md">plan completo</a>)</summary>
 
 - Último merge de funciones a `main` _(Congelamiento)_
 - Revisar el README final con Sara _(Entrega)_
@@ -96,7 +96,6 @@ Sale solo de las casillas sin tildar de cada plan. Panorama completo y riesgos: 
 - Cerrar `PLAN.md`: sumar kit y guía en la sección 1 y contestar las preguntas abiertas _(Agregadas por Enzo)_
 - Probar de nuevo la app publicada en el celular y sin internet después del último merge _(Agregadas por Enzo)_
 - Probarlo en un celular de verdad _(Lector de imágenes de dron)_
-- Volver a exportar las imágenes NDVI de Landsat de las zonas con la paleta de la leyenda (hoy no coinciden) _(Satélite del lote)_
 - Cargar los cortes reales del ingeniero y anotar el resultado _(Clases del ingeniero)_
 
 </details>
@@ -252,6 +251,7 @@ BioSat/
 │   │   ├── test_comun.py
 │   │   ├── test_desmonte.py
 │   │   ├── test_informe.py
+│   │   ├── test_paleta.py
 │   │   ├── test_proyeccion.py
 │   │   ├── test_recorte_lote.py
 │   │   ├── test_suelo.py

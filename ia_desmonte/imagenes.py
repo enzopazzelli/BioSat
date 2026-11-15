@@ -18,7 +18,9 @@ CARPETA = DATA / 'imagenes'
 PERIODOS = {'verano': ('2024-12-01', '2025-03-31', 'l89'), 'invierno': ('2025-06-01', '2025-10-31', 'l89'),
             'anio2000': ('2000-08-01', '2000-11-30', 'l57')}
 CAPAS = {'verano': ['verano_rgb', 'verano_ndvi'], 'invierno': ['invierno_rgb', 'invierno_ndvi'], 'anio2000': ['2000_rgb']}
-PALETA_NDVI = ['8c510a', 'bf812d', 'dfc27d', 'f6e8c3', 'c7eae5', '80cdc1', '35978f', '01665a']
+# La misma paleta que la leyenda del visor (.ramp de web/estilos.css), el dron y los recortes del lote, de 0 a 0,8.
+# Hasta el 15/11 era otra (de marrón a verde azulado) y no coincidía con la leyenda (D-40). Prueba: test_paleta.py.
+PALETA_NDVI = ['a50026', 'f46d43', 'fee08b', 'd9ef8b', '66bd63', '006837']
 MAX_KB = 300
 ANCHO = 640
 
@@ -68,7 +70,8 @@ def _huella(im):
     return hashlib.sha256(im.convert('RGB').tobytes()).hexdigest()
 
 
-def main():
+def main(solo_ndvi=False):
+    """Con solo_ndvi, rehace solo las capas de NDVI y no toca las de color ni escenas.json."""
     from PIL import Image
     previo = json.loads((CARPETA / 'escenas.json').read_text(encoding='utf-8'))
     escenas, huellas = {}, {}
@@ -80,6 +83,8 @@ def main():
                 continue
             img, n = componer(bbox, ini, fin, sens)
             for capa in CAPAS[est]:
+                if solo_ndvi and not capa.endswith('ndvi'):
+                    continue
                 if capa.endswith('ndvi'):
                     v = img.select('NDVI').visualize(min=0, max=0.8, palette=PALETA_NDVI)
                 else:
@@ -94,10 +99,14 @@ def main():
             escenas[z][est] = {'item': f'Mediana {sensores} · {n} escenas', 'fecha': _centro(ini, fin),
                                'periodo': f'{ini} a {fin}', 'n_escenas': n,
                                'fuente': 'Google Earth Engine (Collection 2 Level-2, sin nubes)'}
+    if solo_ndvi:
+        print('Listo: capas de NDVI rehechas (escenas.json y las de color quedan como estaban).')
+        return
     escribir_json(CARPETA / 'escenas.json', escenas)
     escribir_json(SALIDAS / 'huellas_web_img.json', huellas)
     print('Listo: data/imagenes/')
 
 
 if __name__ == '__main__':
-    main()
+    import sys
+    main(solo_ndvi='--solo-ndvi' in sys.argv)

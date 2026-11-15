@@ -22,8 +22,8 @@ DESTINO = DATA / 'imagenes' / 'lotes'
 MINIMO_LIMPIO = 0.95
 VENTANA = {'s2': 20, 'l8': 30}
 SIN_FECHA_DIAS = 120   # sin fecha del vuelo: la pasada limpia más reciente de los últimos 120 días
-# Paleta del NDVI de la app (la leyenda .ramp de web/estilos.css y el dron), de 0 a 0,8.
-PALETA_APP = ['a50026', 'f46d43', 'fee08b', 'd9ef8b', '66bd63', '006837']
+# Paleta del NDVI de la app: una sola en todo el proyecto (la define imagenes.py, igual a la leyenda .ramp).
+from ia_desmonte.imagenes import PALETA_NDVI as PALETA_APP  # noqa: E402
 M_GRADO = 111320
 
 

@@ -522,3 +522,10 @@ Según la página oficial de premios (`NASA Space Apps Challenge - awards.mhtml`
   - **Espacio en blanco bajo el mapa (Enzo, 15/11):** con el dron, el recorte y las clases, la columna de botones del visor llegaba a 1350 px y el mapa medía 460, así que quedaban 890 px en blanco en la PC. Ahora el mapa se estira con la columna, que tiene un máximo de 760 px y se desplaza por dentro. Leaflet vuelve a medir el mapa con un `ResizeObserver`. En el celular no cambia (340 px).
   - **Pendiente:** los cortes reales del ingeniero.
 - **Corrección: la cortina del visor estaba al revés (Enzo, 15/11):** al arrastrar hacia "← Satélite" se veía más dron, y lo mismo pasaba en todas las comparaciones. La línea se movía con el control, así que la capa de la derecha crecía al ir hacia la izquierda. Ahora la línea va al revés que el control: arrastrar hacia el nombre de una capa muestra más de esa capa, y cada capa sigue del lado de su nombre. Verificado en Chrome: hacia "← Satélite" el dron ocupa el 5 %, hacia "Dron →" el 95 %. Prueba en `tests/vistas.test.js` (214 en verde).
+- **Corrección: la paleta del NDVI de Landsat no coincidía con la leyenda (hallazgo de D-40, arreglado el 15/11):**
+  - **El problema:** las imágenes NDVI de las zonas (`ia_desmonte/imagenes.py`) usaban una paleta de marrón a verde azulado (`8c510a … 01665a`), y la leyenda del visor (`.ramp` de `web/estilos.css`), el dron y los recortes del lote van de rojo a verde.
+  - **El arreglo:**
+    - una sola paleta en todo el proyecto (`imagenes.PALETA_NDVI`, igual a la leyenda; `recorte_lote.py` la importa);
+    - `imagenes.py --solo-ndvi` rehízo **solo las 10 imágenes NDVI** (verano e invierno de las 5 zonas) con Earth Engine, con las mismas escenas que antes (por ejemplo, 44 en el invierno de la Zona 1) y el mismo peso (unos 280 KB). Las de color real y `escenas.json` no cambiaron.
+  - **Prueba nueva:** `ia_desmonte/pruebas/test_paleta.py` falla si la paleta de las imágenes, la de los recortes o la del dron se separan de la de la leyenda. 48 de Python y 214 de JS en verde.
+
