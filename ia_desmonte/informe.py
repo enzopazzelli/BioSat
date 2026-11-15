@@ -127,11 +127,19 @@ def generar():
     s.append(f'- **Predictores:** {", ".join(desm["meta"]["predictores"])}.')
     s.append(f'- **Línea de base:** en la prueba se desmontó el {_n(100 * ev["tasa_base"], 1)} % de los puntos. Un modelo '
              'que adivina al azar tiene AUC 0,50 y AUC de precisión-exhaustividad igual a esa proporción.\n')
-    s.append(_tabla(['Método', 'AUC', 'AUC precisión-exhaustividad', 'F1', 'Exactitud', 'Kappa'],
-                    [[NOMBRE_METODO[k] + (' ✓' if k == ev['metodo_elegido'] else ''), _n(met[k]['auc']),
-                      _n(met[k]['pr_auc']), _n(met[k]['f1']), _n(met[k]['accuracy']), _n(met[k]['kappa'])]
-                     for k in NOMBRE_METODO]) + '\n')
+    s.append(_tabla(['Método', 'AUC validación cruzada (entrenamiento)', 'AUC prueba 2016-2025',
+                     'AUC precisión-exhaustividad', 'F1', 'Exactitud', 'Kappa'],
+                    [[NOMBRE_METODO[k] + (' ✓' if k == ev['metodo_elegido'] else ''), _n(met[k].get('auc_cv')),
+                      _n(met[k]['auc']), _n(met[k]['pr_auc']), _n(met[k]['f1']), _n(met[k]['accuracy']),
+                      _n(met[k]['kappa'])] for k in NOMBRE_METODO]) + '\n')
     s.append(f'{ev["justificacion_metodo"]}\n')
+    el = met[ev['metodo_elegido']]
+    if el.get('auc_cv') is not None and el['auc_cv'] - el['auc'] > 0.05:
+        s.append(f'**Cómo leer la diferencia.** Dentro de su época el modelo distingue bien ({_n(el["auc_cv"])}), '
+                 f'pero al predecir la década siguiente baja a {_n(el["auc"])}: el patrón del desmonte cambió entre '
+                 'los dos períodos. Una hipótesis, que este trabajo no prueba, es la entrada en vigencia de la Ley de '
+                 'Bosques (26.331) y el ordenamiento territorial de la provincia hacia 2009-2010. Por eso el riesgo por '
+                 'zona sirve para **comparar zonas**, no como pronóstico exacto de cada lote.\n')
     s.append(f'**Riesgo por zona** ({desm["meta"]["horizonte_riesgo"]}):\n')
     s.append(_tabla(['Zona', 'Riesgo medio', 'Puntos de monte', 'Confianza'],
                     [[NOMBRE_ZONA[z], _n(desm['zonas'][z]['riesgo_medio_0_1'], 3), desm['zonas'][z]['riesgo_n'],

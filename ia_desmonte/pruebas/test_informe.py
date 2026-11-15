@@ -14,6 +14,8 @@ def test_informe_cita_las_metricas_tal_cual_estan_en_el_json():
     met = _leer('desmonte_zonas.json')['evaluacion']['metodos']
     for k in ('regresion_logistica', 'random_forest', 'gradient_boosting'):
         assert f"{met[k]['auc']:.2f}".replace('.', ',') in texto, k
+        assert f"{met[k]['auc_cv']:.2f}".replace('.', ',') in texto, k
+    assert 'hipótesis' in texto   # la caída entre validación cruzada y prueba se explica como hipótesis, no como hecho
     assert _leer('desmonte_zonas.json')['evaluacion']['justificacion_metodo'] in texto
 
 
