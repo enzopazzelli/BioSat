@@ -13,7 +13,7 @@ Este panorama se escribió a mano a partir de `main`, los planes de [`planes/`](
 | F1 · Clima | Enzo | **Listo** | `clima_zonas.json` completo (1981-2025, 5 zonas, ET0, normal contra reciente) | Nada |
 | F5 · App y motor | Enzo | **Listo** | Inicio simple para el celular, Reporte completo con PDF y vista detallada (D-31). Probado en un celular de verdad (Enzo, 15/11: se ve bien). En la PC, el Inicio va en dos columnas, y el pronóstico de Meteomatics de los próximos días aparece en el Inicio, el Reporte y la pantalla del kit (D-34) | Probar la app publicada sin internet en el celular después del último merge; ensayar la demo en la pantalla grande |
 | F4 · Rotaciones | Vale | **Casi listo** | 15 rotaciones (5 zonas × 3). Zona 5 revisada por un productor | Validar las zonas 1 a 4 (o decir que no lo están); confirmar `requiere_hacienda` y el permiso del productor; corregir un dato de la evidencia de la Zona 5; revisar el guion |
-| F2 · Suelo y zonificación | Santi + Enzo (D-30) | **Listo, con datos reales** | Zonificación AIZAL en 5 grupos, suelo de SoilGrids 0-30 cm y meses de suelo pelado con Landsat 2021-2025 | Publicar el visor de Earth Engine; sumar lo que responda la profesora; nombrar los 5 grupos y corregir cómo la app presenta el suelo pelado (D-33) |
+| F2 · Suelo y zonificación | Santi + Enzo (D-30) | **Listo, con datos reales** | Zonificación AIZAL en 5 grupos, suelo de SoilGrids 0-30 cm y meses de suelo pelado con Landsat 2021-2025 | Publicar el visor de Earth Engine; sumar lo que responda la profesora. Los 5 grupos ya tienen nombre y la app ya presenta bien el dato del satélite (D-33, rama `enzo-d33`, falta integrarla) |
 | F3 · Modelo de desmontes | Santi + Enzo (D-30) | **Listo, con datos reales** | Random forest validado en el tiempo, riesgo y proyección por zona, índice de fragilidad con fórmula visible | Pasarle a Sara las métricas reales, el mapa de riesgo y la comparación 2000 contra 2025 |
 | F6 · Arduino | Sara (en un simulador web) y Enzo | **Código listo, armado en curso** | Sketch compilado, lector Web Serial sumado a la app y probado con un puerto simulado, esquema y guía de armado en protoboard con el kit para principiantes (D-32). El 15/11 Sara lo está armando en un simulador web; Enzo avanzó con el kit el 14/11 | Probar en la placa real, calibrar y grabar lecturas reales. Si la demo usa el simulador, sus lecturas son simuladas y la pantalla del kit tiene que decirlo (D-33) |
 | F7 · Entrega | Sara (coordina) | **Sin empezar** | Nada | Guion, video o diapositivas, página del proyecto, declaración de IA, ensayos |
@@ -24,7 +24,7 @@ Avance contado de las casillas de los planes: **Enzo 80%, Santi 81%, Vale 77%, S
 
 ## 2. Qué funciona hoy en la app
 
-Las **112 pruebas automáticas** (`node --test "tests/*.test.js"`) están en verde. La versión nueva se revisó a 390 px con `scripts/captura-movil.mjs` y en un celular de verdad. **Falta probarla sin internet en el celular.**
+Las **153 pruebas automáticas de la app** (`node --test "tests/*.test.js"`) están en verde, con D-33 incluido. La versión nueva se revisó a 390 px con `scripts/captura-movil.mjs` y en un celular de verdad. **Falta probarla sin internet en el celular.**
 
 - **Asistente de inicio:** 4 preguntas con el mapa real de Santiago del Estero. La pregunta 1 nombra la característica de la zona y abajo sus localidades.
 - **Inicio** (`web/index.html`): semáforo de la zona en el mes actual (o de la sonda, después de medir), lo que mejor encaja con la próxima siembra y la tira de 12 meses, y la barra con Medir con la sonda y WhatsApp.
@@ -45,9 +45,9 @@ Las **112 pruebas automáticas** (`node --test "tests/*.test.js"`) están en ver
 | `clima_zonas.json` | Completo | NASA POWER |
 | `rotaciones_santiago.json` | Completo | Vale; 1 de 5 zonas revisada por un productor |
 | `desmonte_zonas.json` | Completo | Hansen v1.13 y modelo de D-30 |
-| `zonificacion_aizal.json` | Casi completo | **Los 5 grupos no tienen nombre** (`grupos[].nombre` en `null`) |
+| `zonificacion_aizal.json` | Completo | Los 5 grupos tienen nombre desde D-33 (los propuso Vale y se verificaron contra el mapa) |
 | `suelo_zonas.json` | Completo | SoilGrids 0-30 cm, con rango y confianza media (D-30). El monte nativo tiene valor en las 5 zonas (de 20 % a 61 %); su mediana y su rango quedan en `null` porque no se aplican a un porcentaje de área |
-| `diagnostico_landsat_ia.json` | Casi completo | Meses de suelo pelado con Landsat 2021-2025 y fragilidad (D-30). **El umbral de NDVI no tiene exactitud ni F1 medidos** (en `null`, porque no hay datos de campo), y el resultado depende mucho del umbral (D-33) |
+| `diagnostico_landsat_ia.json` | Casi completo | Meses de lotes sin cobertura vegetal activa (suelo descubierto o rastrojo seco) con Landsat 2021-2025 y fragilidad (D-30). **El umbral de NDVI no tiene exactitud ni F1 medidos** (en `null`, porque no hay datos de campo), y el resultado depende mucho del umbral: desde D-33 la app lo dice |
 | `arduino_bandejas_demo.json` | Plantilla vacía | La carga quien arme el kit (hoy, Enzo) |
 
 Los `null` se muestran en la app como "sin dato". No hay que rellenarlos a mano: o salen de una fuente, o quedan así.
@@ -58,7 +58,7 @@ Los `null` se muestran en la app como "sin dato". No hay que rellenarlos a mano:
 
 1. **El kit está programado, pero no armado ni probado en la placa.** El sketch compila y el lector funciona con un puerto simulado. Según D-32, el kit para principiantes alcanza y no hace falta comprar nada electrónico. Falta armarlo con `arduino/GUIA-PROTOBOARD.md`, sellar el LM35, calibrar y grabar lecturas reales en `data/arduino_bandejas_demo.json`. Es lo que más tiempo físico necesita y no se puede hacer desde la PC.
 2. **La entrega no empezó.** Falta el guion, el video o las diapositivas, la página del proyecto en Space Apps y la declaración de uso de IA. Solo Sara los tiene asignados, y quedan 9 horas.
-3. **La app muestra cosas que no son ciertas (D-33).** Dice "suelo pelado" donde el satélite solo ve poca vegetación verde (que puede ser rastrojo). Además, la tabla de métodos muestra modelos que nunca se corrieron, hay textos que nombran MapBiomas y LART, y los grupos AIZAL no tienen nombre. Plan con 3 formas de arreglarlo (recomendada: "lotes sin verde", unos 45 min): [`docs/superpowers/plans/2026-11-15-app-sin-datos-falsos.md`](superpowers/plans/2026-11-15-app-sin-datos-falsos.md). Vale preguntó por esta tarea; falta decidir la forma y quién la hace.
+3. ~~**La app muestra cosas que no son ciertas (D-33).**~~ **Arreglado en la rama `enzo-d33` (15/11), falta integrarlo a `main` antes del congelamiento.** La app dice "sin cobertura vegetal activa (suelo descubierto o rastrojo seco)", la tabla de métodos muestra solo el umbral de NDVI con "sin medir", no nombra MapBiomas, LART ni CNN, y los grupos tienen nombre. Detalle en la bitácora (D-33).
 
 ---
 
@@ -99,6 +99,7 @@ Los `null` se muestran en la app como "sin dato". No hay que rellenarlos a mano:
 - Revisión de ramas: `santi-datos-ia`, `vale-rotaciones` y `sara-arduino-entrega` no tienen nada fuera de `main`, y `enzo-app` quedó integrada entera.
 - El Inicio en dos columnas en la PC y el pronóstico de Meteomatics en la app, con actualización diaria (D-34).
 - Botón de idioma ES/EN, etapa 1: el asistente, el Inicio, el marco del Reporte, el kit y la guía del campo en inglés, con `?lang=en` para mandar el link a un jurado (D-35).
+- La app ya no muestra cosas que no son ciertas (D-33): "sin cobertura vegetal activa" con el texto de Vale, la tabla de métodos real, sin fuentes falsas y los 5 grupos con nombre. En la rama `enzo-d33`.
 
 ---
 
@@ -124,7 +125,7 @@ gantt
     section Vale
     Hacienda, permiso y revisión del guion  :2026-11-15 10:00, 2026-11-15 13:00
     section Quien lo tome
-    App sin datos falsos (D-33)             :crit, 2026-11-15 11:00, 2026-11-15 14:00
+    App sin datos falsos (D-33), hecho      :done, 2026-11-15 12:15, 2026-11-15 13:00
 ```
 
 Hitos de los planes: **congelamiento** domingo 15:00, **entrega** domingo 19:00.

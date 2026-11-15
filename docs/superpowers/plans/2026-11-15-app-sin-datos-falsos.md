@@ -4,7 +4,7 @@
 >
 > **Pedido de Enzo (15/11):** "que la app no muestre cosas falsas en la demo". No se trata de medir datos nuevos, sino de que la app diga bien lo que ya hay.
 >
-> **Falta decidir** cuál de las 3 formas de arreglar el problema 1 se usa (ver más abajo). La recomendada es la 1. Si nadie decide otra cosa, se hace la 1.
+> **Hecho (15/11, Enzo con Claude, rama `enzo-d33`):** forma 1, con el texto de Vale ("sin cobertura vegetal activa"), los arreglos comunes y los nombres de los grupos. Detalle en la bitácora (D-33). Lo que sigue queda como registro del plan.
 
 ---
 

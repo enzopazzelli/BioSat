@@ -158,12 +158,12 @@ Resultado del módulo de IA con Landsat. **Solo valores calculados por el modelo
 }
 ```
 
-- `meses_suelo_pelado` tiene 12 valores (enero a diciembre): `true` si en ese mes la zona suele tener el suelo pelado. Va directo al calendario. Si el dato sale de [`scripts/gee_exportar_zonas.js`](../scripts/gee_exportar_zonas.js), vale `true` cuando `prob_pelado_mXX` es 0,5 o más.
+- `meses_suelo_pelado` tiene 12 valores (enero a diciembre): `true` si en ese mes la mayoría de los lotes de la zona se ven **sin cobertura vegetal activa** (NDVI bajo: suelo descubierto o rastrojo seco, que el satélite no distingue; D-33). El nombre del campo queda por compatibilidad, pero la app lo presenta así. Va directo al calendario. Si el dato sale de [`scripts/gee_exportar_zonas.js`](../scripts/gee_exportar_zonas.js), vale `true` cuando `prob_pelado_mXX` es 0,5 o más.
 - `indice_fragilidad_0_100` se calcula con una **fórmula visible** (por ejemplo, meses pelados × días de calor × lluvias intensas), escrita en `formula_fragilidad`.
 - **Desde D-30 (`ia_desmonte/suelo_pelado.py`):**
   - Cada zona suma:
     - `meses_dudosos`: 12 booleanos; el mes cambia con el umbral 0,20 o 0,30, o no tiene datos;
-    - `fraccion_pelado`: 12 fracciones o `null`, con umbral 0,25;
+    - `fraccion_pelado`: 12 fracciones o `null`, con umbral 0,25 (lotes sin cobertura vegetal activa, igual que arriba);
     - `fraccion_pelado_umbral_020` y `fraccion_pelado_umbral_030`;
     - `n_puntos_con_dato` y `obs_limpias_por_punto`;
     - `confianza_fragilidad`, que es `"baja"`.
@@ -341,8 +341,8 @@ Zonificación de la provincia con k-means sobre clima y suelo de AIZAL, propuest
 }
 ```
 
-- **`grupos`:** un elemento por grupo. `nombre` lo pone el equipo mirando el perfil (por ejemplo, "Sur fresco y serrano").
-- **`meta.imagen`** (opcional): PNG de los grupos con su recuadro `[oeste, sur, este, norte]`. Si está, el visor de la app muestra la capa "Zonas AIZAL".
+- **`grupos`:** un elemento por grupo. `nombre` lo pone el equipo mirando el perfil y el mapa. Desde D-33 están los 5 (los propuso Vale), en `NOMBRES_GRUPOS` de `ia_desmonte/zonificacion.py`. Es una zonificación del equipo con las variables de AIZAL, no la AIZAL oficial: la app la presenta así.
+- **`meta.imagen`** (opcional): PNG de los grupos con su recuadro `[oeste, sur, este, norte]`. Si está, el visor de la app muestra la capa "Zonas con variables AIZAL".
 - **`comparacion_biosat`:** dice qué grupo AIZAL domina en la celda de cada zona de BioSat y en qué porcentaje. Sirve para validar las 5 zonas.
 - **Desde D-30 (`ia_desmonte/zonificacion.py`):**
   - Usa las mismas variables que AIZAL V4, tomadas de TerraClimate 1991-2020, SoilGrids 2.0 y NASADEM.

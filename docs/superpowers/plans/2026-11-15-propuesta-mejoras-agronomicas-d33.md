@@ -95,7 +95,7 @@ Refuerza el principio central de BioSat y de las reglas de oro del desafío: **l
 
 ## Estado de Aplicación
 
-* [ ] **Punto 1 (Lenguaje agronómico):** propuesto, **todavía no aplicado**. *(Revisión de Enzo al integrar, 15/11: el commit `54da9fe` solo trae este documento. `web/inicio-logica.js` sigue diciendo "tienen el suelo pelado" y no hay cambios en `index.html`, `completo.html` ni en las pruebas.)*
-* [ ] **Punto 2 (Nombres de grupos AIZAL):** *(Revisión 15/11: la ubicación coincide con el mapa `data/imagenes/zonas_aizal.png`: el grupo 3 cae en la franja oeste-sudoeste, entre −64,9 y −63,5 de longitud y −29,5 y −27 de latitud, donde están Guasayán y Ambargasta; el grupo 4 cae al sudeste, hacia los bañados del Salado.)* Listo para incorporar en `ia_desmonte/zonificacion.py` / `data/zonificacion_aizal.json` con la confirmación de Enzo y Santi.
-* [ ] **Punto 3 (Tabla de métodos honesta):** Listo para incorporar en `web/app.js:520` según el diseño D-33.
-* [ ] **Punto 4 (Coherencia lote vs satélite):** Coordinar con Sara para el guion del pitch y de la entrega final.
+* [x] **Punto 1 (Lenguaje agronómico):** aplicado el 15/11 (rama `enzo-d33`, ver la bitácora, D-33). Antes: *(Revisión de Enzo al integrar, 15/11: el commit `54da9fe` solo trae este documento. `web/inicio-logica.js` sigue diciendo "tienen el suelo pelado" y no hay cambios en `index.html`, `completo.html` ni en las pruebas.)*
+* [x] **Punto 2 (Nombres de grupos AIZAL):** aplicado el 15/11, en `NOMBRES_GRUPOS` de `ia_desmonte/zonificacion.py` y en `data/zonificacion_aizal.json`. *(Revisión 15/11: la ubicación coincide con el mapa `data/imagenes/zonas_aizal.png`: el grupo 3 cae en la franja oeste-sudoeste, entre −64,9 y −63,5 de longitud y −29,5 y −27 de latitud, donde están Guasayán y Ambargasta; el grupo 4 cae al sudeste, hacia los bañados del Salado.)* Santi todavía puede revisarlos.
+* [x] **Punto 3 (Tabla de métodos honesta):** aplicado el 15/11: una fila, "Umbral de NDVI (0,25)", con "sin medir" (más claro para el jurado que "Sin calibración destructiva") y una nota que dice que no hay datos de campo y cuánto cambia el número con 0,20 y 0,30.
+* [ ] **Punto 4 (Coherencia lote vs satélite):** la frase rectora ya está en la sección 4 del Reporte (15/11). Falta coordinar con Sara para el guion del pitch y de la entrega final.
