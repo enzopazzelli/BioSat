@@ -63,6 +63,10 @@ _Salen del repaso del repo. Cada uno decide cómo abordarlas; si no corresponden
 - [x] Abrir un PR por cada avance: la rama `santi-datos-ia` del repo quedó vieja porque el PR #5 vino de un fork
 - [x] Explicar en una página cómo se usa Meteomatics en BioSat y qué falta para integrarlo
 
+### Agregadas por Enzo · 15/11 (D-34, Meteomatics en la app)
+- [ ] En `scripts/descargar_meteomatics.py`, cambiar `wind_speed_10m:ms` (instantáneo, a las 21 h de Argentina) por `wind_speed_mean_10m_24h:ms`, el promedio del día. Sin eso, la tarjeta de la app no muestra la línea "viento bajo para pulverizar". El límite es de 10 parámetros por pedido, así que es un cambio por otro.
+- [ ] Confirmar con la documentación o el soporte de Meteomatics si `frost_warning_24h:idx` mira las 24 h anteriores o las siguientes. Hoy la app la cuenta como de las 24 h anteriores, como los demás parámetros de 24 h.
+
 ## Listo cuando
 
 - **Zonificación:** la de AIZAL está comparada con las 5 zonas de BioSat.

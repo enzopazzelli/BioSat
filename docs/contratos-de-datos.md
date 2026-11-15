@@ -447,8 +447,10 @@ Pronóstico diario de Meteomatics (modelo europeo ECMWF, 9 km) para el punto de 
 ```
 
 - **`zonas[].id`:** los mismos ids que el resto de los JSON. Tienen que estar las 5 zonas: si falta una, el script no escribe el archivo.
-- **Claves que lee la app** (`web/pronostico-logica.js`): `fecha`, `t_max_2m_24h:C`, `t_min_2m_24h:C`, `precip_24h:mm`, `frost_warning_24h:idx` (1 = alerta), `leaf_wetness:idx` (1 = hoja mojada) y `wind_speed_10m:ms` (la app lo pasa a km/h).
+- **Claves que lee la app** (`web/pronostico-logica.js`): `fecha`, `t_max_2m_24h:C`, `t_min_2m_24h:C`, `precip_24h:mm`, `frost_warning_24h:idx` (1 = alerta), `leaf_wetness:idx` (1 = hoja mojada) y, si viene, `wind_speed_mean_10m_24h:ms` (promedio de 24 h; la app lo pasa a km/h).
+- **Cada fila describe el día ANTERIOR a su `fecha`.** Los parámetros de intervalo de Meteomatics son "right-bounded": `precip_24h:mm` fechado el 16/11 00:00 UTC es la lluvia del 15/11 00 UTC al 16/11 00 UTC. Los valores instantáneos de esa fila (`leaf_wetness:idx`) son de las 00 UTC, o sea las 21 h de Argentina, del mismo día anterior.
+- **`wind_speed_10m:ms` no se usa:** es instantáneo (21 h de Argentina) y no dice si el día sirve para pulverizar. Para eso hace falta pedir `wind_speed_mean_10m_24h:ms` en el script (pendiente de Santi). Sin ese dato, la tarjeta no muestra la línea del viento.
 - **Sin dato:** `-999` (el valor de Meteomatics para "sin dato") o `null`. La app no los suma ni los cuenta.
-- **Vigencia:** la app solo cuenta los días con `fecha` de hoy en adelante (fecha local). Si no queda ninguno, muestra "Pronóstico vencido (bajado el {fecha_generacion})" sin números.
+- **Vigencia:** la app solo cuenta los días (ya corridos al día anterior) de hoy en adelante, con la fecha local. Si no queda ninguno, muestra "Pronóstico vencido (bajado el {fecha_generacion})" sin números.
 - **Contraseña:** solo en la variable `METEOMATICS_PASSWORD` (secreto de GitHub Actions o variable local). Nunca va en el repo ni en el navegador (D-29).
 - La forma del archivo se prueba en `tests/datos-contratos.test.js`, y el workflow corre esa prueba antes de subir un pronóstico nuevo.

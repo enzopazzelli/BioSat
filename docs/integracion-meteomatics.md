@@ -110,7 +110,13 @@ El script genera el archivo [`data/meteomatics_santiago_zonas.json`](../data/met
 
 ## 5. Estado Actual y Qué Falta para su Integración en la App
 
-> **Actualización 15/11 (D-34): integrado (opción A).** La app muestra la tarjeta "Esta semana en tu zona" en el Inicio y en el Reporte, con los umbrales de esta sección (máxima de más de 38 °C y viento de menos de 15 km/h). La pantalla del kit suma la máxima de hoy a 9 km. El pronóstico se renueva todos los días con `.github/workflows/actualizar-meteomatics.yml`, y la contraseña va en el secreto `METEOMATICS_PASSWORD`. Contrato: [`contratos-de-datos.md`](contratos-de-datos.md) §10. Lo que sigue abajo es el estado del 14/11, antes de integrarlo.
+> **Actualización 15/11 (D-34): integrado (opción A).** La app muestra la tarjeta "Esta semana en tu zona" en el Inicio y en el Reporte, con los umbrales de esta sección (máxima de más de 38 °C y viento de menos de 15 km/h). La pantalla del kit suma la máxima de hoy a 9 km. El pronóstico se renueva todos los días con `.github/workflows/actualizar-meteomatics.yml`, y la contraseña va en el secreto `METEOMATICS_PASSWORD`. Contrato: [`contratos-de-datos.md`](contratos-de-datos.md) §10.
+>
+> **Ojo con el tiempo de cada valor:** los parámetros de 24 h miran hacia atrás. `precip_24h:mm` fechado el 16/11 00 UTC es la lluvia del 15/11. Además, `wind_speed_10m:ms` es **instantáneo** (00 UTC = 21 h de Argentina), no la "velocidad media" que dice la tabla de la sección 2. **Pendiente (Santi):**
+> - cambiar `wind_speed_10m:ms` por `wind_speed_mean_10m_24h:ms` en `PARAMETROS` del script, para tener el promedio del día;
+> - confirmar si `frost_warning_24h:idx` mira las 24 h anteriores o las siguientes.
+>
+> Lo que sigue abajo es el estado del 14/11, antes de integrarlo.
 
 ### ¿Cómo se usa hoy en BioSat?
 * **Datos ya disponibles:** Se generó [`data/meteomatics_santiago_zonas.json`](../data/meteomatics_santiago_zonas.json) con los pronósticos a 7 días para las 5 zonas agroecológicas, cubriendo los 10 parámetros críticos (déficit hídrico, evapotranspiración, riesgo de helada, mojamiento foliar, viento, Tmax, Tmin, etc.).

@@ -5,7 +5,7 @@
 ## Por qué
 
 - **Inicio en la PC:** "cuando abro la app desde el navegador de la PC se ve la vista del celular pero con bordes". Enzo quiere un cambio mínimo para que en la compu se note la diferencia. El Inicio tiene un ancho máximo de 560 px en cualquier pantalla (`web/estilos.css:362`).
-- **Meteomatics:** "da info valiosa". La app muestra lo **típico** de cada mes (NASA POWER), pero no lo que viene **esta semana**. Ejemplo: en la Zona 2, el semáforo dice "faltan unos 110 mm de agua", y el pronóstico bajado el 14/11 anunciaba 136 mm de lluvia para el 15/11 y hojas mojadas en 6 de los 7 días. El pronóstico ya está en `data/meteomatics_santiago_zonas.json` (Santi, 14/11), pero la app nunca lo lee.
+- **Meteomatics:** "da info valiosa". La app muestra lo **típico** de cada mes (NASA POWER), pero no lo que viene **esta semana**. Ejemplo: en la Zona 2, el semáforo dice "faltan unos 110 mm de agua", y el pronóstico bajado el 14/11 anunciaba 136 mm de lluvia para el 15/11 y hojas mojadas en 6 de los 7 días. **Corrección (revisión final):** esa lectura estaba corrida un día. Los parámetros de 24 h de Meteomatics miran hacia atrás, así que los 136 mm eran del 14/11. La lectura correcta es 52 mm entre el 15 y el 20/11 y hoja mojada en 5 noches. Además, el viento del archivo es instantáneo (21 h) y no sirve para pulverizar. Ver D-34 en la bitácora. El pronóstico ya está en `data/meteomatics_santiago_zonas.json` (Santi, 14/11), pero la app nunca lo lee.
 
 ## Objetivos
 

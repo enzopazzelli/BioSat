@@ -51,10 +51,10 @@ Avance de cada integrante, contado desde las casillas de su plan en [`planes/`](
 | Persona | Rama | Avance | Tareas |
 |---|---|---|---|
 | [Enzo · Integración y app](planes/1-enzo.md) | `enzo-app` | `▓▓▓▓▓▓▓▓░░` 82% | 42/51 |
-| [Santi · Suelo, satélite e IA](planes/2-santi.md) | `santi-datos-ia` | `▓▓▓▓▓▓▓▓░░` 81% | 22/27 |
+| [Santi · Suelo, satélite e IA](planes/2-santi.md) | `santi-datos-ia` | `▓▓▓▓▓▓▓▓░░` 76% | 22/29 |
 | [Vale · Campo y agronomía](planes/3-vale.md) | `vale-rotaciones` | `▓▓▓▓▓▓▓▓░░` 77% | 17/22 |
 | [Sara · Kit Arduino y relato](planes/4-sara.md) | `sara-arduino-entrega` | `▓▓░░░░░░░░` 20% | 5/25 |
-| **Total** | | `▓▓▓▓▓▓▓░░░` **69%** | **86/125** |
+| **Total** | | `▓▓▓▓▓▓▓░░░` **68%** | **86/127** |
 <!-- AUTO:AVANCE:FIN -->
 
 ### Lo más urgente
@@ -99,13 +99,15 @@ Sale solo de las casillas sin tildar de cada plan. Panorama completo y riesgos: 
 </details>
 
 <details>
-<summary><b>Santi</b>: 5 pendientes (<a href="planes/2-santi.md">plan completo</a>)</summary>
+<summary><b>Santi</b>: 7 pendientes (<a href="planes/2-santi.md">plan completo</a>)</summary>
 
 - Correr `scripts/gee_visor_biosat.js`, publicarlo como Earth Engine App y pasarles el link a Enzo y a Sara _(Checkpoint 1)_
 - Sumar lo que responda la profesora al audio y al documento _(Congelamiento)_
 - Pasarle a Sara las métricas, el mapa de riesgo, una captura del visor y la comparación 2000 contra 2025 _(Congelamiento)_
 - Opcional: usar los embeddings AlphaEarth como variable extra del modelo o de la zonificación _(Congelamiento)_
 - Ayudar con el video y la página: explicar el modelo en 20 segundos _(Entrega)_
+- En `scripts/descargar_meteomatics.py`, cambiar `wind_speed_10m:ms` (instantáneo, a las 21 h de Argentina) por `wind_speed_mean_10m_24h:ms`, el promedio del día. Sin eso, la tarjeta de la... _(Agregadas por Enzo)_
+- Confirmar con la documentación o el soporte de Meteomatics si `frost_warning_24h:idx` mira las 24 h anteriores o las siguientes. Hoy la app la cuenta como de las 24 h anteriores, como los... _(Agregadas por Enzo)_
 
 </details>
 

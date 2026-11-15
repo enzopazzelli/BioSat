@@ -231,7 +231,7 @@ Según la página oficial de premios (`NASA Space Apps Challenge - awards.mhtml`
 - **D-34 (Inicio en la PC y el pronóstico de Meteomatics entra en la app):**
   - **Por qué:**
     - Enzo: "cuando abro la app desde el navegador de la PC se ve la vista del celular pero con bordes". El Inicio tenía 560 px de ancho máximo en cualquier pantalla.
-    - Meteomatics "da info valiosa": la app mostraba lo **típico** de cada mes (NASA POWER), pero no lo que viene **esta semana**. Ejemplo: en la Zona 2 el semáforo dice "faltan unos 110 mm de agua", y el pronóstico del 14/11 anunciaba 136 mm de lluvia para el 15/11 y hojas mojadas 6 de 7 días.
+    - Meteomatics "da info valiosa": la app mostraba lo **típico** de cada mes (NASA POWER), pero no lo que viene **esta semana**. Ejemplo: en la Zona 2 el semáforo dice "faltan unos 110 mm de agua" (lo típico de noviembre), y el pronóstico bajado el 14/11 anuncia 52 mm de lluvia entre el 15 y el 20/11 y hoja mojada en 5 de esas 6 noches. *(Al principio se leyó "136 mm para el 15/11": era la lluvia del 14/11. Ver el hallazgo de la revisión final, más abajo.)*
   - **Corrección:** D-29 no decidió que Meteomatics quedara fuera. Solo decidió no cambiar la contraseña, y uno de sus motivos era que la app no lo usaba en ese momento. **Decisión (Enzo, 15/11): entra.**
   - **Qué se hizo:**
     - **Inicio en dos columnas desde 1024 px**, solo con CSS: a la izquierda el semáforo con su color; a la derecha lo que mejor encaja, el pronóstico y los botones. Por debajo de 1024 px no cambia nada.
@@ -239,8 +239,8 @@ Según la página oficial de premios (`NASA Space Apps Challenge - awards.mhtml`
       - la lluvia total y el día de más lluvia;
       - los días de más de 38 °C;
       - las alertas de helada;
-      - los días con hoja mojada (favorece hongos);
-      - los días con viento de menos de 15 km/h (para pulverizar).
+      - las noches con hoja mojada (favorece hongos);
+      - los días con viento de menos de 15 km/h (para pulverizar), solo si el archivo trae el promedio de viento de 24 h.
 
       Los umbrales salen de `docs/integracion-meteomatics.md` §5 y son un criterio del equipo; la tarjeta lo dice. La lógica está en `web/pronostico-logica.js`, con pruebas.
     - **Nunca se muestra un pronóstico vencido como actual:** los días que ya pasaron no se cuentan y, sin días por delante, la tarjeta dice "Pronóstico vencido" sin números. La fecha de hoy es la local, no la UTC. `-999` (el "sin dato" de Meteomatics) y `null` no se suman.
@@ -249,6 +249,12 @@ Según la página oficial de premios (`NASA Space Apps Challenge - awards.mhtml`
     - **Protección:** si la descarga de una zona falla, `scripts/descargar_meteomatics.py` ya no pisa el archivo bueno (antes, si fallaban todas, lo escribía vacío). Tiene pruebas en `scripts/pruebas/` (pytest, sin internet).
     - **Pantalla del kit:** suma "Pronóstico para hoy (Meteomatics, 9 km): máxima X °C" entre NASA POWER (50 km) y la sonda, como escalón de la escalera de escalas. Solo aparece si el pronóstico trae el día de hoy.
     - **`scripts/captura-movil.mjs` acepta `ANCHO`**, para revisar la app en tablet y en compu.
+  - **Hallazgo de la revisión final (corregido):** en Meteomatics, los parámetros de 24 h son "right-bounded", según su documentación ("Interval parameters"). `precip_24h:mm` fechado el 16/11 00:00 UTC es la lluvia **del 15/11**. La primera versión mostraba cada día corrido en uno: anunciaba "136 mm el domingo 15/11", que en realidad era la lluvia del 14/11.
+    - **Arreglo:** cada fila del JSON se toma como el día anterior a su fecha.
+    - **Viento:** `wind_speed_10m:ms` es **instantáneo**, de las 00 UTC (las 21 h de Argentina). No sirve para "viento bajo para pulverizar". La app solo usa el promedio de 24 h (`wind_speed_mean_10m_24h:ms`), que el archivo actual no trae, así que la línea del viento no aparece.
+    - **Hoja mojada:** también es un valor de las 21 h, así que se cuenta como "noches con hoja mojada".
+    - **Helada:** la documentación no dice si `frost_warning_24h:idx` mira las 24 h anteriores o las siguientes. Puede correr un día en los bordes de la semana.
+    - **Le toca a Santi:** pedir `wind_speed_mean_10m_24h:ms` en el script y confirmar el período de la helada (`planes/2-santi.md`).
   - **No entra:** la vista detallada (`completo.html`) no lleva la tarjeta.
   - **Diseño y plan:** `docs/superpowers/specs/2026-11-15-inicio-pc-y-meteomatics-design.md` y `docs/superpowers/plans/2026-11-15-inicio-pc-y-meteomatics.md`.
 
