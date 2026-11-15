@@ -15,7 +15,7 @@ const ZONAS = {
   zona_2_secano_este:{num:2, nombre:'Secano agrícola del este', lugar:'Quimilí', zona:'Quimilí · Bandera · Sachayoj', deptos:'Moreno, Juan F. Ibarra', problema:'Todo depende de la lluvia: invierno y primavera secos, veranos de más de 40 °C y poco rastrojo si se hace soja sobre soja.', riego:false},
   zona_3_monte_semiarido:{num:3, nombre:'Chaco semiárido norte', lugar:'Campo Gallo', zona:'Campo Gallo · Monte Quemado', deptos:'Alberdi, Copo, Pellegrini, Figueroa', problema:'Estación seca larga, desmonte y falta de pasto en invierno para la hacienda.', riego:false},
   zona_4_bajos_submeridionales:{num:4, nombre:'Bajos submeridionales', lugar:'Añatuya', zona:'Añatuya · Los Juríes · Pinto', deptos:'Aguirre, Mitre, Belgrano, Rivadavia, General Taboada', problema:'Llanura plana y arcillosa: se anega con las lluvias de verano y se agrieta con salitre en la seca.', riego:false},
-  zona_5_sur_serrano:{num:5, nombre:'Sur serrano y salinas', lugar:'Ojo de Agua', zona:'Ojo de Agua · Sumampa · Quebrachos', deptos:'Ojo de Agua, Quebrachos, Choya, Guasayán', problema:'Clima más fresco que el resto: unas 20 heladas por año y pocos días de más de 40 °C. Sierras con pendientes que se erosionan, salinas al oeste y ganadería de cría y caprina. Las rotaciones todavía son un borrador a validar con productores del sur.', riego:false}
+  zona_5_sur_serrano:{num:5, nombre:'Sur serrano y salinas', lugar:'Ojo de Agua', zona:'Ojo de Agua · Sumampa · Quebrachos', deptos:'Ojo de Agua, Quebrachos, Choya, Guasayán', problema:'Clima más fresco que el resto: unas 20 heladas por año y pocos días de más de 40 °C. Sierras con pendientes que se erosionan, salinas al oeste y ganadería de cría y caprina. Las rotaciones las revisó un productor de la zona.', riego:false}
 };
 
 const PRIO = [
@@ -746,7 +746,7 @@ async function medirConSonda(){
     return;
   }
   try {
-    await lector.conectar(lectura => { state.vivo = lectura; renderPaneles(); renderInicio(); });
+    await lector.conectar(lectura => { state.vivo = lectura; renderPaneles(); renderInicio(); renderConclusiones(); });
     avisoInicio('');
   } catch (err) {
     console.warn('Sonda:', err);   // el detalle técnico queda en la consola
@@ -770,9 +770,56 @@ document.addEventListener('click', e => {
   if (e.target.closest('#btnWhatsapp')){ mandarWhatsapp(); }
 });
 
+/* ---------- Reporte (D-31): cabecera, conclusiones, PDF y compartir. Diseño 4.6 ---------- */
+const TEXTOS_REPORTE = {
+  sub: 'Zona {num} · {riego} · {hacienda} · {mes} de {anio}',
+  conRiego: 'con riego', sinRiego: 'sin riego', conHacienda: 'con hacienda', sinHacienda: 'sin hacienda',
+  concl: {
+    1: 'Tu año, mes a mes', 2: 'Tu rotación y 2 alternativas', 3: '¿Y si el clima viene peor? Probá con menos lluvia o más calor.',
+    4: 'Tu suelo y tu monte, desde el satélite', 5: 'Todavía no mediste tu lote.', 5.1: 'La sonda midió tu lote hoy.',
+    6: 'Para charlar con tu ingeniero', 7: 'De dónde salen los datos'
+  },
+  copiado: 'Enlace copiado.', noCopiado: 'No se pudo copiar: copiá la dirección de la barra del navegador.'
+};
+const textoDe = sel => { const el = document.querySelector(sel); return el && !el.hidden ? el.textContent.trim() : ''; };
+function renderConclusiones(){
+  if (!hayVistas()) return;
+  const z = ZONAS[state.zona], T = TEXTOS_REPORTE, L = window.InicioLogica;
+  $('#repTitulo').textContent = z.nombre;
+  $('#repSub').textContent = T.sub.replace('{num}', z.num).replace('{riego}', state.riego ? T.conRiego : T.sinRiego)
+    .replace('{hacienda}', state.ganado ? T.conHacienda : T.sinHacienda).replace('{mes}', MES_L[MES_HOY]).replace('{anio}', new Date().getFullYear());
+  // 1: los meses más duros, con el mismo semáforo del Inicio aplicado a cada mes
+  const c = clima('reciente', 0, 0), frac = ((DIAG.zonas || {})[state.zona] || {}).fraccion_pelado;
+  const meses = L ? c.map((m, i) => ({nivel: L.semaforoZona(i, {falta: m.et0 - m.lluvia, d35: m.d35, helada: m.helada},
+    Array.isArray(frac) ? frac[i] ?? null : null).nivel, falta: m.et0 - m.lluvia})) : [];
+  const sz = (SUELO_Z.zonas || {})[state.zona] || {}, dz = (DESMONTE.zonas || {})[state.zona] || {};
+  const concl = {
+    1: FrasesLogica.fraseMesesDuros(meses), 2: textoDe('#fraseMejor'), 3: escenario() ? textoDe('#fraseSim') : '',
+    4: FrasesLogica.fraseSueloMonte(sz.ph && sz.ph.valor, dz.monte_actual_pct ?? (sz.monte_nativo_pct && sz.monte_nativo_pct.valor)),
+    5: state.vivo ? T.concl[5.1] : '', 6: textoDe('#fraseListo'), 7: ''
+  };
+  for (let i = 1; i <= 7; i++) document.getElementById('concl-' + i).textContent = concl[i] || T.concl[i];
+}
+document.addEventListener('click', async e => {
+  if (e.target.closest('#btnPdf')){
+    document.querySelectorAll('#vista-reporte details').forEach(d => { d.open = true; });   // en el PDF va todo abierto
+    window.print();
+    return;
+  }
+  if (e.target.closest('#btnCompartir')){
+    const url = location.href.split('#')[0] + '#' + SECCIONES_REPORTE[0], aviso = $('#compartido');   // el enlace abre el Reporte
+    if (navigator.share){
+      try { await navigator.share({title: 'BioSat · Reporte de tu campo', url}); return; }
+      catch (err) { if (err && err.name === 'AbortError') return; }
+    }
+    try { await navigator.clipboard.writeText(url); aviso.textContent = TEXTOS_REPORTE.copiado; }
+    catch (err) { aviso.textContent = TEXTOS_REPORTE.noCopiado; }
+  }
+});
+
 /* ---------- Render general y eventos ---------- */
-function renderTodo(){ renderInicio(); renderTuCampo(); renderFrases(); renderStats(); renderCalendario(); renderPaneles(); renderDesmonte(); renderTrade(); renderCards(); renderSim(); renderDecidir(); renderVisor(); }
-function renderClima(){ renderFrases(); renderStats(); renderCalendario(); renderPaneles(); renderTrade(); renderCards(); renderSim(); }
+function renderTodo(){ renderInicio(); renderTuCampo(); renderFrases(); renderStats(); renderCalendario(); renderPaneles(); renderDesmonte(); renderTrade(); renderCards(); renderSim(); renderDecidir(); renderVisor(); renderConclusiones(); }
+function renderClima(){ renderFrases(); renderStats(); renderCalendario(); renderPaneles(); renderTrade(); renderCards(); renderSim(); renderConclusiones(); }
 document.addEventListener('click', e => {
   const cb = e.target.closest('[data-capa]');
   if (cb){ visor.capa = cb.dataset.capa; visor.cmp = 'no'; renderVisor(); return; }
@@ -785,7 +832,7 @@ document.addEventListener('click', e => {
 });
 $('#btnArduino').addEventListener('click', async () => {
   try {
-    await window.BioSatArduino.conectar(lectura => { state.vivo = lectura; renderPaneles(); renderInicio(); });
+    await window.BioSatArduino.conectar(lectura => { state.vivo = lectura; renderPaneles(); renderInicio(); renderConclusiones(); });
   } catch (err) {
     $('#sensorNota').textContent = 'No se pudo conectar el Arduino: ' + err.message;
   }
@@ -804,7 +851,7 @@ $('#simP').addEventListener('input', e => { state.dP = Number(e.target.value); r
 $('#simT').addEventListener('input', e => { state.dT = Number(e.target.value); renderClima(); });
 $('#perNormal').addEventListener('click', () => { state.periodo = 'normal'; $('#perNormal').setAttribute('aria-pressed','true'); $('#perReciente').setAttribute('aria-pressed','false'); renderClima(); });
 $('#perReciente').addEventListener('click', () => { state.periodo = 'reciente'; $('#perReciente').setAttribute('aria-pressed','true'); $('#perNormal').setAttribute('aria-pressed','false'); renderClima(); });
-$('#elegir').addEventListener('change', e => { if (e.target.name === 'elegida'){ state.elegida = e.target.value; renderDecidir(); } });
+$('#elegir').addEventListener('change', e => { if (e.target.name === 'elegida'){ state.elegida = e.target.value; renderDecidir(); renderFrases(); renderConclusiones(); } });
 $('#copiar').addEventListener('click', () => {
   const txt = $('#listaTxt').value, ok = () => { $('#copiado').textContent = 'Lista copiada.'; };
   try {

@@ -201,7 +201,7 @@
         <summary id="detalleResumen"></summary>
         <div class="panels">
             <article class="card panel">
-              <div class="panel-h"><h3>Tu suelo</h3><span class="src">AIZAL V4 · grilla de 500 m</span></div>
+              <div class="panel-h"><h3>Tu suelo</h3><span class="src">SoilGrids 2.0 · 0-30 cm · 250 m</span></div>
               <dl class="soil" id="soil"></dl>
               <p class="pending" id="soilNota"></p>
             </article>
@@ -223,7 +223,7 @@
         </div>
         <div class="card desmonte" id="panelDesmonte">
           <div class="desmonte-col">
-            <div class="panel-h"><h3>Presión de desmonte en tu zona</h3><span class="src">Modelo predictivo · D-25</span></div>
+            <div class="panel-h"><h3>Presión de desmonte en tu zona</h3><span class="src">Hansen v1.13 · modelo · D-30</span></div>
             <div class="desmonte-nivel" id="desmonteNivel"></div>
             <p class="hint" id="desmonteTexto"></p>
           </div>
@@ -290,7 +290,7 @@
       <h2 class="conclusion" id="concl-7">De dónde salen los datos</h2>
       <div class="pie-grid">
     <div>
-      <h3>De dónde salen los datos</h3>
+      <h3>Clima y agua</h3>
       <ul>
         <li>Clima: NASA POWER (MERRA-2), datos diarios 1981–2025, un punto por zona. Es un modelo de reanálisis con celdas de unos 50 km, no una medición en tu lote.</li>
         <li>Demanda de agua: evapotranspiración de referencia (ET0) con la fórmula de Hargreaves, a partir de la temperatura máxima y mínima.</li>
@@ -300,9 +300,9 @@
     <div>
       <h3>Qué es real y qué es de ejemplo</h3>
       <ul>
-        <li>Real: todos los números de clima, el calendario climático, el simulador, el riesgo año por año y las imágenes Landsat del visor.</li>
-        <li>Borrador: las rotaciones, hasta que Vale cargue las validadas. Los puntajes salen de reglas visibles.</li>
-        <li>Pendiente hasta que se carguen: suelo (AIZAL V4), diagnóstico de IA con Landsat y lecturas grabadas del kit.</li>
+        <li>Real: los números de clima (NASA POWER), el calendario, el simulador, las imágenes del visor (compuestos de Landsat hechos en Earth Engine), el suelo (SoilGrids 2.0), los meses de suelo pelado (Landsat 2021-2025), la historia y el riesgo de desmonte (Hansen v1.13) y la zonificación. Fuentes y métodos: docs/datos-y-metodos.md.</li>
+        <li>Revisado: las rotaciones de la Zona 5 las revisó un productor de la zona. Las de las zonas 1 a 4 todavía no están validadas. Los puntajes salen de reglas visibles.</li>
+        <li>Pendiente: las lecturas grabadas del kit Arduino.</li>
       </ul>
     </div>
     <div>

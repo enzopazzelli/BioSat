@@ -11,8 +11,12 @@
     calorMas: 'Con {g} °C más, los días de más de 40 °C en {pueblo} pasarían de {a} a {b} por año.',
     calorMasIgual: 'Con {g} °C más, los días de más de 40 °C en {pueblo} casi no cambiarían: unos {a} por año.',
     antesUna: 'Si elegís «{nombre}», es 1 cosa para revisar con tu agrónomo antes de decidir.',
-    antesVarias: 'Si elegís «{nombre}», son {n} cosas para revisar con tu agrónomo antes de decidir.'
+    antesVarias: 'Si elegís «{nombre}», son {n} cosas para revisar con tu agrónomo antes de decidir.',
+    mesesDuros: '{a} y {b} son los meses más duros en tu zona.',
+    mesesTranquilos: 'Ningún mes se destaca por calor, helada, falta de agua o suelo pelado en tu zona.',
+    sueloMonte: 'Suelo con pH {ph} y monte en el {monte} % de la zona.'
   };
+  const MESES = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
 
   const fmt = (txt, datos) => String(txt).replace(/\{(\w+)\}/g, (_, k) => datos[k]);
   const numero = (n) => typeof n === 'number' && Number.isFinite(n);
@@ -47,7 +51,26 @@
     return fmt(cantidad === 1 ? TEXTOS.antesUna : TEXTOS.antesVarias, {nombre: nombre.trim(), n: cantidad});
   }
 
-  const F = {TEXTOS, fraseCalor, fraseMejorRotacion, fraseCalorMas, fraseAntesDeDecidir};
+  // Reporte, sección 1: los 2 meses de mayor nivel del semáforo (empate: más falta de agua), en orden del calendario.
+  // `meses`: 12 elementos {nivel, falta} que salen de InicioLogica.semaforoZona.
+  function fraseMesesDuros(meses) {
+    if (!Array.isArray(meses) || meses.length !== 12 || !meses.every(m => m && numero(m.nivel))) return null;
+    const orden = meses.map((m, i) => ({i, nivel: m.nivel, falta: numero(m.falta) ? m.falta : 0}))
+      .sort((x, y) => (y.nivel - x.nivel) || (y.falta - x.falta));
+    if (orden[0].nivel === 0) return TEXTOS.mesesTranquilos;
+    const [a, b] = orden.slice(0, 2).map(x => x.i).sort((x, y) => x - y);
+    const cap = (t) => t.charAt(0).toUpperCase() + t.slice(1);
+    return fmt(TEXTOS.mesesDuros, {a: cap(MESES[a]), b: MESES[b]});
+  }
+
+  // Reporte, sección 4: pH del suelo y % de la zona con monte.
+  function fraseSueloMonte(ph, montePct) {
+    if (!numero(ph) || !numero(montePct)) return null;
+    const uno = Number(ph).toLocaleString('es-AR', {minimumFractionDigits: 1, maximumFractionDigits: 1});
+    return fmt(TEXTOS.sueloMonte, {ph: uno, monte: entero(montePct)});
+  }
+
+  const F = {TEXTOS, fraseCalor, fraseMejorRotacion, fraseCalorMas, fraseAntesDeDecidir, fraseMesesDuros, fraseSueloMonte};
   if (typeof module !== 'undefined' && module.exports) module.exports = F;
   else window.FrasesLogica = F;
 })();

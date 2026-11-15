@@ -84,3 +84,30 @@ test('app.js muestra el error de la sonda en lenguaje simple, no el mensaje téc
   assert.match(app, /TEXTOS\.sondaError/);
   assert.doesNotMatch(app, /No se pudo conectar la sonda: ' \+ err\.message/);
 });
+
+test('al imprimir sale solo el Reporte, sin el Inicio ni los botones', () => {
+  const css = leer('estilos.css'), print = css.slice(css.indexOf('@media print'));
+  assert.ok(css.includes('@media print'));
+  assert.match(print, /#vista-inicio/);
+  assert.match(print, /#vista-reporte/);
+  assert.match(print, /\.rep-acciones/);
+});
+
+test('app.js conecta Guardar PDF y Compartir, y escribe las 7 conclusiones', () => {
+  assert.match(app, /closest\('#btnPdf'\)/);
+  assert.match(app, /window\.print\(\)/);
+  assert.match(app, /closest\('#btnCompartir'\)/);
+  assert.match(app, /clipboard\.writeText/);
+  for (let i = 1; i <= 7; i++) assert.ok(idsIndex.has('concl-' + i), 'concl-' + i);
+  assert.match(app, /function renderConclusiones/);
+});
+
+test('las dos páginas describen los datos reales (D-30), no los textos viejos', () => {
+  for (const [nombre, html] of [['index', index], ['completo', completo]]) {
+    assert.doesNotMatch(html, /AIZAL V4 · grilla de 500 m/, nombre);
+    assert.doesNotMatch(html, /Pendiente hasta que se carguen: suelo/, nombre);
+    assert.doesNotMatch(html, /hasta que Vale cargue las validadas/, nombre);
+    assert.match(html, /SoilGrids/, nombre);
+  }
+  assert.doesNotMatch(app, /todavía son un borrador a validar con productores del sur/);
+});
