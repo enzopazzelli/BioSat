@@ -2,7 +2,7 @@
 **Autora:** Vale (Frente 4 · Campo y Agronomía)  
 **Fecha:** Domingo 15/11/2026  
 **Destinatarios:** Enzo (App / Integración), Santi (Suelo / IA / Earth Engine), Sara (Pitch / Entrega)  
-**Referencia:** Complemento al plan [`2026-11-15-app-sin-datos-falsos.md`](2026-11-15-app-sin-datos-falsos.md)
+**Referencia (integrado a `main` el 15/11; la copia que estaba en `docs/` se quitó porque era igual y tenía el link roto):** Complemento al plan [`2026-11-15-app-sin-datos-falsos.md`](2026-11-15-app-sin-datos-falsos.md)
 
 ---
 
@@ -95,7 +95,7 @@ Refuerza el principio central de BioSat y de las reglas de oro del desafío: **l
 
 ## Estado de Aplicación
 
-* [x] **Punto 1 (Lenguaje agronómico):** Implementado y verificado en `web/inicio-logica.js`, `web/index.html`, `web/completo.html` y suite de pruebas (`tests/inicio-logica.test.js`).
-* [ ] **Punto 2 (Nombres de grupos AIZAL):** Listo para incorporar en `ia_desmonte/zonificacion.py` / `data/zonificacion_aizal.json` con la confirmación de Enzo y Santi.
+* [ ] **Punto 1 (Lenguaje agronómico):** propuesto, **todavía no aplicado**. *(Revisión de Enzo al integrar, 15/11: el commit `54da9fe` solo trae este documento. `web/inicio-logica.js` sigue diciendo "tienen el suelo pelado" y no hay cambios en `index.html`, `completo.html` ni en las pruebas.)*
+* [ ] **Punto 2 (Nombres de grupos AIZAL):** *(Revisión 15/11: la ubicación coincide con el mapa `data/imagenes/zonas_aizal.png`: el grupo 3 cae en la franja oeste-sudoeste, entre −64,9 y −63,5 de longitud y −29,5 y −27 de latitud, donde están Guasayán y Ambargasta; el grupo 4 cae al sudeste, hacia los bañados del Salado.)* Listo para incorporar en `ia_desmonte/zonificacion.py` / `data/zonificacion_aizal.json` con la confirmación de Enzo y Santi.
 * [ ] **Punto 3 (Tabla de métodos honesta):** Listo para incorporar en `web/app.js:520` según el diseño D-33.
 * [ ] **Punto 4 (Coherencia lote vs satélite):** Coordinar con Sara para el guion del pitch y de la entrega final.

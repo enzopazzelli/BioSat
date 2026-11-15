@@ -62,6 +62,8 @@ Salió del repaso de los datos del 15/11 a la mañana. Son 4 cosas que el jurado
 
 ---
 
+> **Propuesta de Vale (agrónoma, 15/11):** [`2026-11-15-propuesta-mejoras-agronomicas-d33.md`](2026-11-15-propuesta-mejoras-agronomicas-d33.md). Para la forma 1 propone decir **"sin cobertura vegetal activa (suelo descubierto o rastrojo seco)"** en lugar de "sin verde", porque el rastrojo seco sí es cobertura. Por criterio agronómico, ese texto reemplaza al de la forma 1. En inglés: "without active green cover (bare soil or dry residue)". También valida los nombres de los grupos AIZAL y propone la nota de la tabla de métodos. **Todavía no hay nada aplicado en el código.**
+
 ## Formas de arreglar el problema 1 (elegir una)
 
 Ejemplo con la Zona 2 en noviembre, que hoy muestra `CUIDADO · unos 8 de cada 10 lotes de la zona tienen el suelo pelado`.

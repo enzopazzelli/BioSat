@@ -228,6 +228,13 @@ Según la página oficial de premios (`NASA Space Apps Challenge - awards.mhtml`
   - **Pedido de Enzo:** "que la app no muestre cosas falsas en la demo". No se miden datos nuevos; se corrige lo que la app dice.
   - **3 formas de arreglar el semáforo:** (1) llamarlo por lo que mide, "lotes sin verde (pelados o con rastrojo seco)" (recomendada); (2) mostrar la duda con el rango de los 3 umbrales; (3) sacar el suelo pelado del semáforo. Con cualquiera, se arreglan la tabla de métodos y los textos, y se ponen nombres a los grupos (propuesta en el plan, a confirmar por Santi o Vale).
   - **Plan, con los lugares exactos del código y los pasos:** `docs/superpowers/plans/2026-11-15-app-sin-datos-falsos.md`. **Pendiente:** elegir la forma (si nadie decide otra cosa, la 1) y quién lo hace. Vale preguntó por esta tarea.
+  - **Propuesta de Vale (15/11, integrada a `main`):** `docs/superpowers/plans/2026-11-15-propuesta-mejoras-agronomicas-d33.md`.
+    - **Texto:** "sin cobertura vegetal activa (suelo descubierto o rastrojo seco)", más preciso que "sin verde".
+    - **Nombres de los 5 grupos AIZAL:** coinciden con el mapa (revisado por Enzo).
+    - **Tabla de métodos:** una nota de transparencia.
+    - **Escalas:** separar el dato satelital (zona) del calendario de la rotación (lote).
+
+    Al integrarla se corrigió su estado: el punto 1 figuraba como "implementado", pero el código todavía no cambió.
 - **D-34 (Inicio en la PC y el pronóstico de Meteomatics entra en la app):**
   - **Por qué:**
     - Enzo: "cuando abro la app desde el navegador de la PC se ve la vista del celular pero con bordes". El Inicio tenía 560 px de ancho máximo en cualquier pantalla.
