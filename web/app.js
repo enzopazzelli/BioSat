@@ -243,17 +243,18 @@ function renderVisor(){
   }
   const sat = id => satCapas.find(c => c.id === id);
   const boundsLote = lote ? [[lote.recuadro[1], lote.recuadro[0]], [lote.recuadro[3], lote.recuadro[2]]] : null;
-  const urlDe = id => id === 'dron' ? (dron && dron.url) : sat(id) ? sat(id).url : im.img[id];
-  const boundsDe = id => id === 'dron' ? dron.recuadro : sat(id) ? boundsLote : bounds;
+  const urlDe = id => id === 'dron' ? (dron && dron.url) : id === 'dron_clases' ? (dron && dron.urlClases) : sat(id) ? sat(id).url : im.img[id];
+  const boundsDe = id => id === 'dron' || id === 'dron_clases' ? dron.recuadro : sat(id) ? boundsLote : bounds;
   const satNdvi = satCapas.find(c => c.id.endsWith('_ndvi'));
   let capas = dron ? CAPAS.concat({id:'dron', label:TD.capa.replace('{fecha}', DronLogica.fechaCorta(dron.fecha))}) : CAPAS;
+  if (dron && dron.urlClases) capas = capas.concat({id:'dron_clases', label:TD.capaClases});   // D-41
   capas = capas.concat(satCapas);
   let cmps = dron ? CMP.concat({id:'landsat_dron', label:TD.cmp, a:'invierno_rgb', b:'dron', izq:TD.cmpIzq, der:TD.cmpDer}) : CMP;
   if (satNdvi) cmps = cmps.concat({id:'satelite_dron', label:TS.cmpSat, a:satNdvi.id, b:'dron', izq:TS.cmpSatIzq, der:TS.cmpSatDer});
   if (!urlDe(visor.capa)) visor.capa = 'invierno_rgb';
   const cmpOk = cmps.filter(x => x.id === 'no' || (urlDe(x.a) && urlDe(x.b)));
   if (!cmpOk.some(x => x.id === visor.cmp)) visor.cmp = 'no';
-  $('#capas').innerHTML = capas.filter(k => urlDe(k.id)).map(k => { const e = k.id === 'dron' || sat(k.id) ? null : escenaDe(z, k.id);
+  $('#capas').innerHTML = capas.filter(k => urlDe(k.id)).map(k => { const e = k.id.startsWith('dron') || sat(k.id) ? null : escenaDe(z, k.id);
     return `<button type="button" class="capa" data-capa="${k.id}" aria-pressed="${visor.cmp === 'no' && k.id === visor.capa}">${k.label}<small>${e ? fechaTxt(e.fecha) : ''}</small></button>`; }).join('');
   $('#cmps').innerHTML = cmpOk.map(x => `<button type="button" class="capa" data-cmp="${x.id}" aria-pressed="${x.id === visor.cmp}">${x.label}</button>`).join('');
   const cm = cmps.find(x => x.id === visor.cmp);
@@ -264,8 +265,8 @@ function renderVisor(){
   // D-40: el rótulo dice la resolución de la capa que se ve arriba (recorte satelital o dron); la de Landsat se mide al cargar.
   const arriba = mostrar[mostrar.length - 1];
   if (sat(arriba)) $('#visorSrc').textContent = TS.srcSat.replace('{fuente}', FUENTES_SAT[sat(arriba).k]).replace('{res}', sat(arriba).f.resolucion_m).replace('{fecha}', DronLogica.fechaCorta(sat(arriba).f.fecha));
-  else if (arriba === 'dron' && dron.metrosPixel) $('#visorSrc').textContent = TS.srcDron.replace('{res}', dron.metrosPixel < 1 ? Math.max(1, Math.round(dron.metrosPixel * 100)) + ' cm' : Math.round(dron.metrosPixel) + ' m');
-  $('#escena').innerHTML = mostrar.filter(id => id !== 'dron' && !sat(id)).map(id => escenaDe(z, id)).filter(Boolean)
+  else if (arriba.startsWith('dron') && dron.metrosPixel) $('#visorSrc').textContent = TS.srcDron.replace('{res}', dron.metrosPixel < 1 ? Math.max(1, Math.round(dron.metrosPixel * 100)) + ' cm' : Math.round(dron.metrosPixel) + ' m');
+  $('#escena').innerHTML = mostrar.filter(id => !id.startsWith('dron') && !sat(id)).map(id => escenaDe(z, id)).filter(Boolean)
     .map(e => `${e.item} · ${fechaTxt(e.fecha)}${e.nubes !== undefined ? ` · nubes ${nf(e.nubes,1)} %` : ''}`).join('<br>');
   $('#celdaNota').innerHTML = `${TEXTOS_PASOS.celdaNota} ${cf('celda')}`;
   const b = im.meta.bbox, bounds = [[b[1], b[0]], [b[3], b[2]]];
@@ -285,7 +286,15 @@ function renderVisor(){
   visor.layers = mostrar.map(id => L.imageOverlay(urlDe(id), boundsDe(id),
     {alt: id === 'dron' ? TD.caja : 'Imagen Landsat'}).addTo(visor.map));
   // D-40: el rótulo dice la resolución real de la imagen de Landsat de la zona (se mide cuando carga).
-  const capaLandsat = arriba !== 'dron' && !sat(arriba) ? visor.layers[mostrar.length - 1] : null;
+  const capaLandsat = !arriba.startsWith('dron') && !sat(arriba) ? visor.layers[mostrar.length - 1] : null;
+  // D-41: leyenda de las clases del ingeniero cuando se ve su capa
+  const cl = dron && dron.clases, verClases = mostrar.includes('dron_clases') && cl;
+  const leyCl = $('#leyendaClases');   // no existe en la vista detallada
+  if (leyCl) leyCl.hidden = !verClases;
+  if (leyCl && verClases){
+    const nf2 = v => nf(v, 2), [b0, b1] = cl.cortes, rangos = [`< ${nf2(b0)}`, `${nf2(b0)} a ${nf2(b1)}`, `≥ ${nf2(b1)}`];
+    leyCl.innerHTML = cl.nombres.map((n, i) => `<span class="clase-${i}">${esc(TD.leyendaClase.replace('{nombre}', n).replace('{rango}', rangos[i]))}</span>`).join('');
+  }
   if (capaLandsat && window.SateliteLogica) capaLandsat.once('load', ev => {
     const img = ev.target.getElement();
     if (img && img.naturalWidth) $('#visorSrc').textContent = SateliteLogica.rotuloResolucion(SateliteLogica.metrosPorPixelZona(im.meta.bbox, img.naturalWidth));
@@ -363,6 +372,7 @@ function renderDron(){
   const bz = $('#dronCambiarZona'), otra = r.zonaLote !== null && r.zonaLote !== r.zonaElegida;
   bz.hidden = !otra;
   if (otra){ bz.textContent = T.cambiarZona.replace('{n}', r.zonaLote); bz.dataset.zona = r.zonaLote; }
+  renderClases(d, T);
   $('#dronIngT').textContent = T.paraIngeniero;
   $('#dronTecnica').innerHTML = D.fichaTecnica({tipo: r.tipo, bandas: d.bandas, epsg: d.epsg, metrosPixel: d.metrosPixel,
     anchoOriginal: d.anchoOriginal, altoOriginal: d.altoOriginal, anchoCalculo: d.anchoCalculo}).map(t => `<li>${esc(t)}</li>`).join('');
@@ -379,6 +389,38 @@ document.addEventListener('click', e => {
   AsistenteLogica.guardar(almacen(), respuestas);
   aplicarRespuestas(respuestas);
   renderTodo();
+});
+
+// D-41: clases del ingeniero (cortes y nombres cargados en la app; ningún número inventado).
+const CLASES_EJEMPLO = ['Maleza', 'Zona afectada', 'Vigoroso'];   // lo que dijo el ingeniero para el lote de la Zona 1 (texto de ejemplo)
+let errorClases = '';
+function renderClases(d, T){
+  const box = $('#dronClases');
+  if (!box) return;
+  box.hidden = !(d && d.tipo === 'ndvi');
+  if (box.hidden) return;
+  const k = window.BioSatDron && BioSatDron.clases(), c = d.clases || {cortes: ['', ''], nombres: ['', '', '']};
+  const campo = (idAttr, rotulo, valor, tipo, ejemplo) => `<label class="dron-campo">${esc(rotulo)}<input ${idAttr} type="text" ${tipo === 'number' ? 'inputmode="decimal"' : ''} value="${esc(tipo === 'number' && valor !== '' ? String(valor).replace('.', ',') : valor)}" placeholder="${esc(ejemplo)}"></label>`;
+  box.innerHTML = `<h4>${esc(T.clasesTitulo)}</h4>
+    ${k ? `<p class="clases-resultado">${esc(T.clasesResultado.replace('{texto}', DronLogica.textoClases(k.c, k.resumen)))}</p>` : `<p class="hint">${esc(T.clasesAyuda)}</p>`}
+    <div class="clases-grilla">
+      ${campo('id="clasesBajo"', T.clasesBajo, c.cortes[0], 'number', '')}${campo('id="clasesAlto"', T.clasesAlto, c.cortes[1], 'number', '')}
+      ${campo('id="clasesN1"', T.clasesNombre1, c.nombres[0], 'text', CLASES_EJEMPLO[0])}${campo('id="clasesN2"', T.clasesNombre2, c.nombres[1], 'text', CLASES_EJEMPLO[1])}${campo('id="clasesN3"', T.clasesNombre3, c.nombres[2], 'text', CLASES_EJEMPLO[2])}
+    </div>
+    <div class="capas sect-acciones"><button type="button" class="capa" id="clasesAplicar">${esc(T.clasesAplicar)}</button>${k ? `<button type="button" class="capa" id="clasesBorrar">${esc(T.clasesBorrar)}</button>` : ''}</div>
+    ${errorClases ? `<p class="dron-error">${esc(errorClases)}</p>` : ''}`;
+}
+document.addEventListener('click', e => {
+  if (!window.BioSatDron) return;
+  if (e.target.closest('#clasesAplicar')){
+    const num = id => { const v = $(id).value.trim().replace(',', '.'); return v === '' ? NaN : Number(v); };
+    const txt = (id, i) => $(id).value.trim() || '';
+    const err = BioSatDron.ponerClases({cortes: [num('#clasesBajo'), num('#clasesAlto')], nombres: [txt('#clasesN1'), txt('#clasesN2'), txt('#clasesN3')]});
+    errorClases = err ? DronLogica.TEXTOS[err] : '';
+    if (!err){ visor.capa = 'dron_clases'; visor.cmp = 'no'; }
+    renderTodo();
+  }
+  if (e.target.closest('#clasesBorrar')){ errorClases = ''; BioSatDron.quitarClases(); }
 });
 
 /* ---------- Zonificación AIZAL y presión de desmonte (D-25) ---------- */

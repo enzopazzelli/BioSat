@@ -213,3 +213,7 @@ test('D-40: app.js carga los recortes del lote sin romper si falta lotes.json', 
   assert.match(f, /catch/);
   assert.match(app, /cargarLotesSat\(\)/);
 });
+
+test('D-41: la tarjeta del dron tiene el bloque de clases y el visor su leyenda', () => {
+  assert.ok(idsIndex.has('dronClases') && idsIndex.has('leyendaClases'));
+});

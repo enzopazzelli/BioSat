@@ -243,7 +243,7 @@
   // Lo que se guarda en IndexedDB: el estado (sin lo que solo sirve en pantalla), el NDVI achicado y la imagen dibujada.
   function paqueteVuelo(estado, ndvi, png, ahora) {
     const e = Object.assign({}, estado);
-    for (const k of ['url', 'leyendo', 'aviso', 'error', 'avisoGuardado', 'restaurado']) delete e[k];
+    for (const k of ['url', 'urlClases', 'leyendo', 'aviso', 'error', 'avisoGuardado', 'restaurado']) delete e[k];
     return {version: 1, id: idVuelo(estado), estado: e,
       ndvi: ndvi ? {valores: ndvi.valores, ancho: ndvi.ancho, alto: ndvi.alto} : null, png, guardado: ahora};
   }

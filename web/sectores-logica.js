@@ -102,7 +102,7 @@
   const r7 = v => Math.round(v * 1e7) / 1e7;
   const clave = puntos => puntos.map(([a, b]) => `${r7(a)},${r7(b)}`).join(';');
 
-  function aGeoJSON(sectores, {umbral}) {
+  function aGeoJSON(sectores, {umbral, clasesDe}) {
     return {type: 'FeatureCollection', features: (sectores || []).map(s => {
       const anillo = s.puntos.map(([lat, lon]) => [lon, lat]);
       anillo.push(anillo[0]);
@@ -110,7 +110,8 @@
         n: s.n, estado: s.estado, nota: s.nota, hallazgo: s.hallazgo, ha: Math.round(s.ha * 100) / 100,
         ndvi_mediano: s.ndvi ? s.ndvi.mediana : null, fraccion_sin_cobertura: s.ndvi ? s.ndvi.fraccionBajo : null,
         umbral_ndvi: s.ndvi ? umbral : null, vuelo_fecha: s.vuelo ? s.vuelo.fecha : null,
-        vuelo_archivo: s.vuelo ? s.vuelo.archivo : null, creado: s.creado, actualizado: s.actualizado}};
+        vuelo_archivo: s.vuelo ? s.vuelo.archivo : null, creado: s.creado, actualizado: s.actualizado,
+        ...(clasesDe && clasesDe(s) ? {clases: clasesDe(s)} : {})}};
     })};
   }
 

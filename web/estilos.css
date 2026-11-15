@@ -329,6 +329,18 @@ input[type=range]{width:100%;accent-color:var(--accent)}
 .sect-ficha textarea{font:inherit;font-weight:400;width:100%;box-sizing:border-box;padding:6px;border:1px solid var(--line);border-radius:4px;background:var(--surface);color:var(--ink)}
 .leaflet-tooltip.sect-num{background:transparent;border:0;box-shadow:none;font-weight:800;color:#FFFFFF;text-shadow:0 0 3px #000000}
 .solo-print{display:none}
+/* D-41: clases del ingeniero */
+.dron-clases{display:grid;gap:8px;border-top:1px solid var(--line);padding-top:10px}
+.dron-clases[hidden]{display:none}
+.dron-clases h4{margin:0;font-size:.95rem}
+.clases-grilla{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px}
+.clases-resultado,.sect-clases{margin:0;font-weight:600;font-size:.88rem}
+.leyenda-clases{display:grid;gap:4px;font-size:.78rem}
+.leyenda-clases[hidden]{display:none}
+.leyenda-clases span::before{content:"";display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:6px;vertical-align:-1px}
+.leyenda-clases .clase-0::before{background:#a50026}
+.leyenda-clases .clase-1::before{background:#fee08b}
+.leyenda-clases .clase-2::before{background:#1a9850}
 .gis-note.mono{font-size:.68rem;word-break:break-all}
 .leaflet-container{font-family:var(--font-text);background:var(--surface-2)}
 .leaflet-control-attribution,.leaflet-control-scale-line{background:var(--surface)!important;color:var(--muted)!important}
