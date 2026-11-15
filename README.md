@@ -51,19 +51,18 @@ Avance de cada integrante, contado desde las casillas de su plan en [`planes/`](
 | Persona | Rama | Avance | Tareas |
 |---|---|---|---|
 | [Enzo · Integración y app](planes/1-enzo.md) | `enzo-app` | `▓▓▓▓▓▓▓▓░░` 75% | 30/40 |
-| [Santi · Suelo, satélite e IA](planes/2-santi.md) | `santi-datos-ia` | `▓▓▓▓▓▓▓▓░░` 78% | 21/27 |
+| [Santi · Suelo, satélite e IA](planes/2-santi.md) | `santi-datos-ia` | `▓▓▓▓▓▓▓▓░░` 81% | 22/27 |
 | [Vale · Campo y agronomía](planes/3-vale.md) | `vale-rotaciones` | `▓▓▓▓▓▓▓▓░░` 77% | 17/22 |
 | [Sara · Kit Arduino y relato](planes/4-sara.md) | `sara-arduino-entrega` | `▓▓░░░░░░░░` 20% | 5/25 |
-| **Total** | | `▓▓▓▓▓▓░░░░` **64%** | **73/114** |
+| **Total** | | `▓▓▓▓▓▓░░░░` **65%** | **74/114** |
 <!-- AUTO:AVANCE:FIN -->
 
 ### Lo más urgente
 
-1. **Santi: cambiar la contraseña de Meteomatics en el sitio de Meteomatics.** El script ya la lee de una variable de entorno (`METEOMATICS_PASSWORD`) y no está más en el código, pero **la clave vieja sigue en el historial público de Git**: hay que cambiarla igual.
-2. **Kit Arduino: está programado, falta armarlo y probarlo.** El sketch, el lector Web Serial y el esquema están en [`arduino/`](arduino/README.md) (Enzo se hizo cargo). Falta armar el kit, sellar el LM35, calibrar y grabar lecturas reales. **La entrega** (guion, video y página del proyecto) sigue sin empezar.
-3. **Santi: suelo y Landsat ya están cargados, pero el suelo es una estimación zonal de referencia** (confianza "media", todavía sin extraer píxel a píxel de Earth Engine) y el visor de Earth Engine sigue sin publicar. Los pasos están en [su plan](planes/2-santi.md).
-4. **Vale: confirmar `requiere_hacienda` y el permiso del productor.** Enzo completó 7 valores según el texto de cada rotación, y la entrevista deja pendiente el permiso por escrito para usar sus frases.
-5. **Enzo: sumar el lector de Sara apenas llegue, decidir si Meteomatics entra en la demo y ensayar la pantalla del kit en la pantalla grande.**
+1. **Kit Arduino: está programado, falta armarlo y probarlo.** El sketch, el lector Web Serial y el esquema están en [`arduino/`](arduino/README.md) (Enzo se hizo cargo). Falta armar el kit, sellar el LM35, calibrar y grabar lecturas reales. **La entrega** (guion, video y página del proyecto) sigue sin empezar.
+2. **Santi: suelo y Landsat ya están cargados, pero el suelo es una estimación zonal de referencia** (confianza "media", todavía sin extraer píxel a píxel de Earth Engine) y el visor de Earth Engine sigue sin publicar. Los pasos están en [su plan](planes/2-santi.md).
+3. **Vale: confirmar `requiere_hacienda` y el permiso del productor.** Enzo completó 7 valores según el texto de cada rotación, y la entrevista deja pendiente el permiso por escrito para usar sus frases.
+4. **Enzo: sumar el lector de Sara apenas llegue, decidir si Meteomatics entra en la demo y ensayar la pantalla del kit en la pantalla grande.**
 
 ### Lo que falta, por persona
 
@@ -87,14 +86,13 @@ Sale solo de las casillas sin tildar de cada plan. Panorama completo y riesgos: 
 </details>
 
 <details>
-<summary><b>Santi</b>: 6 pendientes (<a href="planes/2-santi.md">plan completo</a>)</summary>
+<summary><b>Santi</b>: 5 pendientes (<a href="planes/2-santi.md">plan completo</a>)</summary>
 
 - Correr `scripts/gee_visor_biosat.js`, publicarlo como Earth Engine App y pasarles el link a Enzo y a Sara _(Checkpoint 1)_
 - Sumar lo que responda la profesora al audio y al documento _(Congelamiento)_
 - Pasarle a Sara las métricas, el mapa de riesgo, una captura del visor y la comparación 2000 contra 2025 _(Congelamiento)_
 - Opcional: usar los embeddings AlphaEarth como variable extra del modelo o de la zonificación _(Congelamiento)_
 - Ayudar con el video y la página: explicar el modelo en 20 segundos _(Entrega)_
-- **Urgente:** cambiar la contraseña de Meteomatics en el sitio de Meteomatics. *El script ya la lee de `METEOMATICS_PASSWORD` y no está en el código (se tomó del PR #7), pero la clave viej... _(Agregadas por Enzo)_
 
 </details>
 
@@ -139,12 +137,12 @@ Sale solo de las casillas sin tildar de cada plan. Panorama completo y riesgos: 
 **Últimas decisiones:**
 
 <!-- AUTO:DECISIONES:INICIO -->
+- **D-29**: Contraseña de Meteomatics: se deja como está, por practicidad
 - **D-28**: Sugerencias de la organización: asistente de inicio, mapa real y app más fácil
 - **D-27**: Pantalla del kit para el jurado, guía "Del kit al campo" y Arduino Uno por USB
 - **D-26**: Informe de clima corregido y app lista para los datos de D-25
 - **D-25**: Propuesta de la profesora: zonificación AIZAL y modelo predictivo de desmontes
 - **D-24**: Checkpoint 1: clima 1981-2025 y app v1 publicada
-- **D-23**: Trabajo en paralelo con ramas y planes individuales
 
 Todas las decisiones están en la [bitácora](docs/reglas-y-bitacora.md).
 <!-- AUTO:DECISIONES:FIN -->

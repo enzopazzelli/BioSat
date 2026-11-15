@@ -58,9 +58,9 @@ Se verificó en Chrome sin internet, a 390 px de ancho y con 13 pruebas automát
 
 ## 4. Alertas y cosas para revisar
 
-**Urgente**
+**Decidido**
 
-- **Hay una contraseña escrita en el código de un repo público.** Está en `scripts/descargar_meteomatics.py` (cuenta de Meteomatics de Santi). Aunque se borre ahora, queda en el historial de Git. Hay que **cambiarla en Meteomatics** y hacer que el script la lea de una variable de entorno. Es de Santi, pero no puede esperar.
+- **Contraseña de Meteomatics (D-29):** el script ya la lee de una variable de entorno y no está en el código. La clave vieja queda en el historial de Git y, **por practicidad, no se cambia**: es la cuenta del hackathon y Meteomatics no entra en la app. Si se viera un uso indebido, se cambia en ese momento.
 
 **Para confirmar con el equipo**
 

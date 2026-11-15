@@ -156,3 +156,7 @@ Según la página oficial de premios (`NASA Space Apps Challenge - awards.mhtml`
   - **App más fácil:** una frase simple al comienzo de los pasos 2 y 3, calculada con los datos; suelo, satélite y desmonte dentro de un "Ver el detalle técnico" plegado; letra base de 17 px. El panel del sensor se deja a la vista porque es lo que se muestra en la demo.
   - **Idioma EN/ES:** queda para la etapa siguiente, con su propio diseño. Los textos nuevos ya viven en objetos con claves para poder traducirlos.
   - **Diseño y plan:** `docs/superpowers/specs/2026-11-14-asistente-y-mapa-design.md` y `docs/superpowers/plans/2026-11-14-asistente-y-mapa.md`.
+- **D-29 (Contraseña de Meteomatics: se deja como está, por practicidad):**
+  - **Situación:** la clave de la cuenta de Meteomatics del hackathon entró en el código con el PR #5 (commit `6488ad7`) y salió en `ce7f282`. Desde entonces el script la lee de `METEOMATICS_PASSWORD`, pero la clave vieja sigue en el historial público de Git.
+  - **Decisión (Enzo):** no se cambia la contraseña. Es una decisión de practicidad: es la cuenta del hackathon, Meteomatics no entra en la app y cambiarla no suma nada a la demo. Deja de figurar como urgente.
+  - **Si cambia algo:** si se viera un uso indebido de la cuenta, se cambia la clave en el sitio de Meteomatics en ese momento.
