@@ -228,3 +228,10 @@ test('la cortina: arrastrar hacia el nombre de una capa muestra más de esa capa
   const f = app.slice(app.indexOf('function aplicarCortina'), app.indexOf('function aplicarCortina') + 800);
   assert.match(f, /inset\(0 0 0 \$\{100 - visor\.cortina\}%\)/);
 });
+
+test('el NDVI se llama "índice de vegetación", no "verdor" (pedido del 15/11)', () => {
+  const sat = fs.readFileSync(path.join(WEB, 'satelite-logica.js'), 'utf8'), en = fs.readFileSync(path.join(WEB, 'textos-en.js'), 'utf8');
+  for (const [nombre, txt] of [['app.js', app], ['satelite-logica.js', sat], ['index', index], ['completo', completo]]) assert.doesNotMatch(txt, /verdor/i, nombre);
+  assert.doesNotMatch(en, /greenness/i);
+  assert.match(app, /Índice de vegetación \(NDVI\) · invierno/);
+});

@@ -19,7 +19,7 @@
     cmpMesVuelo: 'pasada del {fecha}, en el mes del vuelo',
     capa: '{fuente} · {res} m · {tipo} · {fecha}',
     capaColor: 'color',
-    capaNdvi: 'verdor (NDVI)',
+    capaNdvi: 'índice de vegetación (NDVI)',
     cmpSat: 'Satélite contra dron',
     cmpSatIzq: '← Satélite',
     cmpSatDer: 'Dron →',

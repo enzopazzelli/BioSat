@@ -348,7 +348,7 @@
         cmpMesVuelo: 'pass of {fecha}, in the month of the flight',
         capa: '{fuente} · {res} m · {tipo} · {fecha}',
         capaColor: 'color',
-        capaNdvi: 'greenness (NDVI)',
+        capaNdvi: 'vegetation index (NDVI)',
         cmpSat: 'Satellite vs. drone',
         cmpSatIzq: '← Satellite',
         cmpSatDer: 'Drone →',
