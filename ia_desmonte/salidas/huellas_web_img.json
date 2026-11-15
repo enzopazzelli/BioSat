@@ -1,0 +1,86 @@
+{
+  "z1_verano_rgb": {
+    "png": "6ec42c04b310694d75945b94b64c80fcd1fb0f399b75686a95054bc51dfbf345",
+    "webp": "5c55e2f05479b7b20364d38c35bfc3ec37e92c041470301f5084296a4f3376e1"
+  },
+  "z1_verano_ndvi": {
+    "png": "d525fd36acd9d653adfc05666cf0f44a523051ede648789cbf5bf77a0601d89f",
+    "webp": "2db549333cb9bc33c2eb684c868b3c539318977815e876b501e47b40382151da"
+  },
+  "z1_invierno_rgb": {
+    "png": "99faf383d0bf5fe8e8966802f84b76ffd0d1963a76fae88c808062073cd273c4",
+    "webp": "2ed37ff2a5bb2f6abd11dd8b76898d4c731ea53ab67321eeeb11defe8a4242d8"
+  },
+  "z1_invierno_ndvi": {
+    "png": "1ca92560ad0634c47486deeedd306999a2a0935798da922b82e00e3a27da01e0",
+    "webp": "49df420d1e8ab596f4df340eba11e2f1bf3c2ee9551160b2de2bddeeb96f0a2b"
+  },
+  "z2_verano_rgb": {
+    "png": "d0fa0e3b302343cfd6d14de959b472692d1ffdfa5fdc6027f9f1d572a277743e",
+    "webp": "380d02b52272cf48e675052334859f7c268b73db3495c4c2c6e8855f8c112ac2"
+  },
+  "z2_verano_ndvi": {
+    "png": "a94673d401da59aafc86f85dbdbb171e4ae2aa8a4c9cf9c68cfd8649cd0d43bb",
+    "webp": "4e5f8c7c69a638870482200f44000013f2aed6c175f6bd7f1ae0bd9162ec0c93"
+  },
+  "z2_invierno_rgb": {
+    "png": "da3ddb858794ea5037120e092623449f268abfee890031891cea800cdf206353",
+    "webp": "1d9a056838c481a93693dee3919283ae62cf352c6f7fb2524b6eb7f5eea68787"
+  },
+  "z2_invierno_ndvi": {
+    "png": "c6cc402e1ed9156e40ef76caa7029c77d63efbffa0dd5b7b3b94151d2ab6a355",
+    "webp": "69b1dc617a1c661fc5ccc3b58501d169b4841a0f125e4afc8991c7fb58acd759"
+  },
+  "z3_verano_rgb": {
+    "png": "05ad4ebbf8455768313050e2e3246656ab62ecc5323a696949f7a2147284edfe",
+    "webp": "f5c369b7ce1ce5b7ecccf8089e081361c8bbb255a6b9caacc6684dada868ccad"
+  },
+  "z3_verano_ndvi": {
+    "png": "2fa05abb933f305fbabed4b3d7dd32d8752bf0fbe02a54161b981ba5b06ce7c1",
+    "webp": "ee650834babbcbc8e6ceedb3e3687f2759111beddce5bf85805665e9a36cb399"
+  },
+  "z3_invierno_rgb": {
+    "png": "2a0dc4b52fae96ac41112cf51329e5675fb3c95f7f0af24b6d130b90ae6b1277",
+    "webp": "951b56cd3ac97ff5df8b7f6ba34430a1a0e0521e7b32a5d73f22fdf34c5acc56"
+  },
+  "z3_invierno_ndvi": {
+    "png": "693595a7c4d9254bd1d0747a907a868a7769b3bf15f2c355a9d813265bc9d41c",
+    "webp": "13855f79329ae1bfae66d7d14b44f20a5d661bec2e92b7c7775e1d1b2b64644b"
+  },
+  "z3_2000_rgb": {
+    "png": "512c5eb615343e480396070198efdacdbac45c9997652a3216484442706b1db8",
+    "webp": "a896e134742daf1fcb094683beb576f3811d471ea1ad450368b0d7afae7ba7b4"
+  },
+  "z4_verano_rgb": {
+    "png": "83a2e5d76d70b43e58855c4a1f3281c08ae0c8301906b9b01a9293695602e4d3",
+    "webp": "026b4a4eb14fa9fbb2c8b135b28ba2a4cc9aed6029b88a4a92a1c51a04dbad8d"
+  },
+  "z4_verano_ndvi": {
+    "png": "e310bcaa181e8f9426e935fb63f32804808bb82acbbacdd2ea31f7aefb78e08e",
+    "webp": "d0dab28b4ba250239ec7e438ea544d955284ae2f76ddcf5ec1c886802b019cb1"
+  },
+  "z4_invierno_rgb": {
+    "png": "0045df713c2d342d58c5f850ea86485e6e79526a5e5c80af97f5307783a8c247",
+    "webp": "8c1a2d849ceec49ff67203ce049608529c3bc411dd1e9843db72dd2b17df12b6"
+  },
+  "z4_invierno_ndvi": {
+    "png": "edd871bc9436510ae31bb2d88815edecdc9a65e1572207cf312a0f39c280d3ae",
+    "webp": "6d6a0ce3be3bb073eff90ea74fd5d1550e6981a44e3b7ac642e73b4afc0d8948"
+  },
+  "z5_verano_rgb": {
+    "png": "e96ed91ffa8278fa85933ad273282f87b4fa3e4de6c667b6260bfe55e51be8c8",
+    "webp": "cdea73d51c175db236b7c6efcf819b94be9754d42eda31daedf698930535c9f8"
+  },
+  "z5_verano_ndvi": {
+    "png": "1150a5d163f7fd940a26deec7efc21df726f14d58417047c826f0742112509e3",
+    "webp": "75cab17abf839f832e456e84c084349c7796e59cf013271993273325b23eec1d"
+  },
+  "z5_invierno_rgb": {
+    "png": "139dcae02323abd50b48549f305a649f3e0ef2d16a99149a7666b12a11f01df7",
+    "webp": "05eb8c4fe21a607116f9e1429494b3d509277748c83ef6c6289391c1015d1935"
+  },
+  "z5_invierno_ndvi": {
+    "png": "2e74ea2ac273bb78fdbd7e2618ba4110a8ff655bca8e3a3ff58e8ac65c0dc68c",
+    "webp": "1926950b85d92a563fb1063840c4a9ec16fe7181f6f1449fa62d1aa83d9ea1ef"
+  }
+}
