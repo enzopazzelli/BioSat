@@ -205,7 +205,9 @@ function escenaDe(z, capa){ const m = IMG[z].meta; return capa.startsWith('2000'
 function aplicarCortina(){
   if (visor.cmp === 'no' || !visor.layers[1]) return;
   const el = visor.layers[1].getElement && visor.layers[1].getElement();
-  if (el) el.style.clipPath = `inset(0 0 0 ${visor.cortina}%)`;
+  // La capa de abajo (a) queda a la izquierda de la línea y la de arriba (b) a la derecha, como dicen los nombres.
+  // La línea va al revés que el control: arrastrar hacia el nombre de una capa muestra más de esa capa.
+  if (el) el.style.clipPath = `inset(0 0 0 ${100 - visor.cortina}%)`;
 }
 // D-38: la imagen del dron (BioSatDron, dron.js) es una capa más del visor, con su propio recuadro.
 function capaDron(){ const d = window.BioSatDron && BioSatDron.estado(); return d && d.url && d.recuadro ? d : null; }
