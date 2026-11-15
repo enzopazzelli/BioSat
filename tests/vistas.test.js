@@ -235,3 +235,17 @@ test('el NDVI se llama "índice de vegetación", no "verdor" (pedido del 15/11)'
   assert.doesNotMatch(en, /greenness/i);
   assert.match(app, /Índice de vegetación \(NDVI\) · invierno/);
 });
+
+// D-42: accesibilidad. Letra legible en el celular y botones que se puedan tocar con el dedo.
+const css = fs.readFileSync(path.join(WEB, 'estilos.css'), 'utf8');
+test('D-42: ninguna letra menor a .75rem y los textos de ayuda en .875rem o más', () => {
+  const chicas = [...css.matchAll(/font-size:\s*(\d*\.?\d+)rem/g)].map(m => Number(m[1])).filter(v => v < 0.75);
+  assert.deepEqual(chicas, []);
+  assert.match(css, /\.hint\{[^}]*font-size:\.875rem/);
+});
+test('D-42: los botones de capas y los resúmenes desplegables miden al menos 44 px de alto', () => {
+  assert.match(css, /\.btn,\.capa,[^{]*summary\{min-height:44px\}/);
+  // ninguna regla de un summary lo achica por debajo de 44 px
+  const bajos = [...css.matchAll(/([^{}]*summary[^{}]*)\{[^}]*min-height:(\d+)px/g)].filter(m => Number(m[2]) < 44).map(m => m[1].trim());
+  assert.deepEqual(bajos, []);
+});
