@@ -87,5 +87,40 @@ def main():
     escribir('dron_sin_coordenadas.tif', np.full((40, 40, 3), 120, np.uint8), [], 'rgb')
 
 
+
+
+def lote_de_prueba():
+    """Lote satelital SINTÉTICO (D-40) sobre dron_multi_utm20s.tif: 10 × 1 celdas de Sentinel-2 y Landsat en null.
+
+    Celdas 0-6 caen sobre la parte del dron con NDVI 0,5 (satélite 0,45); celdas 7-9, sobre NDVI 0 (satélite 0,05).
+    Esperado: 'NDVI mediano 0,50 con el dron y 0,45 con Sentinel-2 (10 m, 01/11, 2 días antes del vuelo)'.
+    """
+    import json
+    from PIL import Image
+    carpeta = AQUI / 'lotes' / 'prueba'
+    carpeta.mkdir(parents=True, exist_ok=True)
+    # recuadro del archivo multiespectral (calculado con web/vendor/proj4.js), [oeste, sur, este, norte]
+    recuadro = [-62.42002358063882, -27.650009615757842, -62.41997275016191, -27.649982321838046]
+    valores = [0.45] * 7 + [0.05] * 3
+    Image.new('RGB', (10, 1), (90, 140, 70)).save(carpeta / 's2_rgb.png')
+    nd = Image.new('RGB', (10, 1))
+    for i, v in enumerate(valores):
+        nd.putpixel((i, 0), (102, 189, 99) if v > 0.3 else (165, 0, 38))
+    nd.save(carpeta / 's2_ndvi.png')
+    lote = {'version': 1, 'nombre': 'prueba', 'recuadro': recuadro, 'fecha_vuelo': '2026-11-03',
+            'generado_por': 'tests/fixtures/generar_tif_prueba.py', 'fecha': '2026-11-15',
+            'notas': 'Lote SINTÉTICO de prueba: no es un recorte real.',
+            'fuentes': {'s2': {'escena': 'prueba', 'fecha': '2026-11-01', 'dias_al_vuelo': -2, 'limpio': 1.0,
+                               'resolucion_m': 10, 'rgb': 's2_rgb.png', 'ndvi_png': 's2_ndvi.png',
+                               'ndvi': {'ancho': 10, 'alto': 1, 'recuadro': recuadro, 'valores': valores}},
+                        'l8': None},
+            'motivos': {'l8': 'sin pasada limpia a ±30 días del vuelo'}}
+    (carpeta / 'lote.json').write_text(json.dumps(lote, ensure_ascii=False, indent=2), encoding='utf-8')
+    (AQUI / 'lotes' / 'lotes.json').write_text(json.dumps(
+        {'lotes': [{'nombre': 'prueba', 'recuadro': recuadro, 'ruta': 'prueba/lote.json'}]}, ensure_ascii=False, indent=2), encoding='utf-8')
+    print('lotes/prueba listo')
+
+
 if __name__ == '__main__':
     main()
+    lote_de_prueba()

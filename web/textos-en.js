@@ -329,7 +329,16 @@
         cmpDespues: '{fecha}, {n} days after the flight',
         cmpDespuesUno: '{fecha}, 1 day after the flight',
         cmpMismoDia: '{fecha}, the same day as the flight',
-        cmpPasada: 'pass of {fecha}'
+        cmpPasada: 'pass of {fecha}',
+        capa: '{fuente} · {res} m · {tipo} · {fecha}',
+        capaColor: 'color',
+        capaNdvi: 'greenness (NDVI)',
+        cmpSat: 'Satellite vs. drone',
+        cmpSatIzq: '← Satellite',
+        cmpSatDer: 'Drone →',
+        srcSat: '{fuente} · {res} m per pixel · pass of {fecha}',
+        srcDron: 'Drone · about {res} per pixel in this viewer',
+        sinFuente: '{fuente}: {motivo}.'
       },
 
       // web/sectores-logica.js · SectoresLogica.TEXTOS (sectores del lote, D-39)

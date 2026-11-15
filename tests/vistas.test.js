@@ -206,3 +206,10 @@ test('D-40: los rótulos de Landsat dicen la resolución real', () => {
     assert.match(html, /NDVI a 100 m/, nombre);
   }
 });
+
+test('D-40: app.js carga los recortes del lote sin romper si falta lotes.json', () => {
+  assert.match(app, /async function cargarLotesSat\(base = '\.\.\/data\/imagenes\/lotes\/'\)/);
+  const f = app.slice(app.indexOf('async function cargarLotesSat'), app.indexOf('async function cargarLotesSat') + 900);
+  assert.match(f, /catch/);
+  assert.match(app, /cargarLotesSat\(\)/);
+});

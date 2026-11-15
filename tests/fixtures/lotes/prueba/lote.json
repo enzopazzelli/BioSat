@@ -1,0 +1,51 @@
+{
+  "version": 1,
+  "nombre": "prueba",
+  "recuadro": [
+    -62.42002358063882,
+    -27.650009615757842,
+    -62.41997275016191,
+    -27.649982321838046
+  ],
+  "fecha_vuelo": "2026-11-03",
+  "generado_por": "tests/fixtures/generar_tif_prueba.py",
+  "fecha": "2026-11-15",
+  "notas": "Lote SINTÉTICO de prueba: no es un recorte real.",
+  "fuentes": {
+    "s2": {
+      "escena": "prueba",
+      "fecha": "2026-11-01",
+      "dias_al_vuelo": -2,
+      "limpio": 1.0,
+      "resolucion_m": 10,
+      "rgb": "s2_rgb.png",
+      "ndvi_png": "s2_ndvi.png",
+      "ndvi": {
+        "ancho": 10,
+        "alto": 1,
+        "recuadro": [
+          -62.42002358063882,
+          -27.650009615757842,
+          -62.41997275016191,
+          -27.649982321838046
+        ],
+        "valores": [
+          0.45,
+          0.45,
+          0.45,
+          0.45,
+          0.45,
+          0.45,
+          0.45,
+          0.05,
+          0.05,
+          0.05
+        ]
+      }
+    },
+    "l8": null
+  },
+  "motivos": {
+    "l8": "sin pasada limpia a ±30 días del vuelo"
+  }
+}

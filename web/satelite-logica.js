@@ -15,7 +15,16 @@
     cmpDespues: '{fecha}, {n} días después del vuelo',
     cmpDespuesUno: '{fecha}, 1 día después del vuelo',
     cmpMismoDia: '{fecha}, el mismo día del vuelo',
-    cmpPasada: 'pasada del {fecha}'
+    cmpPasada: 'pasada del {fecha}',
+    capa: '{fuente} · {res} m · {tipo} · {fecha}',
+    capaColor: 'color',
+    capaNdvi: 'verdor (NDVI)',
+    cmpSat: 'Satélite contra dron',
+    cmpSatIzq: '← Satélite',
+    cmpSatDer: 'Dron →',
+    srcSat: '{fuente} · {res} m por píxel · pasada del {fecha}',
+    srcDron: 'Dron · unos {res} por píxel en este visor',
+    sinFuente: '{fuente}: {motivo}.'
   };
   const fmt = (txt, datos) => String(txt).replace(/\{(\w+)\}/g, (_, k) => datos[k]);
 
