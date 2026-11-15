@@ -209,16 +209,51 @@ function aplicarCortina(){
 }
 // D-38: la imagen del dron (BioSatDron, dron.js) es una capa más del visor, con su propio recuadro.
 function capaDron(){ const d = window.BioSatDron && BioSatDron.estado(); return d && d.url && d.recuadro ? d : null; }
+// D-40: recortes satelitales de lotes (data/imagenes/lotes/, ia_desmonte/recorte_lote.py). Sin lotes.json, la app sigue igual.
+window.LOTES_SAT = [];
+async function cargarLotesSat(base = '../data/imagenes/lotes/'){
+  try {
+    const indice = await cargarJSON(base + 'lotes.json');
+    const lotes = [];
+    for (const l of indice.lotes || []){
+      try {
+        const datos = await cargarJSON(base + l.ruta);
+        lotes.push({nombre: l.nombre, recuadro: l.recuadro, base: base + l.ruta.replace(/[^/]*$/, ''), datos});
+      } catch (e) { console.warn('BioSat: no se pudo leer el lote', l.nombre, e); }
+    }
+    window.LOTES_SAT = lotes;
+  } catch (e) { window.LOTES_SAT = []; }
+}
+const FUENTES_SAT = {s2: 'Sentinel-2', l8: 'Landsat'};
+// El lote cuyo recorte se superpone con el vuelo del dron abierto, o null.
+function loteDelDron(dron){
+  if (!dron || !window.SateliteLogica) return null;
+  return window.LOTES_SAT.find(l => SateliteLogica.solapan(dron.recuadro, l.recuadro)) || null;
+}
 function renderVisor(){
   const z = ZKEY[state.zona], im = IMG[z], dron = capaDron(), TD = window.DronLogica && DronLogica.TEXTOS;
   if (!im){ $('#capas').innerHTML = '<p class="hint">Sin imágenes para esta zona todavía.</p>'; return; }
-  const urlDe = id => id === 'dron' ? (dron && dron.url) : im.img[id];
-  const capas = dron ? CAPAS.concat({id:'dron', label:TD.capa.replace('{fecha}', DronLogica.fechaCorta(dron.fecha))}) : CAPAS;
-  const cmps = dron ? CMP.concat({id:'landsat_dron', label:TD.cmp, a:'invierno_rgb', b:'dron', izq:TD.cmpIzq, der:TD.cmpDer}) : CMP;
+  // D-40: si el vuelo cae sobre un recorte satelital, sus capas (color y NDVI de cada fuente) se suman al visor.
+  const lote = loteDelDron(dron), TS = window.SateliteLogica && SateliteLogica.TEXTOS;
+  const satCapas = [];
+  if (lote) for (const [k, f] of Object.entries(lote.datos.fuentes || {})) if (f){
+    for (const [tipo, archivo, et] of [['rgb', f.rgb, TS.capaColor], ['ndvi', f.ndvi_png, TS.capaNdvi]])
+      satCapas.push({id:`sat_${k}_${tipo}`, url: lote.base + archivo, f, k,
+        label: TS.capa.replace('{fuente}', FUENTES_SAT[k]).replace('{res}', f.resolucion_m).replace('{tipo}', et).replace('{fecha}', DronLogica.fechaCorta(f.fecha))});
+  }
+  const sat = id => satCapas.find(c => c.id === id);
+  const boundsLote = lote ? [[lote.recuadro[1], lote.recuadro[0]], [lote.recuadro[3], lote.recuadro[2]]] : null;
+  const urlDe = id => id === 'dron' ? (dron && dron.url) : sat(id) ? sat(id).url : im.img[id];
+  const boundsDe = id => id === 'dron' ? dron.recuadro : sat(id) ? boundsLote : bounds;
+  const satNdvi = satCapas.find(c => c.id.endsWith('_ndvi'));
+  let capas = dron ? CAPAS.concat({id:'dron', label:TD.capa.replace('{fecha}', DronLogica.fechaCorta(dron.fecha))}) : CAPAS;
+  capas = capas.concat(satCapas);
+  let cmps = dron ? CMP.concat({id:'landsat_dron', label:TD.cmp, a:'invierno_rgb', b:'dron', izq:TD.cmpIzq, der:TD.cmpDer}) : CMP;
+  if (satNdvi) cmps = cmps.concat({id:'satelite_dron', label:TS.cmpSat, a:satNdvi.id, b:'dron', izq:TS.cmpSatIzq, der:TS.cmpSatDer});
   if (!urlDe(visor.capa)) visor.capa = 'invierno_rgb';
   const cmpOk = cmps.filter(x => x.id === 'no' || (urlDe(x.a) && urlDe(x.b)));
   if (!cmpOk.some(x => x.id === visor.cmp)) visor.cmp = 'no';
-  $('#capas').innerHTML = capas.filter(k => urlDe(k.id)).map(k => { const e = k.id === 'dron' ? null : escenaDe(z, k.id);
+  $('#capas').innerHTML = capas.filter(k => urlDe(k.id)).map(k => { const e = k.id === 'dron' || sat(k.id) ? null : escenaDe(z, k.id);
     return `<button type="button" class="capa" data-capa="${k.id}" aria-pressed="${visor.cmp === 'no' && k.id === visor.capa}">${k.label}<small>${e ? fechaTxt(e.fecha) : ''}</small></button>`; }).join('');
   $('#cmps').innerHTML = cmpOk.map(x => `<button type="button" class="capa" data-cmp="${x.id}" aria-pressed="${x.id === visor.cmp}">${x.label}</button>`).join('');
   const cm = cmps.find(x => x.id === visor.cmp);
@@ -226,7 +261,11 @@ function renderVisor(){
   if (cm.izq){ $('#cortIzq').textContent = cm.izq; $('#cortDer').textContent = cm.der; $('#cortina').value = visor.cortina; }
   const mostrar = visor.cmp === 'no' ? [visor.capa] : [cm.a, cm.b];
   $('#rampa').hidden = !mostrar.some(id => id.endsWith('ndvi') || (id === 'dron' && dron.tipo === 'ndvi'));
-  $('#escena').innerHTML = mostrar.filter(id => id !== 'dron').map(id => escenaDe(z, id)).filter(Boolean)
+  // D-40: el rótulo dice la resolución de la capa que se ve arriba (recorte satelital o dron); la de Landsat se mide al cargar.
+  const arriba = mostrar[mostrar.length - 1];
+  if (sat(arriba)) $('#visorSrc').textContent = TS.srcSat.replace('{fuente}', FUENTES_SAT[sat(arriba).k]).replace('{res}', sat(arriba).f.resolucion_m).replace('{fecha}', DronLogica.fechaCorta(sat(arriba).f.fecha));
+  else if (arriba === 'dron' && dron.metrosPixel) $('#visorSrc').textContent = TS.srcDron.replace('{res}', dron.metrosPixel < 1 ? Math.max(1, Math.round(dron.metrosPixel * 100)) + ' cm' : Math.round(dron.metrosPixel) + ' m');
+  $('#escena').innerHTML = mostrar.filter(id => id !== 'dron' && !sat(id)).map(id => escenaDe(z, id)).filter(Boolean)
     .map(e => `${e.item} · ${fechaTxt(e.fecha)}${e.nubes !== undefined ? ` · nubes ${nf(e.nubes,1)} %` : ''}`).join('<br>');
   $('#celdaNota').innerHTML = `${TEXTOS_PASOS.celdaNota} ${cf('celda')}`;
   const b = im.meta.bbox, bounds = [[b[1], b[0]], [b[3], b[2]]];
@@ -243,8 +282,14 @@ function renderVisor(){
     $('#gisNota').textContent = FUENTE_IMG === 'Google Earth Engine' ? TEXTOS_PASOS.imagenesGee : TEXTOS_PASOS.imagenesPc;
   }
   visor.layers.forEach(l => l.remove());
-  visor.layers = mostrar.map(id => L.imageOverlay(urlDe(id), id === 'dron' ? dron.recuadro : bounds,
+  visor.layers = mostrar.map(id => L.imageOverlay(urlDe(id), boundsDe(id),
     {alt: id === 'dron' ? TD.caja : 'Imagen Landsat'}).addTo(visor.map));
+  // D-40: el rótulo dice la resolución real de la imagen de Landsat de la zona (se mide cuando carga).
+  const capaLandsat = arriba !== 'dron' && !sat(arriba) ? visor.layers[mostrar.length - 1] : null;
+  if (capaLandsat && window.SateliteLogica) capaLandsat.once('load', ev => {
+    const img = ev.target.getElement();
+    if (img && img.naturalWidth) $('#visorSrc').textContent = SateliteLogica.rotuloResolucion(SateliteLogica.metrosPorPixelZona(im.meta.bbox, img.naturalWidth));
+  });
   const zi = zonifImagen();
   $('#zonifBox').innerHTML = zi
     ? `<button type="button" class="capa" data-zonif aria-pressed="${!!visor.zonif}">Zonas con variables AIZAL (k-means)<small>D-25</small></button>`
@@ -298,9 +343,16 @@ function renderDron(){
   const mes = d.fecha ? Number(d.fecha.slice(5, 7)) - 1 : null;
   const frac = mes === null ? null : ((((DIAG.zonas || {})[state.zona] || {}).fraccion_pelado || [])[mes] ?? null);
   const meta = DIAG.meta || {};
-  $('#dronComparacion').innerHTML = D.comparacion(r, {fraccionZonaMes: frac, mesNombre: mes === null ? '' : MES_L[mes],
-    periodo: meta.periodo || '', umbral: typeof meta.umbral_ndvi === 'number' ? meta.umbral_ndvi : 0.25})
-    .map(t => `<li>${esc(t)}</li>`).join('');
+  const lineas = D.comparacion(r, {fraccionZonaMes: frac, mesNombre: mes === null ? '' : MES_L[mes],
+    periodo: meta.periodo || '', umbral: typeof meta.umbral_ndvi === 'number' ? meta.umbral_ndvi : 0.25});
+  // D-40: NDVI del dron contra el del recorte satelital, en la misma superficie.
+  const lote = loteDelDron(d), nd = window.BioSatDron && BioSatDron.ndviActual();
+  if (lote && window.SateliteLogica) for (const [k, f] of Object.entries(lote.datos.fuentes || {})){
+    if (!f){ lineas.push(SateliteLogica.TEXTOS.sinFuente.replace('{fuente}', FUENTES_SAT[k]).replace('{motivo}', (lote.datos.motivos || {})[k] || '')); continue; }
+    const c = nd && SateliteLogica.compararNdvi(nd, f.ndvi);
+    if (c) lineas.push(SateliteLogica.lineaComparacion(c, Object.assign({nombre: FUENTES_SAT[k]}, f), d.fecha));
+  }
+  $('#dronComparacion').innerHTML = lineas.map(t => `<li>${esc(t)}</li>`).join('');
   const bz = $('#dronCambiarZona'), otra = r.zonaLote !== null && r.zonaLote !== r.zonaElegida;
   bz.hidden = !otra;
   if (otra){ bz.textContent = T.cambiarZona.replace('{n}', r.zonaLote); bz.dataset.zona = r.zonaLote; }
@@ -1112,6 +1164,7 @@ async function cargarDatos(){
       : 'Rotaciones: borrador del equipo, sin validar todavía.';
   }
   IMG = await cargarImagenes();
+  await cargarLotesSat();
 }
 
 /* ---------- Idioma (D-35): solo español e inglés. Los textos en español quedan en su lugar;
@@ -1129,6 +1182,7 @@ function prepararIdioma(){
   Idioma.registrar('pronostico', window.PronosticoLogica && PronosticoLogica.TEXTOS);
   Idioma.registrar('dron', window.DronLogica && DronLogica.TEXTOS);
   Idioma.registrar('sectores', window.SectoresLogica && SectoresLogica.TEXTOS);
+  Idioma.registrar('satelite', window.SateliteLogica && SateliteLogica.TEXTOS);
   Idioma.registrar('appInicio', TEXTOS_INICIO);
   Idioma.registrar('asistente', window.BioSatAsistente && BioSatAsistente.TEXTOS);
   Idioma.registrar('frases', window.FrasesLogica && FrasesLogica.TEXTOS);

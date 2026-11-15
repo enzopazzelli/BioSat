@@ -20,6 +20,8 @@
 <script src="asistente.js" defer></script>
 <script src="frases-logica.js" defer></script>
 <script src="inicio-logica.js" defer></script>
+<script src="dron-logica.js" defer></script>
+<script src="satelite-logica.js" defer></script>
 <script src="app.js" defer></script>
 </head>
 <body data-pagina="completo">
@@ -108,7 +110,7 @@
       <div class="card visor" id="visor">
         <div id="mapaGis" role="img" aria-label="Mapa con imágenes Landsat de la zona elegida"></div>
         <div class="visor-side">
-          <div class="panel-h"><h3>Visor del lote</h3><span class="src">Landsat · 30 m</span></div>
+          <div class="panel-h"><h3>Visor del lote</h3><span class="src" id="visorSrc">Landsat · original de 30 m</span></div>
           <p class="hint">Imágenes reales de tu zona. En verano se ven los cultivos verdes; a fines del invierno y en primavera, muchos lotes sin cobertura vegetal activa (suelo descubierto o rastrojo seco).</p>
           <div class="capas" id="capas" role="group" aria-label="Capa del mapa"></div>
           <div><span class="visor-t">Comparar con cortina</span><div class="capas" id="cmps" role="group" aria-label="Comparación"></div></div>
@@ -147,7 +149,7 @@
               <p class="pending" id="soilNota"></p>
             </article>
             <article class="card panel">
-              <div class="panel-h"><h3>Lo que ve el satélite</h3><span class="src">Landsat 8/9 · 30 m</span></div>
+              <div class="panel-h"><h3>Lo que ve el satélite</h3><span class="src" data-i18n="satNdviSrc">Landsat 8/9 · NDVI a 100 m</span></div>
               <p class="hint">Meses en que la mayoría de los lotes de tu zona se ven sin cobertura vegetal activa (suelo descubierto o rastrojo seco: el satélite no los distingue), según las imágenes:</p>
               <div>
                 <div class="mini-cal" id="miniSat"></div>

@@ -127,3 +127,11 @@ test('D-39: los sectores tienen su inglés con las mismas marcas', () => {
   assert.deepEqual(I.clavesSobrantes(es, en), []);
   for (const k of Object.keys(es)) if (typeof es[k] === 'string') assert.deepEqual(marcas(en[k]), marcas(es[k]), k);
 });
+
+test('D-40: el satélite del lote tiene su inglés con las mismas marcas', () => {
+  const es = require('../web/satelite-logica.js').TEXTOS, en = EN.modulos.satelite;
+  const marcas = t => [...String(t).matchAll(/\{(\w+)\}/g)].map(m => m[1]).sort();
+  assert.ok(en, 'falta modulos.satelite');
+  assert.deepEqual(I.clavesSobrantes(es, en), []);
+  for (const k of Object.keys(es)) if (typeof es[k] === 'string') assert.deepEqual(marcas(en[k]), marcas(es[k]), k);
+});

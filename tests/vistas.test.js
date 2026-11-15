@@ -198,3 +198,18 @@ test('D-39: exportar e importar sectores', () => {
   assert.ok(idsIndex.has('sectExportar') && idsIndex.has('sectImportar'));
   assert.match(index, /id="sectArchivo"[^>]*accept="\.geojson,\.json"/);
 });
+
+test('D-40: los rótulos de Landsat dicen la resolución real', () => {
+  for (const [nombre, html] of [['index', index], ['completo', completo]]) {
+    assert.doesNotMatch(html, /Landsat · 30 m<|Landsat 8\/9 · 30 m/, nombre);
+    assert.match(html, /id="visorSrc"/, nombre);
+    assert.match(html, /NDVI a 100 m/, nombre);
+  }
+});
+
+test('D-40: app.js carga los recortes del lote sin romper si falta lotes.json', () => {
+  assert.match(app, /async function cargarLotesSat\(base = '\.\.\/data\/imagenes\/lotes\/'\)/);
+  const f = app.slice(app.indexOf('async function cargarLotesSat'), app.indexOf('async function cargarLotesSat') + 900);
+  assert.match(f, /catch/);
+  assert.match(app, /cargarLotesSat\(\)/);
+});

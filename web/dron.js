@@ -6,7 +6,8 @@
 (function () {
   const L = window.DronLogica;
   const MAX_LADO = 2048;
-  // Colores del NDVI: los mismos que Landsat (ia_desmonte/imagenes.py y .ramp de estilos.css), de 0 a 0,8.
+  // Colores del NDVI: los de la leyenda (.ramp de estilos.css), de 0 a 0,8. Ojo (D-40): las imágenes NDVI de Landsat de
+  // la zona (ia_desmonte/imagenes.py) usan otra paleta, de marrón a verde azulado, que no coincide con esa leyenda.
   const RAMPA = {min: 0, max: 0.8, colores: ['#a50026', '#f46d43', '#fee08b', '#d9ef8b', '#66bd63', '#006837']
     .map(h => [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16)))};
 

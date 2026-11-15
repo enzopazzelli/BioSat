@@ -94,7 +94,13 @@ _Salen del repaso del repo. Cada uno decide cómo abordarlas; si no corresponden
 - [x] Probar la etapa 1 con un .tif real (lo consigue Enzo): tamaño, bandas, sistema de coordenadas, tiempo de lectura *(15/11: `drone.tif`, foto RGB de 33,6 MB en UTM 21 S, cerca de Corrientes; se lee en 1,2 a 1,6 s en Chrome; ver D-38)*
 - [ ] Probarlo en un celular de verdad
 - [x] Etapa 2: marcar sectores con nota, estado y qué se encontró; el vuelo y los sectores guardados en el navegador para el campo sin internet; exportar e importar (GeoJSON) y en el PDF (D-39, `web/sectores-logica.js` y `web/sectores.js`, con pruebas)
-- [ ] Probar la etapa 2 con el `NDVI.tif` real de un DJI multiespectral (lo consigue Enzo)
+- [x] Probar la etapa 2 con el `NDVI.tif` real de un DJI multiespectral (lo consigue Enzo) *(15/11: 382,6 MB, Zona 1 Capital, NDVI mediano 0,42; ver D-39)*
+
+### Satélite del lote · 15/11 (D-40)
+- [x] Rótulo honesto de Landsat (unos 120 m por píxel en el visor; NDVI a 100 m en el panel)
+- [x] Recorte satelital del lote (Sentinel-2 10 m y Landsat 30 m) en el visor, con la cortina y la comparación del NDVI con el dron (`ia_desmonte/recorte_lote.py`, `web/satelite-logica.js`)
+- [ ] Correr el recorte real del lote de la Zona 1 (falta `EE_PROJECT` y la fecha del vuelo)
+- [ ] Volver a exportar las imágenes NDVI de Landsat de las zonas con la paleta de la leyenda (hoy no coinciden)
 
 ## Listo cuando
 

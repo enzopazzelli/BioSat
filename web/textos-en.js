@@ -9,6 +9,7 @@
     // Textos fijos del HTML: elementos con data-i18n="clave" (o data-i18n-attr="atributo:clave").
     html: {
       iniCambiar: 'Change',
+      satNdviSrc: 'Landsat 8/9 · NDVI at 100 m',
       datosDron: 'Drone image: each person opens it from their own device; it is not saved or uploaded.',
       iniMejorT: 'Best fit for your farm',
       iniSiembra: 'Next sowing',
@@ -316,6 +317,28 @@
         lineaGris: 'image without NDVI',
         lineaOtraZona: 'It is in Zone {n}, not the selected one.',
         lineaFuera: 'It is outside Santiago del Estero.'
+      },
+
+      // web/satelite-logica.js · SateliteLogica.TEXTOS (satélite del lote, D-40)
+      satelite: {
+        locale: 'en-US',
+        visorSrc: 'Landsat · about {m} m per pixel in this viewer (30 m original)',
+        cmpLinea: 'Over the same surface: median NDVI {dron} with the drone and {sat} with {fuente} ({res} m, {cuando}).',
+        cmpAntes: '{fecha}, {n} days before the flight',
+        cmpAntesUno: '{fecha}, 1 day before the flight',
+        cmpDespues: '{fecha}, {n} days after the flight',
+        cmpDespuesUno: '{fecha}, 1 day after the flight',
+        cmpMismoDia: '{fecha}, the same day as the flight',
+        cmpPasada: 'pass of {fecha}',
+        capa: '{fuente} · {res} m · {tipo} · {fecha}',
+        capaColor: 'color',
+        capaNdvi: 'greenness (NDVI)',
+        cmpSat: 'Satellite vs. drone',
+        cmpSatIzq: '← Satellite',
+        cmpSatDer: 'Drone →',
+        srcSat: '{fuente} · {res} m per pixel · pass of {fecha}',
+        srcDron: 'Drone · about {res} per pixel in this viewer',
+        sinFuente: '{fuente}: {motivo}.'
       },
 
       // web/sectores-logica.js · SectoresLogica.TEXTOS (sectores del lote, D-39)
