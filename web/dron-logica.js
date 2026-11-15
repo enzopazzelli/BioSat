@@ -235,11 +235,15 @@
   // ---------- Textos de la tarjeta, del Inicio y de "Para tu ingeniero" ----------
   // r = {tipo: 'ndvi'|'rgb'|'gris'|'pendiente', fecha: 'AAAA-MM-DD'|null, mediana, fraccionBajo, zonaLote, departamento, zonaElegida}
   const num = (v, d) => v.toLocaleString(TEXTOS.locale, {minimumFractionDigits: d, maximumFractionDigits: d});
-  // Día y mes en el formato del idioma (es-AR: 03/11; en-US: 11/03). En UTC para que no se corra un día.
-  const diaMes = f => f
-    ? new Date(Date.UTC(+f.slice(0, 4), +f.slice(5, 7) - 1, +f.slice(8, 10)))
-      .toLocaleDateString(TEXTOS.locale, {day: '2-digit', month: '2-digit', timeZone: 'UTC'})
-    : TEXTOS.fechaSinDato;
+  // Día y mes en el orden del idioma (es-AR: 03/11; en-US: 11/03), con dos dígitos. Del idioma se toma solo el orden:
+  // es-AR devuelve "3/11" aunque se pida '2-digit'.
+  function diaMes(f) {
+    if (!f) return TEXTOS.fechaSinDato;
+    const orden = new Intl.DateTimeFormat(TEXTOS.locale, {day: 'numeric', month: 'numeric', timeZone: 'UTC'})
+      .formatToParts(new Date(Date.UTC(2000, 10, 3))).map(p => p.type).filter(t => t === 'day' || t === 'month');
+    const partes = {day: f.slice(8, 10), month: f.slice(5, 7)};
+    return orden.map(t => partes[t]).join('/');
+  }
   const pct = f => Math.round(f * 100);
   const enOtraZona = r => r.zonaLote !== null && r.zonaLote !== undefined && r.zonaLote !== r.zonaElegida;
   const fuera = r => r.zonaLote === null || r.zonaLote === undefined;
