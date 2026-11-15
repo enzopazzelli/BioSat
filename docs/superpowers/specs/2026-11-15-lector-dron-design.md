@@ -28,7 +28,7 @@ El lector le da a BioSat **un dato del presente y del lote**. El productor o el 
 
 **No objetivos (por ahora)**
 - Usuarios, cuentas o una nube compartida (el "expediente por lote" de la hoja de ruta).
-- Guardar el .tif o la imagen: se vuelve a abrir cada vez. Lo que se guarda es el resumen del vuelo y los sectores.
+- Guardar el .tif o la imagen: se vuelve a abrir cada vez. *(Cambia en la etapa 2, D-39: se guarda la versión achicada de la imagen y su NDVI en el navegador, para tenerla en el campo sin internet. El .tif original sigue sin guardarse. Ver `2026-11-15-lector-dron-etapa-2-design.md`.)*
 - Armar mosaicos u ortorrectificar fotos sueltas: el archivo tiene que ser un ortomosaico ya procesado.
 - Leer un juego de un .tif por banda (como entregan algunas cámaras multiespectrales): primero, un solo archivo.
 - Índices de color calculados solo con RGB (VARI, ExG), curvas de nivel o relieve, y prescripciones para maquinaria (M-08).
@@ -149,6 +149,8 @@ El Inicio es la pantalla donde el productor decide, así que el dato del dron ap
 - El texto lo arma una función pura de `dron-logica.js`, con pruebas y su inglés.
 
 ### 5.4 Sectores (nivel 3, segunda etapa)
+
+> **Reemplazado por el diseño de la etapa 2:** `docs/superpowers/specs/2026-11-15-lector-dron-etapa-2-design.md` (D-39). Lo que sigue queda como registro.
 
 - **Dibujar:** el botón "Marcar un sector" activa el modo dibujo. Cada toque en el mapa suma un punto; hay botones "Deshacer punto", "Cerrar sector" (con 3 puntos o más) y "Cancelar".
 - **Ficha de cada sector:**
