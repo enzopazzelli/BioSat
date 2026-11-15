@@ -36,8 +36,8 @@
     sinNdvi: 'Sin NDVI: el sector no cae sobre una imagen con NDVI.',
     importados: 'Se cargaron {ok} sectores. Repetidos: {rep}. No se pudieron leer: {mal}.',
     noGeojson: 'El archivo no es un GeoJSON de sectores.',
-    inicioUno: ' · 1 sector para revisar',
-    inicioVarios: ' · {n} sectores para revisar'
+    inicioUno: ' 1 sector para revisar.',
+    inicioVarios: ' {n} sectores para revisar.'
   };
   const fmt = (txt, datos) => String(txt).replace(/\{(\w+)\}/g, (_, k) => datos[k]);
 

@@ -11,7 +11,7 @@
   const nf = (v, d) => Number(v).toLocaleString(T().locale, {minimumFractionDigits: d, maximumFractionDigits: d});
   const ahora = () => new Date().toISOString();
 
-  let sectores = leer(), dib = null, capa = null, mapaEnganchado = null, aviso = '', activo = null;
+  let sectores = leer(), dib = null, capa = null, mapaEnganchado = null, aviso = '', mensaje = '', activo = null;
 
   function leer() {
     try {
@@ -126,8 +126,38 @@
       $('#sectCerrar').disabled = dib.puntos.length < 3;
     }
     $('#sectLista').innerHTML = sectores.length ? sectores.map(ficha).join('') : `<p class="hint">${esc(T().vacio)}</p>`;
-    $('#sectAviso').textContent = aviso || T().guardadoAviso;
+    $('#sectExportar').textContent = T().exportar;
+    $('#sectExportar').disabled = !sectores.length;
+    $('#sectImportar').textContent = T().importar;
+    renderAviso();
+  }
+  function renderAviso() {
+    $('#sectAviso').textContent = aviso || mensaje || T().guardadoAviso;
     $('#sectAviso').classList.toggle('dron-error', !!aviso);
+  }
+
+  // ---------- Exportar e importar (GeoJSON, contrato de datos §11) ----------
+  const exportarTexto = () => JSON.stringify(S.aGeoJSON(sectores, {umbral: umbral()}), null, 2);
+  function exportar() {
+    const url = URL.createObjectURL(new Blob([exportarTexto()], {type: 'application/geo+json'}));
+    const a = document.createElement('a');
+    a.href = url; a.download = `biosat-sectores-${ahora().slice(0, 10)}.geojson`;
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+  }
+  // Suma los sectores del texto (no borra nada; los repetidos no se duplican). Devuelve el resultado de deGeoJSON.
+  function importarTexto(texto) {
+    let obj = null;
+    try { obj = JSON.parse(texto); } catch (e) { obj = null; }
+    const r = S.deGeoJSON(obj, sectores, ahora());
+    if (r.error) mensaje = T().noGeojson;
+    else {
+      sectores = sectores.concat(r.nuevos);
+      if (r.nuevos.length) guardar();
+      mensaje = fmt(T().importados, {ok: r.nuevos.length, rep: r.repetidos, mal: r.salteados});
+    }
+    render(); actualizarInicio();
+    return r;
   }
 
   // Lo llama app.js en cada renderTodo, después de renderVisor (el mapa ya existe).
@@ -148,6 +178,8 @@
     if (e.target.closest('#sectDeshacer')) return deshacer();
     if (e.target.closest('#sectCerrar')) return cerrar();
     if (e.target.closest('#sectCancelar')) { terminarDibujo(); return renderTarjeta(); }
+    if (e.target.closest('#sectExportar')) return exportar();
+    if (e.target.closest('#sectImportar')) return $('#sectArchivo').click();
     const s = sectorDe(e.target);
     if (!s) return;
     const be = e.target.closest('[data-sector-estado]');
@@ -163,13 +195,18 @@
     }
   });
   document.addEventListener('change', e => {
+    if (e.target.id === 'sectArchivo') {
+      const f = e.target.files && e.target.files[0];
+      if (f) { const r = new FileReader(); r.onload = () => importarTexto(String(r.result)); r.readAsText(f); }
+      e.target.value = '';
+      return;
+    }
     const k = e.target.dataset && e.target.dataset.sectorCampo;
     const s = k && sectorDe(e.target);
     if (!s) return;
     reemplazar(S.conCambios(s, {[k]: e.target.value}, ahora()));
-    $('#sectAviso').textContent = aviso || T().guardadoAviso;
-    $('#sectAviso').classList.toggle('dron-error', !!aviso);
+    renderAviso();
   });
 
-  window.BioSatSectores = {render, lista: () => sectores, dibujando: () => !!dib};
+  window.BioSatSectores = {render, lista: () => sectores, dibujando: () => !!dib, exportarTexto, importarTexto};
 })();

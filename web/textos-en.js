@@ -346,8 +346,8 @@
         sinNdvi: 'No NDVI: the sector is not on an image with NDVI.',
         importados: '{ok} sectors loaded. Repeated: {rep}. Could not be read: {mal}.',
         noGeojson: 'The file is not a GeoJSON of sectors.',
-        inicioUno: ' · 1 sector to check',
-        inicioVarios: ' · {n} sectors to check'
+        inicioUno: ' 1 sector to check.',
+        inicioVarios: ' {n} sectors to check.'
       },
 
       // web/kit-logica.js · KitLogica.TEXTOS (pantalla del kit)

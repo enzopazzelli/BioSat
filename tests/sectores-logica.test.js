@@ -62,8 +62,8 @@ test('deGeoJSON saltea lo que no es polígono, no duplica y rechaza lo que no es
 
 test('lineaSectores cuenta solo los que quedan para revisar', () => {
   assert.equal(S.lineaSectores([]), '');
-  assert.equal(S.lineaSectores([{estado: 'revisar'}]), ' · 1 sector para revisar');
-  assert.equal(S.lineaSectores([{estado: 'revisar'}, {estado: 'revisar'}, {estado: 'revisado'}]), ' · 2 sectores para revisar');
+  assert.equal(S.lineaSectores([{estado: 'revisar'}]), ' 1 sector para revisar.');
+  assert.equal(S.lineaSectores([{estado: 'revisar'}, {estado: 'revisar'}, {estado: 'revisado'}]), ' 2 sectores para revisar.');
 });
 
 test('superficieTexto: hectáreas desde 0,1 ha; debajo, metros cuadrados', () => {

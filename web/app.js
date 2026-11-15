@@ -283,7 +283,8 @@ function renderDron(){
   if (window.BioSatDron) BioSatDron.render();   // la caja del visor, ya con el idioma registrado
   const D = DronLogica, T = D.TEXTOS, d = window.BioSatDron && BioSatDron.estado(), r = resumenDron();
   if ($('#inicioDron')){
-    $('#inicioDronTxt').textContent = r ? D.lineaInicio(r) : '';
+    const pendientes = window.SectoresLogica && window.BioSatSectores ? SectoresLogica.lineaSectores(BioSatSectores.lista()) : '';
+    $('#inicioDronTxt').textContent = r ? D.lineaInicio(r) + pendientes : '';
     $('#inicioDronLink').textContent = r ? T.verEnMapa : D.lineaInicio(null) + ' →';
   }
   const box = $('#dronFicha');

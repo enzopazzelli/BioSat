@@ -193,3 +193,8 @@ test('D-39: tarjeta de sectores en el Reporte, con sus scripts antes de app.js',
   for (const s of ['sectores-logica.js', 'sectores.js']) assert.ok(index.indexOf(s) > 0 && index.indexOf(s) < index.indexOf('app.js'), s);
   assert.ok(index.indexOf('id="sectoresCard"') > index.indexOf('id="dronFicha"'));
 });
+
+test('D-39: exportar e importar sectores', () => {
+  assert.ok(idsIndex.has('sectExportar') && idsIndex.has('sectImportar'));
+  assert.match(index, /id="sectArchivo"[^>]*accept="\.geojson,\.json"/);
+});
