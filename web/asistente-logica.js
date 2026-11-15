@@ -103,6 +103,7 @@
   // Abre solo la primera vez; con ?asistente=1 se abre siempre (demos y pruebas).
   function debeAbrir(respuestas, buscar) {
     if (/(?:^|[?&])asistente=1(?:&|$)/.test(String(buscar || ''))) return true;
+    if (/(?:^|[?&])asistente=0(?:&|$)/.test(String(buscar || ''))) return false;   // links de demo y capturas
     return !(respuestas && respuestas.hecho === true);
   }
 
@@ -115,11 +116,16 @@
     if (v.hacienda) tiene.push('hacienda');
     if (v.maq) tiene.push('maq');
     const porDefecto = r.prio.length === 0;
-    return {num: z.num, pueblo: z.lugar, nombre: z.nombre, tiene, preocupa: porDefecto ? [...PRIO_POR_DEFECTO] : r.prio, preocupaPorDefecto: porDefecto};
+    return {num: z.num, pueblo: z.lugar, nombre: z.nombre, localidades: z.zona || z.lugar, tiene, preocupa: porDefecto ? [...PRIO_POR_DEFECTO] : r.prio, preocupaPorDefecto: porDefecto};
+  }
+
+  // Cómo se presenta una zona: arriba su característica, abajo sus localidades (D-31). Sin localidades, el pueblo principal.
+  function etiquetaZona(z) {
+    return {titulo: z.nombre, detalle: z.zona || z.lugar};
   }
 
   const A = {CLAVE, ZONA_POR_DEFECTO, MAX_PRIO, PRIO_IDS, PRIO_POR_DEFECTO,
-             respuestasPorDefecto, normalizar, leer, guardar, alternarPrio, riegoEfectivo, valoresTarjetas, alternarTarjeta, aEstado, debeAbrir, resumen};
+             respuestasPorDefecto, normalizar, leer, guardar, alternarPrio, riegoEfectivo, valoresTarjetas, alternarTarjeta, aEstado, debeAbrir, resumen, etiquetaZona};
   if (typeof module !== 'undefined' && module.exports) module.exports = A;
   else window.AsistenteLogica = A;
 })();

@@ -72,3 +72,23 @@ test('fraseAntesDeDecidir cuenta cuántas cosas hay que revisar (paso 5)', () =>
   assert.equal(F.fraseAntesDeDecidir('X', 0), null);
   assert.equal(F.fraseAntesDeDecidir('X', null), null);
 });
+
+// Conclusiones del Reporte (D-31). Los niveles salen del semáforo de la zona, mes a mes.
+test('fraseMesesDuros nombra los 2 meses de mayor nivel, en orden del calendario', () => {
+  const meses = Array.from({length: 12}, (_, i) => ({nivel: 0, falta: 10}));
+  meses[9] = {nivel: 2, falta: 131}; meses[8] = {nivel: 2, falta: 121}; meses[10] = {nivel: 1, falta: 92};
+  assert.equal(F.fraseMesesDuros(meses), 'Septiembre y octubre son los meses más duros en tu zona.');
+});
+
+test('fraseMesesDuros desempata por falta de agua y sin datos devuelve null', () => {
+  const meses = Array.from({length: 12}, () => ({nivel: 1, falta: 50}));
+  meses[0].falta = 90; meses[11].falta = 95;
+  assert.equal(F.fraseMesesDuros(meses), 'Enero y diciembre son los meses más duros en tu zona.');
+  assert.equal(F.fraseMesesDuros([]), null);
+  assert.equal(F.fraseMesesDuros(Array.from({length: 12}, () => ({nivel: 0, falta: 0}))), F.TEXTOS.mesesTranquilos);
+});
+
+test('fraseSueloMonte usa el pH y el % de monte, y sin datos devuelve null', () => {
+  assert.equal(F.fraseSueloMonte(7.06, 30.29), 'Suelo con pH 7,1 y monte en el 30 % de la zona.');
+  assert.equal(F.fraseSueloMonte(null, 30), null);
+});

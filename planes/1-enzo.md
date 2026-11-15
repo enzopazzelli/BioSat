@@ -67,11 +67,19 @@ Que un productor recorra los 5 pasos de la app sin ayuda, con números de clima 
 ### Agregadas por Enzo · 14/11 noche (a revisar con cada uno)
 _Salen del repaso del repo. Cada uno decide cómo abordarlas; si no corresponden, se borran._
 - [ ] Mostrar en la app y en el README el link del visor de Earth Engine cuando Santi lo publique
-- [ ] Verificar que el visor use las imágenes de Earth Engine cuando Santi suba `data/imagenes/escenas.json`
+- [x] Verificar que el visor use las imágenes de Earth Engine cuando Santi suba `data/imagenes/escenas.json` *(D-30: compuestos reales de Earth Engine)*
 - [ ] Decidir si Meteomatics entra en la app (alertas a 7-10 días, `data/meteomatics_santiago_zonas.json`) o queda fuera de la demo
 - [ ] Ensayar `web/kit.html` y `web/campo.html` en la pantalla grande de la demo, con el kit conectado
 - [ ] Cerrar `PLAN.md`: sumar kit y guía en la sección 1 y contestar las preguntas abiertas
 - [ ] Probar de nuevo la app publicada en el celular y sin internet después del último merge
+
+### App para el celular y reporte completo · 15/11 (D-31)
+- [x] Inicio simple: semáforo de la zona (o de la sonda), lo que mejor encaja con la tira de 12 meses, Medir con la sonda y WhatsApp
+- [x] Reporte completo en una sola página con 7 secciones abiertas, conclusiones calculadas, Guardar PDF y Compartir
+- [x] Conservar la página de antes como vista detallada (`web/completo.html`)
+- [x] Asistente: la pregunta 1 nombra la característica de la zona y abajo sus localidades
+- [ ] Probar el Inicio y el Reporte en un celular de verdad (Chrome de Android), con y sin internet
+- [ ] Revisión final de las ramas `santi-datos-ia` y `enzo-app` antes de integrar la app a `main`
 
 ## Listo cuando
 

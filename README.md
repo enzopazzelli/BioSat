@@ -50,11 +50,11 @@ Avance de cada integrante, contado desde las casillas de su plan en [`planes/`](
 <!-- AUTO:AVANCE:INICIO -->
 | Persona | Rama | Avance | Tareas |
 |---|---|---|---|
-| [Enzo · Integración y app](planes/1-enzo.md) | `enzo-app` | `▓▓▓▓▓▓▓▓░░` 75% | 30/40 |
+| [Enzo · Integración y app](planes/1-enzo.md) | `enzo-app` | `▓▓▓▓▓▓▓▓░░` 76% | 35/46 |
 | [Santi · Suelo, satélite e IA](planes/2-santi.md) | `santi-datos-ia` | `▓▓▓▓▓▓▓▓░░` 81% | 22/27 |
 | [Vale · Campo y agronomía](planes/3-vale.md) | `vale-rotaciones` | `▓▓▓▓▓▓▓▓░░` 77% | 17/22 |
 | [Sara · Kit Arduino y relato](planes/4-sara.md) | `sara-arduino-entrega` | `▓▓░░░░░░░░` 20% | 5/25 |
-| **Total** | | `▓▓▓▓▓▓░░░░` **65%** | **74/114** |
+| **Total** | | `▓▓▓▓▓▓▓░░░` **66%** | **79/120** |
 <!-- AUTO:AVANCE:FIN -->
 
 ### Lo más urgente
@@ -70,18 +70,19 @@ Sale solo de las casillas sin tildar de cada plan. Panorama completo y riesgos: 
 
 <!-- AUTO:PENDIENTE:INICIO -->
 <details>
-<summary><b>Enzo</b>: 10 pendientes (<a href="planes/1-enzo.md">plan completo</a>)</summary>
+<summary><b>Enzo</b>: 11 pendientes (<a href="planes/1-enzo.md">plan completo</a>)</summary>
 
 - Último merge de funciones a `main` _(Congelamiento)_
 - Revisar el README final con Sara _(Entrega)_
 - Dejar `main` estable con la app publicada _(Entrega)_
 - Botón de idioma EN/ES en toda la app *(etapa siguiente, con su propio diseño)* _(Sugerencias de la organización)_
 - Mostrar en la app y en el README el link del visor de Earth Engine cuando Santi lo publique _(Agregadas por Enzo)_
-- Verificar que el visor use las imágenes de Earth Engine cuando Santi suba `data/imagenes/escenas.json` _(Agregadas por Enzo)_
 - Decidir si Meteomatics entra en la app (alertas a 7-10 días, `data/meteomatics_santiago_zonas.json`) o queda fuera de la demo _(Agregadas por Enzo)_
 - Ensayar `web/kit.html` y `web/campo.html` en la pantalla grande de la demo, con el kit conectado _(Agregadas por Enzo)_
 - Cerrar `PLAN.md`: sumar kit y guía en la sección 1 y contestar las preguntas abiertas _(Agregadas por Enzo)_
 - Probar de nuevo la app publicada en el celular y sin internet después del último merge _(Agregadas por Enzo)_
+- Probar el Inicio y el Reporte en un celular de verdad (Chrome de Android), con y sin internet _(App para el celular y reporte completo)_
+- Revisión final de las ramas `santi-datos-ia` y `enzo-app` antes de integrar la app a `main` _(App para el celular y reporte completo)_
 
 </details>
 
@@ -137,12 +138,12 @@ Sale solo de las casillas sin tildar de cada plan. Panorama completo y riesgos: 
 **Últimas decisiones:**
 
 <!-- AUTO:DECISIONES:INICIO -->
+- **D-31**: App para el celular: Inicio simple y Reporte completo
 - **D-30**: Datos reales de Earth Engine reemplazan al prototipo simulado
 - **D-29**: Contraseña de Meteomatics: se deja como está, por practicidad
 - **D-28**: Sugerencias de la organización: asistente de inicio, mapa real y app más fácil
 - **D-27**: Pantalla del kit para el jurado, guía "Del kit al campo" y Arduino Uno por USB
 - **D-26**: Informe de clima corregido y app lista para los datos de D-25
-- **D-25**: Propuesta de la profesora: zonificación AIZAL y modelo predictivo de desmontes
 
 Todas las decisiones están en la [bitácora](docs/reglas-y-bitacora.md).
 <!-- AUTO:DECISIONES:FIN -->
@@ -210,7 +211,7 @@ BioSat/
 │   │   ├── 05_Logistica_Antropico_y_Servicios/ (2 archivos)  <-- B26-B29, B32-B37: caminos, población
 │   │   └── 06_Embeddings_IA_AlphaEarth/ (2 archivos)         <-- Embeddings AlphaEarth 64D (DeepMind)
 │   └── imagenes/ (23 archivos)                               <-- Compuestos de mediana Landsat del visor y mapa de la zonificación (Earth Engine)
-├── docs/ (27 archivos)                                       <-- Documentación del equipo
+├── docs/ (29 archivos)                                       <-- Documentación del equipo
 ├── ia_desmonte/                                              <-- Pipeline de datos reales con Earth Engine: suelo, desmontes, zonificación, suelo pelado e imágenes
 │   ├── __init__.py
 │   ├── comun.py
@@ -243,6 +244,7 @@ BioSat/
 │   └── README.md                                             <-- Objetivo común, ramas, reglas e hitos de integración
 ├── scripts/                                                  <-- Herramientas para bajar y procesar datos
 │   ├── actualizar_readme.py                                  <-- Regenera las secciones automáticas del README
+│   ├── captura-movil.mjs                                     <-- Captura la app emulando un celular de 390 px (Chrome)
 │   ├── descargar_meteomatics.py                              <-- Descarga datos de Meteomatics por zona
 │   ├── descargar_nasa_power.py                               <-- Descarga y resume NASA POWER por zona
 │   ├── earth_engine_embeddings.js                            <-- Ejemplo GEE de embeddings (falta adaptar a SdE)
@@ -255,10 +257,12 @@ BioSat/
 │   ├── asistente-logica.test.js
 │   ├── datos-contratos.test.js                               <-- Prueba la forma de los datos reales de ia_desmonte/
 │   ├── frases-logica.test.js
+│   ├── inicio-logica.test.js                                 <-- Prueba el semáforo, la próxima siembra y el WhatsApp del Inicio
 │   ├── kit-logica.test.js
 │   ├── lector-serial.test.js
-│   └── mapa-santiago.test.js
-└── web/ (38 archivos)                                        <-- App web BioSat (abrir con un servidor: ver Inicio rápido)
+│   ├── mapa-santiago.test.js
+│   └── vistas.test.js                                        <-- Prueba las vistas Inicio, Reporte y la vista detallada (completo.html)
+└── web/ (40 archivos)                                        <-- App web BioSat (abrir con un servidor: ver Inicio rápido)
 ```
 <!-- AUTO:ESTRUCTURA:FIN -->
 
@@ -270,8 +274,10 @@ BioSat/
 
 - **Pantalla del kit** (mesa del jurado, teclas A, B y C): https://enzopazzelli.github.io/BioSat/web/kit.html
 - **Guía "Del kit al campo":** https://enzopazzelli.github.io/BioSat/web/campo.html
+- **Reporte completo:** https://enzopazzelli.github.io/BioSat/web/#reporte · **Vista detallada** (la página de antes): https://enzopazzelli.github.io/BioSat/web/completo.html
+- **Saltear el asistente** (para links de demo): agregar `?asistente=0` a la dirección.
 
-**Pruebas** (Node 22): `node --test tests/*.test.js`
+**Pruebas** (Node 22): `node --test tests/*.test.js` · **Ver la app como en un celular de 390 px** (con la app servida): `node scripts/captura-movil.mjs "http://localhost:8000/web/" inicio.png`
 
 **Bajar y resumir el clima de NASA POWER** (no necesita cuenta; genera `data/clima_zonas.json`):
 
