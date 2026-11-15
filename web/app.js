@@ -207,27 +207,32 @@ function aplicarCortina(){
   const el = visor.layers[1].getElement && visor.layers[1].getElement();
   if (el) el.style.clipPath = `inset(0 0 0 ${visor.cortina}%)`;
 }
+// D-38: la imagen del dron (BioSatDron, dron.js) es una capa más del visor, con su propio recuadro.
+function capaDron(){ const d = window.BioSatDron && BioSatDron.estado(); return d && d.url && d.recuadro ? d : null; }
 function renderVisor(){
-  const z = ZKEY[state.zona], im = IMG[z];
+  const z = ZKEY[state.zona], im = IMG[z], dron = capaDron(), TD = window.DronLogica && DronLogica.TEXTOS;
   if (!im){ $('#capas').innerHTML = '<p class="hint">Sin imágenes para esta zona todavía.</p>'; return; }
-  if (!im.img[visor.capa]) visor.capa = 'invierno_rgb';
-  const cmpOk = CMP.filter(x => x.id === 'no' || (im.img[x.a] && im.img[x.b]));
+  const urlDe = id => id === 'dron' ? (dron && dron.url) : im.img[id];
+  const capas = dron ? CAPAS.concat({id:'dron', label:TD.capa.replace('{fecha}', DronLogica.fechaCorta(dron.fecha))}) : CAPAS;
+  const cmps = dron ? CMP.concat({id:'landsat_dron', label:TD.cmp, a:'invierno_rgb', b:'dron', izq:TD.cmpIzq, der:TD.cmpDer}) : CMP;
+  if (!urlDe(visor.capa)) visor.capa = 'invierno_rgb';
+  const cmpOk = cmps.filter(x => x.id === 'no' || (urlDe(x.a) && urlDe(x.b)));
   if (!cmpOk.some(x => x.id === visor.cmp)) visor.cmp = 'no';
-  $('#capas').innerHTML = CAPAS.filter(k => im.img[k.id]).map(k => { const e = escenaDe(z, k.id);
+  $('#capas').innerHTML = capas.filter(k => urlDe(k.id)).map(k => { const e = k.id === 'dron' ? null : escenaDe(z, k.id);
     return `<button type="button" class="capa" data-capa="${k.id}" aria-pressed="${visor.cmp === 'no' && k.id === visor.capa}">${k.label}<small>${e ? fechaTxt(e.fecha) : ''}</small></button>`; }).join('');
   $('#cmps').innerHTML = cmpOk.map(x => `<button type="button" class="capa" data-cmp="${x.id}" aria-pressed="${x.id === visor.cmp}">${x.label}</button>`).join('');
-  const cm = CMP.find(x => x.id === visor.cmp);
+  const cm = cmps.find(x => x.id === visor.cmp);
   $('#cortinaBox').hidden = visor.cmp === 'no';
   if (cm.izq){ $('#cortIzq').textContent = cm.izq; $('#cortDer').textContent = cm.der; $('#cortina').value = visor.cortina; }
   const mostrar = visor.cmp === 'no' ? [visor.capa] : [cm.a, cm.b];
-  $('#rampa').hidden = !mostrar.some(id => id.endsWith('ndvi'));
-  $('#escena').innerHTML = mostrar.map(id => escenaDe(z, id)).filter(Boolean)
+  $('#rampa').hidden = !mostrar.some(id => id.endsWith('ndvi') || (id === 'dron' && dron.tipo === 'ndvi'));
+  $('#escena').innerHTML = mostrar.filter(id => id !== 'dron').map(id => escenaDe(z, id)).filter(Boolean)
     .map(e => `${e.item} · ${fechaTxt(e.fecha)}${e.nubes !== undefined ? ` · nubes ${nf(e.nubes,1)} %` : ''}`).join('<br>');
   $('#celdaNota').innerHTML = `${TEXTOS_PASOS.celdaNota} ${cf('celda')}`;
   const b = im.meta.bbox, bounds = [[b[1], b[0]], [b[3], b[2]]];
   const lat = CLIMA[state.zona].lat, lon = CLIMA[state.zona].lon;
   if (!window.L){
-    $('#mapaGis').innerHTML = `<img src="${im.img[mostrar[mostrar.length - 1]]}" alt="Imagen Landsat de la zona" style="width:100%;height:100%;object-fit:contain">`;
+    $('#mapaGis').innerHTML = `<img src="${urlDe(mostrar[mostrar.length - 1])}" alt="Imagen Landsat de la zona" style="width:100%;height:100%;object-fit:contain">`;
     return;
   }
   const acento = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim() || '#0E5E4B';
@@ -238,7 +243,8 @@ function renderVisor(){
     $('#gisNota').textContent = FUENTE_IMG === 'Google Earth Engine' ? TEXTOS_PASOS.imagenesGee : TEXTOS_PASOS.imagenesPc;
   }
   visor.layers.forEach(l => l.remove());
-  visor.layers = mostrar.map(id => L.imageOverlay(im.img[id], bounds, {alt:'Imagen Landsat'}).addTo(visor.map));
+  visor.layers = mostrar.map(id => L.imageOverlay(urlDe(id), id === 'dron' ? dron.recuadro : bounds,
+    {alt: id === 'dron' ? TD.caja : 'Imagen Landsat'}).addTo(visor.map));
   const zi = zonifImagen();
   $('#zonifBox').innerHTML = zi
     ? `<button type="button" class="capa" data-zonif aria-pressed="${!!visor.zonif}">Zonas con variables AIZAL (k-means)<small>D-25</small></button>`
@@ -253,6 +259,12 @@ function renderVisor(){
     visor.map.setMaxBounds(L.latLngBounds(bounds).pad(0.3));
     // Con el Reporte oculto el mapa mide 0 px y el encuadre no sirve: se vuelve a encuadrar al mostrarlo (mostrarVista).
     visor.zonaVista = visor.map.getSize().x ? state.zona : null;
+  }
+  // D-38: al abrir un archivo nuevo, el mapa va al lote (aunque caiga fuera de la zona elegida).
+  if (visor.irAlDron && dron && visor.map.getSize().x){
+    visor.map.setMaxBounds(null); visor.map.setMinZoom(0);
+    visor.map.fitBounds(dron.recuadro, {animate:false});
+    visor.irAlDron = false;
   }
   aplicarCortina();
 }
@@ -1062,6 +1074,7 @@ function prepararIdioma(){
   if (!window.Idioma || document.body.dataset.pagina === 'completo') return;
   Idioma.registrar('inicio', window.InicioLogica && InicioLogica.TEXTOS);
   Idioma.registrar('pronostico', window.PronosticoLogica && PronosticoLogica.TEXTOS);
+  Idioma.registrar('dron', window.DronLogica && DronLogica.TEXTOS);
   Idioma.registrar('appInicio', TEXTOS_INICIO);
   Idioma.registrar('asistente', window.BioSatAsistente && BioSatAsistente.TEXTOS);
   Idioma.registrar('frases', window.FrasesLogica && FrasesLogica.TEXTOS);
@@ -1074,6 +1087,11 @@ function prepararIdioma(){
   Idioma.registrar('zonas', ZONAS);
   nombresRotaciones();
   Idioma.alCambiar(() => { nombresRotaciones(); renderTodo(); });
+  // D-38: cuando se abre (o cambia) la imagen del dron, se vuelve a dibujar todo; con un archivo nuevo, el visor va a esa capa.
+  if (window.BioSatDron) BioSatDron.alCambiar(motivo => {
+    if (motivo === 'nuevo'){ visor.capa = 'dron'; visor.cmp = 'no'; visor.irAlDron = true; }
+    renderTodo();
+  });
 }
 
 cargarDatos().then(() => {

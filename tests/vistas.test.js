@@ -155,3 +155,10 @@ test('D-37: la explicación del semáforo aclara que la falta de agua es lluvia 
   assert.match(metodo, /evaporación de referencia \(ET0\)/);
   assert.match(metodo, /no es lo que pide un cultivo concreto/);
 });
+
+test('D-38: index.html carga el lector de dron sin internet y tiene su caja en el visor', () => {
+  for (const s of ['vendor/geotiff.js', 'vendor/proj4.js', 'dron-logica.js', 'dron.js']) assert.match(index, new RegExp(`<script src="${s}" defer>`), s);
+  assert.ok(index.indexOf('dron.js') < index.indexOf('app.js'));
+  assert.ok(idsIndex.has('dronBox') && idsIndex.has('dronArchivo'));
+  assert.match(index, /id="dronArchivo"[^>]*accept="\.tif,\.tiff"/);
+});

@@ -302,6 +302,11 @@ input[type=range]{width:100%;accent-color:var(--accent)}
 .ramp{height:10px;border-radius:2px;background:linear-gradient(90deg,#a50026,#f46d43,#fee08b,#d9ef8b,#66bd63,#006837)}
 .ramp-lbl{display:flex;justify-content:space-between;font-size:.72rem;color:var(--muted);margin-top:3px}
 .gis-note{font-size:.76rem;color:var(--muted)}
+/* D-38: imagen de dron en el visor */
+.dron-box{display:grid;gap:6px}
+.dron-error{font-size:.82rem;color:var(--crit);font-weight:600}
+.dron-campo{display:grid;gap:4px;font-size:.82rem;font-weight:600}
+.dron-campo select{font:inherit;font-weight:400;padding:6px;border:1px solid var(--line);border-radius:4px;background:var(--surface);color:var(--ink);max-width:100%}
 .gis-note.mono{font-size:.68rem;word-break:break-all}
 .leaflet-container{font-family:var(--font-text);background:var(--surface-2)}
 .leaflet-control-attribution,.leaflet-control-scale-line{background:var(--surface)!important;color:var(--muted)!important}

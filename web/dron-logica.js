@@ -8,6 +8,7 @@
   const TEXTOS = {
     locale: 'es-AR',
     // Caja del visor (dron.js)
+    caja: 'Imagen de tu dron',
     abrir: 'Abrir un .tif de dron',
     privado: 'Tu archivo no sale de este equipo: la app lo lee acá y no lo guarda.',
     leyendo: 'Leyendo la imagen…',
@@ -298,7 +299,7 @@
 
   const L = {TEXTOS, defProj4, epsgDe, recuadroLatLon, metrosPorPixel, tipoImagen, pareceNdvi, descripcionesBandas,
     bandasSugeridas, ndvi, resumenNdvi, fechaDeTiff, avisoTamano, transformacionMapa, parsearPath, zonaDelPunto,
-    lineaInicio, comparacion, fichaTecnica};
+    lineaInicio, comparacion, fichaTecnica, fechaCorta: diaMes};
   if (typeof module !== 'undefined' && module.exports) module.exports = L;
   else window.DronLogica = L;
 })();

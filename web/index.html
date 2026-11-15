@@ -21,6 +21,10 @@
 <script src="frases-logica.js" defer></script>
 <script src="inicio-logica.js" defer></script>
 <script src="pronostico-logica.js" defer></script>
+<script src="vendor/geotiff.js" defer></script>
+<script src="vendor/proj4.js" defer></script>
+<script src="dron-logica.js" defer></script>
+<script src="dron.js" defer></script>
 <script src="app.js" defer></script>
 </head>
 <body>
@@ -205,6 +209,13 @@
             <div class="range-ends"><span id="cortIzq"></span><span id="cortDer"></span></div>
           </div>
           <div id="zonifBox"></div>
+          <div class="dron-box" id="dronBox">
+            <span class="visor-t" id="dronCajaT">Imagen de tu dron</span>
+            <button type="button" class="capa" id="dronAbrir">Abrir un .tif de dron</button>
+            <input type="file" id="dronArchivo" accept=".tif,.tiff" hidden>
+            <p class="gis-note" id="dronPrivado"></p>
+            <div id="dronEstado" role="status" aria-live="polite"></div>
+          </div>
           <div id="rampa" hidden><div class="ramp"></div><div class="ramp-lbl"><span>Suelo descubierto o rastrojo seco</span><span>Cultivo o monte verde</span></div></div>
           <p class="gis-note" id="celdaNota"></p>
           <p class="gis-note mono" id="escena"></p>

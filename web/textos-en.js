@@ -259,6 +259,7 @@
       // web/dron-logica.js · DronLogica.TEXTOS (lector de imágenes de dron, D-38)
       dron: {
         locale: 'en-US',
+        caja: 'Your drone image',
         abrir: 'Open a drone .tif',
         privado: 'Your file never leaves this device: the app reads it here and does not save it.',
         leyendo: 'Reading the image…',
