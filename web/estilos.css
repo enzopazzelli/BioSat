@@ -312,6 +312,23 @@ input[type=range]{width:100%;accent-color:var(--accent)}
 .dron-campo input{font:inherit;font-weight:400;padding:6px;border:1px solid var(--line);border-radius:4px;background:var(--surface);color:var(--ink)}
 .ini-dron{margin:0 0 14px;font-size:.9rem;line-height:1.4}
 .ini-dron a{font-weight:700;color:var(--accent);white-space:nowrap}
+/* D-39: sectores del lote */
+.sect-card{margin-top:12px}
+.sect-acciones{grid-template-columns:repeat(auto-fit,minmax(110px,1fr))}
+.sect-dibujo{display:grid;gap:8px}
+.sect-dibujo[hidden]{display:none}
+.sect-lista{display:grid;gap:12px}
+.sect-ficha{border-top:1px solid var(--line);padding-top:10px;display:grid;gap:8px}
+.sect-activa{outline:2px solid var(--accent);outline-offset:4px;border-radius:4px}
+.sect-cab{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.sect-sup{white-space:nowrap}
+.sect-ir{background:none;border:0;padding:0;font:inherit;font-weight:700;text-align:left;cursor:pointer;color:var(--ink)}
+.sect-ficha[data-estado="revisar"] .sect-ir{color:var(--accent)}
+.sect-ndvi{margin:0;font-size:.88rem}
+.sect-estados{grid-template-columns:repeat(3,1fr)}
+.sect-ficha textarea{font:inherit;font-weight:400;width:100%;box-sizing:border-box;padding:6px;border:1px solid var(--line);border-radius:4px;background:var(--surface);color:var(--ink)}
+.leaflet-tooltip.sect-num{background:transparent;border:0;box-shadow:none;font-weight:800;color:#FFFFFF;text-shadow:0 0 3px #000000}
+.solo-print{display:none}
 .gis-note.mono{font-size:.68rem;word-break:break-all}
 .leaflet-container{font-family:var(--font-text);background:var(--surface-2)}
 .leaflet-control-attribution,.leaflet-control-scale-line{background:var(--surface)!important;color:var(--muted)!important}
@@ -483,4 +500,6 @@ input[type=range]{width:100%;accent-color:var(--accent)}
   .card,.para-ingeniero,figure,table{break-inside:avoid}
   .cal-scroll,.tabla-scroll{overflow:visible!important}
   a{color:inherit;text-decoration:none}
+  .sect-ficha textarea,.sect-acciones,.sect-estados,.sect-borrar,.sect-dibujo{display:none!important}
+  .solo-print{display:block}
 }

@@ -187,3 +187,9 @@ test('D-39: si el vuelo se restauró antes de que app.js termine de arrancar, ap
   const ini = app.slice(app.indexOf('BioSatDron.alCambiar('), app.indexOf('BioSatDron.alCambiar(') + 900);
   assert.match(ini, /BioSatDron\.estado\(\)[^\n]*restaurado/);
 });
+
+test('D-39: tarjeta de sectores en el Reporte, con sus scripts antes de app.js', () => {
+  for (const id of ['sectoresCard', 'sectMarcar', 'sectDibujo', 'sectLista', 'sectAviso']) assert.ok(idsIndex.has(id), id);
+  for (const s of ['sectores-logica.js', 'sectores.js']) assert.ok(index.indexOf(s) > 0 && index.indexOf(s) < index.indexOf('app.js'), s);
+  assert.ok(index.indexOf('id="sectoresCard"') > index.indexOf('id="dronFicha"'));
+});

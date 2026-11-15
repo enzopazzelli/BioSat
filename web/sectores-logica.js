@@ -31,6 +31,7 @@
     borrar: 'Borrar',
     confirmarBorrar: '¿Borrar el sector {n}?',
     ha: '{ha} ha',
+    m2: '{m2} m²',
     ndviLinea: 'NDVI mediano {ndvi} · {pct} % sin cobertura activa (vuelo del {fecha})',
     sinNdvi: 'Sin NDVI: el sector no cae sobre una imagen con NDVI.',
     importados: 'Se cargaron {ok} sectores. Repetidos: {rep}. No se pudieron leer: {mal}.',
@@ -139,13 +140,19 @@
     return out;
   }
 
+  // Superficie para mostrar: hectáreas con un decimal desde 0,1 ha; debajo, metros cuadrados (un sector chico no es "0,0 ha").
+  function superficieTexto(ha) {
+    const nf = (v, d) => v.toLocaleString(TEXTOS.locale, {minimumFractionDigits: d, maximumFractionDigits: d});
+    return ha >= 0.1 ? fmt(TEXTOS.ha, {ha: nf(ha, 1)}) : fmt(TEXTOS.m2, {m2: nf(Math.round(ha * 10000), 0)});
+  }
+
   // ---------- Línea del Inicio ----------
   function lineaSectores(sectores) {
     const n = (sectores || []).filter(s => s.estado === 'revisar').length;
     return n === 0 ? '' : n === 1 ? TEXTOS.inicioUno : fmt(TEXTOS.inicioVarios, {n});
   }
 
-  const L = {ESTADOS, TEXTOS, areaHa, ndviEnPoligono, siguienteNumero, nuevoSector, conCambios, aGeoJSON, deGeoJSON, lineaSectores};
+  const L = {ESTADOS, TEXTOS, areaHa, ndviEnPoligono, siguienteNumero, nuevoSector, conCambios, aGeoJSON, deGeoJSON, lineaSectores, superficieTexto};
   if (typeof module !== 'undefined' && module.exports) module.exports = L;
   else window.SectoresLogica = L;
 })();

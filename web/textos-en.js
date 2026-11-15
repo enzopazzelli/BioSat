@@ -341,6 +341,7 @@
         borrar: 'Delete',
         confirmarBorrar: 'Delete sector {n}?',
         ha: '{ha} ha',
+        m2: '{m2} m²',
         ndviLinea: 'Median NDVI {ndvi} · {pct} % without active cover (flight of {fecha})',
         sinNdvi: 'No NDVI: the sector is not on an image with NDVI.',
         importados: '{ok} sectors loaded. Repeated: {rep}. Could not be read: {mal}.',

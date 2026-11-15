@@ -26,6 +26,8 @@
 <script src="dron-logica.js" defer></script>
 <script src="dron-guardado.js" defer></script>
 <script src="dron.js" defer></script>
+<script src="sectores-logica.js" defer></script>
+<script src="sectores.js" defer></script>
 <script src="app.js" defer></script>
 </head>
 <body>
@@ -230,6 +232,22 @@
         <ul class="dron-lista" id="dronComparacion"></ul>
         <button type="button" class="capa" id="dronCambiarZona" hidden></button>
         <details class="para-ingeniero"><summary id="dronIngT"></summary><ul class="dron-lista" id="dronTecnica"></ul></details>
+      </div>
+      <div class="card panel sect-card" id="sectoresCard">
+        <div class="panel-h"><h3 id="sectTitulo">Sectores del lote</h3></div>
+        <div class="capas sect-acciones">
+          <button type="button" class="capa" id="sectMarcar">Marcar un sector</button>
+        </div>
+        <div class="sect-dibujo" id="sectDibujo" hidden>
+          <p class="hint" id="sectDibujoTxt"></p>
+          <div class="capas sect-acciones">
+            <button type="button" class="capa" id="sectDeshacer"></button>
+            <button type="button" class="capa" id="sectCerrar"></button>
+            <button type="button" class="capa" id="sectCancelar"></button>
+          </div>
+        </div>
+        <div class="sect-lista" id="sectLista"></div>
+        <p class="gis-note" id="sectAviso" role="status" aria-live="polite"></p>
       </div>
       <details class="detalle-tecnico" id="detalleTecnico" open>
         <summary id="detalleResumen"></summary>

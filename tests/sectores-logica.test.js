@@ -65,3 +65,9 @@ test('lineaSectores cuenta solo los que quedan para revisar', () => {
   assert.equal(S.lineaSectores([{estado: 'revisar'}]), ' · 1 sector para revisar');
   assert.equal(S.lineaSectores([{estado: 'revisar'}, {estado: 'revisar'}, {estado: 'revisado'}]), ' · 2 sectores para revisar');
 });
+
+test('superficieTexto: hectáreas desde 0,1 ha; debajo, metros cuadrados', () => {
+  assert.equal(S.superficieTexto(2.4), '2,4 ha');
+  assert.equal(S.superficieTexto(0.1), '0,1 ha');
+  assert.equal(S.superficieTexto(0.0015), '15 m²');
+});

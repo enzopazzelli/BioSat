@@ -942,7 +942,7 @@ document.addEventListener('click', async e => {
 });
 
 /* ---------- Render general y eventos ---------- */
-function renderTodo(){ renderInicio(); renderPronostico(); renderTuCampo(); renderFrases(); renderStats(); renderCalendario(); renderPaneles(); renderDesmonte(); renderTrade(); renderCards(); renderSim(); renderDecidir(); renderVisor(); renderDron(); renderConclusiones(); }
+function renderTodo(){ renderInicio(); renderPronostico(); renderTuCampo(); renderFrases(); renderStats(); renderCalendario(); renderPaneles(); renderDesmonte(); renderTrade(); renderCards(); renderSim(); renderDecidir(); renderVisor(); renderDron(); if (window.BioSatSectores) BioSatSectores.render(); renderConclusiones(); }
 function renderClima(){ renderFrases(); renderStats(); renderCalendario(); renderPaneles(); renderTrade(); renderCards(); renderSim(); renderConclusiones(); }
 document.addEventListener('click', e => {
   const cb = e.target.closest('[data-capa]');
@@ -1127,6 +1127,7 @@ function prepararIdioma(){
   Idioma.registrar('inicio', window.InicioLogica && InicioLogica.TEXTOS);
   Idioma.registrar('pronostico', window.PronosticoLogica && PronosticoLogica.TEXTOS);
   Idioma.registrar('dron', window.DronLogica && DronLogica.TEXTOS);
+  Idioma.registrar('sectores', window.SectoresLogica && SectoresLogica.TEXTOS);
   Idioma.registrar('appInicio', TEXTOS_INICIO);
   Idioma.registrar('asistente', window.BioSatAsistente && BioSatAsistente.TEXTOS);
   Idioma.registrar('frases', window.FrasesLogica && FrasesLogica.TEXTOS);
