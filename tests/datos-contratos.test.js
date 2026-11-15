@@ -64,3 +64,24 @@ test('diagnostico_landsat_ia.json: 12 meses, fracciones, dudosos y fragilidad en
     assert.ok(d.formula_fragilidad.includes('min('));
   }
 });
+
+test('imagenes/escenas.json: compuestos de Earth Engine, livianos y distintos de las vistas previas de web/img', () => {
+  const e = leer(path.join('imagenes', 'escenas.json'));
+  const huellas = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'ia_desmonte', 'salidas', 'huellas_web_img.json'), 'utf8'));
+  const CAPAS = {invierno: ['invierno_rgb', 'invierno_ndvi'], verano: ['verano_rgb', 'verano_ndvi'], anio2000: ['2000_rgb']};
+  for (const [z, m] of Object.entries(e)) {
+    assert.equal(m.bbox.length, 4);
+    for (const [est, capas] of Object.entries(CAPAS)) {
+      if (!m[est]) continue;
+      assert.doesNotMatch(m[est].item, /L2SP/, `${z}.${est}: es una escena suelta, no un compuesto`);
+      assert.ok(m[est].fecha && m[est].periodo && m[est].n_escenas > 0, `${z}.${est}`);
+      for (const c of capas) {
+        const f = path.join(DATA, 'imagenes', `${z}_${c}.png`);
+        assert.ok(fs.existsSync(f), `falta ${f}`);
+        assert.ok(fs.statSync(f).size < 400 * 1024, `${f} pesa más de 400 KB`);
+        const h = huellas[`${z}_${c}`];
+        assert.ok(h && h.png && h.webp && h.png !== h.webp, `${z}_${c}: igual a la vista previa de web/img`);
+      }
+    }
+  }
+});
