@@ -121,6 +121,7 @@
         y: ' and ',
         locale: 'en-US',
         razonCorta: {falta: 'water shortage', pelado: 'fields without active cover', d35: 'strong heat', helada: 'frost'},
+        sensibilidad: 'How much it depends on the threshold: in {mes}, with an NDVI below {u1}, {a} out of 10 fields look without active cover; with {u2} (the one the app uses), {b}; with {u3}, {c}. There is no field data to choose the threshold.',
         sinConexion: 'No internet connection: you can send the message when the signal comes back.',
         sondaError: 'Could not connect the probe. Check that it is plugged in by USB and pick its port when the browser asks.',
         sondaNoDisponible: 'This phone or browser cannot read the probe over USB. Use Chrome or Edge on a computer, or open the kit screen.',

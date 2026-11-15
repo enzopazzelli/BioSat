@@ -98,3 +98,11 @@ test('D-33: en inglés, la señal satelital dice "without active green cover", n
   assert.match(ini.accion.pelado, /bare/);
   assert.doesNotMatch(EN.modulos.frases.mesesTranquilos, /bare soil/);
 });
+
+test('D-33: la frase de sensibilidad al umbral tiene su inglés, con las mismas marcas que en español', () => {
+  const es = require('../web/inicio-logica.js').TEXTOS.sensibilidad;
+  const en = EN.modulos.inicio.sensibilidad;
+  const marcas = t => [...String(t).matchAll(/\{(\w+)\}/g)].map(m => m[1]).sort();
+  assert.ok(en, 'falta modulos.inicio.sensibilidad: en inglés quedaría "en November, con un NDVI menor a 0.20"');
+  assert.deepEqual(marcas(en), marcas(es));
+});
