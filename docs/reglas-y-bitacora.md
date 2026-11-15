@@ -358,11 +358,26 @@ Según la página oficial de premios (`NASA Space Apps Challenge - awards.mhtml`
     - **El lector va solo en el Reporte.**
     - **El .tif no se guarda.**
   - **Pruebas:**
-    - `tests/dron-logica.test.js` (17) y pruebas nuevas en `tests/vistas.test.js` y `tests/textos-en.test.js`: 178 en verde.
+    - `tests/dron-logica.test.js` (18) y pruebas nuevas en `tests/vistas.test.js` y `tests/textos-en.test.js`: 180 en verde.
     - 4 GeoTIFF **sintéticos** de prueba en `tests/fixtures/` (los genera `generar_tif_prueba.py`). Nunca se muestran como un vuelo real.
     - Revisado en Chrome a 390 px y a 1440 px, en español y en inglés, sin errores de JavaScript:
       - abrir cada archivo;
       - abrir un segundo archivo (queda una sola capa);
       - cambiar de idioma y de zona con el dron abierto;
       - un archivo sin coordenadas y uno que no es TIFF.
+  - **Decisiones tomadas al construirlo:**
+    - **La fecha sigue el idioma** (03/11 en español, 11/03 en inglés): en inglés, "03/11" se lee 11 de marzo.
+    - **Si el lote cae en otra zona o fuera de la provincia, no se compara con la zona elegida:** sería comparar con otro lugar. Para ver la comparación hay que tocar "Cambiar a la Zona N".
+    - **Un archivo que falla reemplaza al anterior:** el estado muestra el error del último intento.
+    - **`dron.js` lee `CLIMA`, `DIAG` y `MAPA` de `app.js`** en vez de recibirlos por parámetro.
+  - **Revisión final** (la hizo el mismo autor, sin un revisor aparte). Encontró dos problemas y los arregló con pruebas:
+    - con `?lang=en`, la caja del dron quedaba en español;
+    - `readRasters` leía el original entero antes de achicarlo y un ortomosaico real podía tirar la pestaña del celular. Ahora lee de a franjas: un .tif de prueba de 75 MB (3000 × 2500 px y 5 bandas) se lee en 2,5 s con los mismos números.
+  - **Mejoras menores, para después:**
+    - la atribución del mapa sigue diciendo Landsat cuando se ve el dron;
+    - una foto RGB con `GDAL_NODATA` y sin banda alfa dibuja el borde en negro;
+    - un GeoTIFF ubicado con `ModelTransformation` puede mostrar "no se pudo leer como GeoTIFF" sin decir la causa;
+    - el aviso de más de 1 GB aparece mientras se lee, no antes;
+    - no se aprovechan las vistas reducidas (overviews) de un COG.
+  - Las pruebas de la app son 180. **Ojo:** un commit de esta rama (`bfe1377`) quedó con 2 pruebas fallando; lo arregla el siguiente (`e74d3c0`).
   - **Pendiente:** probar con un .tif real. Es el criterio para dar por terminada la etapa 1. La etapa 2 (sectores) viene después.
