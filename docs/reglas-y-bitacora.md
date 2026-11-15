@@ -529,3 +529,33 @@ Según la página oficial de premios (`NASA Space Apps Challenge - awards.mhtml`
     - `imagenes.py --solo-ndvi` rehízo **solo las 10 imágenes NDVI** (verano e invierno de las 5 zonas) con Earth Engine, con las mismas escenas que antes (por ejemplo, 44 en el invierno de la Zona 1) y el mismo peso (unos 280 KB). Las de color real y `escenas.json` no cambiaron.
   - **Prueba nueva:** `ia_desmonte/pruebas/test_paleta.py` falla si la paleta de las imágenes, la de los recortes o la del dron se separan de la de la leyenda. 48 de Python y 214 de JS en verde.
 - **Corrección de texto (15/11):** le dijeron a Enzo que "verdor" no explica el NDVI. **Decisión de Enzo:** "Índice de vegetación (NDVI)", que es lo que significa la sigla y no promete más de lo que mide. Cambian los rótulos de las capas NDVI de Landsat ("Índice de vegetación (NDVI) · invierno/verano"), la comparación "Verano contra invierno (NDVI)" y las capas NDVI del recorte del lote (en inglés, "vegetation index (NDVI)"). Los documentos viejos que dicen "verdor" quedan como registro. Prueba en `tests/vistas.test.js`.
+- **D-42 (Tarjetas de las alternativas, barras de lo que se gana y se paga, y accesibilidad):**
+  - **Por qué:** el grupo pidió tarjetas más amigables, con lo clave a la vista y el resto desplegable, y que "lo que se gana y lo que se paga" se entienda en el celular.
+  - **Medido a 390 px antes del cambio:**
+    - la sección 2 medía **7586 px** (unas 9 pantallas) y cada alternativa unos 2500 px;
+    - "Lo que ganás / Lo que te cuesta" iba en dos columnas angostas;
+    - el gráfico de puntos cortaba los nombres;
+    - 34 estilos tenían letra de menos de 13 px.
+  - **Decisiones de Enzo:** la tarjeta corta lleva nombre, tira de 12 meses, ajuste a sus prioridades y 2 cosas que gana (✔) y 2 que paga (✘), y el resto va desplegable. Las barras (opción A) reemplazan el gráfico de puntos.
+  - **Diseño y plan:** `docs/superpowers/specs/2026-11-15-tarjetas-y-accesibilidad-design.md` y `docs/superpowers/plans/2026-11-15-tarjetas-y-accesibilidad.md`.
+  - **Qué cambió:**
+    - **Tarjeta:**
+      - arriba, el nombre, la tira, "Cuánto se ajusta a tus prioridades", los avisos y 2 ✔ y 2 ✘ en una sola columna;
+      - un ✘ que repite un aviso no se muestra;
+      - la rotación actual dice "Es tu punto de partida";
+      - "Ver todo el detalle" (`<details>`) despliega todo lo de antes: secuencia, cada prioridad, las 3 cifras, las listas completas, el riesgo, las reglas, las 5 preguntas y "¿Qué tan seguros estamos?";
+      - la tira de 12 meses tiene descripción para lectores de pantalla.
+    - **Lo que se gana y lo que se paga:** una fila por rotación (en el orden de las tarjetas), con dos barras y su número: **agua que pide**, con la marca de la lluvia del año, y **suelo protegido** (de 12 meses). El gráfico de puntos pasa a "Para tu ingeniero: el mismo dato en un gráfico".
+    - **Accesibilidad en toda la app:**
+      - ninguna letra menor a 12 px (.75rem) y los textos de ayuda en 14 px;
+      - "Para tu ingeniero" ahora tiene 44 px para tocar (los otros botones ya los tenían);
+      - ✔ y ✘ con "Gana:"/"Paga:" para lectores de pantalla.
+  - **Resultado a 390 px:** la sección 2 mide **unos 2860 px** con las tarjetas cerradas (antes, 7586), y cada alternativa entre 520 y 560 px.
+  - **Probado en el navegador:**
+    - abrir el detalle (aparecen las 5 preguntas, las reglas y el riesgo);
+    - las barras con los números de cada rotación;
+    - la vista detallada;
+    - el modo oscuro, el inglés y la PC, sin errores.
+  - **Encontrado al construir:** un nombre de variable repetido (`T`) dejó `app.js` con un error de sintaxis que rompía toda la app, y las pruebas de texto no lo vieron. Se sumó una prueba que interpreta todos los scripts de `web/`. Falla con ese error y pasa con el arreglo.
+  - **Pruebas:** 220 de JS en verde.
+
