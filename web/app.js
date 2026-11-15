@@ -251,7 +251,8 @@ function renderVisor(){
     visor.map.fitBounds(bounds, {animate:false});
     visor.map.setMinZoom(visor.map.getZoom() - 1);
     visor.map.setMaxBounds(L.latLngBounds(bounds).pad(0.3));
-    visor.zonaVista = state.zona;
+    // Con el Reporte oculto el mapa mide 0 px y el encuadre no sirve: se vuelve a encuadrar al mostrarlo (mostrarVista).
+    visor.zonaVista = visor.map.getSize().x ? state.zona : null;
   }
   aplicarCortina();
 }
@@ -376,6 +377,11 @@ function mostrarVista(){
   titulo.setAttribute('tabindex', '-1');
   titulo.focus({preventScroll:true});
   if (destino === rep || destino === ini) window.scrollTo(0, 0); else destino.scrollIntoView();
+  // Leaflet midió el mapa cuando el Reporte estaba oculto (0 px): al mostrarlo hay que volver a medir y encuadrar.
+  if (enReporte && visor.map){
+    visor.map.invalidateSize({animate:false});
+    if (visor.zonaVista !== state.zona) renderVisor();
+  }
 }
 window.addEventListener('hashchange', mostrarVista);
 

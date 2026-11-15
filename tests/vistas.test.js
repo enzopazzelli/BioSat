@@ -141,3 +141,11 @@ test('D-33: la zonificación se presenta como del equipo, con las variables de A
   assert.doesNotMatch(app, /Zonificación AIZAL: grupo/);
   assert.match(app, /con las variables de AIZAL/);
 });
+
+// Leaflet mide su contenedor al crear el mapa. En index.html el visor se arma con el Reporte oculto (0 × 0 px):
+// sin volver a medir al mostrarlo, el mapa queda en zoom 0 y la imagen Landsat ocupa 1 px.
+test('el visor vuelve a medir el mapa al mostrar el Reporte y no da por encuadrada una zona con el mapa en 0 px', () => {
+  const vista = app.slice(app.indexOf('function mostrarVista'), app.indexOf("window.addEventListener('hashchange', mostrarVista)"));
+  assert.match(vista, /invalidateSize/, 'mostrarVista tiene que avisarle a Leaflet que el mapa cambió de tamaño');
+  assert.match(app, /visor\.zonaVista = visor\.map\.getSize\(\)\.x \? state\.zona : null/, 'con el mapa en 0 px, la zona se encuadra al mostrarlo');
+});
