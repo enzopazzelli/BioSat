@@ -111,3 +111,11 @@ test('D-37: en inglés, la señal de agua habla de la evapotranspiración de ref
   assert.match(EN.modulos.inicio.senal.falta, /short of reference evapotranspiration \(ET0\)/);
   assert.doesNotMatch(EN.modulos.inicio.senal.falta, /crops need/);
 });
+
+test('D-38: el dron tiene su inglés con las mismas marcas', () => {
+  const es = require('../web/dron-logica.js').TEXTOS, en = EN.modulos.dron;
+  const marcas = t => [...String(t).matchAll(/\{(\w+)\}/g)].map(m => m[1]).sort();
+  assert.ok(en, 'falta modulos.dron');
+  assert.deepEqual(I.clavesSobrantes(es, en), []);
+  for (const k of Object.keys(es)) if (typeof es[k] === 'string') assert.deepEqual(marcas(en[k]), marcas(es[k]), k);
+});

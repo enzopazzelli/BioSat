@@ -103,3 +103,50 @@ test('zonaDelPunto: el punto de cada zona cae en su zona; Buenos Aires queda afu
   for (const n of Object.keys(GEO)) assert.equal(D.zonaDelPunto(GEO[n].lat, GEO[n].lon, MAPA, t).zona, Number(n), n);
   assert.equal(D.zonaDelPunto(-34.6, -58.4, MAPA, t), null);
 });
+
+const R = {tipo: 'ndvi', fecha: '2026-11-03', mediana: 0.41, fraccionBajo: 0.18, zonaLote: 2, departamento: 'Moreno', zonaElegida: 2};
+
+test('lineaInicio en sus casos', () => {
+  assert.equal(D.lineaInicio(null), '¿Tenés una imagen de dron? Abrila en el Reporte');
+  assert.equal(D.lineaInicio(R), 'Tu lote, según el dron (03/11): NDVI mediano 0,41 · 18 % sin cobertura activa.');
+  assert.equal(D.lineaInicio({...R, tipo: 'rgb'}), 'Tu lote, según el dron (03/11): foto en color, sin NDVI.');
+  assert.equal(D.lineaInicio({...R, tipo: 'gris'}), 'Tu lote, según el dron (03/11): imagen sin NDVI.');
+  assert.equal(D.lineaInicio({...R, tipo: 'pendiente'}), 'Tu imagen de dron necesita un paso más en el Reporte.');
+  assert.equal(D.lineaInicio({...R, fecha: null}), 'Tu lote, según el dron (fecha sin dato): NDVI mediano 0,41 · 18 % sin cobertura activa.');
+  assert.equal(D.lineaInicio({...R, zonaLote: 5}), 'Tu lote, según el dron (03/11): NDVI mediano 0,41 · 18 % sin cobertura activa. Está en la Zona 5, no en la elegida.');
+  assert.equal(D.lineaInicio({...R, zonaLote: null, departamento: null}), 'Tu lote, según el dron (03/11): NDVI mediano 0,41 · 18 % sin cobertura activa. Está fuera de Santiago del Estero.');
+});
+
+const Z = {fraccionZonaMes: 0.843, mesNombre: 'noviembre', periodo: '2021-2025', umbral: 0.25};
+
+test('comparacion: no mezcla lotes con superficie y usa el mes del vuelo', () => {
+  assert.deepEqual(D.comparacion(R, Z), [
+    'NDVI mediano del lote: 0,41.',
+    '18 % de la superficie sin cobertura vegetal activa (NDVI menor a 0,25).',
+    'Tu zona en noviembre, según Landsat 2021-2025: 8 de cada 10 lotes con NDVI mediano menor a 0,25.',
+    'Con ese mismo criterio, tu lote se vería con cobertura activa.']);
+  assert.equal(D.comparacion({...R, mediana: 0.2}, Z)[3], 'Con ese mismo criterio, tu lote se vería sin cobertura activa.');
+  assert.equal(D.comparacion({...R, fecha: null}, Z)[2], 'Sin la fecha del vuelo no se puede comparar con tu zona: escribila arriba.');
+  assert.deepEqual(D.comparacion({...R, tipo: 'rgb'}, Z), ['Este archivo es una foto en color (RGB): no trae la banda infrarroja que hace falta para el NDVI.']);
+  assert.equal(D.comparacion({...R, zonaLote: 5, departamento: 'Ojo de Agua'}, Z)[0], 'La imagen está en Ojo de Agua (Zona 5), no en la zona elegida.');
+  const fuera = D.comparacion({...R, zonaLote: null, departamento: null}, Z);
+  assert.equal(fuera[0], 'La imagen está fuera de Santiago del Estero: la comparación con las zonas no aplica.');
+  assert.ok(!fuera.some(t => t.startsWith('Tu zona en')));
+});
+
+test('fichaTecnica: bandas desde 1, calibración y recuadro', () => {
+  const t = D.fichaTecnica({tipo: 'ndvi', bandas: {rojo: 2, nir: 3}, epsg: 32720, metrosPixel: 0.042, anchoOriginal: 9000, altoOriginal: 6000, anchoCalculo: 2048});
+  assert.ok(t.includes('Rojo: banda 3 · infrarrojo: banda 4.'));
+  assert.ok(t.includes('Si el mosaico no está calibrado a reflectancia, el NDVI es aproximado.'));
+  assert.ok(t.some(s => s.includes('EPSG:32720')));
+  assert.ok(t.some(s => s.includes('9000 × 6000') && s.includes('2048')));
+});
+
+test('la fecha de la línea sigue el idioma (en inglés, mes/día)', () => {
+  const antes = D.TEXTOS.locale;
+  try {
+    D.TEXTOS.locale = 'en-US';
+    assert.match(D.lineaInicio({...R, tipo: 'rgb'}), /\(11\/03\)/);
+  } finally { D.TEXTOS.locale = antes; }
+  assert.match(D.lineaInicio({...R, tipo: 'rgb'}), /\(03\/11\)/);
+});

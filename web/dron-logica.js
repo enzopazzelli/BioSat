@@ -7,7 +7,60 @@
   // Textos con claves, listos para traducir (D-35). La tarea 4 suma los de la tarjeta y el Inicio.
   const TEXTOS = {
     locale: 'es-AR',
-    avisoTamano: 'El archivo pesa {gb} GB: puede tardar mucho o no entrar en la memoria de un celular. Si se traba, probá en una computadora.'
+    // Caja del visor (dron.js)
+    abrir: 'Abrir un .tif de dron',
+    privado: 'Tu archivo no sale de este equipo: la app lo lee acá y no lo guarda.',
+    leyendo: 'Leyendo la imagen…',
+    avisoTamano: 'El archivo pesa {gb} GB: puede tardar mucho o no entrar en la memoria de un celular. Si se traba, probá en una computadora.',
+    sinCoordenadas: 'Este archivo no trae coordenadas: la app no puede ubicarlo en el mapa. Hace falta un ortomosaico georreferenciado (GeoTIFF).',
+    epsgDesconocido: 'Este archivo usa el sistema de coordenadas EPSG:{epsg}, que la app no reconoce: no puede ubicarlo en el mapa.',
+    noEsTiff: 'No se pudo leer el archivo como GeoTIFF. Elegí un .tif o .tiff de un vuelo de dron.',
+    elegirBandas: 'Este archivo tiene {n} bandas. Elegí cuál es la roja y cuál la infrarroja (NIR) para calcular el NDVI. Si no sabés, fijate en el programa que armó el mosaico.',
+    bandaRoja: 'Banda roja',
+    bandaNir: 'Banda infrarroja (NIR)',
+    banda: 'Banda {n}',
+    bandaDesc: 'Banda {n} · {desc}',
+    calcular: 'Calcular NDVI',
+    esNdvi: 'Este archivo tiene una sola banda con valores entre -1 y 1. ¿Es un mapa de NDVI?',
+    siNdvi: 'Sí, es NDVI',
+    noNdvi: 'No',
+    fechaVuelo: 'Fecha del vuelo',
+    fechaSinDato: 'fecha sin dato',
+    capa: 'Dron · {fecha}',
+    cmp: 'Landsat contra dron',
+    cmpIzq: '← Landsat',
+    cmpDer: 'Dron →',
+    // Tarjeta del Reporte (app.js)
+    titulo: 'Tu lote, visto por el dron',
+    cambiarZona: 'Cambiar a la Zona {n}',
+    cmpMediana: 'NDVI mediano del lote: {ndvi}.',
+    cmpSuperficie: '{pct} % de la superficie sin cobertura vegetal activa (NDVI menor a {umbral}).',
+    cmpZona: 'Tu zona en {mes}, según Landsat {periodo}: {n} de cada 10 lotes con NDVI mediano menor a {umbral}.',
+    cmpZonaSinDato: 'Tu zona en {mes}: sin dato de Landsat para comparar.',
+    cmpSinFecha: 'Sin la fecha del vuelo no se puede comparar con tu zona: escribila arriba.',
+    cmpCriterioCon: 'Con ese mismo criterio, tu lote se vería con cobertura activa.',
+    cmpCriterioSin: 'Con ese mismo criterio, tu lote se vería sin cobertura activa.',
+    cmpRgb: 'Este archivo es una foto en color (RGB): no trae la banda infrarroja que hace falta para el NDVI.',
+    cmpGris: 'Este archivo no trae las bandas para calcular el NDVI: se muestra en grises.',
+    cmpOtraZona: 'La imagen está en {departamento} (Zona {n}), no en la zona elegida.',
+    cmpFuera: 'La imagen está fuera de Santiago del Estero: la comparación con las zonas no aplica.',
+    // Para tu ingeniero
+    fichaBandas: 'Rojo: banda {rojo} · infrarrojo: banda {nir}.',
+    fichaNdviArchivo: 'NDVI tomado del archivo: confirmaste que la banda es un NDVI.',
+    fichaCalibracion: 'Si el mosaico no está calibrado a reflectancia, el NDVI es aproximado.',
+    fichaSistema: 'Sistema de coordenadas: EPSG:{epsg}.',
+    fichaTamano: 'Archivo de {ancho} × {alto} píxeles. Los números se calculan sobre una versión de {calculo} píxeles de ancho, de unos {res} por píxel.',
+    fichaRecuadro: 'La imagen se ubica con un recuadro recto en latitud y longitud: en un lote de pocos kilómetros, el desvío es de centímetros a pocos metros.',
+    // Línea del Inicio (app.js)
+    inicioSinVuelo: '¿Tenés una imagen de dron? Abrila en el Reporte',
+    inicioPendiente: 'Tu imagen de dron necesita un paso más en el Reporte.',
+    verEnMapa: 'Ver en el mapa →',
+    linea: 'Tu lote, según el dron ({fecha}): {detalle}.',
+    lineaNdvi: 'NDVI mediano {ndvi} · {pct} % sin cobertura activa',
+    lineaRgb: 'foto en color, sin NDVI',
+    lineaGris: 'imagen sin NDVI',
+    lineaOtraZona: 'Está en la Zona {n}, no en la elegida.',
+    lineaFuera: 'Está fuera de Santiago del Estero.'
   };
   const fmt = (txt, datos) => String(txt).replace(/\{(\w+)\}/g, (_, k) => datos[k]);
   const valido = (v, sinDato) => Number.isFinite(v) && (sinDato === null || sinDato === undefined || v !== sinDato);
@@ -179,8 +232,69 @@
     return null;
   }
 
+  // ---------- Textos de la tarjeta, del Inicio y de "Para tu ingeniero" ----------
+  // r = {tipo: 'ndvi'|'rgb'|'gris'|'pendiente', fecha: 'AAAA-MM-DD'|null, mediana, fraccionBajo, zonaLote, departamento, zonaElegida}
+  const num = (v, d) => v.toLocaleString(TEXTOS.locale, {minimumFractionDigits: d, maximumFractionDigits: d});
+  // Día y mes en el formato del idioma (es-AR: 03/11; en-US: 11/03). En UTC para que no se corra un día.
+  const diaMes = f => f
+    ? new Date(Date.UTC(+f.slice(0, 4), +f.slice(5, 7) - 1, +f.slice(8, 10)))
+      .toLocaleDateString(TEXTOS.locale, {day: '2-digit', month: '2-digit', timeZone: 'UTC'})
+    : TEXTOS.fechaSinDato;
+  const pct = f => Math.round(f * 100);
+  const enOtraZona = r => r.zonaLote !== null && r.zonaLote !== undefined && r.zonaLote !== r.zonaElegida;
+  const fuera = r => r.zonaLote === null || r.zonaLote === undefined;
+
+  function lineaInicio(r) {
+    if (!r) return TEXTOS.inicioSinVuelo;
+    if (r.tipo === 'pendiente') return TEXTOS.inicioPendiente;
+    const detalle = r.tipo === 'ndvi' && r.mediana !== null && r.mediana !== undefined
+      ? fmt(TEXTOS.lineaNdvi, {ndvi: num(r.mediana, 2), pct: pct(r.fraccionBajo)})
+      : (r.tipo === 'rgb' ? TEXTOS.lineaRgb : TEXTOS.lineaGris);
+    const partes = [fmt(TEXTOS.linea, {fecha: diaMes(r.fecha), detalle})];
+    if (fuera(r)) partes.push(TEXTOS.lineaFuera);
+    else if (enOtraZona(r)) partes.push(fmt(TEXTOS.lineaOtraZona, {n: r.zonaLote}));
+    return partes.join(' ');
+  }
+
+  // z = {fraccionZonaMes, mesNombre, periodo, umbral}. Landsat cuenta lotes; el dron mide superficie: no se mezclan.
+  // Solo se compara con la zona si el lote cae en la zona elegida (si no, sería comparar con otro lugar).
+  function comparacion(r, z) {
+    const out = [];
+    if (fuera(r)) out.push(TEXTOS.cmpFuera);
+    else if (enOtraZona(r)) out.push(fmt(TEXTOS.cmpOtraZona, {departamento: r.departamento, n: r.zonaLote}));
+    if (r.tipo === 'rgb') return out.concat(TEXTOS.cmpRgb);
+    if (r.tipo === 'gris') return out.concat(TEXTOS.cmpGris);
+    if (r.tipo !== 'ndvi' || r.mediana === null || r.mediana === undefined) return out;
+    const umbral = num(z.umbral, 2);
+    out.push(fmt(TEXTOS.cmpMediana, {ndvi: num(r.mediana, 2)}));
+    out.push(fmt(TEXTOS.cmpSuperficie, {pct: pct(r.fraccionBajo), umbral}));
+    if (fuera(r) || enOtraZona(r)) return out;
+    if (!r.fecha) out.push(TEXTOS.cmpSinFecha);
+    else if (z.fraccionZonaMes === null || z.fraccionZonaMes === undefined) out.push(fmt(TEXTOS.cmpZonaSinDato, {mes: z.mesNombre}));
+    else out.push(fmt(TEXTOS.cmpZona, {mes: z.mesNombre, periodo: z.periodo, n: Math.round(z.fraccionZonaMes * 10), umbral}));
+    out.push(r.mediana < z.umbral ? TEXTOS.cmpCriterioSin : TEXTOS.cmpCriterioCon);
+    return out;
+  }
+
+  // f = {tipo, bandas: {rojo, nir}|null (desde 0), epsg, metrosPixel, anchoOriginal, altoOriginal, anchoCalculo}
+  function fichaTecnica(f) {
+    const out = [];
+    if (f.tipo === 'ndvi') {
+      out.push(f.bandas ? fmt(TEXTOS.fichaBandas, {rojo: f.bandas.rojo + 1, nir: f.bandas.nir + 1}) : TEXTOS.fichaNdviArchivo);
+      out.push(TEXTOS.fichaCalibracion);
+    }
+    if (f.epsg) out.push(fmt(TEXTOS.fichaSistema, {epsg: f.epsg}));
+    if (f.anchoOriginal) {
+      const m = f.metrosPixel, res = m < 1 ? `${Math.max(1, Math.round(m * 100))} cm` : `${num(m, 1)} m`;
+      out.push(fmt(TEXTOS.fichaTamano, {ancho: f.anchoOriginal, alto: f.altoOriginal, calculo: f.anchoCalculo, res}));
+    }
+    out.push(TEXTOS.fichaRecuadro);
+    return out;
+  }
+
   const L = {TEXTOS, defProj4, epsgDe, recuadroLatLon, metrosPorPixel, tipoImagen, pareceNdvi, descripcionesBandas,
-    bandasSugeridas, ndvi, resumenNdvi, fechaDeTiff, avisoTamano, transformacionMapa, parsearPath, zonaDelPunto};
+    bandasSugeridas, ndvi, resumenNdvi, fechaDeTiff, avisoTamano, transformacionMapa, parsearPath, zonaDelPunto,
+    lineaInicio, comparacion, fichaTecnica};
   if (typeof module !== 'undefined' && module.exports) module.exports = L;
   else window.DronLogica = L;
 })();
