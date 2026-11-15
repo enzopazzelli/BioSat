@@ -49,7 +49,7 @@
 
 ---
 
-### Tarea 1: Archivar el prototipo simulado y preparar el paquete
+### Task 1: Archivar el prototipo simulado y preparar el paquete
 
 **Archivos:**
 - Mover: todo `ia_desmonte/*` a `archivo/prototipo-ia-simulado/` (con `git mv`)
@@ -63,7 +63,7 @@
 - [ ] **Paso 4:** `node --test tests/*.test.js`. Esperado: 71 pruebas en verde.
 - [ ] **Paso 5:** commit: "Archivar el prototipo de IA con datos simulados".
 
-### Tarea 2: Base común y zonas como polígonos
+### Task 2: Base común y zonas como polígonos
 
 **Archivos:**
 - Crear: `ia_desmonte/comun.py`, `ia_desmonte/zonas.py`
@@ -119,7 +119,7 @@ def test_escribir_json_rechaza_nan(tmp_path):
 - [ ] **Paso 4:** la prueba pasa. Comprobar Earth Engine a mano: `zonas_fc().size().getInfo() == 5`, y que el área de cada zona sea mayor a 0.
 - [ ] **Paso 5:** commit: "Base comun y zonas de BioSat como poligonos para Earth Engine".
 
-### Tarea 3: Suelo por zona (`data/suelo_zonas.json`)
+### Task 3: Suelo por zona (`data/suelo_zonas.json`)
 
 **Archivos:**
 - Crear: `ia_desmonte/suelo.py`
@@ -180,7 +180,7 @@ En Node (`tests/datos-contratos.test.js`), el bloque del suelo:
 - [ ] **Paso 4:** correr `python -X utf8 -m ia_desmonte.suelo`, que escribe `data/suelo_zonas.json` y `salidas/suelo_zonas.csv`. Pasan pytest y Node.
 - [ ] **Paso 5:** revisar a mano que los valores sean razonables para el Chaco: pH entre 6 y 8,5; arcilla entre 10 y 40 %. Commit: "Suelo por zona real: SoilGrids 0-30 cm sobre tierra agropecuaria".
 
-### Tarea 4: Historia y modelo de desmontes (`data/desmonte_zonas.json`, sin proyección)
+### Task 4: Historia y modelo de desmontes (`data/desmonte_zonas.json`, sin proyección)
 
 **Archivos:**
 - Crear: `ia_desmonte/desmonte.py`
@@ -194,7 +194,7 @@ En Node (`tests/datos-contratos.test.js`), el bloque del suelo:
 - `evaluar(train: pd.DataFrame, test: pd.DataFrame) -> dict[str, dict]`: por método `auc`, `f1`, `accuracy`, `kappa`, `pr_auc` y `umbral`, más `tasa_base`.
 - `elegir(metodos: dict) -> tuple[str, str]`: devuelve el nombre y la justificación generada.
 - `riesgo_por_zona(modelo, df: pd.DataFrame) -> dict[str, dict]`: `{'riesgo': float, 'n': int}`.
-- `main() -> None`, que también guarda `salidas/desmonte_modelo.pkl` para la tarea 6.
+- `main() -> None`, que también guarda `salidas/desmonte_modelo.pkl` para la Task 6.
 
 **Valores fijados:**
 - Entrenamiento: `muestras(2008, 2015, 15000, SEMILLA)`. Prueba: `muestras(2015, 2024, 15000, SEMILLA + 1)`.
@@ -249,12 +249,12 @@ def test_riesgo_zona_con_pocos_puntos_es_baja():
     - `meta.horizonte_riesgo`: "probabilidad de desmonte en los próximos ~9 años si sigue el patrón 2016-2024";
     - `meta.validacion`: "entrena con monte y predictores al 2008 y desmonte 2009-2015; prueba con monte y predictores al 2015 y desmonte 2016-2024";
     - `meta.umbral_monte`: 25.
-  - `proyeccion_ha` queda en `null` hasta la tarea 5.
+  - `proyeccion_ha` queda en `null` hasta la Task 5.
   - **Sensibilidad del umbral de monte (diseño 5.3):** `main` guarda `salidas/sensibilidad_umbral_monte.csv` con el monte de 2024 (%) y la pérdida 2016-2024 (ha) por zona, con umbrales de 10, 25 y 30.
 - [ ] **Paso 4:** correr `python -X utf8 -m ia_desmonte.desmonte`, que escribe el JSON y `salidas/desmonte_{entrenamiento,prueba,riesgo}.csv`. Pasan pytest y Node.
 - [ ] **Paso 5:** revisar a mano que la serie de la Zona 3 muestre el pico de desmonte de mediados de los 2000 y que el AUC esté entre 0,6 y 0,95. Si algo da raro, investigar antes de seguir. Commit: "Desmontes reales: historia Hansen 2001-2024 y modelo validado en el tiempo".
 
-### Tarea 5: Proyección 2025-2028
+### Task 5: Proyección 2025-2028
 
 **Archivos:**
 - Crear: `ia_desmonte/proyeccion.py`
@@ -287,7 +287,7 @@ def test_backtest_elige_el_menor_error():
 - [ ] **Paso 4:** volver a correr el desmonte (sin repetir el muestreo: los CSV de `salidas/` ya están). Pasan pytest y Node; el bloque de Node verifica que existe `temporal` y que ya no está `temporal_lstm_o_transformer`.
 - [ ] **Paso 5:** commit: "Proyeccion de desmontes 2025-2028 con metodos simples probados contra 2019-2024".
 
-### Tarea 6: Zonificación (`data/zonificacion_aizal.json` y `data/imagenes/zonas_aizal.png`)
+### Task 6: Zonificación (`data/zonificacion_aizal.json` y `data/imagenes/zonas_aizal.png`)
 
 **Archivos:**
 - Crear: `ia_desmonte/zonificacion.py`
@@ -302,7 +302,7 @@ def test_backtest_elige_el_menor_error():
 
 **Valores fijados:**
 - TerraClimate 1991-2020: `pr` en mm por año (suma mensual promediada), `def` × 0,1, `tmmx` y `tmmn` × 0,1.
-- Suelo de 0 a 30 cm, igual que en la tarea 3.
+- Suelo de 0 a 30 cm, igual que en la Task 3.
 - Pendiente de NASADEM.
 - Muestreo a 1.000 m.
 - `KMeans(n_clusters=k, n_init=20, random_state=SEMILLA)`.
@@ -319,7 +319,7 @@ def test_backtest_elige_el_menor_error():
 - [ ] **Paso 4:** correr el módulo. Pasan pytest y Node. Abrir el PNG y mirar que tenga sentido (por ejemplo, el sur serrano separado).
 - [ ] **Paso 5:** commit: "Zonificacion real con k-means sobre TerraClimate y SoilGrids".
 
-### Tarea 7: Suelo pelado y fragilidad (`data/diagnostico_landsat_ia.json`)
+### Task 7: Suelo pelado y fragilidad (`data/diagnostico_landsat_ia.json`)
 
 **Archivos:**
 - Crear: `ia_desmonte/suelo_pelado.py`
@@ -369,7 +369,7 @@ def test_fragilidad_tope_100():
 - [ ] **Paso 4:** correr el módulo. Pasan pytest y Node.
 - [ ] **Paso 5:** commit: "Meses de suelo pelado con Landsat 2021-2025 y fragilidad recalculada".
 
-### Tarea 8: Imágenes del visor (`data/imagenes/`)
+### Task 8: Imágenes del visor (`data/imagenes/`)
 
 **Archivos:**
 - Crear: `ia_desmonte/imagenes.py`
@@ -397,7 +397,7 @@ def test_fragilidad_tope_100():
 - [ ] **Paso 4:** pasa Node. Abrir 2 o 3 imágenes y mirarlas: que sean verosímiles y que no tengan cuñas en blanco.
 - [ ] **Paso 5:** commit: "Imagenes del visor: compuestos de mediana Landsat hechos en Earth Engine".
 
-### Tarea 9: Orquestador, registro de corrida y lectura en la app
+### Task 9: Orquestador, registro de corrida y lectura en la app
 
 **Archivos:**
 - Crear: `ia_desmonte/correr_todo.py`
@@ -426,7 +426,7 @@ const NOM = {regresion_logistica:'Regresión logística', random_forest:'Random 
   - la capa "Zonas AIZAL".
 - [ ] **Paso 5:** commit: "Orquestador con registro de corrida y la app lee la proyeccion nueva".
 
-### Tarea 10: Informe y documentos al día
+### Task 10: Informe y documentos al día
 
 **Archivos:**
 - Crear: `docs/datos-y-metodos.md`, `ia_desmonte/README.md`
