@@ -46,3 +46,13 @@ def test_armar_lote_json_deja_en_null_la_fuente_sin_pasada():
     assert j['version'] == 1 and j['nombre'] == 'prueba' and j['fecha_vuelo'] == '2026-11-03'
     assert j['fuentes']['s2']['escena'] == 'x' and j['fuentes']['l8'] is None
     assert j['motivos'] == {'l8': 'sin pasada limpia a ±30 días del vuelo'}
+
+
+def test_elegir_pasada_del_mes_sin_inventar_el_dia():
+    from ia_desmonte.recorte_lote import elegir_pasada_mes
+    pasadas = [{'id': 'j1', 'fecha': '2026-07-03', 'limpio': 0.99}, {'id': 'j2', 'fecha': '2026-07-13', 'limpio': 0.98},
+               {'id': 'j3', 'fecha': '2026-07-18', 'limpio': 0.50}, {'id': 'a1', 'fecha': '2026-08-02', 'limpio': 1.0}]
+    p, motivo = elegir_pasada_mes(pasadas, '2026-07')
+    assert p['id'] == 'j2' and p['dias_al_vuelo'] is None and motivo is None   # la limpia más cerca de mitad de mes
+    p, motivo = elegir_pasada_mes(pasadas, '2026-09')
+    assert p is None and motivo == 'sin pasada limpia en 2026-09, el mes del vuelo'

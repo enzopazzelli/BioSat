@@ -1,0 +1,14 @@
+{
+  "lotes": [
+    {
+      "nombre": "capital_zona1",
+      "recuadro": [
+        -64.2342665,
+        -28.0191425,
+        -64.2251177,
+        -28.0065965
+      ],
+      "ruta": "capital_zona1/lote.json"
+    }
+  ]
+}

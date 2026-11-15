@@ -36,3 +36,8 @@ test('lineaComparacion dice la fuente, la resolución, la fecha y los días al v
   assert.match(SL.lineaComparacion(c, {...f, dias_al_vuelo: -1}, '2026-11-03'), /1 día antes del vuelo\)\.$/);
   assert.match(SL.lineaComparacion(c, {...f, dias_al_vuelo: null}, null), /\(10 m, pasada del 01\/11\)\.$/);
 });
+
+test('con el vuelo conocido solo por el mes, la línea dice "en el mes del vuelo" sin días', () => {
+  const c = {dron: 0.42, sat: 0.38, celdas: 50}, f = {nombre: 'Sentinel-2', resolucion_m: 10, fecha: '2026-07-13', dias_al_vuelo: null};
+  assert.match(SL.lineaComparacion(c, f, '2026-07'), /\(10 m, pasada del 13\/07, en el mes del vuelo\)\.$/);
+});

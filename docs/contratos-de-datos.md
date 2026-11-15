@@ -518,7 +518,9 @@ Lo genera `ia_desmonte/recorte_lote.py` (Earth Engine), uno por lote con vuelo d
 }
 ```
 
-- **`dias_al_vuelo`:** la fecha de la pasada menos la del vuelo (negativo = antes). Es `null` si el vuelo no tiene fecha (entonces es la pasada limpia más reciente).
+- **`dias_al_vuelo`:** la fecha de la pasada menos la del vuelo (negativo = antes). Es `null` en dos casos:
+  - si el vuelo no tiene fecha (entonces es la pasada limpia más reciente);
+  - si solo se sabe el mes: `fecha_vuelo` es `"AAAA-MM"` y la pasada es la limpia del mes más cercana a su mitad.
 - **`ndvi.valores`:** la grilla de NDVI a la resolución nativa, fila por fila con el norte arriba. Vale `null` donde hay nube o falta dato.
 - **Los PNG del NDVI** usan la paleta de la leyenda de la app (de 0 a 0,8, `a50026 … 006837`).
 - **Una fuente en `null`:** no hubo pasada con al menos 95 % limpio en la ventana (±20 días para Sentinel-2, ±30 para Landsat), y `motivos` dice por qué.

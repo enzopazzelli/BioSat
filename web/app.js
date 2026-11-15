@@ -311,6 +311,11 @@ function renderVisor(){
     visor.map.fitBounds(dron.recuadro, {animate:false});
     visor.irAlDron = false;
   }
+  // D-40: los datos de Sentinel-2 piden citar a Copernicus cuando se muestran.
+  const atrS2 = 'Contiene datos modificados de Copernicus Sentinel (' + ((sat(mostrar.find(id => id.startsWith('sat_s2'))) || {}).f || {fecha: ''}).fecha.slice(0, 4) + ')';
+  if (visor.atribS2) visor.map.attributionControl.removeAttribution(visor.atribS2);
+  visor.atribS2 = mostrar.some(id => id.startsWith('sat_s2')) ? atrS2 : null;
+  if (visor.atribS2) visor.map.attributionControl.addAttribution(visor.atribS2);
   aplicarCortina();
 }
 
@@ -340,17 +345,19 @@ function renderDron(){
   $('#dronFichaSrc').textContent = T.capa.replace('{fecha}', D.fechaCorta(d.fecha));
   $('#dronFechaT').textContent = T.fechaVuelo;
   $('#dronFechaBox').hidden = !!d.fecha;
-  const mes = d.fecha ? Number(d.fecha.slice(5, 7)) - 1 : null;
+  // D-40: si el vuelo no trae fecha pero el recorte del lote sabe el mes (dato del ingeniero), se compara con la zona en ese mes.
+  const loteSat = loteDelDron(d), fechaUsada = d.fecha || (loteSat && loteSat.datos.fecha_vuelo) || null;
+  const mes = fechaUsada ? Number(fechaUsada.slice(5, 7)) - 1 : null;
   const frac = mes === null ? null : ((((DIAG.zonas || {})[state.zona] || {}).fraccion_pelado || [])[mes] ?? null);
   const meta = DIAG.meta || {};
-  const lineas = D.comparacion(r, {fraccionZonaMes: frac, mesNombre: mes === null ? '' : MES_L[mes],
+  const lineas = D.comparacion(Object.assign({}, r, {fecha: fechaUsada}), {fraccionZonaMes: frac, mesNombre: mes === null ? '' : MES_L[mes],
     periodo: meta.periodo || '', umbral: typeof meta.umbral_ndvi === 'number' ? meta.umbral_ndvi : 0.25});
   // D-40: NDVI del dron contra el del recorte satelital, en la misma superficie.
   const lote = loteDelDron(d), nd = window.BioSatDron && BioSatDron.ndviActual();
   if (lote && window.SateliteLogica) for (const [k, f] of Object.entries(lote.datos.fuentes || {})){
     if (!f){ lineas.push(SateliteLogica.TEXTOS.sinFuente.replace('{fuente}', FUENTES_SAT[k]).replace('{motivo}', (lote.datos.motivos || {})[k] || '')); continue; }
     const c = nd && SateliteLogica.compararNdvi(nd, f.ndvi);
-    if (c) lineas.push(SateliteLogica.lineaComparacion(c, Object.assign({nombre: FUENTES_SAT[k]}, f), d.fecha));
+    if (c) lineas.push(SateliteLogica.lineaComparacion(c, Object.assign({nombre: FUENTES_SAT[k]}, f), d.fecha || lote.datos.fecha_vuelo));
   }
   $('#dronComparacion').innerHTML = lineas.map(t => `<li>${esc(t)}</li>`).join('');
   const bz = $('#dronCambiarZona'), otra = r.zonaLote !== null && r.zonaLote !== r.zonaElegida;

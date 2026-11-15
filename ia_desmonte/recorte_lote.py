@@ -67,6 +67,15 @@ def elegir_pasada(pasadas, fecha_vuelo, ventana_dias, minimo=MINIMO_LIMPIO):
     return dict(p, dias_al_vuelo=d), None
 
 
+def elegir_pasada_mes(pasadas, mes, minimo=MINIMO_LIMPIO):
+    """Vuelo conocido solo por el mes ('AAAA-MM'): la pasada limpia del mes más cerca de su mitad, sin días al vuelo."""
+    limpias = [p for p in pasadas if p['limpio'] >= minimo and p['fecha'].startswith(mes)]
+    if not limpias:
+        return None, f'sin pasada limpia en {mes}, el mes del vuelo'
+    p = min(limpias, key=lambda x: (abs(int(x['fecha'][8:10]) - 15), x['fecha']))
+    return dict(p, dias_al_vuelo=None), None
+
+
 def armar_lote_json(nombre, recuadro, fecha_vuelo, fuentes, motivos):
     return {'version': 1, 'nombre': nombre, 'recuadro': recuadro, 'fecha_vuelo': fecha_vuelo,
             'generado_por': 'ia_desmonte/recorte_lote.py', 'fecha': datetime.date.today().isoformat(),
@@ -133,14 +142,18 @@ def generar(nombre, recuadro, fecha_vuelo):
     carpeta.mkdir(parents=True, exist_ok=True)
     fuentes, motivos = {}, {}
     for clave, (col, limpio, esc_m, esc, vis_rgb) in _colecciones(ee).items():
-        if fecha_vuelo:
+        if fecha_vuelo and len(fecha_vuelo) == 7:   # solo el mes (AAAA-MM): se busca dentro del mes
+            ini = datetime.date.fromisoformat(fecha_vuelo + '-01')
+            fin = (ini + datetime.timedelta(days=32)).replace(day=1)
+        elif fecha_vuelo:
             v = datetime.date.fromisoformat(fecha_vuelo)
             ini, fin = v - datetime.timedelta(days=VENTANA[clave]), v + datetime.timedelta(days=VENTANA[clave] + 1)
         else:
             fin = datetime.date.today() + datetime.timedelta(days=1)
             ini = fin - datetime.timedelta(days=SIN_FECHA_DIAS)
-        pasada, motivo = elegir_pasada(_pasadas(ee, col, limpio, esc_m, geom, ini.isoformat(), fin.isoformat()),
-                                       fecha_vuelo, VENTANA[clave])
+        lista = _pasadas(ee, col, limpio, esc_m, geom, ini.isoformat(), fin.isoformat())
+        pasada, motivo = (elegir_pasada_mes(lista, fecha_vuelo) if fecha_vuelo and len(fecha_vuelo) == 7
+                          else elegir_pasada(lista, fecha_vuelo, VENTANA[clave]))
         if not pasada:
             fuentes[clave], motivos[clave] = None, motivo
             print(clave, '→', motivo)
@@ -165,11 +178,12 @@ def main():
     a.add_argument('--tif', help='GeoTIFF del dron (EPSG:4326) del que sale el recuadro')
     a.add_argument('--bbox', help='oeste,sur,este,norte (en lugar de --tif)')
     a.add_argument('--fecha', default=None, help='fecha del vuelo AAAA-MM-DD (sin ella, la pasada limpia más reciente)')
+    a.add_argument('--mes', default=None, help='si solo se sabe el mes del vuelo: AAAA-MM (no se inventa el día)')
     a.add_argument('--nombre', required=True)
     a.add_argument('--margen', type=float, default=200)
     x = a.parse_args()
     recuadro = [float(v) for v in x.bbox.split(',')] if x.bbox else recuadro_de_tif(x.tif, x.margen)
-    generar(x.nombre, [round(v, 7) for v in recuadro], x.fecha)
+    generar(x.nombre, [round(v, 7) for v in recuadro], x.fecha or x.mes)
 
 
 if __name__ == '__main__':

@@ -16,6 +16,7 @@
     cmpDespuesUno: '{fecha}, 1 día después del vuelo',
     cmpMismoDia: '{fecha}, el mismo día del vuelo',
     cmpPasada: 'pasada del {fecha}',
+    cmpMesVuelo: 'pasada del {fecha}, en el mes del vuelo',
     capa: '{fuente} · {res} m · {tipo} · {fecha}',
     capaColor: 'color',
     capaNdvi: 'verdor (NDVI)',
@@ -72,7 +73,8 @@
   function lineaComparacion(c, f, fechaVuelo) {
     const nf = v => v.toLocaleString(TEXTOS.locale, {minimumFractionDigits: 2, maximumFractionDigits: 2});
     const fecha = DL.fechaCorta(f.fecha), d = f.dias_al_vuelo;
-    const cuando = !fechaVuelo || d === null || d === undefined ? fmt(TEXTOS.cmpPasada, {fecha})
+    const cuando = /^\d{4}-\d{2}$/.test(fechaVuelo || '') ? fmt(TEXTOS.cmpMesVuelo, {fecha})
+      : !fechaVuelo || d === null || d === undefined ? fmt(TEXTOS.cmpPasada, {fecha})
       : d === 0 ? fmt(TEXTOS.cmpMismoDia, {fecha})
       : fmt(Math.abs(d) === 1 ? (d < 0 ? TEXTOS.cmpAntesUno : TEXTOS.cmpDespuesUno) : (d < 0 ? TEXTOS.cmpAntes : TEXTOS.cmpDespues), {fecha, n: Math.abs(d)});
     return fmt(TEXTOS.cmpLinea, {dron: nf(c.dron), sat: nf(c.sat), fuente: f.nombre, res: f.resolucion_m, cuando});

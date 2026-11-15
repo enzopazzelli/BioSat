@@ -99,7 +99,7 @@ _Salen del repaso del repo. Cada uno decide cómo abordarlas; si no corresponden
 ### Satélite del lote · 15/11 (D-40)
 - [x] Rótulo honesto de Landsat (unos 120 m por píxel en el visor; NDVI a 100 m en el panel)
 - [x] Recorte satelital del lote (Sentinel-2 10 m y Landsat 30 m) en el visor, con la cortina y la comparación del NDVI con el dron (`ia_desmonte/recorte_lote.py`, `web/satelite-logica.js`)
-- [ ] Correr el recorte real del lote de la Zona 1 (falta `EE_PROJECT` y la fecha del vuelo)
+- [x] Correr el recorte real del lote de la Zona 1 *(15/11: vuelo de julio de 2026; Sentinel-2 del 17/07 y Landsat del 16/07; NDVI 0,42 con el dron, 0,22 con Sentinel-2 y 0,28 con Landsat)*
 - [ ] Volver a exportar las imágenes NDVI de Landsat de las zonas con la paleta de la leyenda (hoy no coinciden)
 
 ## Listo cuando

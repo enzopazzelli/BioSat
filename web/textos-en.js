@@ -330,6 +330,7 @@
         cmpDespuesUno: '{fecha}, 1 day after the flight',
         cmpMismoDia: '{fecha}, the same day as the flight',
         cmpPasada: 'pass of {fecha}',
+        cmpMesVuelo: 'pass of {fecha}, in the month of the flight',
         capa: '{fuente} · {res} m · {tipo} · {fecha}',
         capaColor: 'color',
         capaNdvi: 'greenness (NDVI)',
