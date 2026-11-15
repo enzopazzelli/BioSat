@@ -102,6 +102,10 @@ _Salen del repaso del repo. Cada uno decide cómo abordarlas; si no corresponden
 - [x] Correr el recorte real del lote de la Zona 1 *(15/11: vuelo de julio de 2026; Sentinel-2 del 17/07 y Landsat del 16/07; NDVI 0,42 con el dron, 0,22 con Sentinel-2 y 0,28 con Landsat)*
 - [ ] Volver a exportar las imágenes NDVI de Landsat de las zonas con la paleta de la leyenda (hoy no coinciden)
 
+### Clases del ingeniero · 15/11 (D-41)
+- [x] Clasificar el NDVI del vuelo con cortes y nombres cargados en la app: % del lote y de cada sector, capa y leyenda
+- [ ] Cargar los cortes reales del ingeniero y anotar el resultado
+
 ## Listo cuando
 
 - Hay un link público que funciona en celular y una copia que funciona sin internet.
