@@ -444,7 +444,7 @@ function mostrarVista(){
   // Leaflet midió el mapa cuando el Reporte estaba oculto (0 px): al mostrarlo hay que volver a medir y encuadrar.
   if (enReporte && visor.map){
     visor.map.invalidateSize({animate:false});
-    if (visor.zonaVista !== state.zona) renderVisor();
+    if (visor.zonaVista !== state.zona || visor.irAlDron) renderVisor();
   }
 }
 window.addEventListener('hashchange', mostrarVista);
@@ -1141,9 +1141,12 @@ function prepararIdioma(){
   Idioma.alCambiar(() => { nombresRotaciones(); renderTodo(); });
   // D-38: cuando se abre (o cambia) la imagen del dron, se vuelve a dibujar todo; con un archivo nuevo, el visor va a esa capa.
   if (window.BioSatDron) BioSatDron.alCambiar(motivo => {
-    if (motivo === 'nuevo'){ visor.capa = 'dron'; visor.cmp = 'no'; visor.irAlDron = true; }
+    // D-39: con un vuelo restaurado también: en el campo, lo primero que se quiere ver es el lote.
+    if (motivo === 'nuevo' || motivo === 'restaurado'){ visor.capa = 'dron'; visor.cmp = 'no'; visor.irAlDron = true; }
     renderTodo();
   });
+  // El vuelo guardado se restaura apenas carga la página, a veces antes de llegar acá: si ya está, se toma igual.
+  if (window.BioSatDron && BioSatDron.estado() && BioSatDron.estado().restaurado){ visor.capa = 'dron'; visor.cmp = 'no'; visor.irAlDron = true; }
 }
 
 cargarDatos().then(() => {

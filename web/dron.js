@@ -20,6 +20,47 @@
   function avisar(motivo) {
     renderCaja();
     oyentes.forEach(fn => { try { fn(motivo); } catch (e) { console.error(e); } });
+    if (motivo === 'nuevo' || motivo === 'cambio') guardarVuelo();
+  }
+
+  // ---------- Vuelo guardado en el navegador (D-39): imagen achicada y NDVI, para el campo sin internet ----------
+  async function guardarVuelo() {
+    const e = estado;
+    if (!e || !e.url || String(e.tipo).startsWith('pendiente') || !window.BioSatGuardado) return;
+    try {
+      const png = await (await fetch(e.url)).blob();
+      const ndvi = datos && datos.ndvi ? {valores: datos.ndvi, ancho: datos.ancho, alto: datos.alto} : null;
+      const ok = await BioSatGuardado.guardar(L.paqueteVuelo(e, ndvi, png, new Date().toISOString()));
+      if (estado !== e) return;   // mientras tanto se abrió otro archivo
+      e.avisoGuardado = ok ? null : T().noGuardadoVuelo;
+      e.guardado = ok;
+    } catch (err) {
+      console.warn('BioSat dron: no se pudo guardar', err);
+      if (estado === e) { e.avisoGuardado = T().noGuardadoVuelo; e.guardado = false; }
+    }
+    renderCaja();
+  }
+  async function restaurar() {
+    if (estado || !window.BioSatGuardado) return;
+    const v = L.vueloDePaquete(await BioSatGuardado.leer());
+    if (!v || estado) return;
+    estado = Object.assign(v.estado, {url: URL.createObjectURL(v.png), leyendo: false, error: null, aviso: null,
+      restaurado: true, guardado: true});
+    datos = v.ndvi ? {bandas: [], ancho: v.ndvi.ancho, alto: v.ndvi.alto, sinDato: null, mascara: null, ndvi: v.ndvi.valores}
+      : {bandas: [], ancho: 0, alto: 0, sinDato: null, mascara: null, ndvi: null};
+    avisar('restaurado');
+  }
+  async function borrarGuardado() {
+    if (window.BioSatGuardado) await BioSatGuardado.borrar();
+    if (estado && estado.url && estado.url.startsWith('blob:')) URL.revokeObjectURL(estado.url);
+    estado = null; datos = null;
+    avisar('borrado');
+  }
+  // NDVI achicado del vuelo actual, para medir sectores (sectores.js). null si no hay NDVI.
+  function ndviActual() {
+    if (!estado || estado.tipo !== 'ndvi' || !datos || !datos.ndvi) return null;
+    return {valores: datos.ndvi, ancho: datos.ancho, alto: datos.alto, recuadro: estado.recuadro,
+      vuelo: {id: L.idVuelo(estado), fecha: estado.fecha || null, archivo: estado.nombre}};
   }
 
   // ---------- Dibujo ----------
@@ -66,6 +107,7 @@
 
   // ---------- NDVI ----------
   function aplicarNdvi(valores, bandas) {
+    datos.ndvi = valores;
     estado.tipo = 'ndvi';
     estado.bandas = bandas;
     estado.resumen = L.resumenNdvi(valores, umbral());
@@ -183,6 +225,9 @@
     const out = $('#dronEstado');
     if (!estado) { out.innerHTML = ''; return; }
     const partes = [];
+    if (estado.guardado && estado.url) partes.push(`<p class="hint">${esc(fmt(T().guardadoVuelo, {nombre: estado.nombre}))}</p>
+      <button type="button" class="capa" id="dronBorrarVuelo">${esc(T().borrarVuelo)}</button>`);
+    if (estado.avisoGuardado) partes.push(`<p class="dron-error">${esc(estado.avisoGuardado)}</p>`);
     if (estado.aviso) partes.push(`<p class="hint">${esc(estado.aviso)}</p>`);
     if (estado.leyendo) partes.push(`<p class="hint">${esc(T().leyendo)}</p>`);
     if (estado.error) partes.push(`<p class="dron-error">${esc(estado.error)}</p>`);
@@ -203,6 +248,7 @@
 
   document.addEventListener('click', e => {
     if (e.target.closest('#dronAbrir')) { $('#dronArchivo').click(); return; }
+    if (e.target.closest('#dronBorrarVuelo')) { borrarGuardado(); return; }
     if (e.target.closest('#dronCalcular')) { elegirBandas(Number($('#dronRojo').value), Number($('#dronNir').value)); return; }
     const b = e.target.closest('[data-dron-ndvi]');
     if (b) confirmarNdvi(b.dataset.dronNdvi === 'si');
@@ -214,8 +260,8 @@
     e.target.value = '';   // así se puede volver a abrir el mismo archivo
   });
   if (window.Idioma) Idioma.alCambiar(renderCaja);
-  document.addEventListener('DOMContentLoaded', renderCaja);
+  document.addEventListener('DOMContentLoaded', () => { renderCaja(); restaurar(); });
 
   window.BioSatDron = {abrir, estado: () => estado, alCambiar: fn => oyentes.push(fn), elegirBandas, confirmarNdvi, ponerFecha,
-    render: renderCaja};
+    render: renderCaja, ndviActual, borrarGuardado};
 })();
