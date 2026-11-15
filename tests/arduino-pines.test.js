@@ -113,3 +113,16 @@ test('el esquema SVG y la tabla de conexiones están al día con pines.json', ()
   assert.equal(leer(G.ARCHIVOS.svg), G.construirSvg(p), 'corré: node arduino/esquema/generar-esquema.js');
   assert.equal(leer(G.ARCHIVOS.tabla), G.construirTabla(p), 'corré: node arduino/esquema/generar-esquema.js');
 });
+
+// Variante con un sensor de humedad de tierra resistivo (horquilla), en lugar del de nivel de agua (15/11).
+const RUTA_HUMEDAD = path.join(RAIZ, 'biosat_estacion_humedad_suelo', 'biosat_estacion_humedad_suelo.ino');
+test('la variante con sensor de humedad de tierra usa los mismos pines que el programa original', () => {
+  const variante = fs.readFileSync(RUTA_HUMEDAD, 'utf8');
+  const defs = s => Object.fromEntries([...s.matchAll(/^#define\s+(PIN_\w+)\s+(\w+)/gm)].map(m => [m[1], m[2]]));
+  assert.deepEqual(defs(variante), defs(sketch));
+});
+test('la variante da vuelta la lectura: el sensor resistivo da un número alto con tierra seca', () => {
+  const variante = fs.readFileSync(RUTA_HUMEDAD, 'utf8');
+  assert.match(variante, /return 1023 - crudo;/);
+  assert.match(variante, /Serial\.print\(F\(",\\"agua_raw\\":"\)\)/);   // manda el mismo dato que lee la app
+});
