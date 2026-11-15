@@ -138,12 +138,12 @@ Sale solo de las casillas sin tildar de cada plan. Panorama completo y riesgos: 
 **Últimas decisiones:**
 
 <!-- AUTO:DECISIONES:INICIO -->
+- **D-32**: El kit para principiantes alcanza para la estación de BioSat: guía de protoboard
 - **D-31**: App para el celular: Inicio simple y Reporte completo
 - **D-30**: Datos reales de Earth Engine reemplazan al prototipo simulado
 - **D-29**: Contraseña de Meteomatics: se deja como está, por practicidad
 - **D-28**: Sugerencias de la organización: asistente de inicio, mapa real y app más fácil
 - **D-27**: Pantalla del kit para el jurado, guía "Del kit al campo" y Arduino Uno por USB
-- **D-26**: Informe de clima corregido y app lista para los datos de D-25
 
 Todas las decisiones están en la [bitácora](docs/reglas-y-bitacora.md).
 <!-- AUTO:DECISIONES:FIN -->
@@ -180,6 +180,7 @@ BioSat/
 ├── archivo/                                                  <-- Material archivado que no alimenta la app
 │   └── prototipo-ia-simulado/ (38 archivos)                  <-- Primer prototipo de IA con datos SIMULADOS (no se usa; ver LEEME-PRIMERO.md)
 ├── arduino/                                                  <-- Kit Arduino: sketch, lector Web Serial, esquema y guía de armado
+│   ├── GUIA-PROTOBOARD.md                                    <-- Guía de armado en protoboard · Estación de campo BioSat
 │   ├── lector-web-serial.js                                  <-- Lee el Arduino por USB desde Chrome o Edge (window.BioSatArduino)
 │   ├── README.md                                             <-- Guía del kit: cómo armarlo, cargarlo, calibrarlo y usarlo con la app
 │   ├── biosat_estacion_campo/                                <-- Sketch del Arduino Uno (línea JSON cada 2 s, LCD y LEDs)

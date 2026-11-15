@@ -206,3 +206,16 @@ Según la página oficial de premios (`NASA Space Apps Challenge - awards.mhtml`
     - `docs/superpowers/specs/2026-11-15-app-celular-y-reporte-design.md`;
     - https://claude.ai/artifact/2JyKEp1U46KhQXMCiM2ZSz;
     - `docs/superpowers/plans/2026-11-15-app-celular-y-reporte.md`.
+- **D-32 (El kit para principiantes alcanza para la estación de BioSat: guía de protoboard):**
+  - **Duda de Enzo:** si el kit Arduino "para principiantes" que tiene, con 38 piezas, servía para la app.
+  - **Respuesta:** sí, y no hace falta comprar nada electrónico. Se usan:
+    - la placa UNO y el USB;
+    - la protoboard y los cables;
+    - el LM35, el sensor de nivel de agua, una fotoresistencia y el DHT11;
+    - el LCD, el potenciómetro, 3 LEDs, el buzzer y las resistencias.
+
+    Se conecta con la app actual: en el Inicio, "Medir con la sonda" pasa el semáforo a "Tu lote, medido hoy"; en el Reporte, la sección 5; y la pantalla del kit.
+  - **Guía para armarlo:** `arduino/GUIA-PROTOBOARD.md`, con el plan de ubicación en la protoboard, el armado por fases con verificaciones, la calibración, el uso con la app, los problemas comunes y diagramas Mermaid. Está pensada para que la ejecute una persona u otro agente.
+  - **Extra opcional:** elegir la bandeja A, B o C con el control remoto del kit (receptor en A4). Va con los cambios de código especificados.
+  - **Ojo:** si el LCD no trae pines soldados, hay que soldarle la tira de 16. El LM35 hay que sellarlo antes de meterlo en la tierra.
+

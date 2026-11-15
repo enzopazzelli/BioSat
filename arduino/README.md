@@ -10,6 +10,7 @@ Tabla de cables, por pin y por componente: [`esquema/tabla-de-conexiones.md`](es
 
 | Archivo | Para qué |
 |---|---|
+| **`GUIA-PROTOBOARD.md`** | **Guía de armado paso a paso en la protoboard, con diagramas, para una persona o un agente** |
 | `biosat_estacion_campo/biosat_estacion_campo.ino` | El programa del Arduino. Una línea JSON cada 2 segundos, LCD y 3 LEDs |
 | `lector-web-serial.js` | Lee el USB desde Chrome o Edge. La app lo carga sola |
 | `esquema/pines.json` | **La fuente única** de los pines. De acá salen el esquema y la tabla |
