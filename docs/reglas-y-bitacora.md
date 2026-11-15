@@ -558,4 +558,16 @@ Según la página oficial de premios (`NASA Space Apps Challenge - awards.mhtml`
     - el modo oscuro, el inglés y la PC, sin errores.
   - **Encontrado al construir:** un nombre de variable repetido (`T`) dejó `app.js` con un error de sintaxis que rompía toda la app, y las pruebas de texto no lo vieron. Se sumó una prueba que interpreta todos los scripts de `web/`. Falla con ese error y pasa con el arreglo.
   - **Pruebas:** 220 de JS en verde.
+- **Kit Arduino (15/11, tarde): primeras pruebas en la placa y variante con sensor de humedad de tierra:**
+  - **Programa cargado** desde esta PC con `arduino-cli` (COM6). Las bibliotecas no se pudieron instalar en Documentos, que está protegido por Windows, y quedaron en `C:\Users\Usuario\AppData\Local\Arduino15\sketchbook`. Se usa con la variable `ARDUINO_DIRECTORIES_USER`.
+  - **Lo que mostraron las lecturas:**
+    - el envío cada 2 s anda;
+    - el LM35 marcaba de 55 a 99 °C porque estaba al revés. Enzo lo dio vuelta y ahora da de 30 a 37 °C;
+    - el DHT11 da `null` (revisar + 5V, out D2 y − GND);
+    - el LCD no prende (revisar las patas 15 y 16, la alimentación y si tiene los pines soldados).
+  - **Sensor de humedad de tierra prestado:** es resistivo, de horquilla, y reemplaza al de nivel de agua (decisión de Enzo).
+    - Va **otro programa**, `arduino/biosat_estacion_humedad_suelo/`, con los mismos pines (VCC → A3, AO → A0). Da vuelta la lectura (`1023 − lectura`), así que `agua_raw` significa lo mismo y la app no cambia.
+    - Pruebas en `tests/arduino-pines.test.js`: los mismos pines que el original y la lectura invertida.
+    - Compilado y subido a la placa. Guía, sección 7 bis.
+    - **Falta:** probarlo al aire y en agua, y recalibrar `SALITRE_AGUA_RAW`.
 

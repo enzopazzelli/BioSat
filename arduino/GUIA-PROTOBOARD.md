@@ -322,6 +322,21 @@ sequenceDiagram
 
   **Nunca inventar números**: si no se midió, la lista queda vacía.
 
+## 7 bis. Variante con un sensor de humedad de tierra resistivo (15/11)
+
+Si en lugar del sensor de nivel de agua se usa un **sensor de humedad de tierra resistivo**, hay que cargar **otro programa**: [`biosat_estacion_humedad_suelo/biosat_estacion_humedad_suelo.ino`](biosat_estacion_humedad_suelo/biosat_estacion_humedad_suelo.ino). El sensor es una horquilla con dos patas metálicas y un módulo con potenciómetro, con 4 pines: VCC, GND, DO y AO. El programa original queda igual.
+
+| Pin del módulo | Va a | Por qué |
+|---|---|---|
+| VCC | **A3** | El programa lo prende solo mientras mide, así la horquilla no se corroe |
+| GND | GND | — |
+| AO | **A0** | La lectura analógica, en el mismo lugar que el sensor de nivel de agua |
+| DO | sin conectar | Es un "seco/húmedo" fijado con el potenciómetro; no hace falta |
+
+- **La lectura va al revés:** este sensor da **1023 con la horquilla seca** y baja al mojarse. El programa la invierte (`1023 − lectura`), así que `agua_raw` sigue siendo "más alto = más húmedo o más conductivo". La app, el semáforo, la pantalla del kit y el aviso de salitre no cambian.
+- **Comprobar:** la horquilla al aire da `agua_raw` cerca de 0; metida en un vaso de agua, sube mucho; con agua salada, sube más.
+- **Recalibrar `SALITRE_AGUA_RAW`** con las 3 bandejas (sección 6): el número de este sensor no es el mismo que el del sensor de nivel de agua.
+
 ## 8. Si algo no anda
 
 | Síntoma | Qué mirar |
