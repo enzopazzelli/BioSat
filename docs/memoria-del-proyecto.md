@@ -18,13 +18,12 @@ BioSat es una app web estática (HTML y JavaScript, sin proceso de compilación,
 
 | Archivo | Qué hace |
 |---|---|
-| `index.html`, `app.js`, `estilos.css` | La app (D-31): **Inicio** para el celular (semáforo de la zona o de la sonda, lo que mejor encaja con la tira de 12 meses, Medir con la sonda y WhatsApp) y **Reporte** completo en una página (`#reporte`, 7 secciones abiertas, Guardar PDF y Compartir) |
+| `index.html`, `app.js`, `estilos.css` | La app (D-31): **Inicio** para el celular (semáforo de la zona, la tarjeta "Tu lote, desde el dron" de D-44, lo que mejor encaja con la tira de 12 meses, "Abrir un vuelo de dron" y WhatsApp) y **Reporte** completo en una página (`#reporte`, 6 secciones abiertas, Guardar PDF y Compartir) |
 | `completo.html` | La página de antes (5 pasos), conservada como **vista detallada** del reporte completo. Usa el mismo `app.js`; el asistente no se abre solo |
 | `inicio-logica.js` | Lógica del Inicio sin interfaz y con pruebas: semáforo (umbrales de la bitácora D-31), próxima siembra, meses pelados, textos de WhatsApp |
 | `asistente-logica.js`, `asistente.js`, `asistente.css` | Asistente de inicio de 4 preguntas con el mapa real. Aparece la primera vez; `?asistente=1` lo fuerza. Respuestas en `localStorage` (`biosat.asistente.v1`), tolerante a que esté bloqueado |
 | `frases-logica.js` | Frases calculadas con los datos (si falta un dato, no se muestran): una por paso y las conclusiones del Reporte (meses más duros, suelo y monte) |
-| `kit.html`, `kit.js`, `kit-logica.js`, `kit.css` | Pantalla del kit para la mesa del jurado: 3 bandejas, teclas A, B y C, guarda sola al estabilizarse |
-| `campo.html`, `campo.css` | Guía "Del kit al campo": del kit a estaciones fijas con LoRa |
+| ~~`kit.*`, `campo.*`~~ | La pantalla del kit y la guía "Del kit al campo" se archivaron en `archivo/kit-arduino/web/` (D-44) |
 | `img/`, `vendor/`, `datos-borrador/` | Imágenes Landsat de respaldo (Planetary Computer), Leaflet, rotaciones borrador de respaldo |
 
 Cómo se conecta: `app.js` lee los JSON de `../data/`; las respuestas del asistente pasan a `state` (zona, riego, hacienda, sembradora, temas) y el motor de reglas no cambia. Todos los textos nuevos viven en objetos con claves (`TEXTOS`, `TEXTOS_PASOS`), listos para la etapa del idioma.
@@ -49,7 +48,9 @@ El formato de cada archivo está en [`contratos-de-datos.md`](contratos-de-datos
 
 **Las 5 zonas:** 1 Área de riego del Río Dulce (La Banda), 2 Secano agrícola del este (Quimilí), 3 Chaco semiárido norte (Campo Gallo), 4 Bajos submeridionales (Añatuya), 5 Sur serrano y salinas (Ojo de Agua, la protagonista). Un departamento pertenece a la zona cuyo punto de NASA POWER contiene; si no, a la que lo nombra la lista; si no, a la más cercana. *General Taboada* pasó de la Zona 2 a la 4.
 
-## 4. Kit Arduino (`arduino/`)
+## 4. Kit Arduino (archivado el 15/11, D-44)
+
+> **Archivado.** Enzo decidió trabajar con imágenes de dron: todo lo de abajo está en [`archivo/kit-arduino/`](../archivo/kit-arduino/README.md) y la app ya no lo carga. Las rutas de esta sección son las de antes. El dato de hoy del lote sale del vuelo del dron (tarjeta "Tu lote, desde el dron" del Inicio).
 
 Arduino Uno por USB con Web Serial (Chrome o Edge). Una línea JSON cada 2 segundos (`agua_raw`, `temp_suelo_c`, `temp_aire_c`, `hum_aire_pct`, `luz_raw`, `semaforo`).
 
@@ -108,16 +109,17 @@ Fuera de `docs/`: `PLAN.md` (plan general y ruta), `planes/` (plan y checklist d
 13. Hallazgo: la app dice "suelo pelado" donde el satélite solo ve poca vegetación verde, y muestra modelos y fuentes que no se usan. Plan para corregirlo antes de la demo (D-33, `docs/superpowers/plans/2026-11-15-app-sin-datos-falsos.md`).
 14. El Inicio va en dos columnas en la PC, y el pronóstico de Meteomatics (ECMWF, 9 km) entra en la app: tarjeta "Esta semana en tu zona" en el Inicio y el Reporte, la máxima de hoy en la pantalla del kit y una actualización diaria con GitHub Actions (D-34).
 15. Botón de idioma ES/EN, etapa 1: el asistente, el Inicio, el marco del Reporte, el kit y la guía del campo en inglés; lo que sigue en español lo avisa en inglés (D-35).
+16. El kit Arduino se archiva y el dron toma su lugar en el Inicio: tarjeta "Tu lote, desde el dron" y botón "Abrir un vuelo de dron" (D-44, `archivo/kit-arduino/`).
 
 ## 9. Pendientes y alertas
 
 - **Idioma EN/ES (D-35):** la etapa 1 está hecha. Falta la etapa 2: el cuerpo del Reporte, los plegables, la vista detallada y los textos largos de las rotaciones. Vale tiene que revisar los nombres de las rotaciones en inglés.
 - **App sin datos falsos (D-33):** "suelo pelado" del satélite → "sin verde", tabla de métodos real, textos sin MapBiomas ni LART y nombres de los grupos AIZAL. Plan con 3 formas de arreglarlo en `docs/superpowers/plans/2026-11-15-app-sin-datos-falsos.md`.
-- **Kit Arduino:** armado con `arduino/GUIA-PROTOBOARD.md`, sellado del LM35, calibración y lecturas reales (sin ellas, la pantalla del kit solo anda en vivo).
+- ~~**Kit Arduino**~~: archivado (D-44). Lo que le faltaba quedó en `archivo/kit-arduino/README.md`.
 - **Entrega:** guion, video o diapositivas, página del proyecto en Space Apps, declaración de uso de IA, 2 ensayos, hora y formato de entrega.
 - **Santi:** publicar el visor de Earth Engine; verificar la fragilidad y los meses de suelo pelado. La contraseña de Meteomatics no se cambia, por practicidad (D-29).
 - **Vale:** confirmar los 7 `requiere_hacienda`, conseguir por escrito el permiso del productor y validar (o declarar sin validar) las zonas 1 a 4.
-- **Enzo:** ensayar la pantalla del kit en la pantalla grande y cerrar `PLAN.md`. El pronóstico de Meteomatics ya se renueva solo todos los días (D-34).
+- **Enzo:** ensayar la demo con un vuelo de dron real en la pantalla grande y cerrar `PLAN.md`. El pronóstico de Meteomatics ya se renueva solo todos los días (D-34).
 - **Detalles menores de la última revisión** (no impiden nada): flechita de los plegables, tamaños de letra y botones menores a 44 px, tema elegido en la pregunta 3 solo por color, zonas del asistente sin flechas del teclado, restos en `app.js` y la carpeta `web/` colapsada en el README.
 
 ## 10. Reglas que no se rompen

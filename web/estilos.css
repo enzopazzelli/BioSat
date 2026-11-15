@@ -165,24 +165,6 @@ td{font-family:var(--font-mono);font-variant-numeric:tabular-nums}
 .pending{font-size:.8rem;padding:8px 10px;border-radius:4px;background:var(--surface-2);color:var(--muted)}
 .mini-cal{display:grid;grid-template-columns:repeat(12,1fr);gap:2px}
 .mini-cal span{height:22px;border-radius:2px;background:var(--surface-2);border:1px dashed var(--line);display:grid;place-items:center;font-family:var(--font-mono);font-size:.75rem;color:var(--muted)}
-.trays{display:flex;gap:6px;flex-wrap:wrap}
-.trays button{flex:1 1 0;min-width:84px;border:1px solid var(--line);background:var(--surface-2);border-radius:4px;padding:6px 8px;cursor:pointer;font-size:.8rem;font-weight:600;text-align:left}
-.trays button[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft)}
-.read{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.read div{background:var(--surface-2);border-radius:4px;padding:8px 10px;display:grid}
-.read b{font-family:var(--font-display);font-size:1.5rem;line-height:1.1;font-variant-numeric:tabular-nums}
-.read span{font-size:.75rem;color:var(--muted)}
-.semaforo{display:flex;align-items:center;gap:10px;font-size:.86rem}
-.luces{display:flex;gap:4px;background:var(--ink);padding:4px;border-radius:999px}
-.luces i{width:12px;height:12px;border-radius:50%;background:var(--muted);opacity:.35;display:block}
-.luces i.on.r{background:var(--crit);opacity:1}
-.luces i.on.a{background:var(--warn);opacity:1}
-.luces i.on.v{background:var(--ok);opacity:1}
-.vs{font-size:.82rem;border-top:1px solid var(--line);padding-top:10px;display:grid;gap:4px}
-.kit-links{display:flex;flex-wrap:wrap;gap:8px}
-.kit-links a{text-decoration:none}
-.kit-links a.capa{color:var(--ink)}
-.btn-off{border:1px dashed var(--line);background:transparent;border-radius:4px;padding:7px 10px;font-size:.82rem;color:var(--muted);cursor:not-allowed}
 
 /* Paso 3: tarjetas de rotación */
 .motor-note{font-size:.85rem;color:var(--muted);margin-bottom:16px;max-width:80ch}
@@ -313,8 +295,16 @@ input[type=range]{width:100%;accent-color:var(--accent)}
 .dron-ficha{display:grid;gap:10px;margin-top:12px}
 .dron-lista{margin:0;padding-left:18px;display:grid;gap:4px;font-size:.88rem}
 .dron-campo input{font:inherit;font-weight:400;padding:6px;border:1px solid var(--line);border-radius:4px;background:var(--surface);color:var(--ink)}
-.ini-dron{margin:0 0 14px;font-size:.9rem;line-height:1.4}
-.ini-dron a{font-weight:700;color:var(--accent);white-space:nowrap}
+/* D-44: tarjeta "Tu lote, desde el dron" del Inicio: el dato de hoy del lote, en el lugar que tenía la sonda */
+.ini-lote{background:var(--surface);border-radius:16px;padding:14px 16px;margin:0 0 18px;display:flex;flex-direction:column;gap:10px;color:var(--ink)}
+.ini-lote .ini-eyebrow{color:var(--muted);opacity:1}
+.ini-lote-titulo{margin:0;font-family:var(--font-display);font-size:26px;font-weight:700;line-height:1.05}
+.ini-lote[data-estado="error"] .ini-lote-titulo{color:var(--crit)}
+.ini-lote .ini-cifra{background:var(--surface-2)}
+.ini-lote-notas{margin:0;padding-left:20px;display:grid;gap:4px;font-size:15px;line-height:1.4}
+.ini-lote-notas:empty{display:none}
+.ini-lote-link{min-height:44px;display:inline-flex;align-items:center;align-self:flex-start;font-size:16px;font-weight:700;color:var(--accent);text-decoration:none}
+.ini-lote-link:hover{text-decoration:underline}
 /* D-39: sectores del lote */
 .sect-card{margin-top:12px}
 .sect-acciones{grid-template-columns:repeat(auto-fit,minmax(110px,1fr))}
@@ -395,7 +385,6 @@ input[type=range]{width:100%;accent-color:var(--accent)}
 .detalle-tecnico .panels{grid-template-columns:repeat(2,minmax(0,1fr))}
 @media (max-width:900px){.detalle-tecnico .panels{grid-template-columns:1fr}}
 .detalle-tecnico .desmonte{margin-top:16px}
-.panel-sensor{max-width:760px}
 .btn,.capa,.steps a,.zona-btn,select,summary{min-height:44px}
 .steps a{display:inline-flex;align-items:center}
 
@@ -452,7 +441,7 @@ input[type=range]{width:100%;accent-color:var(--accent)}
 .ini-validacion[data-validada="si"]{color:var(--ok)}
 .ini-pie{margin:14px 0 0;text-align:center;font-size:13px;color:var(--muted)}
 .ini-barra{position:sticky;bottom:0;background:var(--surface);border-top:1px solid var(--line);padding:14px 0 calc(16px + env(safe-area-inset-bottom))}
-.ini-botones{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.ini-botones{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);gap:10px}
 .ini-btn{min-height:56px;border-radius:14px;font:700 16px var(--font-text);display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer}
 .ini-btn svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
 .ini-btn-1{border:0;background:var(--accent);color:var(--on-accent)}

@@ -11,7 +11,7 @@ const I = require('../web/idioma-logica.js');
 
 const WEB = path.join(__dirname, '..', 'web');
 const leer = f => fs.readFileSync(path.join(WEB, f), 'utf8');
-const PAGINAS = ['index.html', 'kit.html', 'campo.html', 'completo.html'];
+const PAGINAS = ['index.html', 'completo.html'];   // D-44: kit.html y campo.html se archivaron
 const app = leer('app.js');
 
 // Carga un script de navegador en un sandbox y devuelve lo que dejó en window.
@@ -76,14 +76,11 @@ test('ningún texto en inglés está vacío', () => {
   assert.deepEqual(vacios, []);
 });
 
-test('el asistente y el kit en inglés no traducen claves que no existen en español', () => {
+test('el asistente en inglés no traduce claves que no existen en español', () => {
   if (EN.modulos.asistente) {
     const w = cargarEnVm('asistente.js', {AsistenteLogica: {}});
     assert.deepEqual(I.clavesSobrantes(w.BioSatAsistente.TEXTOS, EN.modulos.asistente), [], 'asistente');
   }
-  assert.ok(EN.modulos.kit, 'falta modulos.kit');
-  assert.deepEqual(I.clavesSobrantes(require('../web/kit-logica.js').TEXTOS, EN.modulos.kit), [], 'kit');
-  assert.equal(EN.modulos.kit.meses.length, 12);
 });
 
 test('el asistente está traducido entero (comun y las 4 preguntas)', () => {

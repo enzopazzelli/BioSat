@@ -20,7 +20,7 @@
 1. **La app publicada**, con los 5 pasos y las 5 zonas: tu campo, tu año, comparar, ¿y si…? y antes de decidir.
 2. **Los 4 verbos del video de la NASA**, visibles en la app: comparar rotaciones, revelar compensaciones, comprender el riesgo y hacer visible la incertidumbre.
 3. **Un modelo de IA medido**: el modelo predictivo de desmontes por zona, con métricas y validación temporal.
-4. **El kit Arduino en vivo**, con lecturas grabadas de respaldo.
+4. ~~**El kit Arduino en vivo**, con lecturas grabadas de respaldo.~~ **Archivado el 15/11 (D-44):** el dato de hoy del lote sale de las **imágenes de dron** (tarjeta "Tu lote, desde el dron" en el Inicio). El kit quedó en [`archivo/kit-arduino/`](../archivo/kit-arduino/README.md).
 5. **El video o las diapositivas y la página del proyecto** en Space Apps.
 
 ---
@@ -32,7 +32,7 @@
 | 1 | **Enzo** | [1-enzo.md](1-enzo.md) | `enzo-app` | F1 Clima · F5 App y motor · integración | `web/`, `scripts/descargar_nasa_power.py`, `data/clima_zonas.json`, `data/nasa_power_santiago_zonas.json`, `data/resumen_mensual_santiago.csv`, `data/raw_nasa_power/` |
 | 2 | **Santi** | [2-santi.md](2-santi.md) | `santi-datos-ia` | F2 Suelo y zonificación AIZAL · F3 Modelo de desmontes | `ia_landsat/`, `scripts/*.js`, `data/datos_cruzados_aizal/`, `data/suelo_zonas.json`, `data/zonificacion_aizal.json`, `data/desmonte_zonas.json`, `data/diagnostico_landsat_ia.json`, `data/imagenes/`, `ESTRUCTURA_DATOS.md`, `docs/cruce-de-datos.md` |
 | 3 | **Vale** | [3-vale.md](3-vale.md) | `vale-rotaciones` | F4 Rotaciones y agronomía | `data/rotaciones_santiago.json`, `docs/zonas-santiago-y-kit-arduino.md`, `docs/documentacion-tecnica-agronomica.md`, `docs/glosario.md` |
-| 4 | **Sara** | [4-sara.md](4-sara.md) | `sara-arduino-entrega` | F6 Arduino · F7 Entrega (coordina) | `arduino/`, `entrega/`, `data/arduino_bandejas_demo.json` |
+| 4 | **Sara** | [4-sara.md](4-sara.md) | `sara-arduino-entrega` | F7 Entrega (coordina) · ~~F6 Arduino~~ (archivado, D-44) | `entrega/` |
 
 **Archivos compartidos:** `PLAN.md`, `README.md`, `docs/reglas-y-bitacora.md`, `docs/contratos-de-datos.md` y esta carpeta `planes/README.md`. Los toca **solo Enzo, en `main`**. Cada plan personal (`planes/N-nombre.md`) lo edita solo su dueño.
 
@@ -80,7 +80,7 @@ git merge origin/main
 - `data/suelo_zonas.json`
 - `data/diagnostico_landsat_ia.json`
 - `data/rotaciones_santiago.json`
-- `data/arduino_bandejas_demo.json`
+- ~~`data/arduino_bandejas_demo.json`~~ (archivado con el kit, D-44)
 - `data/zonificacion_aizal.json` y `data/desmonte_zonas.json` (D-25)
 
 Así Enzo puede programar la app desde el primer minuto, y cada dueño reemplaza su archivo cuando tenga datos reales.

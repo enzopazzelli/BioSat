@@ -12,7 +12,6 @@
 <link rel="stylesheet" href="estilos.css">
 <link rel="stylesheet" href="asistente.css">
 <script src="vendor/leaflet.js"></script>
-<script src="../arduino/lector-web-serial.js" defer onerror="this.remove()"></script>
 <script src="idioma-logica.js" defer></script>
 <script src="textos-en.js" defer></script>
 <script src="idioma.js" defer></script>
@@ -36,7 +35,7 @@
 <div id="tip" role="tooltip" hidden></div>
 
 <main>
-  <!-- INICIO (D-31): semáforo, lo que mejor encaja y la sonda. Diseño 4.2 -->
+  <!-- INICIO (D-31): semáforo, tu lote desde el dron (D-44) y lo que mejor encaja. Diseño 4.2 -->
   <section id="vista-inicio" class="vista vista-inicio" aria-labelledby="inicioZona">
     <div class="ini-banda" id="inicioBanda" data-nivel="0">
       <div class="ini-wrap">
@@ -58,7 +57,14 @@
     </div>
 
     <div class="ini-wrap ini-cuerpo">
-      <p class="ini-dron" id="inicioDron"><span id="inicioDronTxt"></span> <a id="inicioDronLink" href="#satelite"></a></p>
+      <!-- D-44: el dron es el dato de hoy del lote (en el lugar de la sonda). Lo arma DronLogica.tarjetaInicio. -->
+      <section class="ini-lote" id="inicioDron" aria-labelledby="inicioDronT" aria-live="polite" data-estado="sin">
+        <p class="ini-eyebrow" id="inicioDronT">Tu lote, desde el dron</p>
+        <h2 class="ini-lote-titulo" id="inicioDronTitulo">Todavía no abriste un vuelo</h2>
+        <div class="ini-cifras" id="inicioDronCifras" hidden></div>
+        <ul class="ini-lote-notas" id="inicioDronNotas"></ul>
+        <a class="ini-lote-link" id="inicioDronLink" href="#satelite" hidden></a>
+      </section>
       <section class="ini-mejor" aria-labelledby="inicioMejorT">
         <p class="ini-eyebrow" id="inicioMejorT" data-i18n="iniMejorT">Lo que mejor encaja en tu campo</p>
         <h2 class="ini-rotacion" id="inicioRotacion"></h2>
@@ -77,7 +83,7 @@
     <div class="ini-barra">
       <div class="ini-wrap">
         <div class="ini-botones">
-          <button type="button" class="ini-btn ini-btn-1" id="btnSonda"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v11"/><path d="M8 14h8l-1 7h-6z"/><path d="M5 6l2 2M19 6l-2 2"/></svg><span data-i18n="iniSonda">Medir con la sonda</span></button>
+          <button type="button" class="ini-btn ini-btn-1" id="btnDron"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="5.5" cy="5.5" r="2.5"/><circle cx="18.5" cy="5.5" r="2.5"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/><path d="M7.5 7.5l2.5 2.5M16.5 7.5L14 10M7.5 16.5L10 14M16.5 16.5L14 14"/><rect x="10" y="10" width="4" height="4" rx="1"/></svg><span id="btnDronTxt">Abrir un vuelo de dron</span></button>
           <button type="button" class="ini-btn ini-btn-2" id="btnWhatsapp"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12a8.5 8.5 0 0 1-12.6 7.4L3 21l1.6-5.2A8.5 8.5 0 1 1 21 12z"/></svg><span>WhatsApp</span></button>
         </div>
         <p class="ini-aviso" id="inicioAviso" role="status" hidden></p>
@@ -106,7 +112,7 @@
       <span id="compartido" role="status" class="hint"></span>
     </div>
     <nav class="rep-chips" aria-label="Ir a una sección" data-i18n-attr="aria-label:repChipsAria">
-      <a href="#calendario" data-i18n="repChip1">1 · Tu año</a><a href="#comparar" data-i18n="repChip2">2 · Rotaciones</a><a href="#simulador" data-i18n="repChip3">3 · Clima peor</a><a href="#satelite" data-i18n="repChip4">4 · Suelo y monte</a><a href="#sonda" data-i18n="repChip5">5 · La sonda</a><a href="#antes-de-decidir" data-i18n="repChip6">6 · Tu ingeniero</a><a href="#datos" data-i18n="repChip7">7 · Los datos</a>
+      <a href="#calendario" data-i18n="repChip1">1 · Tu año</a><a href="#comparar" data-i18n="repChip2">2 · Rotaciones</a><a href="#simulador" data-i18n="repChip3">3 · Clima peor</a><a href="#satelite" data-i18n="repChip4">4 · Suelo y monte</a><a href="#antes-de-decidir" data-i18n="repChip6">5 · Tu ingeniero</a><a href="#datos" data-i18n="repChip7">6 · Los datos</a>
     </nav>
     <div class="campo">
         <div class="card tu-campo" id="tuCampo"></div>
@@ -307,24 +313,8 @@
 
     </section>
 
-    <section id="sonda" class="rep-sec" aria-labelledby="concl-5">
-      <p class="eyebrow" data-i18n="repSec5">5 · Lo que midió la sonda</p>
-      <h2 class="conclusion" id="concl-5">Lo que midió la sonda</h2>
-      <article class="card panel panel-sensor">
-          <div class="panel-h"><h3>Lo que mide el sensor</h3><span class="src">Kit Arduino · 1 m²</span></div>
-          <div class="trays" role="group" aria-label="Bandeja de demostración" id="trays"></div>
-          <div class="read" id="read"></div>
-          <div class="semaforo" id="semaforo"></div>
-          <div class="vs" id="vs"></div>
-          <button type="button" class="btn-off" id="btnArduino" disabled title="No se encontró el lector (arduino/lector-web-serial.js)">Conectar Arduino por USB</button>
-          <div class="kit-links"><a class="btn" id="linkKit" href="kit.html">Pantalla del kit</a><a class="capa" href="campo.html">Del kit al campo</a></div>
-          <p class="pending" id="sensorNota"></p>
-        </article>
-
-    </section>
-
     <section id="antes-de-decidir" class="rep-sec" aria-labelledby="concl-6">
-      <p class="eyebrow" data-i18n="repSec6">6 · Para charlar con tu ingeniero</p>
+      <p class="eyebrow" data-i18n="repSec6">5 · Para charlar con tu ingeniero</p>
       <h2 class="conclusion" id="concl-6">Para charlar con tu ingeniero</h2>
           <p class="en-una-frase" id="fraseListo" hidden></p>
           <p class="lede">El satélite no ve todo. Esta lista junta lo que falta saber y los riesgos de la rotación que elijas.</p>
@@ -349,7 +339,7 @@
     </section>
 
     <section id="datos" class="rep-sec" aria-labelledby="concl-7">
-      <p class="eyebrow" data-i18n="repSec7">7 · De dónde salen los datos</p>
+      <p class="eyebrow" data-i18n="repSec7">6 · De dónde salen los datos</p>
       <h2 class="conclusion" id="concl-7">De dónde salen los datos</h2>
       <div class="pie-grid">
     <div>
@@ -366,7 +356,6 @@
         <li data-i18n="datosDron">Imagen de dron: la abre cada uno desde su equipo; no se guarda ni se sube.</li>
         <li>Real: los números de clima (NASA POWER), el calendario, el simulador, las imágenes del visor (compuestos de Landsat hechos en Earth Engine), el suelo (SoilGrids 2.0), los meses sin cobertura vegetal activa (Landsat 2021-2025), la historia y el riesgo de desmonte (Hansen v1.13) y la zonificación del equipo con las variables de AIZAL. Fuentes y métodos: docs/datos-y-metodos.md.</li>
         <li>Revisado: las rotaciones de la Zona 5 las revisó un productor de la zona. Las de las zonas 1 a 4 todavía no están validadas. Los puntajes salen de reglas visibles.</li>
-        <li>Pendiente: las lecturas grabadas del kit Arduino.</li>
       </ul>
     </div>
     <div>
@@ -379,7 +368,7 @@
     </div>
       </div>
       <h3>Cómo se calcula el semáforo del Inicio</h3>
-      <p class="hint" id="semaforoMetodo">Antes de medir, muestra lo típico de tu zona en el mes: falta de agua (la lluvia contra la evaporación de referencia (ET0); no es lo que pide un cultivo concreto), días de más de 35 °C, heladas y lotes sin cobertura vegetal activa (suelo descubierto o rastrojo seco: el satélite no los distingue). Cada señal vale bien, atención o cuidado, y el semáforo toma la peor. Los umbrales son un criterio del equipo, no una norma agronómica. Cuando medís con la sonda, el semáforo pasa a ser el de tu lote.</p>
+      <p class="hint" id="semaforoMetodo">Muestra lo típico de tu zona en el mes: falta de agua (la lluvia contra la evaporación de referencia (ET0); no es lo que pide un cultivo concreto), días de más de 35 °C, heladas y lotes sin cobertura vegetal activa (suelo descubierto o rastrojo seco: el satélite no los distingue). Cada señal vale bien, atención o cuidado, y el semáforo toma la peor. Los umbrales son un criterio del equipo, no una norma agronómica. El vuelo del dron no cambia el semáforo: se muestra aparte, con la fecha en que se tomó.</p>
       <p><a class="btn btn-sec" href="completo.html">Ver la versión detallada</a> <a class="capa" href="https://github.com/enzopazzelli/BioSat/blob/main/docs/datos-y-metodos.md">Datos y métodos (en GitHub)</a></p>
 
     </section>

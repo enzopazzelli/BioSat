@@ -62,7 +62,7 @@ test('los colores del semáforo existen en claro y en oscuro', () => {
 
 test('el Inicio tiene todos sus elementos', () => {
   for (const id of ['inicioBanda', 'inicioNivel', 'inicioRazon', 'inicioAccion', 'inicioRotacion', 'inicioSiembra',
-    'inicioPelados', 'inicioTira', 'inicioValidacion', 'btnSonda', 'btnWhatsapp', 'irReporte', 'btnCambiarInicio']) {
+    'inicioPelados', 'inicioTira', 'inicioValidacion', 'btnDron', 'btnWhatsapp', 'irReporte', 'btnCambiarInicio']) {
     assert.ok(idsIndex.has(id), id);
   }
 });
@@ -71,18 +71,12 @@ test('las rotaciones adaptadas conservan el mes de siembra (para la próxima sie
   assert.match(app, /siembra:\s*x\.siembra_mes/);
 });
 
-test('app.js conecta los botones del Inicio: sonda, WhatsApp y el aviso sin conexión', () => {
-  assert.match(app, /closest\('#btnSonda'\)/);
+test('app.js conecta los botones del Inicio: el vuelo del dron (D-44), WhatsApp y el aviso sin conexión', () => {
+  assert.match(app, /closest\('#btnDron'\)/);
   assert.match(app, /closest\('#btnWhatsapp'\)/);
   assert.match(app, /wa\.me\/\?text=/);
   assert.match(app, /navigator\.share/);
-  assert.match(app, /sondaNoDisponible/);
   assert.match(app, /sinConexion/);
-});
-
-test('app.js muestra el error de la sonda en lenguaje simple, no el mensaje técnico', () => {
-  assert.match(app, /TEXTOS\.sondaError/);
-  assert.doesNotMatch(app, /No se pudo conectar la sonda: ' \+ err\.message/);
 });
 
 test('al imprimir sale solo el Reporte, sin el Inicio ni los botones', () => {
@@ -93,12 +87,13 @@ test('al imprimir sale solo el Reporte, sin el Inicio ni los botones', () => {
   assert.match(print, /\.rep-acciones/);
 });
 
-test('app.js conecta Guardar PDF y Compartir, y escribe las 7 conclusiones', () => {
+test('app.js conecta Guardar PDF y Compartir, y escribe las 6 conclusiones (D-44: la 5, la sonda, se archivó)', () => {
   assert.match(app, /closest\('#btnPdf'\)/);
   assert.match(app, /window\.print\(\)/);
   assert.match(app, /closest\('#btnCompartir'\)/);
   assert.match(app, /clipboard\.writeText/);
-  for (let i = 1; i <= 7; i++) assert.ok(idsIndex.has('concl-' + i), 'concl-' + i);
+  for (const i of [1, 2, 3, 4, 6, 7]) assert.ok(idsIndex.has('concl-' + i), 'concl-' + i);
+  assert.ok(!idsIndex.has('concl-5'), 'concl-5 era la sonda');
   assert.match(app, /function renderConclusiones/);
 });
 
@@ -163,8 +158,8 @@ test('D-38: index.html carga el lector de dron sin internet y tiene su caja en e
   assert.match(index, /id="dronArchivo"[^>]*accept="\.tif,\.tiff"/);
 });
 
-test('D-38: tarjeta del dron en el Reporte, línea en el Inicio y aviso en la vista detallada', () => {
-  for (const id of ['dronFicha', 'dronComparacion', 'dronFecha', 'dronTecnica', 'dronCambiarZona', 'inicioDron', 'inicioDronTxt', 'inicioDronLink']) assert.ok(idsIndex.has(id), id);
+test('D-38: tarjeta del dron en el Reporte, tarjeta en el Inicio (D-44) y aviso en la vista detallada', () => {
+  for (const id of ['dronFicha', 'dronComparacion', 'dronFecha', 'dronTecnica', 'dronCambiarZona', 'inicioDron', 'inicioDronTitulo', 'inicioDronLink']) assert.ok(idsIndex.has(id), id);
   assert.match(index, /id="inicioDronLink"[^>]*href="#satelite"/);
   assert.ok(index.indexOf('id="inicioDron"') < index.indexOf('class="ini-mejor"'));
   assert.match(completo, /id="dronEnReporte"[\s\S]*?href="index\.html#satelite"/);
@@ -172,7 +167,7 @@ test('D-38: tarjeta del dron en el Reporte, línea en el Inicio y aviso en la vi
 });
 
 test('D-38: la caja del dron se vuelve a dibujar con cada renderTodo (si no, con ?lang=en queda en español)', () => {
-  const f = app.slice(app.indexOf('function renderDron'), app.indexOf('function renderDron') + 600);
+  const f = app.slice(app.indexOf('function renderDron()'), app.indexOf('function renderDron()') + 600);
   assert.match(f, /BioSatDron\.render\(\)/);
 });
 

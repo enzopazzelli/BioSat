@@ -269,7 +269,9 @@ Las exporta [`scripts/gee_exportar_zonas.js`](../scripts/gee_exportar_zonas.js) 
 
 ---
 
-## 6. Kit Arduino (F6 · Sara)
+## 6. Kit Arduino (F6 · Sara) · archivado (D-44)
+
+> **Archivado el 15/11 (D-44).** La app ya no lee este contrato: no carga el lector ni `arduino_bandejas_demo.json`. Todo quedó en [`archivo/kit-arduino/`](../archivo/kit-arduino/README.md) (las rutas de abajo son las de antes). Se deja escrito por si el kit se retoma. El dato de hoy del lote sale del vuelo del dron, que cada uno abre desde su equipo (D-38 a D-40; el recorte satelital del lote está en §12).
 
 ### Línea por puerto serie (9600 baudios, una cada 2 segundos)
 

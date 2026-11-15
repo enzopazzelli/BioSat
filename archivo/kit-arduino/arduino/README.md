@@ -14,6 +14,8 @@ Tabla de cables, por pin y por componente: [`esquema/tabla-de-conexiones.md`](es
 | `GUIA-PROTOBOARD.md` | Guía de armado paso a paso en la protoboard con el sensor de nivel de agua del kit, con diagramas, para una persona o un agente |
 | `biosat_estacion_campo/biosat_estacion_campo.ino` | El programa del Arduino. Una línea JSON cada 2 segundos, LCD y 3 LEDs |
 | `biosat_estacion_humedad_suelo/biosat_estacion_humedad_suelo.ino` | El mismo programa para el sensor de humedad de tierra resistivo: mismos pines y la lectura dada vuelta (`1023 − lectura`), así `agua_raw` significa lo mismo |
+| `biosat_esp32_servidor/` | **ESP32 con el Arduino IDE, paso a paso.** Paso 1: el ESP32 arma su red WiFi (`BioSat-Kit`) y sirve una página en http://192.168.4.1 con las lecturas en vivo (`/lectura`, en JSON). Todavía sin sensores: todo en `null` |
+| `biosat_estacion_esp32/` | La misma estación en un **ESP32 con MicroPython** (`main.py`), con sus conexiones y cómo cargarlo en su `README.md`. Otros pines y 3,3 V. Sin probar todavía en la placa |
 | `lector-web-serial.js` | Lee el USB desde Chrome o Edge. La app lo carga sola |
 | `esquema/pines.json` | **La fuente única** de los pines. De acá salen el esquema y la tabla |
 | `esquema/generar-esquema.js` | Regenera el esquema y la tabla: `node arduino/esquema/generar-esquema.js` |

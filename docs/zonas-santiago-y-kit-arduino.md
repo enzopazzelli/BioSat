@@ -1,5 +1,7 @@
 # Kit Arduino + Zonas de Santiago del Estero — Diseño Funcional BioSat
 
+> **D-44 (15/11): el kit Arduino se archivó** en [`archivo/kit-arduino/`](../archivo/kit-arduino/README.md) y el equipo trabaja con imágenes de dron. Lo que este documento dice del kit queda como historia; lo de las zonas y las rotaciones sigue vigente.
+
 > **Actualización (D-18 y D-20):**
 > - **Zona 3:** pasa a ser solo el norte chaqueño (Campo Gallo, Monte Quemado).
 > - **Zona 5 "Sur serrano y salinas":** el sur se separa en esta zona nueva, confirmada en D-21, porque su clima es muy distinto (ver [`cruce-de-datos.md`](cruce-de-datos.md) §4). Sus rotaciones todavía son un borrador.
