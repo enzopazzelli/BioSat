@@ -20,3 +20,8 @@ ia_desmonte/salidas/*.npz
 # Solo los .tif de la raíz; los de prueba de tests/fixtures/ sí se suben.
 /*.tif
 /*.tiff
+# Archivos de mundo y proyección que acompañan a una imagen (D-39: fertilizer.tfw)
+/*.tfw
+/*.tifw
+/*.prj
+/*.aux.xml
