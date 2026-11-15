@@ -1,5 +1,7 @@
 # BioSat: mejoras para convertir la demo en un producto viable
 
+> **Estado (15/11, Enzo):** integrado a `main` (D-37). **Aplicado:** el texto del agua del semáforo (§4, "Revisar el semáforo"): ahora dice lluvia contra la evaporación de referencia (ET0). **Decidido:** el resto se usa como "cómo seguimos" en el pitch y no se construye ahora. **Falta:** subir la minuta citada como base.
+
 **Fecha:** 15 de noviembre de 2026  
 **Base:** minuta `minuta_mejoras_app_drones_sensores_2026-11-15.md`, auditoría de BioSat y revisión de `main` en el commit [`bdb680a`](https://github.com/enzopazzelli/BioSat/commit/bdb680a8c1bee6bdf0f3bc64a11ca9a61becd3ef).  
 **Naturaleza:** propuesta de producto para decidir y validar. Las ideas M-01 a M-07 vienen de la minuta; las prioridades, criterios de aceptación y secuencia que siguen son una recomendación de esta auditoría. M-08 está expresamente pendiente de confirmación. No se modificó el repositorio.

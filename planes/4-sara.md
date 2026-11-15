@@ -59,6 +59,7 @@ _Salen del repaso del repo. Cada uno decide cómo abordarlas; si no corresponden
 - [x] Subir lo que ya tenga a `sara-arduino-entrega` *(sube el kit completo de `arduino/`)*
 - [ ] Crear la carpeta `entrega/` con el guion, el video o las diapositivas y la página del proyecto
 - [ ] Decidir el plan B del kit: si las bandejas no llegan, grabar lecturas reales en `data/arduino_bandejas_demo.json` y marcarlas como grabadas
+- [ ] Cerrar el guion con "cómo seguimos" (D-37): de la zona al lote, con el dron como el escalón que sigue después de Landsat. Base: `docs/superpowers/plans/2026-11-15-hoja-de-ruta-producto-viable.md`. Contarlo como plan, no como algo que la app ya hace
 
 ## Listo cuando
 

@@ -53,7 +53,8 @@ _Salen del repaso del repo. Cada uno decide cómo abordarlas; si no corresponden
 - [ ] Validar las zonas 1 a 4 con un productor o un agrónomo del INTA, o dejarlas "sin validar" a propósito y decirlo en la presentación
 - [ ] Corregir en la evidencia de la Zona 5 el dato que cita humedad en raíces: hoy apunta a los meses de clima, que no tienen ese campo
 - [ ] Revisar los 15 nombres de las rotaciones en inglés (`web/textos-en.js`, sección `rotaciones`, D-35): los tradujo el equipo y falta tu revisión agronómica
-- [ ] Subir la transcripción de lo que comentó el ingeniero sobre las imágenes de dron (D-37), por ejemplo en `docs/`
+- [x] Subir lo que comentó el ingeniero sobre las imágenes de dron (D-37) *(subió la hoja de ruta `docs/superpowers/plans/2026-11-15-hoja-de-ruta-producto-viable.md`)*
+- [ ] Subir la minuta original del ingeniero (`minuta_mejoras_app_drones_sensores_2026-11-15.md`), que la hoja de ruta cita como base y no está en el repositorio
 
 ## Listo cuando
 

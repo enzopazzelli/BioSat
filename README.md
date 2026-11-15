@@ -52,9 +52,9 @@ Avance de cada integrante, contado desde las casillas de su plan en [`planes/`](
 |---|---|---|---|
 | [Enzo · Integración y app](planes/1-enzo.md) | `enzo-app` | `▓▓▓▓▓▓▓▓░░` 85% | 44/52 |
 | [Santi · Suelo, satélite e IA](planes/2-santi.md) | `santi-datos-ia` | `▓▓▓▓▓▓▓▓░░` 76% | 22/29 |
-| [Vale · Campo y agronomía](planes/3-vale.md) | `vale-rotaciones` | `▓▓▓▓▓▓▓░░░` 71% | 17/24 |
-| [Sara · Kit Arduino y relato](planes/4-sara.md) | `sara-arduino-entrega` | `▓▓░░░░░░░░` 20% | 5/25 |
-| **Total** | | `▓▓▓▓▓▓▓░░░` **68%** | **88/130** |
+| [Vale · Campo y agronomía](planes/3-vale.md) | `vale-rotaciones` | `▓▓▓▓▓▓▓░░░` 72% | 18/25 |
+| [Sara · Kit Arduino y relato](planes/4-sara.md) | `sara-arduino-entrega` | `▓▓░░░░░░░░` 19% | 5/26 |
+| **Total** | | `▓▓▓▓▓▓▓░░░` **67%** | **89/132** |
 <!-- AUTO:AVANCE:FIN -->
 
 ### Lo más urgente
@@ -120,12 +120,12 @@ Sale solo de las casillas sin tildar de cada plan. Panorama completo y riesgos: 
 - Validar las zonas 1 a 4 con un productor o un agrónomo del INTA, o dejarlas "sin validar" a propósito y decirlo en la presentación _(Agregadas por Enzo)_
 - Corregir en la evidencia de la Zona 5 el dato que cita humedad en raíces: hoy apunta a los meses de clima, que no tienen ese campo _(Agregadas por Enzo)_
 - Revisar los 15 nombres de las rotaciones en inglés (`web/textos-en.js`, sección `rotaciones`, D-35): los tradujo el equipo y falta tu revisión agronómica _(Agregadas por Enzo)_
-- Subir la transcripción de lo que comentó el ingeniero sobre las imágenes de dron (D-37), por ejemplo en `docs/` _(Agregadas por Enzo)_
+- Subir la minuta original del ingeniero (`minuta_mejoras_app_drones_sensores_2026-11-15.md`), que la hoja de ruta cita como base y no está en el repositorio _(Agregadas por Enzo)_
 
 </details>
 
 <details>
-<summary><b>Sara</b>: 20 pendientes (<a href="planes/4-sara.md">plan completo</a>)</summary>
+<summary><b>Sara</b>: 21 pendientes (<a href="planes/4-sara.md">plan completo</a>)</summary>
 
 - Pasarte a tu rama (`git switch sara-arduino-entrega`) _(Hito 0)_
 - Confirmar la hora exacta y el formato de la entrega en la guía del participante (desde el celular, porque en la PC falla el sitio) y avisar al grupo _(Hito 0)_
@@ -147,6 +147,7 @@ Sale solo de las casillas sin tildar de cada plan. Panorama completo y riesgos: 
 - Calibrar el LM35 con 2 temperaturas y el umbral de salitre con las bandejas A, B y C (pasos en `arduino/README.md`) _(Armado y prueba del kit)_
 - Crear la carpeta `entrega/` con el guion, el video o las diapositivas y la página del proyecto _(Agregadas por Enzo)_
 - Decidir el plan B del kit: si las bandejas no llegan, grabar lecturas reales en `data/arduino_bandejas_demo.json` y marcarlas como grabadas _(Agregadas por Enzo)_
+- Cerrar el guion con "cómo seguimos" (D-37): de la zona al lote, con el dron como el escalón que sigue después de Landsat. Base: `docs/superpowers/plans/2026-11-15-hoja-de-ruta-producto-vi... _(Agregadas por Enzo)_
 
 </details>
 <!-- AUTO:PENDIENTE:FIN -->
@@ -154,7 +155,7 @@ Sale solo de las casillas sin tildar de cada plan. Panorama completo y riesgos: 
 **Últimas decisiones:**
 
 <!-- AUTO:DECISIONES:INICIO -->
-- **D-37**: Sugerencia de un ingeniero: imágenes de dron actualizadas; esperando la transcripción de Vale
+- **D-37**: Sugerencia de un ingeniero: imágenes de dron y pasar de la zona al lote; hoja de ruta de Vale
 - **D-36**: Corrección: el visor del Reporte no mostraba la imagen Landsat
 - **D-35**: Botón de idioma ES/EN, etapa 1: lo que se ve primero, en inglés
 - **D-34**: Inicio en la PC y el pronóstico de Meteomatics entra en la app
@@ -228,7 +229,7 @@ BioSat/
 │   │   ├── 05_Logistica_Antropico_y_Servicios/ (2 archivos)  <-- B26-B29, B32-B37: caminos, población
 │   │   └── 06_Embeddings_IA_AlphaEarth/ (2 archivos)         <-- Embeddings AlphaEarth 64D (DeepMind)
 │   └── imagenes/ (23 archivos)                               <-- Compuestos de mediana Landsat del visor y mapa de la zonificación (Earth Engine)
-├── docs/ (35 archivos)                                       <-- Documentación del equipo
+├── docs/ (36 archivos)                                       <-- Documentación del equipo
 ├── ia_desmonte/                                              <-- Pipeline de datos reales con Earth Engine: suelo, desmontes, zonificación, suelo pelado e imágenes
 │   ├── __init__.py
 │   ├── comun.py

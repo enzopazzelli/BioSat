@@ -1,6 +1,6 @@
 # Estado del proyecto BioSat
 
-**Corte:** domingo 15/11/2026, 12:50 (se sumaron D-33, D-36 y la sugerencia de imágenes de dron; el avance del kit y de la entrega no se volvió a relevar desde las 10:00) · **Rama:** `main` · **App publicada:** https://enzopazzelli.github.io/BioSat/web/
+**Corte:** domingo 15/11/2026, 13:00 (se sumaron D-33, D-36 y D-37, la hoja de ruta del ingeniero; el avance del kit y de la entrega no se volvió a relevar desde las 10:00) · **Rama:** `main` · **App publicada:** https://enzopazzelli.github.io/BioSat/web/
 
 Este panorama se escribió a mano a partir de `main`, los planes de [`planes/`](../planes/README.md) y el contenido real de `data/`. El avance por persona se actualiza solo en el [README](../README.md).
 
@@ -18,13 +18,13 @@ Este panorama se escribió a mano a partir de `main`, los planes de [`planes/`](
 | F6 · Arduino | Sara (en un simulador web) y Enzo | **Código listo, armado en curso** | Sketch compilado, lector Web Serial sumado a la app y probado con un puerto simulado, esquema y guía de armado en protoboard con el kit para principiantes (D-32). El 15/11 Sara lo está armando en un simulador web; Enzo avanzó con el kit el 14/11 | Probar en la placa real, calibrar y grabar lecturas reales. Si la demo usa el simulador, sus lecturas son simuladas y la pantalla del kit tiene que decirlo (D-33) |
 | F7 · Entrega | Sara (coordina) | **Sin empezar** | Nada | Guion, video o diapositivas, página del proyecto, declaración de IA, ensayos |
 
-Avance contado de las casillas de los planes: **Enzo 85%, Santi 76%, Vale 71%, Sara 20%** (88 de 130 casillas, 68%), según el README del 15/11 a las 12:50. Los planes pasaron de 108 a 130 casillas desde el corte del sábado; entre las nuevas están las de la app para el celular (D-31) las del idioma (D-35) y la de las imágenes de dron (D-37). Las 3 casillas del armado del kit están en el plan de Sara, pero las hace Enzo. Es una medida aproximada: no pesa igual cada tarea.
+Avance contado de las casillas de los planes: **Enzo 85%, Santi 76%, Vale 72%, Sara 19%** (89 de 132 casillas, 67%), según el README del 15/11 a las 13:00. Los planes pasaron de 108 a 132 casillas desde el corte del sábado; entre las nuevas están las de la app para el celular (D-31) las del idioma (D-35) y las de la hoja de ruta del ingeniero (D-37). Las 3 casillas del armado del kit están en el plan de Sara, pero las hace Enzo. Es una medida aproximada: no pesa igual cada tarea.
 
 ---
 
 ## 2. Qué funciona hoy en la app
 
-Las **155 pruebas automáticas de la app** (`node --test "tests/*.test.js"`) y las 39 de `ia_desmonte/pruebas` están en verde, con D-33 y D-36 incluidos. La versión nueva se revisó a 390 px con `scripts/captura-movil.mjs` y en un celular de verdad. **Falta probarla sin internet en el celular.**
+Las **158 pruebas automáticas de la app** (`node --test "tests/*.test.js"`) y las 39 de `ia_desmonte/pruebas` están en verde, con D-33, D-36 y D-37 incluidos. La versión nueva se revisó a 390 px con `scripts/captura-movil.mjs` y en un celular de verdad. **Falta probarla sin internet en el celular.**
 
 - **Asistente de inicio:** 4 preguntas con el mapa real de Santiago del Estero. La pregunta 1 nombra la característica de la zona y abajo sus localidades.
 - **Inicio** (`web/index.html`): semáforo de la zona en el mes actual (o de la sonda, después de medir), lo que mejor encaja con la próxima siembra y la tira de 12 meses, y la barra con Medir con la sonda y WhatsApp.
@@ -101,6 +101,7 @@ Los `null` se muestran en la app como "sin dato". No hay que rellenarlos a mano:
 - El Inicio en dos columnas en la PC y el pronóstico de Meteomatics en la app, con actualización diaria (D-34).
 - Botón de idioma ES/EN, etapa 1: el asistente, el Inicio, el marco del Reporte, el kit y la guía del campo en inglés, con `?lang=en` para mandar el link a un jurado (D-35).
 - La app ya no muestra cosas que no son ciertas (D-33): "sin cobertura vegetal activa" con el texto de Vale, la tabla de métodos real, sin fuentes falsas y los 5 grupos con nombre. Integrado y publicado.
+- Hoja de ruta de Vale integrada (D-37) y el semáforo ya no dice "lo que pide el cultivo": dice lluvia contra la evaporación de referencia (ET0).
 - El visor del Reporte vuelve a mostrar la imagen Landsat: Leaflet armaba el mapa con el Reporte oculto, en 0 px (D-36). Venía roto desde D-31.
 
 ---
@@ -145,4 +146,4 @@ La lista completa, por persona, está en el [README](../README.md#lo-que-falta-p
 1. **Plan B para el kit:** si el armado no llega a tiempo, ¿se graban lecturas a mano en `arduino_bandejas_demo.json` y se muestra la pantalla del kit con "lectura grabada"? La pantalla ya lo soporta, pero los números tienen que ser reales y estar marcados como tales.
 2. **Quién cubre a Sara en la entrega:** hoy Sara tiene el 100% de las tareas de la entrega y no empezó ninguna.
 3. **Cómo se presenta la IA:** igual que arriba, que el equipo cuente lo mismo en el video y en la página.
-4. **Imágenes de dron (D-37, sugerencia del 15/11):** un ingeniero nos sugirió sumar imágenes de dron actualizadas como un posible gran diferencial, porque la app solo trabaja con datos históricos. Vale va a subir la transcripción de lo que dijo (documentación; todavía no hay imágenes). Hay que leerla y decidir si la idea entra en la app, en la presentación o en las dos. Detalle: bitácora, D-37.
+4. ~~**Imágenes de dron (D-37):**~~ **Decidido (Enzo, 15/11):** la hoja de ruta de Vale (de la zona al lote, con el dron como una fuente más) va al pitch como "cómo seguimos" y no se construye ahora. Se aplicó su hallazgo sobre el semáforo del agua. Falta que Vale suba la minuta del ingeniero. Detalle: bitácora, D-37.
