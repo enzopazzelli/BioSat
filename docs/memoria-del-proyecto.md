@@ -18,9 +18,11 @@ BioSat es una app web estática (HTML y JavaScript, sin proceso de compilación,
 
 | Archivo | Qué hace |
 |---|---|
-| `index.html`, `app.js`, `estilos.css` | La app: 5 pasos (Tu campo, Tu año, Comparar rotaciones, ¿Y si el clima viene peor?, Antes de decidir) |
+| `index.html`, `app.js`, `estilos.css` | La app (D-31): **Inicio** para el celular (semáforo de la zona o de la sonda, lo que mejor encaja con la tira de 12 meses, Medir con la sonda y WhatsApp) y **Reporte** completo en una página (`#reporte`, 7 secciones abiertas, Guardar PDF y Compartir) |
+| `completo.html` | La página de antes (5 pasos), conservada como **vista detallada** del reporte completo. Usa el mismo `app.js`; el asistente no se abre solo |
+| `inicio-logica.js` | Lógica del Inicio sin interfaz y con pruebas: semáforo (umbrales de la bitácora D-31), próxima siembra, meses pelados, textos de WhatsApp |
 | `asistente-logica.js`, `asistente.js`, `asistente.css` | Asistente de inicio de 4 preguntas con el mapa real. Aparece la primera vez; `?asistente=1` lo fuerza. Respuestas en `localStorage` (`biosat.asistente.v1`), tolerante a que esté bloqueado |
-| `frases-logica.js` | Una frase simple por paso (2 a 5), calculada con los datos; si falta un dato, no se muestra |
+| `frases-logica.js` | Frases calculadas con los datos (si falta un dato, no se muestran): una por paso y las conclusiones del Reporte (meses más duros, suelo y monte) |
 | `kit.html`, `kit.js`, `kit-logica.js`, `kit.css` | Pantalla del kit para la mesa del jurado: 3 bandejas, teclas A, B y C, guarda sola al estabilizarse |
 | `campo.html`, `campo.css` | Guía "Del kit al campo": del kit a estaciones fijas con LoRa |
 | `img/`, `vendor/`, `datos-borrador/` | Imágenes Landsat de respaldo (Planetary Computer), Leaflet, rotaciones borrador de respaldo |

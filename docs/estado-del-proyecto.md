@@ -11,7 +11,7 @@ Este panorama se escribió a mano a partir de `main`, los planes de [`planes/`](
 | Frente | Quién | Estado | Qué hay | Qué falta |
 |---|---|---|---|---|
 | F1 · Clima | Enzo | **Listo** | `clima_zonas.json` completo (1981-2025, 5 zonas, ET0, normal contra reciente) | Nada |
-| F5 · App y motor | Enzo | **Casi listo** | App publicada con calendario, 3 rotaciones, simulador, visor, desmonte, zonificación, pantalla del kit y guía del campo | Integrar el lector de Sara, ensayar la demo |
+| F5 · App y motor | Enzo | **Casi listo** | Inicio simple para el celular (semáforo, lo que mejor encaja, sonda, WhatsApp) y Reporte completo con PDF (D-31); la página de antes queda como vista detallada | Probar en un celular de verdad, revisión final e integrar a `main`; ensayar la demo |
 | F4 · Rotaciones | Vale | **Casi listo** | 15 rotaciones (5 zonas × 3). Zona 5 validada por un productor | Validar las zonas 1 a 4; revisar textos de la app; glosario |
 | F2 · Suelo y zonificación | Santi + Enzo (D-30) | **Listo, con datos reales** | Zonificación AIZAL en 5 grupos, cargada | `suelo_zonas.json` y `diagnostico_landsat_ia.json` vacíos; visor de Earth Engine sin publicar |
 | F3 · Modelo de desmontes | Santi + Enzo (D-30) | **Listo, con datos reales** | Modelo validado en el tiempo, riesgo y proyección por zona | Índice de fragilidad; revisar métricas (ver 4) |

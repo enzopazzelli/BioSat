@@ -179,3 +179,30 @@ Según la página oficial de premios (`NASA Space Apps Challenge - awards.mhtml`
     - La caída entre las dos cifras se explica como hipótesis (Ley de Bosques), no como hecho. Para probarla hay un plan listo para que lo ejecute alguien más adelante: `docs/superpowers/plans/2026-11-15-validacion-ley-de-bosques.md` (entrenar dentro del régimen de la ley, 2012 → 2017, y sumar la categoría del OTBN como predictor).
     - Las etiquetas de Hansen se leen a 30 m: a 250 m el promedio inflaba la tasa de desmonte al 23 %.
   - **Diseño y plan:** `docs/superpowers/specs/2026-11-14-datos-reales-design.md` y `docs/superpowers/plans/2026-11-14-datos-reales.md`.
+- **D-31 (App para el celular: Inicio simple y Reporte completo):**
+  - **Por qué:** a Enzo le dijeron que la web mostraba demasiados datos juntos y podía confundir. Sara consultó a una productora: en los primeros 30 segundos tiene que ver un semáforo, qué le conviene sembrar y un botón para medir con la sonda. Val sumó que primero hay que configurar el campo, con el asistente.
+  - **Qué se hizo:**
+    - **Inicio** (`web/index.html`): banda del semáforo con ícono y palabra (BIEN, ATENCIÓN o CUIDADO), una razón y una acción; "Lo que mejor encaja" (la primera del motor, nunca "Sembrá X") con la próxima siembra, los meses de suelo pelado ("2 → 0") y la tira de 12 meses; y la barra fija con Medir con la sonda y WhatsApp.
+    - **Reporte** (`#reporte`): una página con 7 secciones abiertas, cada una con un título que es su conclusión y un plegable "Para tu ingeniero"; Guardar PDF (imprime solo el Reporte) y Compartir.
+    - **Vista detallada:** la página de antes se conserva con su diseño en `web/completo.html`, a pedido de Enzo, como otra forma de ver el reporte completo.
+    - **Asistente:** la pregunta 1 nombra la característica de la zona ("Área de riego del Río Dulce") y abajo sus localidades; antes mostraba una ciudad como si fuera toda la zona. Con `?asistente=0` no se abre solo (para links de demo y capturas).
+  - **Semáforo:**
+    - **Antes de medir**, muestra lo típico de la zona en el mes actual (clima 2021-2025 y lotes pelados de Landsat). Hay 4 señales y gana la peor:
+
+      | Señal | Atención | Cuidado |
+      |---|---|---|
+      | Falta de agua | 50 a 100 mm | más de 100 mm |
+      | Días de más de 35 °C | 5 a 10 | más de 10 |
+      | Días con helada | 2 a 5 | más de 5 |
+      | Lotes con suelo pelado | 25 % a 50 % | 50 % o más |
+
+    - **Después de medir**, manda la lectura de la sonda ("Tu lote, medido hoy").
+    - **Los umbrales son un criterio del equipo**, no una norma agronómica, y la app lo dice.
+  - **Hallazgos al revisar:**
+    - Con las prioridades por defecto, en la Zona 5 el motor pone primera la rotación actual, y la app lo dice así.
+    - Había textos viejos (suelo "AIZAL V4", "pendiente", "borrador") que se corrigieron en las dos páginas, con una prueba que los vigila.
+    - La revisión a 390 px se hace con `scripts/captura-movil.mjs`, que emula un celular, porque Chrome sin ventana no baja de 500 px.
+  - **Diseño, maquetas y plan:**
+    - `docs/superpowers/specs/2026-11-15-app-celular-y-reporte-design.md`;
+    - https://claude.ai/artifact/2JyKEp1U46KhQXMCiM2ZSz;
+    - `docs/superpowers/plans/2026-11-15-app-celular-y-reporte.md`.
