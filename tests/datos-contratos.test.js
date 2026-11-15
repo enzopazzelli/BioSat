@@ -34,3 +34,16 @@ test('suelo_zonas.json: 5 zonas, cada campo con valor, código, confianza y rang
     assert.ok(['tierra agropecuaria', 'zona completa'].includes(j.zonas[z].area_medida), `${z}.area_medida`);
   }
 });
+
+test('zonificacion_aizal.json: 5 grupos con perfil real, área que suma 100 y comparación con las 5 zonas', () => {
+  const j = leer('zonificacion_aizal.json');
+  metaCompleta(j.meta, 'zonificacion');
+  assert.equal(j.meta.k, 5);
+  assert.ok(typeof j.meta.silueta_media === 'number' && j.meta.silueta_media > -1 && j.meta.silueta_media <= 1);
+  assert.equal(j.grupos.length, 5);
+  const area = j.grupos.reduce((s, g) => s + g.area_pct, 0);
+  assert.ok(area > 99 && area < 101, `área total ${area}`);
+  for (const g of j.grupos) for (const v of Object.values(g.perfil)) assert.ok(numONull(v));
+  assert.deepEqual(Object.keys(j.comparacion_biosat), ZONAS);
+  assert.ok(fs.existsSync(path.join(__dirname, '..', j.meta.imagen.archivo)), 'falta el PNG de la zonificación');
+});
