@@ -75,7 +75,10 @@
     oyentes.forEach(fn => { try { fn(actual); } catch (e) { console.error(e); } });
   }
 
-  const nf = (n, d = 0) => Number(n).toLocaleString(I.locale(actual), {minimumFractionDigits: d, maximumFractionDigits: d});
+  // Una página que sigue en español (data-idioma-fijo="es", la vista detallada) mantiene el formato español
+  // aunque se haya elegido inglés: si no, mezclaría "33.7" con texto en español.
+  const fijo = document.documentElement.getAttribute('data-idioma-fijo');
+  const nf = (n, d = 0) => Number(n).toLocaleString(I.locale(fijo || actual), {minimumFractionDigits: d, maximumFractionDigits: d});
   const rotacion = id => (actual === 'en' && EN.rotaciones[id]) || null;
 
   // pintar(): dibuja los botones ES | EN que aparecieron después de cargar (por ejemplo, en el asistente).
