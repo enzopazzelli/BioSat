@@ -52,6 +52,7 @@ _Salen del repaso del repo. Cada uno decide cómo abordarlas; si no corresponden
 - [ ] Conseguir por escrito el permiso del productor para nombrar el campo y usar sus frases (la entrevista lo deja pendiente)
 - [ ] Validar las zonas 1 a 4 con un productor o un agrónomo del INTA, o dejarlas "sin validar" a propósito y decirlo en la presentación
 - [ ] Corregir en la evidencia de la Zona 5 el dato que cita humedad en raíces: hoy apunta a los meses de clima, que no tienen ese campo
+- [ ] Revisar los 15 nombres de las rotaciones en inglés (`web/textos-en.js`, sección `rotaciones`, D-35): los tradujo el equipo y falta tu revisión agronómica
 
 ## Listo cuando
 

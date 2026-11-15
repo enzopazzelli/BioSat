@@ -99,3 +99,14 @@ test('el error de la sonda se explica en lenguaje simple', () => {
   assert.match(L.TEXTOS.sondaError, /USB/);
   assert.doesNotMatch(L.TEXTOS.sondaError, /Failed|requestPort/);
 });
+
+test('la razón del semáforo une las señales con TEXTOS.y y formatea con TEXTOS.locale (para el inglés, D-35)', () => {
+  const y = L.TEXTOS.y, loc = L.TEXTOS.locale;
+  assert.equal(y, ' y ');
+  assert.equal(loc, 'es-AR');
+  try {
+    L.TEXTOS.y = ' and '; L.TEXTOS.locale = 'en-US';
+    assert.match(L.semaforoZona(10, {falta: 92, d35: 8, helada: 0}, 0.382).razon, / and /);
+    assert.match(L.semaforoSonda({semaforo: 'rojo', temp_suelo_c: 38.5}).razon, /38\.5/);
+  } finally { L.TEXTOS.y = y; L.TEXTOS.locale = loc; }
+});

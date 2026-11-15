@@ -62,7 +62,8 @@ Que un productor recorra los 5 pasos de la app sin ayuda, con números de clima 
 - [x] Asistente de inicio de 4 preguntas (`web/asistente.js`, `web/asistente-logica.js`)
 - [x] Mapa real de Santiago del Estero en la pregunta 1 (`data/santiago_mapa.json`)
 - [x] App más fácil de entender: frases simples, detalle técnico plegado y letra más grande
-- [ ] Botón de idioma EN/ES en toda la app *(etapa siguiente, con su propio diseño)*
+- [x] Botón de idioma EN/ES en toda la app *(etapa 1 hecha, D-35: asistente, Inicio, marco del Reporte, kit y guía del campo)*
+- [ ] Idioma, etapa 2: el cuerpo del Reporte (textos dentro de `app.js`), los plegables, la vista detallada y los textos largos de las rotaciones (con la revisión de Vale)
 
 ### Agregadas por Enzo · 14/11 noche (a revisar con cada uno)
 _Salen del repaso del repo. Cada uno decide cómo abordarlas; si no corresponden, se borran._

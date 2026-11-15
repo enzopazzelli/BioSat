@@ -154,13 +154,14 @@ Perfil medio de cada grupo (`data/zonificacion_aizal.json`). En negrita, el valo
      ZONA=zona_2_secano_este node scripts/captura-movil.mjs "http://localhost:8000/web/index.html#reporte" reporte.png 1400
      ```
    - Revisar el semáforo, la sección 4 y la tabla de métodos. Repetir con la vista detallada (`web/completo.html`).
-9. **Documentar** (regla del proyecto):
+9. **Inglés (D-35):** si cambiás un texto en español que tiene clave en `web/textos-en.js` (por ejemplo, `senal.pelado`, `accion.pelado` y `razonCorta.pelado` de `inicio-logica.js`, o la tabla de métodos), actualizá también el inglés con el mismo sentido ("fields without green (bare or with dry residue)"). La prueba `tests/textos-en.test.js` avisa si una clave sobra.
+10. **Documentar** (regla del proyecto):
    - completar D-33 en `docs/reglas-y-bitacora.md` con la forma elegida y quién la hizo;
    - sumar en `docs/contratos-de-datos.md` §3 que `meses_suelo_pelado` y `fraccion_pelado` miden "sin verde" (pelado o rastrojo seco);
    - actualizar `docs/estado-del-proyecto.md`;
    - regenerar el README con `python -X utf8 scripts/actualizar_readme.py`;
    - si cambian los nombres AIZAL, regenerar `docs/datos-y-metodos.md` con `ia_desmonte/informe.py`.
-10. **Integrar:** pedirle a Enzo que lo integre a `main`, antes de las 15:00.
+11. **Integrar:** pedirle a Enzo que lo integre a `main`, antes de las 15:00.
 
 ## Listo cuando
 

@@ -53,15 +53,34 @@
     return typeof u === 'number' ? u : UMBRAL_SALITRE_POR_DEFECTO;
   }
 
+  // Textos de la pantalla del kit (kit.js y la frase de cierre), con claves para el inglés (D-35, web/textos-en.js).
+  const TEXTOS = {
+    cierreMas: 'El suelo pelado está {d} °C más caliente que el cubierto. El satélite no lo ve: mide el aire de 50 km.',
+    cierreIgual: 'Pelado y cubierto marcan casi lo mismo ({d} °C): falta que la lámpara caliente las bandejas.',
+    cierreSalitre: ' En la bandeja salitrosa, la conductividad muy alta avisa posible salitre.',
+    muyAlta: ' · muy alta',
+    grabada: 'lectura grabada',
+    guardada: 'guardada {hora}',
+    enVivo: '● en vivo · estabilizando',
+    sinLectura: 'sin lectura',
+    esperando: 'esperando',
+    conectar: 'Conectar Arduino',
+    conectado: 'Arduino conectado',
+    noConecto: 'No se pudo conectar',
+    noSoportado: 'Este navegador no permite leer el puerto USB: usá Chrome o Edge',
+    sinLector: 'No se encontró el lector (arduino/lector-web-serial.js)',
+    satelite: 'Satélite (NASA POWER, celda de 50 km): máxima media del aire en {mes}, {t} °C.{nueveKm} ¿Y el suelo?',
+    sinNasa: 'Sin datos de NASA POWER para esta zona.',
+    sinClima: 'Zona sin datos de clima',
+    meses: ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre']
+  };
+  const fmt = (t, o) => t.replace(/\{(\w+)\}/g, (_, k) => o[k]);
+
   function fraseCierre(bandejas, umbral) {
     if (!bandejas.A || !bandejas.C) return null;
     const d = Math.round(bandejas.A.lectura.temp_suelo_c - bandejas.C.lectura.temp_suelo_c);
-    let frase = d >= 1
-      ? `El suelo pelado está ${d} °C más caliente que el cubierto. El satélite no lo ve: mide el aire de 50 km.`
-      : `Pelado y cubierto marcan casi lo mismo (${d} °C): falta que la lámpara caliente las bandejas.`;
-    if (bandejas.B && bandejas.B.lectura.agua_raw >= umbral) {
-      frase += ' En la bandeja salitrosa, la conductividad muy alta avisa posible salitre.';
-    }
+    let frase = fmt(d >= 1 ? TEXTOS.cierreMas : TEXTOS.cierreIgual, {d});
+    if (bandejas.B && bandejas.B.lectura.agua_raw >= umbral) frase += TEXTOS.cierreSalitre;
     return frase;
   }
 
@@ -83,7 +102,7 @@
 
   const K = {BANDEJAS_ORDEN, CLAVE_GRABADA, crearEstado, reiniciar, elegirBandeja, registrarLectura, guardarGrabada,
              estaEstable, progresoEstabilidad, lecturaGrabada, umbralSalitre, fraseCierre, zonaDesdeParametro,
-             letraDesdeTecla, aireSatelite};
+             letraDesdeTecla, aireSatelite, TEXTOS};
   if (typeof module !== 'undefined' && module.exports) module.exports = K;
   else window.KitLogica = K;
 })();

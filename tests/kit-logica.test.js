@@ -80,3 +80,14 @@ test('aire del satélite para el mes', () => {
   assert.deepEqual(K.aireSatelite(clima, 'z', 11), {tmax_c: 30, nombreZona: 'Secano'});
   assert.equal(K.aireSatelite(clima, 'otra', 11), null);
 });
+
+test('la frase de cierre sale de K.TEXTOS (para el inglés, D-35)', () => {
+  const T = K.TEXTOS, mas = T.cierreMas;
+  assert.equal(mas, 'El suelo pelado está {d} °C más caliente que el cubierto. El satélite no lo ve: mide el aire de 50 km.');
+  assert.equal(T.meses.length, 12);
+  const b = {A: {lectura: {temp_suelo_c: 40}}, C: {lectura: {temp_suelo_c: 21}}};
+  try {
+    T.cierreMas = 'Bare soil is {d} °C hotter than covered soil.';
+    assert.equal(K.fraseCierre(b, 700), 'Bare soil is 19 °C hotter than covered soil.');
+  } finally { T.cierreMas = mas; }
+});

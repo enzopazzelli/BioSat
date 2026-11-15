@@ -3,10 +3,13 @@
 (function () {
   const K = window.KitLogica;
   const $ = s => document.querySelector(s);
-  const MES_L = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
-  const nf = (n, d = 0) => Number(n).toLocaleString('es-AR', {minimumFractionDigits: d, maximumFractionDigits: d});
+  const T = K.TEXTOS;   // textos en español; web/idioma.js los cambia por los de web/textos-en.js (D-35)
+  const fmt = (t, o) => t.replace(/\{(\w+)\}/g, (_, k) => o[k]);
+  const nf = (n, d = 0) => window.Idioma ? Idioma.nf(n, d)
+    : Number(n).toLocaleString('es-AR', {minimumFractionDigits: d, maximumFractionDigits: d});
 
   let estado = K.crearEstado(), demo = null, umbral = 700, conectado = false;
+  let zona = null, mes = 1, aire = null, tHoy = null, estadoBoton = 'conectar';   // para redibujar al cambiar de idioma
   const sinLectura = new Set();   // bandejas elegidas sin Arduino y sin lectura grabada
 
   async function cargarJSON(ruta) {
@@ -15,7 +18,7 @@
     return r.json();
   }
 
-  const textoAgua = l => l.agua_raw == null ? '—' : nf(l.agua_raw) + (l.agua_raw >= umbral ? ' · muy alta' : '');
+  const textoAgua = l => l.agua_raw == null ? '—' : nf(l.agua_raw) + (l.agua_raw >= umbral ? T.muyAlta : '');
 
   function dibujar() {
     for (const letra of K.BANDEJAS_ORDEN) {
@@ -33,8 +36,8 @@
       prog.hidden = !activa;
       if (activa) prog.firstElementChild.style.width = Math.round(K.progresoEstabilidad(estado.buffer) * 100) + '%';
       el.querySelector('.b-estado').textContent = g
-        ? (g.origen === 'grabada' ? 'lectura grabada' : 'guardada ' + g.hora)
-        : activa ? '● en vivo · estabilizando' : sinLectura.has(letra) ? 'sin lectura' : 'esperando';
+        ? (g.origen === 'grabada' ? T.grabada : fmt(T.guardada, {hora: g.hora}))
+        : activa ? T.enVivo : sinLectura.has(letra) ? T.sinLectura : T.esperando;
     }
     document.querySelectorAll('[data-elegir]').forEach(b => b.setAttribute('aria-pressed', String(estado.activa === b.dataset.elegir)));
     const frase = K.fraseCierre(estado.bandejas, umbral);
@@ -66,12 +69,20 @@
     if (pedido && pedido.catch) pedido.catch(() => {});
   }
 
+  let tituloBoton = null;   // clave del aviso del botón cuando no se puede leer el USB
+  function textoBoton() {
+    const btn = $('#btnConectar');
+    btn.textContent = T[estadoBoton];
+    if (tituloBoton) btn.title = T[tituloBoton];
+  }
+
   function prepararArduino() {
     const lector = window.BioSatArduino, btn = $('#btnConectar');
+    textoBoton();
     if (!(lector && typeof lector.soportado === 'function' && lector.soportado())) {
       btn.disabled = true;
-      btn.title = lector ? 'Este navegador no permite leer el puerto USB: usá Chrome o Edge'
-                         : 'No se encontró el lector (arduino/lector-web-serial.js)';
+      tituloBoton = lector ? 'noSoportado' : 'sinLector';
+      textoBoton();
       return;
     }
     btn.disabled = false;
@@ -80,12 +91,12 @@
       try {
         await lector.conectar(lectura => {
           // Se da por conectado con la primera lectura (el lector puede quedarse leyendo sin terminar).
-          if (!conectado) { conectado = true; btn.textContent = 'Arduino conectado'; btn.disabled = true; }
+          if (!conectado) { conectado = true; estadoBoton = 'conectado'; textoBoton(); btn.disabled = true; }
           estado = K.registrarLectura(estado, lectura, new Date());
           dibujar();
         });
       } catch (err) {
-        btn.textContent = 'No se pudo conectar';
+        estadoBoton = 'noConecto'; textoBoton();
         btn.title = err.message;
       }
     });
@@ -99,21 +110,28 @@
     ]);
     demo = grabadas;
     umbral = K.umbralSalitre(demo);
-    const zona = K.zonaDesdeParametro(new URLSearchParams(location.search).get('zona'), clima ? Object.keys(clima.zonas) : []);
-    const mes = new Date().getMonth() + 1;
-    const aire = clima ? K.aireSatelite(clima, zona, mes) : null;
-    $('#titulo').textContent = aire ? aire.nombreZona : 'Zona sin datos de clima';
+    zona = K.zonaDesdeParametro(new URLSearchParams(location.search).get('zona'), clima ? Object.keys(clima.zonas) : []);
+    mes = new Date().getMonth() + 1;
+    aire = clima ? K.aireSatelite(clima, zona, mes) : null;
     // Escalera de escalas (D-34): NASA POWER a 50 km (lo típico) → Meteomatics a 9 km (hoy) → la sonda en el suelo.
     // La línea de 9 km aparece solo si el pronóstico trae el día de hoy: uno vencido no se muestra.
     const P = window.PronosticoLogica, hoy = P ? P.hoyLocalISO(new Date()) : null;
     const zm = P && meteo && Array.isArray(meteo.zonas) ? meteo.zonas.find(x => x.id === zona) : null;
-    const tHoy = zm ? P.maximaDeHoy(P.resumen(zm.pronostico_7_dias, hoy), hoy) : null;
-    const nueveKm = tHoy === null ? '' : ` ${P.TEXTOS.kitHoy.replace('{t}', nf(tHoy, 1))}`;
-    $('#satelite').textContent = aire
-      ? `Satélite (NASA POWER, celda de 50 km): máxima media del aire en ${MES_L[mes - 1]}, ${nf(aire.tmax_c, 1)} °C.${nueveKm} ¿Y el suelo?`
-      : 'Sin datos de NASA POWER para esta zona.';
+    tHoy = zm ? P.maximaDeHoy(P.resumen(zm.pronostico_7_dias, hoy), hoy) : null;
+    textosZona();
     prepararArduino();
     dibujar();
+  }
+
+  // Nombre de la zona y línea del satélite, en el idioma elegido (D-35). Los nombres de lugar no se traducen.
+  function textosZona() {
+    const P = window.PronosticoLogica, EN = window.TEXTOS_EN;
+    const enIngles = window.Idioma && Idioma.actual() === 'en' && EN && EN.modulos.zonas[zona];
+    $('#titulo').textContent = aire ? (enIngles ? EN.modulos.zonas[zona].nombre : aire.nombreZona) : T.sinClima;
+    const nueveKm = tHoy === null || !P ? '' : ` ${P.TEXTOS.kitHoy.replace('{t}', nf(tHoy, 1))}`;
+    $('#satelite').textContent = aire
+      ? fmt(T.satelite, {mes: T.meses[mes - 1], t: nf(aire.tmax_c, 1), nueveKm})
+      : T.sinNasa;
   }
 
   document.addEventListener('keydown', e => {
@@ -129,5 +147,10 @@
   $('#btnReiniciar').addEventListener('click', reiniciar);
   $('#btnCompleta').addEventListener('click', pantallaCompleta);
 
+  if (window.Idioma) {
+    Idioma.registrar('kit', T);
+    Idioma.registrar('pronostico', window.PronosticoLogica && PronosticoLogica.TEXTOS);
+    Idioma.alCambiar(() => { if (zona) textosZona(); textoBoton(); dibujar(); });
+  }
   iniciar();
 })();

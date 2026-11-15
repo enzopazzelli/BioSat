@@ -14,15 +14,16 @@
     antesVarias: 'Si elegís «{nombre}», son {n} cosas para revisar con tu agrónomo antes de decidir.',
     mesesDuros: '{a} y {b} son los meses más duros en tu zona.',
     mesesTranquilos: 'Ningún mes se destaca por calor, helada, falta de agua o suelo pelado en tu zona.',
-    sueloMonte: 'Suelo con pH {ph} y monte en el {monte} % de la zona.'
+    sueloMonte: 'Suelo con pH {ph} y monte en el {monte} % de la zona.',
+    meses: ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'],
+    locale: 'es-AR'   // formato de los números (D-35: en inglés, 'en-US')
   };
-  const MESES = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
 
   const fmt = (txt, datos) => String(txt).replace(/\{(\w+)\}/g, (_, k) => datos[k]);
   const numero = (n) => typeof n === 'number' && Number.isFinite(n);
   const texto = (s) => typeof s === 'string' && s.trim() !== '';
   // Mismo formato que nf() de app.js: sin decimales y con coma para los miles.
-  const entero = (n) => Number(n).toLocaleString('es-AR', {minimumFractionDigits: 0, maximumFractionDigits: 0});
+  const entero = (n) => Number(n).toLocaleString(TEXTOS.locale, {minimumFractionDigits: 0, maximumFractionDigits: 0});
 
   // Días de más de 40 °C: promedio 1991-2020 contra 2021-2025.
   function fraseCalor(pueblo, diasNormal, diasReciente) {
@@ -40,7 +41,7 @@
   // Paso 4: cuánto pesa un aumento de temperatura en los días de más de 40 °C.
   function fraseCalorMas(pueblo, grados, diasAntes, diasDespues) {
     if (!texto(pueblo) || !numero(grados) || grados <= 0 || !numero(diasAntes) || !numero(diasDespues)) return null;
-    const g = Number(grados).toLocaleString('es-AR', {minimumFractionDigits: 0, maximumFractionDigits: 1});
+    const g = Number(grados).toLocaleString(TEXTOS.locale, {minimumFractionDigits: 0, maximumFractionDigits: 1});
     const a = entero(diasAntes), b = entero(diasDespues);
     return a === b ? fmt(TEXTOS.calorMasIgual, {pueblo, g, a}) : fmt(TEXTOS.calorMas, {pueblo, g, a, b});
   }
@@ -60,13 +61,13 @@
     if (orden[0].nivel === 0) return TEXTOS.mesesTranquilos;
     const [a, b] = orden.slice(0, 2).map(x => x.i).sort((x, y) => x - y);
     const cap = (t) => t.charAt(0).toUpperCase() + t.slice(1);
-    return fmt(TEXTOS.mesesDuros, {a: cap(MESES[a]), b: MESES[b]});
+    return fmt(TEXTOS.mesesDuros, {a: cap(TEXTOS.meses[a]), b: TEXTOS.meses[b]});
   }
 
   // Reporte, sección 4: pH del suelo y % de la zona con monte.
   function fraseSueloMonte(ph, montePct) {
     if (!numero(ph) || !numero(montePct)) return null;
-    const uno = Number(ph).toLocaleString('es-AR', {minimumFractionDigits: 1, maximumFractionDigits: 1});
+    const uno = Number(ph).toLocaleString(TEXTOS.locale, {minimumFractionDigits: 1, maximumFractionDigits: 1});
     return fmt(TEXTOS.sueloMonte, {ph: uno, monte: entero(montePct)});
   }
 

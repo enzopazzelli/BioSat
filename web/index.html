@@ -13,6 +13,9 @@
 <link rel="stylesheet" href="asistente.css">
 <script src="vendor/leaflet.js"></script>
 <script src="../arduino/lector-web-serial.js" defer onerror="this.remove()"></script>
+<script src="idioma-logica.js" defer></script>
+<script src="textos-en.js" defer></script>
+<script src="idioma.js" defer></script>
 <script src="asistente-logica.js" defer></script>
 <script src="asistente.js" defer></script>
 <script src="frases-logica.js" defer></script>
@@ -35,7 +38,10 @@
             <h1 class="ini-zona" id="inicioZona">BioSat</h1>
             <p class="ini-localidades" id="inicioLocalidades"></p>
           </div>
-          <button type="button" class="ini-cambiar" id="btnCambiarInicio">Cambiar</button>
+          <div class="ini-acciones">
+            <div data-idioma-boton></div>
+            <button type="button" class="ini-cambiar" id="btnCambiarInicio" data-i18n="iniCambiar">Cambiar</button>
+          </div>
         </div>
         <div class="ini-nivel" id="inicioNivel" role="status" aria-live="polite"></div>
         <p class="ini-razon" id="inicioRazon"></p>
@@ -45,28 +51,28 @@
 
     <div class="ini-wrap ini-cuerpo">
       <section class="ini-mejor" aria-labelledby="inicioMejorT">
-        <p class="ini-eyebrow" id="inicioMejorT">Lo que mejor encaja en tu campo</p>
+        <p class="ini-eyebrow" id="inicioMejorT" data-i18n="iniMejorT">Lo que mejor encaja en tu campo</p>
         <h2 class="ini-rotacion" id="inicioRotacion"></h2>
         <div class="ini-cifras">
-          <div class="ini-cifra"><span>Próxima siembra</span><strong id="inicioSiembra">—</strong></div>
-          <div class="ini-cifra"><span>Meses de suelo pelado</span><strong id="inicioPelados">—</strong></div>
+          <div class="ini-cifra"><span data-i18n="iniSiembra">Próxima siembra</span><strong id="inicioSiembra">—</strong></div>
+          <div class="ini-cifra"><span data-i18n="iniPelados">Meses de suelo pelado</span><strong id="inicioPelados">—</strong></div>
         </div>
         <div class="ini-tira" id="inicioTira" role="img"></div>
         <p class="ini-validacion" id="inicioValidacion"></p>
       </section>
       <!-- Pronóstico de Meteomatics (D-34): lo que se anuncia para estos días -->
-      <section class="prono" id="inicioPronostico" aria-label="Esta semana en tu zona" hidden></section>
-      <p class="ini-pie">Apoya, no reemplaza, el criterio de tu ingeniero.</p>
+      <section class="prono" id="inicioPronostico" aria-label="Esta semana en tu zona" data-i18n-attr="aria-label:iniPronoAria" hidden></section>
+      <p class="ini-pie" data-i18n="iniPie">Apoya, no reemplaza, el criterio de tu ingeniero.</p>
     </div>
 
     <div class="ini-barra">
       <div class="ini-wrap">
         <div class="ini-botones">
-          <button type="button" class="ini-btn ini-btn-1" id="btnSonda"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v11"/><path d="M8 14h8l-1 7h-6z"/><path d="M5 6l2 2M19 6l-2 2"/></svg><span>Medir con la sonda</span></button>
+          <button type="button" class="ini-btn ini-btn-1" id="btnSonda"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v11"/><path d="M8 14h8l-1 7h-6z"/><path d="M5 6l2 2M19 6l-2 2"/></svg><span data-i18n="iniSonda">Medir con la sonda</span></button>
           <button type="button" class="ini-btn ini-btn-2" id="btnWhatsapp"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12a8.5 8.5 0 0 1-12.6 7.4L3 21l1.6-5.2A8.5 8.5 0 1 1 21 12z"/></svg><span>WhatsApp</span></button>
         </div>
         <p class="ini-aviso" id="inicioAviso" role="status" hidden></p>
-        <a class="ini-ir" id="irReporte" href="#reporte">Ver el reporte completo →</a>
+        <a class="ini-ir" id="irReporte" href="#reporte" data-i18n="iniIrReporte">Ver el reporte completo →</a>
       </div>
     </div>
   </section>
@@ -75,19 +81,23 @@
        La página de antes se conserva como vista detallada en completo.html (diseño 4.6 bis). -->
   <section id="vista-reporte" class="vista vista-reporte" aria-labelledby="repTitulo" hidden>
     <div class="wrap rep-wrap">
-    <a class="rep-volver" href="#inicio">← Volver</a>
+    <div class="rep-top">
+      <a class="rep-volver" href="#inicio" data-i18n="repVolver">← Volver</a>
+      <div data-idioma-boton></div>
+    </div>
     <header class="rep-cab">
-      <p class="eyebrow">Reporte de tu campo</p>
+      <p class="eyebrow" data-i18n="repEyebrow">Reporte de tu campo</p>
       <h1 id="repTitulo">Reporte de tu campo</h1>
       <p class="rep-sub" id="repSub"></p>
+      <p class="rep-aviso-en" data-solo-en hidden>Some details of this report are still in Spanish.</p>
     </header>
     <div class="rep-acciones">
-      <button type="button" class="btn" id="btnPdf">Guardar PDF</button>
-      <button type="button" class="btn btn-sec" id="btnCompartir">Compartir</button>
+      <button type="button" class="btn" id="btnPdf" data-i18n="repPdf">Guardar PDF</button>
+      <button type="button" class="btn btn-sec" id="btnCompartir" data-i18n="repCompartir">Compartir</button>
       <span id="compartido" role="status" class="hint"></span>
     </div>
-    <nav class="rep-chips" aria-label="Ir a una sección">
-      <a href="#calendario">1 · Tu año</a><a href="#comparar">2 · Rotaciones</a><a href="#simulador">3 · Clima peor</a><a href="#satelite">4 · Suelo y monte</a><a href="#sonda">5 · La sonda</a><a href="#antes-de-decidir">6 · Tu ingeniero</a><a href="#datos">7 · Los datos</a>
+    <nav class="rep-chips" aria-label="Ir a una sección" data-i18n-attr="aria-label:repChipsAria">
+      <a href="#calendario" data-i18n="repChip1">1 · Tu año</a><a href="#comparar" data-i18n="repChip2">2 · Rotaciones</a><a href="#simulador" data-i18n="repChip3">3 · Clima peor</a><a href="#satelite" data-i18n="repChip4">4 · Suelo y monte</a><a href="#sonda" data-i18n="repChip5">5 · La sonda</a><a href="#antes-de-decidir" data-i18n="repChip6">6 · Tu ingeniero</a><a href="#datos" data-i18n="repChip7">7 · Los datos</a>
     </nav>
     <div class="campo">
         <div class="card tu-campo" id="tuCampo"></div>
@@ -95,7 +105,7 @@
     </div>
 
     <section id="calendario" class="rep-sec" aria-labelledby="concl-1">
-      <p class="eyebrow">1 · Tu año, mes a mes</p>
+      <p class="eyebrow" data-i18n="repSec1">1 · Tu año, mes a mes</p>
       <h2 class="conclusion" id="concl-1">Tu año, mes a mes</h2>
       <p class="en-una-frase" id="fraseCalor" hidden></p>
       <p class="lede" id="calLede"></p>
@@ -129,7 +139,7 @@
     </section>
 
     <section id="comparar" class="rep-sec" aria-labelledby="concl-2">
-      <p class="eyebrow">2 · Tu rotación y 2 alternativas</p>
+      <p class="eyebrow" data-i18n="repSec2">2 · Tu rotación y 2 alternativas</p>
       <h2 class="conclusion" id="concl-2">Tu rotación y 2 alternativas</h2>
           <p class="en-una-frase" id="fraseMejor" hidden></p>
           <p class="lede" id="cmpLede"></p>
@@ -154,7 +164,7 @@
     </section>
 
     <section id="simulador" class="rep-sec" aria-labelledby="concl-3">
-      <p class="eyebrow">3 · ¿Y si el clima viene peor?</p>
+      <p class="eyebrow" data-i18n="repSec3">3 · ¿Y si el clima viene peor?</p>
       <h2 class="conclusion" id="concl-3">¿Y si el clima viene peor?</h2>
           <p class="en-una-frase" id="fraseSim" hidden></p>
           <p class="lede">Mové la lluvia y la temperatura. El calendario del paso 2 y los números de cada rotación cambian con vos.</p>
@@ -180,7 +190,7 @@
     </section>
 
     <section id="satelite" class="rep-sec" aria-labelledby="concl-4">
-      <p class="eyebrow">4 · Tu suelo y tu monte, desde el satélite</p>
+      <p class="eyebrow" data-i18n="repSec4">4 · Tu suelo y tu monte, desde el satélite</p>
       <h2 class="conclusion" id="concl-4">Tu suelo y tu monte, desde el satélite</h2>
       <div class="card visor" id="visor">
         <div id="mapaGis" role="img" aria-label="Mapa con imágenes Landsat de la zona elegida"></div>
@@ -249,7 +259,7 @@
     </section>
 
     <section id="sonda" class="rep-sec" aria-labelledby="concl-5">
-      <p class="eyebrow">5 · Lo que midió la sonda</p>
+      <p class="eyebrow" data-i18n="repSec5">5 · Lo que midió la sonda</p>
       <h2 class="conclusion" id="concl-5">Lo que midió la sonda</h2>
       <article class="card panel panel-sensor">
           <div class="panel-h"><h3>Lo que mide el sensor</h3><span class="src">Kit Arduino · 1 m²</span></div>
@@ -265,7 +275,7 @@
     </section>
 
     <section id="antes-de-decidir" class="rep-sec" aria-labelledby="concl-6">
-      <p class="eyebrow">6 · Para charlar con tu ingeniero</p>
+      <p class="eyebrow" data-i18n="repSec6">6 · Para charlar con tu ingeniero</p>
       <h2 class="conclusion" id="concl-6">Para charlar con tu ingeniero</h2>
           <p class="en-una-frase" id="fraseListo" hidden></p>
           <p class="lede">El satélite no ve todo. Esta lista junta lo que falta saber y los riesgos de la rotación que elijas.</p>
@@ -290,7 +300,7 @@
     </section>
 
     <section id="datos" class="rep-sec" aria-labelledby="concl-7">
-      <p class="eyebrow">7 · De dónde salen los datos</p>
+      <p class="eyebrow" data-i18n="repSec7">7 · De dónde salen los datos</p>
       <h2 class="conclusion" id="concl-7">De dónde salen los datos</h2>
       <div class="pie-grid">
     <div>

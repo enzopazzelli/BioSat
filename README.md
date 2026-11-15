@@ -50,11 +50,11 @@ Avance de cada integrante, contado desde las casillas de su plan en [`planes/`](
 <!-- AUTO:AVANCE:INICIO -->
 | Persona | Rama | Avance | Tareas |
 |---|---|---|---|
-| [Enzo · Integración y app](planes/1-enzo.md) | `enzo-app` | `▓▓▓▓▓▓▓▓░░` 84% | 43/51 |
+| [Enzo · Integración y app](planes/1-enzo.md) | `enzo-app` | `▓▓▓▓▓▓▓▓░░` 85% | 44/52 |
 | [Santi · Suelo, satélite e IA](planes/2-santi.md) | `santi-datos-ia` | `▓▓▓▓▓▓▓▓░░` 76% | 22/29 |
-| [Vale · Campo y agronomía](planes/3-vale.md) | `vale-rotaciones` | `▓▓▓▓▓▓▓▓░░` 77% | 17/22 |
+| [Vale · Campo y agronomía](planes/3-vale.md) | `vale-rotaciones` | `▓▓▓▓▓▓▓░░░` 74% | 17/23 |
 | [Sara · Kit Arduino y relato](planes/4-sara.md) | `sara-arduino-entrega` | `▓▓░░░░░░░░` 20% | 5/25 |
-| **Total** | | `▓▓▓▓▓▓▓░░░` **69%** | **87/127** |
+| **Total** | | `▓▓▓▓▓▓▓░░░` **68%** | **88/129** |
 <!-- AUTO:AVANCE:FIN -->
 
 ### Lo más urgente
@@ -77,6 +77,7 @@ Avance de cada integrante, contado desde las casillas de su plan en [`planes/`](
 5. **Enzo: probar el lector con el Arduino real, ensayar la pantalla del kit en la pantalla grande y probar la app nueva sin internet en el celular.**
    - La app para el celular (D-31) ya está en `main` y se probó en un celular de verdad.
    - Con D-34, el Inicio va en dos columnas en la PC y el pronóstico de Meteomatics entra en la app. Se renueva solo todos los días a las 06:00; el secreto ya está cargado.
+   - Con D-35, el botón `ES | EN` pasa a inglés el asistente, el Inicio, el marco del Reporte, el kit y la guía del campo. Para mandarle la app a un jurado: `https://enzopazzelli.github.io/BioSat/web/?lang=en`. Lo que sigue en español (el cuerpo del Reporte y la vista detallada) lo avisa en inglés.
 
 ### Lo que falta, por persona
 
@@ -89,7 +90,7 @@ Sale solo de las casillas sin tildar de cada plan. Panorama completo y riesgos: 
 - Último merge de funciones a `main` _(Congelamiento)_
 - Revisar el README final con Sara _(Entrega)_
 - Dejar `main` estable con la app publicada _(Entrega)_
-- Botón de idioma EN/ES en toda la app *(etapa siguiente, con su propio diseño)* _(Sugerencias de la organización)_
+- Idioma, etapa 2: el cuerpo del Reporte (textos dentro de `app.js`), los plegables, la vista detallada y los textos largos de las rotaciones (con la revisión de Vale) _(Sugerencias de la organización)_
 - Mostrar en la app y en el README el link del visor de Earth Engine cuando Santi lo publique _(Agregadas por Enzo)_
 - Ensayar `web/kit.html` y `web/campo.html` en la pantalla grande de la demo, con el kit conectado _(Agregadas por Enzo)_
 - Cerrar `PLAN.md`: sumar kit y guía en la sección 1 y contestar las preguntas abiertas _(Agregadas por Enzo)_
@@ -111,13 +112,14 @@ Sale solo de las casillas sin tildar de cada plan. Panorama completo y riesgos: 
 </details>
 
 <details>
-<summary><b>Vale</b>: 5 pendientes (<a href="planes/3-vale.md">plan completo</a>)</summary>
+<summary><b>Vale</b>: 6 pendientes (<a href="planes/3-vale.md">plan completo</a>)</summary>
 
 - Revisar la parte agronómica del guion y participar del ensayo _(Entrega)_
 - Confirmar los 7 `requiere_hacienda` que completó Enzo en `data/rotaciones_santiago.json` (Zona 3 las 3, Zona 4 alternativa 2, Zona 5 las 3) _(Agregadas por Enzo)_
 - Conseguir por escrito el permiso del productor para nombrar el campo y usar sus frases (la entrevista lo deja pendiente) _(Agregadas por Enzo)_
 - Validar las zonas 1 a 4 con un productor o un agrónomo del INTA, o dejarlas "sin validar" a propósito y decirlo en la presentación _(Agregadas por Enzo)_
 - Corregir en la evidencia de la Zona 5 el dato que cita humedad en raíces: hoy apunta a los meses de clima, que no tienen ese campo _(Agregadas por Enzo)_
+- Revisar los 15 nombres de las rotaciones en inglés (`web/textos-en.js`, sección `rotaciones`, D-35): los tradujo el equipo y falta tu revisión agronómica _(Agregadas por Enzo)_
 
 </details>
 
@@ -151,12 +153,12 @@ Sale solo de las casillas sin tildar de cada plan. Panorama completo y riesgos: 
 **Últimas decisiones:**
 
 <!-- AUTO:DECISIONES:INICIO -->
+- **D-35**: Botón de idioma ES/EN, etapa 1: lo que se ve primero, en inglés
 - **D-34**: Inicio en la PC y el pronóstico de Meteomatics entra en la app
 - **D-33**: Hallazgo: la app muestra cosas que no son ciertas; plan para corregirlas antes de la demo
 - **D-32**: El kit para principiantes alcanza para la estación de BioSat: guía de protoboard
 - **D-31**: App para el celular: Inicio simple y Reporte completo
 - **D-30**: Datos reales de Earth Engine reemplazan al prototipo simulado
-- **D-29**: Contraseña de Meteomatics: se deja como está, por practicidad
 
 Todas las decisiones están en la [bitácora](docs/reglas-y-bitacora.md).
 <!-- AUTO:DECISIONES:FIN -->
@@ -225,7 +227,7 @@ BioSat/
 │   │   ├── 05_Logistica_Antropico_y_Servicios/ (2 archivos)  <-- B26-B29, B32-B37: caminos, población
 │   │   └── 06_Embeddings_IA_AlphaEarth/ (2 archivos)         <-- Embeddings AlphaEarth 64D (DeepMind)
 │   └── imagenes/ (23 archivos)                               <-- Compuestos de mediana Landsat del visor y mapa de la zonificación (Earth Engine)
-├── docs/ (32 archivos)                                       <-- Documentación del equipo
+├── docs/ (34 archivos)                                       <-- Documentación del equipo
 ├── ia_desmonte/                                              <-- Pipeline de datos reales con Earth Engine: suelo, desmontes, zonificación, suelo pelado e imágenes
 │   ├── __init__.py
 │   ├── comun.py
@@ -273,13 +275,15 @@ BioSat/
 │   ├── asistente-logica.test.js
 │   ├── datos-contratos.test.js                               <-- Prueba la forma de los datos reales de ia_desmonte/
 │   ├── frases-logica.test.js
+│   ├── idioma-logica.test.js                                 <-- Prueba la lógica del idioma: solo español e inglés (D-35)
 │   ├── inicio-logica.test.js                                 <-- Prueba el semáforo, la próxima siembra y el WhatsApp del Inicio
 │   ├── kit-logica.test.js
 │   ├── lector-serial.test.js
 │   ├── mapa-santiago.test.js
 │   ├── pronostico-logica.test.js                             <-- Prueba el resumen y el vencimiento del pronóstico de Meteomatics
+│   ├── textos-en.test.js                                     <-- Prueba que el inglés no tenga huecos ni claves sobrantes (D-35)
 │   └── vistas.test.js                                        <-- Prueba las vistas Inicio, Reporte y la vista detallada (completo.html)
-└── web/ (41 archivos)                                        <-- App web BioSat (abrir con un servidor: ver Inicio rápido)
+└── web/ (44 archivos)                                        <-- App web BioSat (abrir con un servidor: ver Inicio rápido)
 ```
 <!-- AUTO:ESTRUCTURA:FIN -->
 

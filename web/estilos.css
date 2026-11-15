@@ -370,6 +370,16 @@ input[type=range]{width:100%;accent-color:var(--accent)}
 .ini-zona{margin:2px 0 0;font-family:var(--font-display);font-size:30px;font-weight:700;line-height:1.05}
 .ini-localidades{margin:2px 0 0;font-size:14px;opacity:.85}
 .ini-cambiar{flex-shrink:0;min-height:44px;padding:0 16px;border-radius:999px;border:1.5px solid currentColor;background:transparent;color:inherit;font:600 15px var(--font-text);cursor:pointer}
+.ini-acciones{display:flex;flex-direction:column;align-items:flex-end;gap:8px;flex-shrink:0}
+
+/* Botón de idioma ES | EN (D-35): toma el color del texto de donde está, así sirve en la banda y en el Reporte */
+.idioma{display:inline-flex;border:1.5px solid currentColor;border-radius:999px;overflow:hidden;flex-shrink:0}
+.idioma button{min-height:36px;min-width:42px;padding:0 10px;border:0;background:transparent;color:inherit;font:700 13px var(--font-text);letter-spacing:.05em;cursor:pointer}
+.idioma button[aria-pressed="true"]{background:var(--ink);color:var(--surface)}
+.idioma button:focus-visible{outline:2px solid currentColor;outline-offset:-4px}
+.rep-top{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.rep-aviso-en{margin:8px 0 0;font-size:14px;font-weight:600;color:var(--warn)}
+.aviso-en p{margin:14px 0 0;padding:10px 14px;border-radius:12px;background:var(--surface);border:1px solid var(--line);font-weight:600}
 .ini-nivel{display:flex;align-items:center;gap:14px;margin:18px 0 10px}
 .ini-nivel svg{width:56px;height:56px;flex-shrink:0;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .ini-nivel-txt{display:flex;flex-direction:column}

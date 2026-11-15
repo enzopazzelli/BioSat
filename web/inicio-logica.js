@@ -27,6 +27,8 @@
     sonda: ['El suelo de tu lote está bien.', 'El suelo de tu lote necesita atención.',
       'El suelo de tu lote está en riesgo: caliente o seco.'],
     sondaTemp: 'La sonda marca {t} °C en el suelo.',
+    y: ' y ',          // une las señales de la razón (D-35: en inglés, ' and ')
+    locale: 'es-AR',   // formato de los números (D-35: en inglés, 'en-US')
     razonCorta: {falta: 'falta agua', pelado: 'suelo pelado', d35: 'mucho calor', helada: 'heladas'},
     sinConexion: 'No hay conexión a internet: el mensaje se puede mandar cuando vuelva la señal.',
     sondaError: 'No se pudo conectar la sonda. Revisá que esté enchufada por USB y elegí su puerto cuando el navegador lo pida.',
@@ -69,7 +71,7 @@
     const altas = senales.filter(s => s.nivel > 0)
       .sort((x, y) => (y.nivel - x.nivel) || (ORDEN.indexOf(x.id) - ORDEN.indexOf(y.id)));
     const frases = altas.slice(0, 2).map(s => fmt(TEXTOS.senal[s.id], {n: cantidad(s.id, s.valor)}));
-    const razon = frases.length ? mayuscula(frases.join(' y ')) + '.' : TEXTOS.razonBien;
+    const razon = frases.length ? mayuscula(frases.join(TEXTOS.y)) + '.' : TEXTOS.razonBien;
     const accion = altas.length ? TEXTOS.accion[altas[0].id] : TEXTOS.accion.bien;
     return {mes: mesIdx, nivel, senales, razon, accion};
   }
@@ -79,7 +81,7 @@
     if (!lectura || !(lectura.semaforo in {verde: 1, amarillo: 1, rojo: 1})) return null;
     const nivel = {verde: 0, amarillo: 1, rojo: 2}[lectura.semaforo];
     const t = numero(lectura.temp_suelo_c) ? ' ' + fmt(TEXTOS.sondaTemp,
-      {t: lectura.temp_suelo_c.toLocaleString('es-AR', {maximumFractionDigits: 1})}) : '';
+      {t: lectura.temp_suelo_c.toLocaleString(TEXTOS.locale, {maximumFractionDigits: 1})}) : '';
     return {nivel, razon: TEXTOS.sonda[nivel] + t};
   }
 

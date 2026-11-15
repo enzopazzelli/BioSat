@@ -66,6 +66,8 @@ DESCRIPCIONES = {
     "tests/datos-contratos.test.js": "Prueba la forma de los datos reales de ia_desmonte/",
     "tests/inicio-logica.test.js": "Prueba el semáforo, la próxima siembra y el WhatsApp del Inicio",
     "tests/vistas.test.js": "Prueba las vistas Inicio, Reporte y la vista detallada (completo.html)",
+    "tests/idioma-logica.test.js": "Prueba la lógica del idioma: solo español e inglés (D-35)",
+    "tests/textos-en.test.js": "Prueba que el inglés no tenga huecos ni claves sobrantes (D-35)",
     "tests/pronostico-logica.test.js": "Prueba el resumen y el vencimiento del pronóstico de Meteomatics",
     "scripts/captura-movil.mjs": "Captura la app emulando un celular de 390 px, u otro ancho con ANCHO (Chrome)",
     "scripts/descargar_meteomatics.py": "Descarga el pronóstico de Meteomatics por zona; no pisa el archivo si falla una zona",

@@ -12,6 +12,8 @@
   const TEXTOS = {
     titulo: 'Esta semana en tu zona',
     sub: 'Próximos {n} días',
+    hoy: 'Hoy',
+    diasSemana: ['dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb'],
     fuente: 'Pronóstico de Meteomatics (modelo europeo ECMWF, 9 km), bajado el {fecha}.',
     vencido: 'Pronóstico vencido (bajado el {fecha}). Se actualiza todos los días.',
     complemento: 'El semáforo muestra lo típico de {mes}; esto es lo que se anuncia para estos días.',
@@ -26,7 +28,6 @@
     kitHoy: 'Pronóstico para hoy (Meteomatics, 9 km): máxima {t} °C.',
     tabla: {dia: 'Día', temp: 'Máx / mín', lluvia: 'Lluvia', helada: 'Helada', hoja: 'Hoja mojada (noche)', si: 'Sí', no: '—'}
   };
-  const DIAS_SEMANA = ['dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb'];
 
   const dato = v => (typeof v === 'number' && Number.isFinite(v) && v !== -999) ? v : null;
   const dos = n => String(n).padStart(2, '0');
@@ -39,7 +40,7 @@
   // 'YYYY-MM-DD' → 'dom 15/11'
   function fechaCorta(iso) {
     const [a, m, d] = iso.split('-').map(Number);
-    return `${DIAS_SEMANA[new Date(a, m - 1, d).getDay()]} ${dos(d)}/${dos(m)}`;
+    return `${TEXTOS.diasSemana[new Date(a, m - 1, d).getDay()]} ${dos(d)}/${dos(m)}`;
   }
 
   // Meteomatics: los parámetros de intervalo son "right-bounded" (docs de la API, Date/Time, "Interval parameters").

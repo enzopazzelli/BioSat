@@ -98,6 +98,7 @@ Los `null` se muestran en la app como "sin dato". No hay que rellenarlos a mano:
 - Guía de armado en protoboard con el kit para principiantes (D-32).
 - Revisión de ramas: `santi-datos-ia`, `vale-rotaciones` y `sara-arduino-entrega` no tienen nada fuera de `main`, y `enzo-app` quedó integrada entera.
 - El Inicio en dos columnas en la PC y el pronóstico de Meteomatics en la app, con actualización diaria (D-34).
+- Botón de idioma ES/EN, etapa 1: el asistente, el Inicio, el marco del Reporte, el kit y la guía del campo en inglés, con `?lang=en` para mandar el link a un jurado (D-35).
 
 ---
 
