@@ -24,7 +24,7 @@ Avance contado de las casillas de los planes: **Enzo 85%, Santi 76%, Vale 72%, S
 
 ## 2. Qué funciona hoy en la app
 
-Las **158 pruebas automáticas de la app** (`node --test "tests/*.test.js"`) y las 39 de `ia_desmonte/pruebas` están en verde, con D-33, D-36 y D-37 incluidos. La versión nueva se revisó a 390 px con `scripts/captura-movil.mjs` y en un celular de verdad. **Falta probarla sin internet en el celular.**
+Las **178 pruebas automáticas de la app** (`node --test "tests/*.test.js"`) y las 39 de `ia_desmonte/pruebas` están en verde, con D-33, D-36, D-37 y D-38 incluidos. La versión nueva se revisó a 390 px con `scripts/captura-movil.mjs` y en un celular de verdad. **Falta probarla sin internet en el celular.**
 
 - **Asistente de inicio:** 4 preguntas con el mapa real de Santiago del Estero. La pregunta 1 nombra la característica de la zona y abajo sus localidades.
 - **Inicio** (`web/index.html`): semáforo de la zona en el mes actual (o de la sonda, después de medir), lo que mejor encaja con la próxima siembra y la tira de 12 meses, y la barra con Medir con la sonda y WhatsApp.
@@ -37,6 +37,7 @@ Las **158 pruebas automáticas de la app** (`node --test "tests/*.test.js"`) y l
   - **Presión de desmonte y zonificación AIZAL:** nivel relativo por zona, serie anual y métricas del modelo.
 - **Pantalla del kit** (`web/kit.html`): las 3 bandejas para la mesa del jurado. Hoy solo anda con el Arduino en vivo, porque no hay lecturas grabadas.
 - **Guía "Del kit al campo"** (`web/campo.html`): una pantalla para el jurado.
+- **Imagen de dron (D-38, etapa 1, en la rama `enzo-dron`):** en la sección 4 del Reporte se abre un .tif de dron, que se ve sobre el mapa y se compara con Landsat. Si la cámara lo permite, muestra el NDVI del lote al lado de lo que Landsat dice de la zona, y una línea en el Inicio. El archivo no sale del equipo. **Falta probarlo con un .tif real.**
 
 ### Qué datos están cargados
 
@@ -101,6 +102,7 @@ Los `null` se muestran en la app como "sin dato". No hay que rellenarlos a mano:
 - El Inicio en dos columnas en la PC y el pronóstico de Meteomatics en la app, con actualización diaria (D-34).
 - Botón de idioma ES/EN, etapa 1: el asistente, el Inicio, el marco del Reporte, el kit y la guía del campo en inglés, con `?lang=en` para mandar el link a un jurado (D-35).
 - La app ya no muestra cosas que no son ciertas (D-33): "sin cobertura vegetal activa" con el texto de Vale, la tabla de métodos real, sin fuentes falsas y los 5 grupos con nombre. Integrado y publicado.
+- Lector de imágenes de dron, etapa 1 (D-38), en la rama `enzo-dron`: falta la prueba con un .tif real y la aprobación para integrarlo.
 - Hoja de ruta de Vale integrada (D-37) y el semáforo ya no dice "lo que pide el cultivo": dice lluvia contra la evaporación de referencia (ET0).
 - El visor del Reporte vuelve a mostrar la imagen Landsat: Leaflet armaba el mapa con el Reporte oculto, en 0 px (D-36). Venía roto desde D-31.
 
