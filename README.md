@@ -153,12 +153,12 @@ Sale solo de las casillas sin tildar de cada plan. Panorama completo y riesgos: 
 **Últimas decisiones:**
 
 <!-- AUTO:DECISIONES:INICIO -->
+- **D-36**: Corrección: el visor del Reporte no mostraba la imagen Landsat
 - **D-35**: Botón de idioma ES/EN, etapa 1: lo que se ve primero, en inglés
 - **D-34**: Inicio en la PC y el pronóstico de Meteomatics entra en la app
 - **D-33**: Hallazgo: la app muestra cosas que no son ciertas; plan para corregirlas antes de la demo
 - **D-32**: El kit para principiantes alcanza para la estación de BioSat: guía de protoboard
 - **D-31**: App para el celular: Inicio simple y Reporte completo
-- **D-30**: Datos reales de Earth Engine reemplazan al prototipo simulado
 
 Todas las decisiones están en la [bitácora](docs/reglas-y-bitacora.md).
 <!-- AUTO:DECISIONES:FIN -->
