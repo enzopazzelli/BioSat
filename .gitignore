@@ -10,3 +10,7 @@ data/raw_nasa_power/*_1981_2025.json
 
 # Bocetos del brainstorming (servidor local)
 .superpowers/
+
+# Descargas del pipeline de datos reales (se vuelven a bajar solas)
+ia_desmonte/salidas/*.geojson
+ia_desmonte/salidas/*.pkl
