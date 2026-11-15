@@ -378,12 +378,12 @@ function renderTuCampo(){
     const lista = PRIO.filter(p => state.prio.has(p.id)).map(p => T.p3[p.id]).join(', ');
     const preocupa = state.prioPorDefecto ? T.p4.porDefecto.replace('{lista}', lista) : lista;
     $('#tuCampo').innerHTML = `<h3>${TEXTOS_CAMPO.titulo}</h3><dl class="tc-lista">
-      <div><dt>${TEXTOS_CAMPO.zona}</dt><dd>${z.num} · ${esc(z.lugar)} · ${esc(z.nombre)}</dd></div>
+      <div><dt>${TEXTOS_CAMPO.zona}</dt><dd>${z.num} · ${esc(z.nombre)} <small>(${esc(z.zona)})</small></dd></div>
       <div><dt>${TEXTOS_CAMPO.tiene}</dt><dd>${esc(tiene.length ? tiene.join(', ') : TEXTOS_CAMPO.nada)}</dd></div>
       <div><dt>${TEXTOS_CAMPO.preocupa}</dt><dd>${esc(preocupa || TEXTOS_CAMPO.nada)}</dd></div></dl>
       <button type="button" class="btn" id="btnCambiar">${TEXTOS_CAMPO.cambiar}</button>`;
   }
-  $('#zonaFicha').innerHTML = `<strong>Zona ${z.num} · ${esc(z.lugar)} · ${esc(z.nombre)}</strong><p>${esc(z.problema)}</p>
+  $('#zonaFicha').innerHTML = `<strong>Zona ${z.num} · ${esc(z.nombre)}</strong> <small>${esc(z.zona)}</small><p>${esc(z.problema)}</p>
     <details class="ficha-tecnica"><summary>${TEXTOS_PASOS.fichaMas}</summary>
       <span class="mono">${TEXTOS_PASOS.fichaDeptos}: ${esc(z.deptos)} · ${TEXTOS_PASOS.fichaPunto} ${nf(c.lat,2)}°, ${nf(c.lon,2)}°</span>${zonifTexto()}</details>`;
   $('#detalleResumen').textContent = TEXTOS_PASOS.detalle;

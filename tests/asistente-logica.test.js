@@ -110,7 +110,7 @@ test('debeAbrir: solo la primera vez, o siempre con ?asistente=1', () => {
 
 test('resumen nombra la zona, lo que tenés y lo que te preocupa', () => {
   const r = A.resumen({zona: 'zona_2_secano_este', riego: false, ganado: true, maq: false, prio: ['agua'], hecho: true}, ZONAS_PRUEBA);
-  assert.deepEqual(r, {num: 2, pueblo: 'Quimilí', nombre: 'Secano agrícola del este', tiene: ['hacienda'], preocupa: ['agua'], preocupaPorDefecto: false});
+  assert.deepEqual(r, {num: 2, pueblo: 'Quimilí', nombre: 'Secano agrícola del este', localidades: 'Quimilí', tiene: ['hacienda'], preocupa: ['agua'], preocupaPorDefecto: false});
 });
 
 // ---- Arreglos de la revisión final: riego que no se "pega", y un resumen que no contradice a la app ----
@@ -169,4 +169,20 @@ test('el resumen y el estado coinciden siempre (nada de decir una cosa y aplicar
 test('aEstado avisa cuando los temas son los de siempre', () => {
   assert.equal(A.aEstado(A.respuestasPorDefecto(), ZONAS_PRUEBA).prioPorDefecto, true);
   assert.equal(A.aEstado({...A.respuestasPorDefecto(), prio: ['agua']}, ZONAS_PRUEBA).prioPorDefecto, false);
+});
+
+// La pregunta 1 nombra la zona por su característica y abajo sus localidades (D-31, pedido de Enzo).
+test('etiquetaZona: arriba la característica, abajo las localidades', () => {
+  const et = A.etiquetaZona({...ZONAS_PRUEBA.zona_1_riego_salitre, zona: 'La Banda · Robles · Beltrán'});
+  assert.deepEqual(et, {titulo: 'Área de riego del Río Dulce', detalle: 'La Banda · Robles · Beltrán'});
+  assert.deepEqual(A.etiquetaZona(ZONAS_PRUEBA.zona_3_monte_semiarido), {titulo: 'Chaco semiárido norte', detalle: 'Campo Gallo'});
+});
+
+test('el asistente ya no presenta la zona con el nombre de un pueblo', () => {
+  const fs = require('node:fs');
+  const path = require('node:path');
+  const js = fs.readFileSync(path.join(__dirname, '..', 'web', 'asistente.js'), 'utf8');
+  assert.doesNotMatch(js, /Tocá tu pueblo/);
+  assert.doesNotMatch(js, /\{pueblo\}/);
+  assert.match(js, /etiquetaZona/);
 });

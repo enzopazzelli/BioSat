@@ -19,7 +19,7 @@
     },
     p1: {
       titulo: '¿Dónde queda tu campo?',
-      ayuda: 'Tocá tu pueblo, o el color en el mapa.',
+      ayuda: 'Tocá tu zona, o el color en el mapa.',
       grupo: 'Zona de tu campo',
       mapaAlt: 'Mapa de Santiago del Estero con las 5 zonas',
       depTitulo: '{nombre} · zona {num}',
@@ -53,7 +53,7 @@
       nada: 'Nada en particular',
       aviso: 'Después lo podés cambiar cuando quieras.',
       terminar: 'Ver mi campo →',
-      zona: 'Zona {num} · {pueblo}',
+      zona: 'Zona {num} · {nombre}',
       riego: 'Riego',
       hacienda: 'Hacienda',
       maq: 'Sembradora o rolo'
@@ -140,10 +140,10 @@
 
     function cuerpoP1() {
       const botones = Object.entries(zonas).map(([id, z]) => {
-        const on = id === r.zona;
+        const on = id === r.zona, et = L.etiquetaZona(z);
         return `<button type="button" class="asist-zona z${z.num}${on ? ' on' : ''}" role="radio" aria-checked="${on}" data-asist-zona="${esc(id)}">
           <span class="asist-num" aria-hidden="true">${z.num}</span>
-          <span class="asist-zt"><strong>${esc(z.lugar)}</strong><span>${esc(z.nombre)}</span></span>
+          <span class="asist-zt"><strong>${esc(et.titulo)}</strong><span>${esc(et.detalle)}</span></span>
           <span class="asist-ok" aria-hidden="true">${on ? '✓' : ''}</span></button>`;
       }).join('');
       const mapa = htmlMapa(opciones.mapa, r.zona, zonas);
@@ -171,7 +171,7 @@
       const tiene = res.tiene.length ? res.tiene.map((k) => TEXTOS.p4[k]).join(', ') : TEXTOS.p4.nada;
       const lista = res.preocupa.map((k) => TEXTOS.p3[k]).join(', ');
       const preocupa = res.preocupaPorDefecto ? fmt(TEXTOS.p4.porDefecto, {lista}) : lista;
-      return `<dl class="asist-resumen">${fila(TEXTOS.p4.campo, fmt(TEXTOS.p4.zona, res) + ' · ' + res.nombre)}${fila(TEXTOS.p4.tiene, tiene)}${fila(TEXTOS.p4.preocupa, preocupa)}</dl>
+      return `<dl class="asist-resumen">${fila(TEXTOS.p4.campo, fmt(TEXTOS.p4.zona, res))}${fila(TEXTOS.p4.tiene, tiene)}${fila(TEXTOS.p4.preocupa, preocupa)}</dl>
         <p class="asist-nota">${esc(TEXTOS.p4.aviso)}</p>`;
     }
     const CUERPOS = [cuerpoP1, cuerpoP2, cuerpoP3, cuerpoP4];
