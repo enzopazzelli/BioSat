@@ -1,0 +1,85 @@
+// Pruebas de la lógica del Inicio (web/inicio-logica.js): semáforo de la zona y de la sonda,
+// próxima siembra, meses de suelo pelado y texto de WhatsApp.
+// Diseño: docs/superpowers/specs/2026-11-15-app-celular-y-reporte-design.md (4.3 a 4.8).
+// Los casos de la Zona 5 usan datos reales: clima 2021-2025 de NASA POWER y lotes pelados de Landsat 2021-2025.
+const test = require('node:test');
+const assert = require('node:assert/strict');
+const L = require('../web/inicio-logica.js');
+
+test('Zona 5 en noviembre da ATENCIÓN por agua, calor y suelo pelado', () => {
+  const s = L.semaforoZona(10, {falta: 92, d35: 8, helada: 0}, 0.382);
+  assert.equal(s.nivel, 1);
+  assert.deepEqual(s.senales.filter(x => x.nivel > 0).map(x => x.id).sort(), ['d35', 'falta', 'pelado']);
+  assert.match(s.razon, /90/);
+  assert.ok(!/undefined|NaN/.test(s.razon + s.accion));
+});
+
+test('Zona 5 en octubre da CUIDADO (falta 131 mm, 53 % de lotes pelados)', () => {
+  const s = L.semaforoZona(9, {falta: 131, d35: 4, helada: 0}, 0.525);
+  assert.equal(s.nivel, 2);
+  assert.equal(s.accion, L.TEXTOS.accion.falta);
+});
+
+test('Zona 5 en abril da BIEN y la acción invita a planificar', () => {
+  const s = L.semaforoZona(3, {falta: 35, d35: 0, helada: 0}, 0);
+  assert.equal(s.nivel, 0);
+  assert.equal(s.accion, L.TEXTOS.accion.bien);
+});
+
+test('la helada de julio sube el nivel aunque no falte agua', () => {
+  const s = L.semaforoZona(6, {falta: 40, d35: 0, helada: 8}, 0.14);
+  assert.equal(s.nivel, 2);
+  assert.equal(s.accion, L.TEXTOS.accion.helada);
+});
+
+test('sin fracción de suelo pelado, la señal se omite y no hay huecos', () => {
+  const s = L.semaforoZona(10, {falta: 20, d35: 0, helada: 0}, null);
+  assert.equal(s.nivel, 0);
+  assert.ok(!s.senales.some(x => x.id === 'pelado'));
+  assert.ok(!/undefined|NaN/.test(s.razon + s.accion));
+});
+
+test('un dato de clima que falta no rompe el semáforo', () => {
+  const s = L.semaforoZona(10, {falta: null, d35: 12, helada: undefined}, 0.1);
+  assert.equal(s.nivel, 2);
+  assert.deepEqual(s.senales.map(x => x.id).sort(), ['d35', 'pelado']);
+});
+
+test('la sonda manda: rojo es CUIDADO, verde es BIEN y sin semáforo devuelve null', () => {
+  assert.equal(L.semaforoSonda({semaforo: 'rojo', temp_suelo_c: 41.2, agua_raw: 300}).nivel, 2);
+  assert.equal(L.semaforoSonda({semaforo: 'verde', temp_suelo_c: 24, agua_raw: 600}).nivel, 0);
+  assert.equal(L.semaforoSonda({temp_suelo_c: 30}), null);
+  assert.equal(L.semaforoSonda(null), null);
+  assert.ok(!/undefined|NaN/.test(L.semaforoSonda({semaforo: 'amarillo'}).razon));
+});
+
+test('la próxima siembra es circular e incluye el mes actual', () => {
+  const sec = [{cultivo: 'Pastura', siembra_mes: 11}, {cultivo: 'Verdeo', siembra_mes: 3}];
+  assert.deepEqual(L.proximaSiembra(sec, 10), {cultivo: 'Pastura', mes: 11});   // noviembre
+  assert.deepEqual(L.proximaSiembra(sec, 11), {cultivo: 'Verdeo', mes: 3});     // diciembre → marzo
+  assert.equal(L.proximaSiembra([], 0), null);
+  assert.equal(L.proximaSiembra([{cultivo: 'Monte', siembra_mes: null}], 0), null);
+});
+
+test('meses pelados cuenta las D del calendario', () => {
+  assert.equal(L.mesesPelados('CCCCCRRRDDCC'), 2);
+  assert.equal(L.mesesPelados(''), 0);
+});
+
+test('el texto de WhatsApp está completo y sin huecos', () => {
+  const t = L.textoWhatsApp({zona: 'Sur serrano y salinas', mes: 'noviembre', nivelTexto: 'ATENCIÓN',
+    razonCorta: 'falta agua', rotacion: 'Verdeo de invierno', siembraMes: 'marzo', enlace: 'https://x/web/'});
+  assert.match(t, /Sur serrano y salinas/);
+  assert.match(t, /https:\/\/x\/web\//);
+  assert.ok(!/undefined|\{|\}/.test(t));
+});
+
+test('el texto de WhatsApp sin próxima siembra no deja huecos', () => {
+  const t = L.textoWhatsApp({zona: 'Zona', mes: 'mayo', nivelTexto: 'BIEN', razonCorta: '', rotacion: 'Tu rotación de hoy',
+    siembraMes: null, enlace: 'https://x/'});
+  assert.ok(!/undefined|null|\{|\}|\(\)/.test(t));
+});
+
+test('hay un aviso para cuando el navegador no puede leer la sonda', () => {
+  assert.match(L.TEXTOS.sondaNoDisponible, /Chrome|Edge/);
+});
