@@ -422,6 +422,15 @@ input[type=range]{width:100%;accent-color:var(--accent)}
 .prono-tabla th,.prono-tabla td{text-align:left;padding:6px 8px;border-bottom:1px solid var(--line);white-space:nowrap}
 .prono-tabla th{font-size:12px;font-weight:600;color:var(--muted)}
 
+/* Inicio en la PC (D-34): desde 1024 px, dos columnas. A la izquierda el semáforo con su color;
+   a la derecha lo que mejor encaja, el pronóstico y los botones. Por debajo de 1024 px no cambia nada. */
+@media (min-width:1024px){
+  .vista-inicio{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-rows:1fr auto}
+  .ini-banda{grid-column:1;grid-row:1 / span 2;display:flex;align-items:center}
+  .ini-cuerpo{grid-column:2;grid-row:1;align-self:center}
+  .ini-barra{grid-column:2;grid-row:2;position:static;border-top:0;background:transparent}
+}
+
 /* ============ REPORTE (D-31, maqueta "Reporte · ELEGIDO") ============ */
 .vista-reporte{padding:14px 0 40px}
 .rep-wrap{display:flex;flex-direction:column;gap:16px}

@@ -6,6 +6,8 @@
 //   node scripts/captura-movil.mjs "http://localhost:8000/web/index.html" inicio.png [alto] [oscuro]
 //   ZONA=zona_5_sur_serrano node scripts/captura-movil.mjs "http://localhost:8000/web/index.html#reporte" reporte.png 1400
 //   EVAL='document.title' node scripts/captura-movil.mjs "http://localhost:8000/web/" x.png   (corre JS y muestra el resultado)
+//   ANCHO=1440 node scripts/captura-movil.mjs "http://localhost:8000/web/index.html" pc.png 1100   (otro ancho, D-34;
+//     por defecto 390; desde 800 px se emula una compu en lugar de un celular)
 // Imprime el ancho de la pantalla contra el ancho del contenido (si el segundo es mayor, algo se sale de la pantalla)
 // y los errores de JavaScript de la página. Necesita Chrome instalado (variable CHROME para otra ruta).
 import {spawn} from 'node:child_process';
@@ -14,6 +16,7 @@ import {tmpdir} from 'node:os';
 import {join} from 'node:path';
 
 const [url, salida, alto = '2400', oscuro] = process.argv.slice(2);
+const ANCHO = Number(process.env.ANCHO || 390);
 const CHROME = process.env.CHROME || 'C:/Program Files/Google/Chrome/Application/chrome.exe';
 const puerto = 9300 + Math.floor(Math.random() * 500);
 const perfil = mkdtempSync(join(tmpdir(), 'biosat-cdp-'));
@@ -39,7 +42,7 @@ ws.addEventListener('message', ev => {
 const cdp = (method, params = {}) => new Promise(r => { const i = ++id; pend.set(i, r); ws.send(JSON.stringify({id: i, method, params})); });
 
 await cdp('Runtime.enable');
-await cdp('Emulation.setDeviceMetricsOverride', {width: 390, height: Number(alto), deviceScaleFactor: 1, mobile: true});
+await cdp('Emulation.setDeviceMetricsOverride', {width: ANCHO, height: Number(alto), deviceScaleFactor: 1, mobile: ANCHO < 800});
 if (oscuro) await cdp('Emulation.setEmulatedMedia', {features: [{name: 'prefers-color-scheme', value: 'dark'}]});
 await cdp('Page.enable');
 await cdp('Page.navigate', {url});
