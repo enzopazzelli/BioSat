@@ -117,3 +117,27 @@ test('index.html tiene la tarjeta del pronóstico en el Inicio y en el Reporte',
   assert.ok(idsIndex.has('repPronostico'));
   assert.match(index, /pronostico-logica\.js/);
 });
+
+// D-33: que la app no muestre cosas falsas en la demo (docs/superpowers/plans/2026-11-15-app-sin-datos-falsos.md).
+test('D-33: la app no nombra métodos ni fuentes que no se usaron', () => {
+  for (const [nombre, txt] of [['app.js', app], ['index', index], ['completo', completo]]) {
+    assert.doesNotMatch(txt, /CNN|MapBiomas|LART/, nombre);
+  }
+  assert.doesNotMatch(app, /umbral_ndvi_nbr|cnn_lstm|cnn_transformer|sin definir/);
+  assert.match(app, /umbral_ndvi:/, 'la tabla de métodos usa el método real');
+  assert.match(app, /sin medir/, 'exactitud y F1 en null se muestran como "sin medir"');
+});
+
+test('D-33: los textos del satélite dicen "sin cobertura vegetal activa", no "suelo pelado"', () => {
+  for (const [nombre, html] of [['index', index], ['completo', completo]]) {
+    assert.doesNotMatch(html, /suele quedar con el suelo pelado|los lotes pelados|lotes con el suelo pelado|meses de suelo pelado \(Landsat/, nombre);
+    assert.match(html, /sin cobertura vegetal activa/, nombre);
+  }
+  assert.doesNotMatch(app, /suele estar pelado|suele estar cubierto/);
+  assert.doesNotMatch(leer('frases-logica.js'), /o suelo pelado en tu zona/);
+});
+
+test('D-33: la zonificación se presenta como del equipo, con las variables de AIZAL y el nombre del grupo', () => {
+  assert.doesNotMatch(app, /Zonificación AIZAL: grupo/);
+  assert.match(app, /con las variables de AIZAL/);
+});

@@ -90,3 +90,11 @@ test('el asistente está traducido entero (comun y las 4 preguntas)', () => {
   assert.ok(EN.modulos.asistente, 'falta modulos.asistente');
   assert.deepEqual(Object.keys(EN.modulos.asistente).sort(), ['comun', 'p1', 'p2', 'p3', 'p4']);
 });
+
+test('D-33: en inglés, la señal satelital dice "without active green cover", no "bare soil"', () => {
+  const ini = EN.modulos.inicio;
+  assert.match(ini.senal.pelado, /without active green cover \(bare soil or dry crop residue\)/);
+  assert.doesNotMatch(ini.razonCorta.pelado, /bare soil/);
+  assert.match(ini.accion.pelado, /bare/);
+  assert.doesNotMatch(EN.modulos.frases.mesesTranquilos, /bare soil/);
+});

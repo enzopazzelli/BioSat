@@ -103,14 +103,14 @@
         rotulo: {zona: 'Your area in {mes} · typical', sonda: 'Your field, measured today'},
         senal: {
           falta: 'crops need about {n} mm more water than the rain gives',
-          pelado: 'about {n} out of 10 fields in the area have bare soil',
+          pelado: 'about {n} out of 10 fields in the area are without active green cover (bare soil or dry crop residue)',
           d35: 'there are about {n} days above 35 °C',
           helada: 'there are about {n} frost days'
         },
         razonBien: 'No strong heat, no frost and no big water shortage: usually a calm month in your area.',
         accion: {
           falta: 'Keep the soil covered until the rains come.',
-          pelado: 'Cover the soil: crop residue or a cover crop protects it from sun and wind.',
+          pelado: 'If your field is bare, cover it: crop residue or a cover crop protects it from sun and wind.',
           d35: 'Look after the soil cover and avoid sowing on the hottest days.',
           helada: 'Watch out for frost-sensitive crops.',
           bien: 'A good time to plan the next sowing.'
@@ -120,7 +120,7 @@
         sondaTemp: 'The probe reads {t} °C in the soil.',
         y: ' and ',
         locale: 'en-US',
-        razonCorta: {falta: 'water shortage', pelado: 'bare soil', d35: 'strong heat', helada: 'frost'},
+        razonCorta: {falta: 'water shortage', pelado: 'fields without active cover', d35: 'strong heat', helada: 'frost'},
         sinConexion: 'No internet connection: you can send the message when the signal comes back.',
         sondaError: 'Could not connect the probe. Check that it is plugged in by USB and pick its port when the browser asks.',
         sondaNoDisponible: 'This phone or browser cannot read the probe over USB. Use Chrome or Edge on a computer, or open the kit screen.',
@@ -230,7 +230,7 @@
         antesUna: 'If you choose “{nombre}”, there is 1 thing to check with your agronomist before deciding.',
         antesVarias: 'If you choose “{nombre}”, there are {n} things to check with your agronomist before deciding.',
         mesesDuros: '{a} and {b} are the toughest months in your area.',
-        mesesTranquilos: 'No month stands out for heat, frost, water shortage or bare soil in your area.',
+        mesesTranquilos: 'No month stands out for heat, frost, water shortage or fields without active cover in your area.',
         sueloMonte: 'Soil with pH {ph} and native forest on {monte} % of the area.',
         meses: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
         locale: 'en-US'
@@ -252,7 +252,8 @@
       appCampo: {titulo: 'Your farm', zona: 'Zone', tiene: 'You have', preocupa: 'You worry about', nada: 'Nothing in particular', cambiar: 'Change my answers'},
 
       // web/app.js · TEXTOS_PASOS (solo la ficha de la zona; el resto es de la etapa 2)
-      appPasos: {fichaMas: 'More about the area', fichaDeptos: 'Departments', fichaPunto: 'NASA POWER point'},
+      appPasos: {fichaMas: 'More about the area', fichaDeptos: 'Departments', fichaPunto: 'NASA POWER point',
+        fichaZonif: 'Team zoning with the AIZAL variables', fichaGrupo: 'group {n}', fichaCelda: '{n} % of the cell'},
 
       // web/kit-logica.js · KitLogica.TEXTOS (pantalla del kit)
       kit: {

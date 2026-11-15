@@ -159,9 +159,9 @@ def generar():
     s.append(f'{zonif["meta"]["metodo"]} {zonif["meta"]["criterio_k"]}\n')
     s.append('Silueta por cantidad de grupos: ' + ', '.join(f'k = {k}: {_n(v, 3)}'
                                                             for k, v in zonif['meta']['siluetas_por_k'].items()) + '.\n')
-    s.append(_tabla(['Grupo', 'Área (%)', 'Lluvia (mm)', 'Déficit (mm)', 'Máx. verano (°C)', 'Mín. invierno (°C)', 'pH',
+    s.append(_tabla(['Grupo', 'Nombre', 'Área (%)', 'Lluvia (mm)', 'Déficit (mm)', 'Máx. verano (°C)', 'Mín. invierno (°C)', 'pH',
                      'Arcilla (%)', 'Carbono (g/kg)'],
-                    [[g['id'], _n(g['area_pct'], 1), _n(g['perfil']['lluvia_mm'], 0), _n(g['perfil']['deficit_mm'], 0),
+                    [[g['id'], g.get('nombre') or 'sin nombre', _n(g['area_pct'], 1), _n(g['perfil']['lluvia_mm'], 0), _n(g['perfil']['deficit_mm'], 0),
                       _n(g['perfil']['tmax_c'], 1), _n(g['perfil']['tmin_c'], 1), _n(g['perfil']['ph'], 2),
                       _n(g['perfil']['arcilla_pct'], 1), _n(g['perfil']['carbono_organico_g_kg'], 1)]
                      for g in zonif['grupos']]) + '\n')

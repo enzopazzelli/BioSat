@@ -1,5 +1,5 @@
 /* BioSat · lógica del Inicio (sin interfaz): semáforo de la zona y de la sonda, próxima siembra,
-   meses de suelo pelado y texto para WhatsApp.
+   meses de suelo pelado (de la rotación) y texto para WhatsApp.
    Diseño: docs/superpowers/specs/2026-11-15-app-celular-y-reporte-design.md (4.3 a 4.8).
    Todo sale de los datos: si falta un dato, la señal se omite y nunca se escribe un número a mano.
    Se usa en el navegador (window.InicioLogica) y en Node (module.exports). */
@@ -12,14 +12,15 @@
     rotulo: {zona: 'Tu zona en {mes} · lo típico', sonda: 'Tu lote, medido hoy'},
     senal: {
       falta: 'faltan unos {n} mm de agua para lo que pide el cultivo',
-      pelado: 'unos {n} de cada 10 lotes de la zona tienen el suelo pelado',
+      // D-33: el satélite ve poca vegetación verde (NDVI bajo): puede ser suelo descubierto o rastrojo seco.
+      pelado: 'unos {n} de cada 10 lotes de la zona están sin cobertura vegetal activa (suelo descubierto o rastrojo seco)',
       d35: 'hay unos {n} días de más de 35 °C',
       helada: 'hay unos {n} días con helada'
     },
     razonBien: 'Ni calor fuerte, ni heladas, ni una falta grande de agua: suele ser un mes tranquilo en tu zona.',
     accion: {
       falta: 'Conviene mantener el suelo cubierto hasta que lleguen las lluvias.',
-      pelado: 'Conviene cubrir el suelo: un rastrojo o una cobertura lo protegen del sol y del viento.',
+      pelado: 'Si tu lote está descubierto, conviene cubrirlo: un rastrojo o una cobertura lo protegen del sol y del viento.',
       d35: 'Cuidá la cobertura y evitá sembrar en los días de más calor.',
       helada: 'Cuidado con los cultivos sensibles a la helada.',
       bien: 'Buen momento para planificar la próxima siembra.'
@@ -29,7 +30,9 @@
     sondaTemp: 'La sonda marca {t} °C en el suelo.',
     y: ' y ',          // une las señales de la razón (D-35: en inglés, ' and ')
     locale: 'es-AR',   // formato de los números (D-35: en inglés, 'en-US')
-    razonCorta: {falta: 'falta agua', pelado: 'suelo pelado', d35: 'mucho calor', helada: 'heladas'},
+    razonCorta: {falta: 'falta agua', pelado: 'lotes sin cobertura activa', d35: 'mucho calor', helada: 'heladas'},
+    // D-33: cuánto cambia la fracción con los 3 umbrales de NDVI del archivo (Reporte, sección 4).
+    sensibilidad: 'Cuánto depende del umbral: en {mes}, con un NDVI menor a {u1} se ven sin cobertura activa {a} de cada 10 lotes; con {u2} (el que usa la app), {b}; con {u3}, {c}. No hay datos de campo para elegir el umbral.',
     sinConexion: 'No hay conexión a internet: el mensaje se puede mandar cuando vuelva la señal.',
     sondaError: 'No se pudo conectar la sonda. Revisá que esté enchufada por USB y elegí su puerto cuando el navegador lo pida.',
     sondaNoDisponible: 'Este celular o navegador no puede leer la sonda por USB. Usá Chrome o Edge en una computadora, o abrí la pantalla del kit.',
@@ -115,7 +118,19 @@
     return t + fmt(w.cierre, {enlace: d.enlace});
   }
 
-  const L = {NIVELES, TEXTOS, UMBRALES, semaforoZona, semaforoSonda, proximaSiembra, mesesPelados, razonCorta, textoWhatsApp};
+  // D-33: texto de sensibilidad al umbral para el mes `mesIdx`. `dz` = la zona de diagnostico_landsat_ia.json;
+  // `umbrales` = meta.umbrales_sensibilidad (3 valores). Si falta un dato, devuelve null y no se escribe nada.
+  function sensibilidadPelado(dz, mesIdx, umbrales, mesNombre) {
+    if (!dz || !Array.isArray(umbrales) || umbrales.length !== 3 || !umbrales.every(numero)) return null;
+    const v = ['fraccion_pelado_umbral_020', 'fraccion_pelado', 'fraccion_pelado_umbral_030']
+      .map(k => Array.isArray(dz[k]) && numero(dz[k][mesIdx]) ? Math.round(dz[k][mesIdx] * 10) : null);
+    if (v.some(x => x === null)) return null;
+    const u = umbrales.map(x => x.toLocaleString(TEXTOS.locale, {minimumFractionDigits: 2, maximumFractionDigits: 2}));
+    return fmt(TEXTOS.sensibilidad, {mes: mesNombre, u1: u[0], u2: u[1], u3: u[2], a: v[0], b: v[1], c: v[2]});
+  }
+
+  const L = {NIVELES, TEXTOS, UMBRALES, semaforoZona, semaforoSonda, proximaSiembra, mesesPelados, razonCorta, textoWhatsApp,
+    sensibilidadPelado};
   if (typeof module !== 'undefined' && module.exports) module.exports = L;
   else window.InicioLogica = L;
 })();

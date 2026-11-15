@@ -45,3 +45,16 @@ def test_armar_json_area_suma_100_y_nombres_en_null():
     assert abs(sum(g['area_pct'] for g in j['grupos']) - 100) < 0.5
     assert all(g['nombre'] is None for g in j['grupos'])
     assert j['meta']['k'] == 3 and j['meta']['silueta_media'] == round(res['siluetas'][3], 3)
+
+
+def test_armar_json_pone_los_nombres_que_recibe_por_id_d33():
+    df = tabla_tres_grupos()
+    res = agrupar(df, k=3, ks=range(2, 4))
+    j = armar_json(res, df, nombres={0: 'Grupo grande', 2: 'Grupo chico'})
+    assert [g['nombre'] for g in j['grupos']] == ['Grupo grande', None, 'Grupo chico']
+
+
+def test_nombres_reales_son_5_textos_d33():
+    from ia_desmonte.zonificacion import NOMBRES_GRUPOS
+    assert sorted(NOMBRES_GRUPOS) == [0, 1, 2, 3, 4]
+    assert all(isinstance(n, str) and n.strip() for n in NOMBRES_GRUPOS.values())

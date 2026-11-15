@@ -25,3 +25,9 @@ def test_informe_tiene_todas_las_zonas_y_no_repite_numeros_simulados():
         assert f'Zona {z[5]}' in texto
     assert '0,986' not in texto and '0.986' not in texto
     assert 'Validado científicamente' not in texto
+
+
+def test_informe_nombra_los_grupos_de_la_zonificacion_d33():
+    texto = generar()
+    for g in _leer('zonificacion_aizal.json')['grupos']:
+        assert g['nombre'] and g['nombre'] in texto, g['id']

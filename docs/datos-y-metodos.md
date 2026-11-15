@@ -125,13 +125,13 @@ k-means (scikit-learn, n_init=20) sobre 11 variables estandarizadas, con 6000 p�
 
 Silueta por cantidad de grupos: k = 2: 0,343, k = 3: 0,246, k = 4: 0,256, k = 5: 0,268, k = 6: 0,237, k = 7: 0,230, k = 8: 0,230.
 
-| Grupo | Área (%) | Lluvia (mm) | Déficit (mm) | Máx. verano (°C) | Mín. invierno (°C) | pH | Arcilla (%) | Carbono (g/kg) |
-|---|---|---|---|---|---|---|---|---|
-| 0 | 38,2 | 620 | 941 | 35,0 | 7,1 | 6,91 | 22,8 | 15,2 |
-| 1 | 28,0 | 587 | 979 | 34,7 | 5,0 | 7,07 | 17,6 | 13,1 |
-| 2 | 21,1 | 771 | 771 | 34,1 | 5,8 | 7,14 | 30,6 | 16,0 |
-| 3 | 10,4 | 661 | 858 | 33,3 | 4,5 | 6,86 | 19,5 | 14,4 |
-| 4 | 2,2 | 737 | 797 | 33,8 | 5,3 | 7,05 | 27,5 | 24,8 |
+| Grupo | Nombre | Área (%) | Lluvia (mm) | Déficit (mm) | Máx. verano (°C) | Mín. invierno (°C) | pH | Arcilla (%) | Carbono (g/kg) |
+|---|---|---|---|---|---|---|---|---|---|
+| 0 | Llanura semiárida cálida (Chaco Seco y Secano Este) | 38,2 | 620 | 941 | 35,0 | 7,1 | 6,91 | 22,8 | 15,2 |
+| 1 | Llanura semiárida arenosa (Río Dulce y transición sur) | 28,0 | 587 | 979 | 34,7 | 5,0 | 7,07 | 17,6 | 13,1 |
+| 2 | Llanura arcillosa con riesgo de anegamiento (Bajos) | 21,1 | 771 | 771 | 34,1 | 5,8 | 7,14 | 30,6 | 16,0 |
+| 3 | Sierras y pedemonte fresco (Sierras del Sudoeste) | 10,4 | 661 | 858 | 33,3 | 4,5 | 6,86 | 19,5 | 14,4 |
+| 4 | Humedales y paleocauces con alta materia orgánica | 2,2 | 737 | 797 | 33,8 | 5,3 | 7,05 | 27,5 | 24,8 |
 
 | Zona de BioSat | Grupo que domina | Coincidencia (%) |
 |---|---|---|

@@ -86,7 +86,7 @@ test('hay un aviso para cuando el navegador no puede leer la sonda', () => {
 
 test('razón corta para WhatsApp: hasta 2 señales en atención o cuidado', () => {
   const s = L.semaforoZona(9, {falta: 131, d35: 4, helada: 0}, 0.525);
-  assert.equal(L.razonCorta(s.senales), 'falta agua y suelo pelado');
+  assert.equal(L.razonCorta(s.senales), 'falta agua y lotes sin cobertura activa');
   assert.equal(L.razonCorta(L.semaforoZona(3, {falta: 35, d35: 0, helada: 0}, 0).senales), '');
   assert.equal(L.razonCorta(undefined), '');
 });
@@ -109,4 +109,24 @@ test('la razón del semáforo une las señales con TEXTOS.y y formatea con TEXTO
     assert.match(L.semaforoZona(10, {falta: 92, d35: 8, helada: 0}, 0.382).razon, / and /);
     assert.match(L.semaforoSonda({semaforo: 'rojo', temp_suelo_c: 38.5}).razon, /38\.5/);
   } finally { L.TEXTOS.y = y; L.TEXTOS.locale = loc; }
+});
+
+// D-33: el satélite ve poca vegetación verde (NDVI bajo), que puede ser suelo descubierto o rastrojo seco.
+// Texto agronómico de Vale (docs/superpowers/plans/2026-11-15-propuesta-mejoras-agronomicas-d33.md, punto 1).
+test('D-33: la señal satelital dice "sin cobertura vegetal activa", no "suelo pelado"', () => {
+  const s = L.semaforoZona(10, {falta: 0, d35: 0, helada: 0}, 0.843);   // Zona 2, noviembre: CUIDADO
+  assert.equal(s.nivel, 2);
+  assert.equal(s.razon, 'Unos 8 de cada 10 lotes de la zona están sin cobertura vegetal activa (suelo descubierto o rastrojo seco).');
+  assert.doesNotMatch(s.razon, /pelado/);
+  assert.equal(s.accion, 'Si tu lote está descubierto, conviene cubrirlo: un rastrojo o una cobertura lo protegen del sol y del viento.');
+  assert.equal(L.razonCorta(s.senales), 'lotes sin cobertura activa');
+});
+
+test('D-33: sensibilidad al umbral, calculada con los datos del mes (sin números fijos)', () => {
+  const dz = {fraccion_pelado_umbral_020: [0.112], fraccion_pelado: [0.843], fraccion_pelado_umbral_030: [0.923]};
+  const t = L.sensibilidadPelado(dz, 0, [0.2, 0.25, 0.3], 'noviembre');
+  assert.equal(t, 'Cuánto depende del umbral: en noviembre, con un NDVI menor a 0,20 se ven sin cobertura activa 1 de cada 10 lotes; con 0,25 (el que usa la app), 8; con 0,30, 9. No hay datos de campo para elegir el umbral.');
+  assert.equal(L.sensibilidadPelado({fraccion_pelado: [0.5]}, 0, [0.2, 0.25, 0.3], 'enero'), null, 'falta un umbral: no se escribe');
+  assert.equal(L.sensibilidadPelado(dz, 0, null, 'enero'), null, 'sin los umbrales del archivo: no se escribe');
+  assert.equal(L.sensibilidadPelado(undefined, 0, [0.2, 0.25, 0.3], 'enero'), null);
 });

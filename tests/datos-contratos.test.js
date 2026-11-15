@@ -44,6 +44,7 @@ test('zonificacion_aizal.json: 5 grupos con perfil real, área que suma 100 y co
   const area = j.grupos.reduce((s, g) => s + g.area_pct, 0);
   assert.ok(area > 99 && area < 101, `área total ${area}`);
   for (const g of j.grupos) for (const v of Object.values(g.perfil)) assert.ok(numONull(v));
+  for (const g of j.grupos) assert.ok(typeof g.nombre === 'string' && g.nombre.trim(), `grupo ${g.id} sin nombre (D-33)`);
   assert.deepEqual(Object.keys(j.comparacion_biosat), ZONAS);
   assert.ok(fs.existsSync(path.join(__dirname, '..', j.meta.imagen.archivo)), 'falta el PNG de la zonificación');
 });

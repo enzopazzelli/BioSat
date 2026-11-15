@@ -241,9 +241,9 @@ function renderVisor(){
   visor.layers = mostrar.map(id => L.imageOverlay(im.img[id], bounds, {alt:'Imagen Landsat'}).addTo(visor.map));
   const zi = zonifImagen();
   $('#zonifBox').innerHTML = zi
-    ? `<button type="button" class="capa" data-zonif aria-pressed="${!!visor.zonif}">Zonas AIZAL (k-means)<small>D-25</small></button>`
-    : '<p class="hint">La capa de zonas AIZAL aparece cuando Santi la exporte.</p>';
-  if (zi && visor.zonif) visor.layers.push(L.imageOverlay(zi.url, zi.bounds, {opacity:0.55, alt:'Zonas AIZAL'}).addTo(visor.map));
+    ? `<button type="button" class="capa" data-zonif aria-pressed="${!!visor.zonif}">Zonas con variables AIZAL (k-means)<small>D-25</small></button>`
+    : '<p class="hint">Sin la capa de zonas todavía.</p>';
+  if (zi && visor.zonif) visor.layers.push(L.imageOverlay(zi.url, zi.bounds, {opacity:0.55, alt:'Zonas con variables AIZAL'}).addTo(visor.map));
   visor.layers.push(L.rectangle([[lat - 0.25, lon - 0.3125], [lat + 0.25, lon + 0.3125]], {color:acento, weight:2, dashArray:'6 5', fill:false, interactive:false}).addTo(visor.map));
   visor.layers.push(L.circleMarker([lat, lon], {radius:6, color:'#ffffff', weight:2, fillColor:acento, fillOpacity:1}).bindTooltip('Punto de NASA POWER de la zona').addTo(visor.map));
   if (visor.zonaVista !== state.zona){
@@ -261,7 +261,10 @@ function zonifTexto(){
   const c = ((ZONIF.comparacion_biosat || {})[state.zona]) || {};
   if (c.grupo_mayoritario === null || c.grupo_mayoritario === undefined) return '';
   const g = (ZONIF.grupos || []).find(x => x.id === c.grupo_mayoritario) || {};
-  return `<span class="mono">Zonificación AIZAL: grupo ${esc(g.nombre || c.grupo_mayoritario)}${c.coincidencia_pct != null ? ` (${nf(c.coincidencia_pct)} % de la celda)` : ''}</span>`;
+  // D-33: es un k-means del equipo con las mismas variables que AIZAL V4, no la zonificación AIZAL oficial.
+  const nombre = g.nombre || TEXTOS_PASOS.fichaGrupo.replace('{n}', c.grupo_mayoritario);
+  const celda = c.coincidencia_pct != null ? ' · ' + TEXTOS_PASOS.fichaCelda.replace('{n}', nf(c.coincidencia_pct)) : '';
+  return `<span class="mono">${TEXTOS_PASOS.fichaZonif}: ${esc(nombre)}${celda}</span>`;
 }
 function zonifImagen(){
   const im = ZONIF.meta && ZONIF.meta.imagen;
@@ -301,7 +304,7 @@ function renderDesmonte(){
     $('#desmonteSerieNota').textContent = pv.length ? 'Barras: historia. Línea punteada: proyección del modelo temporal.' : 'Historia de desmontes de la zona.';
   } else {
     $('#desmonteSerie').innerHTML = '<text class="ax" x="160" y="48" text-anchor="middle">sin dato</text>';
-    $('#desmonteSerieNota').textContent = 'La serie anual sale del mapa de desmontes (LART, MapBiomas o Hansen).';
+    $('#desmonteSerieNota').textContent = 'Sin serie anual de desmontes para esta zona (Hansen v1.13).';
   }
 
   const ev = DESMONTE.evaluacion || {}, met = ev.metodos || {};
@@ -339,6 +342,9 @@ const TEXTOS_PASOS = {
   fichaMas: 'Más datos de la zona',
   fichaDeptos: 'Departamentos',
   fichaPunto: 'punto NASA POWER',
+  fichaZonif: 'Zonificación del equipo con las variables de AIZAL',
+  fichaGrupo: 'grupo {n}',
+  fichaCelda: '{n} % de la celda',
   maqAviso: 'Necesita sembradora o rolo, para sembrar sin arar (se puede contratar)',
   maqCuesta: 'Necesita sembradora o rolo, para sembrar sin arar',
   ordenadasElegidas: 'Zona {num}. Ordenadas según lo que marcaste: {lista}.',
@@ -508,25 +514,28 @@ function renderPaneles(){
   // Se muestra también la aclaración de la fuente (si los valores son una estimación de referencia, que lo diga).
   $('#soilNota').textContent = haySuelo
     ? [TEXTOS_PASOS.suelo.replace('{fuente}', (SUELO_Z.meta && SUELO_Z.meta.fuente) || 'AIZAL V4'), SUELO_Z.meta && SUELO_Z.meta.notas].filter(Boolean).join(' ')
-    : 'Sin datos todavía. Los carga Santi desde AIZAL V4 (SoilGrids, TerraClimate, MapBiomas).';
+    : 'Sin datos de suelo todavía (SoilGrids 2.0).';
 
   // Satélite e IA (de Santi)
   const dz = (DIAG.zonas || {})[state.zona] || {};
   const mp = Array.isArray(dz.meses_suelo_pelado) && dz.meses_suelo_pelado.length === 12 ? dz.meses_suelo_pelado : null;
   $('#miniSat').innerHTML = MES.map((m, i) => mp
-    ? `<span class="${mp[i] ? 'st-D' : ''}" data-tip="${MES_L[i]}: ${mp[i] ? 'suele estar pelado' : 'suele estar cubierto'}"></span>`
+    ? `<span class="${mp[i] ? 'st-D' : ''}" data-tip="${MES_L[i]}: ${mp[i] ? 'suele verse sin cobertura activa' : 'suele verse con cobertura activa'}"></span>`
     : '<span>?</span>').join('');
   $('#miniSatLbl').innerHTML = MES.map(m => `<span>${m[0]}</span>`).join('');
   const ev = DIAG.evaluacion || {}, met = ev.metodos || {};
-  const NOMBRES = {umbral_ndvi_nbr:'Umbral de NDVI y NBR', cnn_lstm:'CNN + LSTM', cnn_transformer:'CNN + Transformer'};
-  const num = v => v === null || v === undefined ? '—' : nf(v, 2);
+  // D-33: solo el método que se corrió. Sin datos de campo, exactitud y F1 quedan en null: se muestran "sin medir".
+  const umbral = DIAG.meta && typeof DIAG.meta.umbral_ndvi === 'number' ? ` (${nf(DIAG.meta.umbral_ndvi, 2)})` : '';
+  const NOMBRES = {umbral_ndvi:'Umbral de NDVI' + umbral};
+  const num = v => v === null || v === undefined ? 'sin medir' : nf(v, 2);
   $('#metodos').innerHTML = Object.entries(NOMBRES).map(([k, n]) => {
     const x = met[k] || {};
     return `<tr><td>${n}${k === ev.metodo_elegido ? ' ✓' : ''}</td><td>${num(x.exactitud)}</td><td>${num(x.f1)}</td></tr>`;
   }).join('');
+  const sens = window.InicioLogica && InicioLogica.sensibilidadPelado(dz, MES_HOY, DIAG.meta && DIAG.meta.umbrales_sensibilidad, MES_L[MES_HOY]);
   $('#satNota').textContent = mp
-    ? `Método usado: ${NOMBRES[ev.metodo_elegido] || 'sin definir'}. Etiquetas: ${(DIAG.meta && DIAG.meta.etiquetas) || 'sin dato'}.`
-    : 'Pendiente. Lo calcula Santi con etiquetas reales de MapBiomas Chaco; la app usa el método que mejor mida. Las imágenes reales ya se ven en el visor del lote, arriba.';
+    ? [`Método usado: ${NOMBRES[ev.metodo_elegido] || 'sin dato'}.`, ev.datos_de_prueba ? cap(ev.datos_de_prueba) + '.' : '', sens].filter(Boolean).join(' ')
+    : 'Sin datos del satélite para esta zona.';
 
   // Sensor en tierra (lecturas grabadas por Sara)
   $('#trays').innerHTML = Object.entries(BANDEJAS).map(([k, b]) =>

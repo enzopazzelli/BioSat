@@ -109,7 +109,7 @@
         <div id="mapaGis" role="img" aria-label="Mapa con imágenes Landsat de la zona elegida"></div>
         <div class="visor-side">
           <div class="panel-h"><h3>Visor del lote</h3><span class="src">Landsat · 30 m</span></div>
-          <p class="hint">Imágenes reales de tu zona. En verano se ven los cultivos verdes; en invierno, los lotes pelados.</p>
+          <p class="hint">Imágenes reales de tu zona. En verano se ven los cultivos verdes; a fines del invierno y en primavera, muchos lotes sin cobertura vegetal activa (suelo descubierto o rastrojo seco).</p>
           <div class="capas" id="capas" role="group" aria-label="Capa del mapa"></div>
           <div><span class="visor-t">Comparar con cortina</span><div class="capas" id="cmps" role="group" aria-label="Comparación"></div></div>
           <div id="cortinaBox" hidden>
@@ -118,7 +118,7 @@
             <div class="range-ends"><span id="cortIzq"></span><span id="cortDer"></span></div>
           </div>
           <div id="zonifBox"></div>
-          <div id="rampa" hidden><div class="ramp"></div><div class="ramp-lbl"><span>Suelo pelado o seco</span><span>Cultivo o monte verde</span></div></div>
+          <div id="rampa" hidden><div class="ramp"></div><div class="ramp-lbl"><span>Suelo descubierto o rastrojo seco</span><span>Cultivo o monte verde</span></div></div>
           <p class="gis-note" id="celdaNota"></p>
           <p class="gis-note mono" id="escena"></p>
           <p class="gis-note" id="gisNota"></p>
@@ -147,11 +147,12 @@
             </article>
             <article class="card panel">
               <div class="panel-h"><h3>Lo que ve el satélite</h3><span class="src">Landsat 8/9 · 30 m</span></div>
-              <p class="hint">Meses en que tu zona suele quedar con el suelo pelado, según las imágenes:</p>
+              <p class="hint">Meses en que la mayoría de los lotes de tu zona se ven sin cobertura vegetal activa (suelo descubierto o rastrojo seco: el satélite no los distingue), según las imágenes:</p>
               <div>
                 <div class="mini-cal" id="miniSat"></div>
                 <div class="strip-lbl" id="miniSatLbl"></div>
               </div>
+              <p class="hint">El satélite muestra el riesgo histórico de tu zona; tu rotación define si tu lote mantiene rastrojo protector o queda expuesto al sol y al viento.</p>
               <div class="tabla-scroll">
                 <table>
                   <thead><tr><th>Método</th><th>Exactitud</th><th>F1</th></tr></thead>
@@ -292,7 +293,7 @@
     <div>
       <h3>Qué es real y qué es de ejemplo</h3>
       <ul>
-        <li>Real: los números de clima (NASA POWER), el calendario, el simulador, las imágenes del visor (compuestos de Landsat hechos en Earth Engine), el suelo (SoilGrids 2.0), los meses de suelo pelado (Landsat 2021-2025), la historia y el riesgo de desmonte (Hansen v1.13) y la zonificación. Fuentes y métodos: docs/datos-y-metodos.md.</li>
+        <li>Real: los números de clima (NASA POWER), el calendario, el simulador, las imágenes del visor (compuestos de Landsat hechos en Earth Engine), el suelo (SoilGrids 2.0), los meses sin cobertura vegetal activa (Landsat 2021-2025), la historia y el riesgo de desmonte (Hansen v1.13) y la zonificación del equipo con las variables de AIZAL. Fuentes y métodos: docs/datos-y-metodos.md.</li>
         <li>Revisado: las rotaciones de la Zona 5 las revisó un productor de la zona. Las de las zonas 1 a 4 todavía no están validadas. Los puntajes salen de reglas visibles.</li>
         <li>Pendiente: las lecturas grabadas del kit Arduino.</li>
       </ul>

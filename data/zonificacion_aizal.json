@@ -4,7 +4,7 @@
     "metodo": "k-means (scikit-learn, n_init=20) sobre 11 variables estandarizadas, con 6000 píxeles al azar de toda la provincia a 1000 m. El mapa asigna cada píxel al centro más cercano en Earth Engine.",
     "generado_por": "ia_desmonte/zonificacion.py",
     "fecha": "2026-11-14",
-    "notas": "Mismas variables que AIZAL V4 (B03-B18), tomadas de sus fuentes originales (TerraClimate y SoilGrids). El nombre de cada grupo lo pone el equipo mirando su perfil. La coincidencia con las zonas de BioSat no tiene por qué ser 100 %: las zonas de BioSat se arman por departamento.",
+    "notas": "Mismas variables que AIZAL V4 (B03-B18), tomadas de sus fuentes originales (TerraClimate y SoilGrids). Es una zonificación del equipo, no la AIZAL oficial. Los nombres de los grupos los puso el equipo (Vale) mirando su perfil y el mapa (D-33). La coincidencia con las zonas de BioSat no tiene por qué ser 100 %: las zonas de BioSat se arman por departamento.",
     "variables": [
       "lluvia_anual_mm",
       "def_hidrico_mm",
@@ -44,7 +44,7 @@
   "grupos": [
     {
       "id": 0,
-      "nombre": null,
+      "nombre": "Llanura semiárida cálida (Chaco Seco y Secano Este)",
       "area_pct": 38.2,
       "n": 2294,
       "perfil": {
@@ -63,7 +63,7 @@
     },
     {
       "id": 1,
-      "nombre": null,
+      "nombre": "Llanura semiárida arenosa (Río Dulce y transición sur)",
       "area_pct": 28.0,
       "n": 1680,
       "perfil": {
@@ -82,7 +82,7 @@
     },
     {
       "id": 2,
-      "nombre": null,
+      "nombre": "Llanura arcillosa con riesgo de anegamiento (Bajos)",
       "area_pct": 21.1,
       "n": 1266,
       "perfil": {
@@ -101,7 +101,7 @@
     },
     {
       "id": 3,
-      "nombre": null,
+      "nombre": "Sierras y pedemonte fresco (Sierras del Sudoeste)",
       "area_pct": 10.4,
       "n": 627,
       "perfil": {
@@ -120,7 +120,7 @@
     },
     {
       "id": 4,
-      "nombre": null,
+      "nombre": "Humedales y paleocauces con alta materia orgánica",
       "area_pct": 2.2,
       "n": 133,
       "perfil": {

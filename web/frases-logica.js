@@ -13,7 +13,7 @@
     antesUna: 'Si elegís «{nombre}», es 1 cosa para revisar con tu agrónomo antes de decidir.',
     antesVarias: 'Si elegís «{nombre}», son {n} cosas para revisar con tu agrónomo antes de decidir.',
     mesesDuros: '{a} y {b} son los meses más duros en tu zona.',
-    mesesTranquilos: 'Ningún mes se destaca por calor, helada, falta de agua o suelo pelado en tu zona.',
+    mesesTranquilos: 'Ningún mes se destaca por calor, helada, falta de agua o lotes sin cobertura activa en tu zona.',
     sueloMonte: 'Suelo con pH {ph} y monte en el {monte} % de la zona.',
     meses: ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'],
     locale: 'es-AR'   // formato de los números (D-35: en inglés, 'en-US')

@@ -62,13 +62,27 @@ def comparar(df, etiquetas):
     return salida
 
 
-def armar_json(res, df):
-    """JSON del contrato §7."""
+# Nombres de los 5 grupos de la corrida real (D-33). Los propuso Vale (agrónoma) mirando el perfil de cada grupo
+# (docs/superpowers/plans/2026-11-15-propuesta-mejoras-agronomicas-d33.md) y Enzo verificó su ubicación contra el mapa
+# (data/imagenes/zonas_aizal.png). Los números de grupo son estables: semilla fija y grupos ordenados por tamaño.
+# Si cambian k, las variables o la muestra, hay que volver a mirar el perfil antes de reusarlos.
+NOMBRES_GRUPOS = {
+    0: 'Llanura semiárida cálida (Chaco Seco y Secano Este)',
+    1: 'Llanura semiárida arenosa (Río Dulce y transición sur)',
+    2: 'Llanura arcillosa con riesgo de anegamiento (Bajos)',
+    3: 'Sierras y pedemonte fresco (Sierras del Sudoeste)',
+    4: 'Humedales y paleocauces con alta materia orgánica',
+}
+
+
+def armar_json(res, df, nombres=None):
+    """JSON del contrato §7. `nombres` = {id de grupo: nombre}; sin nombre, el grupo queda en null."""
+    nombres = nombres or {}
     k, et = res['k'], np.asarray(res['etiquetas'])
     grupos = []
     for g in range(k):
         sel = df[et == g]
-        grupos.append({'id': g, 'nombre': None, 'area_pct': round(100 * len(sel) / len(df), 1), 'n': int(len(sel)),
+        grupos.append({'id': g, 'nombre': nombres.get(g), 'area_pct': round(100 * len(sel) / len(df), 1), 'n': int(len(sel)),
                        'perfil': {c: round(float(sel[v].mean()), 2) if len(sel) else None for c, v in PERFIL.items()}})
     mejor = max(res['siluetas'], key=res['siluetas'].get)
     criterio = (f'k = {k}, como propuso la cátedra (D-25). Silueta media con k = {k}: '
@@ -84,7 +98,8 @@ def armar_json(res, df):
                 'más cercano en Earth Engine.'),
         script='ia_desmonte/zonificacion.py',
         notas=('Mismas variables que AIZAL V4 (B03-B18), tomadas de sus fuentes originales (TerraClimate y '
-               'SoilGrids). El nombre de cada grupo lo pone el equipo mirando su perfil. La coincidencia con las '
+               'SoilGrids). Es una zonificación del equipo, no la AIZAL oficial. Los nombres de los grupos los puso el equipo '
+               '(Vale) mirando su perfil y el mapa (D-33). La coincidencia con las '
                'zonas de BioSat no tiene por qué ser 100 %: las zonas de BioSat se arman por departamento.'),
         variables=VARIABLES, k=k, silueta_media=round(res['siluetas'][k], 3),
         siluetas_por_k={str(kk): round(v, 3) for kk, v in sorted(res['siluetas'].items())},
@@ -165,7 +180,7 @@ def main():
     res = agrupar(df)
     print('Siluetas:', {k: round(v, 3) for k, v in res['siluetas'].items()})
     pintar_mapa(res)
-    escribir_json(DATA / 'zonificacion_aizal.json', armar_json(res, df))
+    escribir_json(DATA / 'zonificacion_aizal.json', armar_json(res, df, NOMBRES_GRUPOS if res['k'] == 5 else None))
     print('Listo: data/zonificacion_aizal.json')
 
 
