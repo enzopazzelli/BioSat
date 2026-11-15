@@ -86,7 +86,7 @@ _Salen del repaso del repo. Cada uno decide cómo abordarlas; si no corresponden
 - [x] Tarjeta "Esta semana en tu zona" en el Inicio y en el Reporte, que nunca muestra un pronóstico vencido como actual (`web/pronostico-logica.js`, con pruebas)
 - [x] Actualización diaria del pronóstico con GitHub Actions; el script no pisa el archivo si falla una zona
 - [x] Pantalla del kit: la máxima de hoy a 9 km entre NASA POWER y la sonda
-- [ ] Cargar el secreto `METEOMATICS_PASSWORD` en GitHub (Settings → Secrets and variables → Actions) y correr una vez el workflow "Actualizar pronostico de Meteomatics"
+- [x] Cargar el secreto `METEOMATICS_PASSWORD` en GitHub (Settings → Secrets and variables → Actions) y correr una vez el workflow "Actualizar pronostico de Meteomatics" *(15/11 11:06: corrió bien y subió el pronóstico del 15 al 22/11, commit `4ea751a`)*
 
 ## Listo cuando
 

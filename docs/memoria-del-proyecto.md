@@ -116,7 +116,7 @@ Fuera de `docs/`: `PLAN.md` (plan general y ruta), `planes/` (plan y checklist d
 - **Entrega:** guion, video o diapositivas, página del proyecto en Space Apps, declaración de uso de IA, 2 ensayos, hora y formato de entrega.
 - **Santi:** publicar el visor de Earth Engine; verificar la fragilidad y los meses de suelo pelado. La contraseña de Meteomatics no se cambia, por practicidad (D-29).
 - **Vale:** confirmar los 7 `requiere_hacienda`, conseguir por escrito el permiso del productor y validar (o declarar sin validar) las zonas 1 a 4.
-- **Enzo:** cargar el secreto `METEOMATICS_PASSWORD` en GitHub (D-34), ensayar la pantalla del kit en la pantalla grande y cerrar `PLAN.md`.
+- **Enzo:** ensayar la pantalla del kit en la pantalla grande y cerrar `PLAN.md`. El pronóstico de Meteomatics ya se renueva solo todos los días (D-34).
 - **Detalles menores de la última revisión** (no impiden nada): flechita de los plegables, tamaños de letra y botones menores a 44 px, tema elegido en la pregunta 3 solo por color, zonas del asistente sin flechas del teclado, restos en `app.js` y la carpeta `web/` colapsada en el README.
 
 ## 10. Reglas que no se rompen
