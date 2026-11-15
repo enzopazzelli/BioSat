@@ -132,3 +132,13 @@ test('hayViento dice si hay promedio de viento: sin dato, la tarjeta no puede de
   assert.equal(P.resumen([{fecha: '2026-11-16T00:00:00Z', 'wind_speed_mean_10m_24h:ms': 2}], '2026-11-15').hayViento, true);
   assert.equal(P.TEXTOS.criterioCalor, 'Más de 38 °C es un criterio del equipo.');
 });
+
+test('los días de la semana y el "Hoy" salen de TEXTOS (para el inglés, D-35)', () => {
+  const dias = P.TEXTOS.diasSemana;
+  assert.deepEqual(dias, ['dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb']);
+  assert.equal(P.TEXTOS.hoy, 'Hoy');
+  try {
+    P.TEXTOS.diasSemana = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    assert.equal(P.fechaCorta('2026-11-15'), 'Sun 15/11');
+  } finally { P.TEXTOS.diasSemana = dias; }
+});

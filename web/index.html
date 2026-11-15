@@ -13,6 +13,9 @@
 <link rel="stylesheet" href="asistente.css">
 <script src="vendor/leaflet.js"></script>
 <script src="../arduino/lector-web-serial.js" defer onerror="this.remove()"></script>
+<script src="idioma-logica.js" defer></script>
+<script src="textos-en.js" defer></script>
+<script src="idioma.js" defer></script>
 <script src="asistente-logica.js" defer></script>
 <script src="asistente.js" defer></script>
 <script src="frases-logica.js" defer></script>
@@ -35,7 +38,10 @@
             <h1 class="ini-zona" id="inicioZona">BioSat</h1>
             <p class="ini-localidades" id="inicioLocalidades"></p>
           </div>
-          <button type="button" class="ini-cambiar" id="btnCambiarInicio">Cambiar</button>
+          <div class="ini-acciones">
+            <div data-idioma-boton></div>
+            <button type="button" class="ini-cambiar" id="btnCambiarInicio" data-i18n="iniCambiar">Cambiar</button>
+          </div>
         </div>
         <div class="ini-nivel" id="inicioNivel" role="status" aria-live="polite"></div>
         <p class="ini-razon" id="inicioRazon"></p>
@@ -45,28 +51,28 @@
 
     <div class="ini-wrap ini-cuerpo">
       <section class="ini-mejor" aria-labelledby="inicioMejorT">
-        <p class="ini-eyebrow" id="inicioMejorT">Lo que mejor encaja en tu campo</p>
+        <p class="ini-eyebrow" id="inicioMejorT" data-i18n="iniMejorT">Lo que mejor encaja en tu campo</p>
         <h2 class="ini-rotacion" id="inicioRotacion"></h2>
         <div class="ini-cifras">
-          <div class="ini-cifra"><span>Próxima siembra</span><strong id="inicioSiembra">—</strong></div>
-          <div class="ini-cifra"><span>Meses de suelo pelado</span><strong id="inicioPelados">—</strong></div>
+          <div class="ini-cifra"><span data-i18n="iniSiembra">Próxima siembra</span><strong id="inicioSiembra">—</strong></div>
+          <div class="ini-cifra"><span data-i18n="iniPelados">Meses de suelo pelado</span><strong id="inicioPelados">—</strong></div>
         </div>
         <div class="ini-tira" id="inicioTira" role="img"></div>
         <p class="ini-validacion" id="inicioValidacion"></p>
       </section>
       <!-- Pronóstico de Meteomatics (D-34): lo que se anuncia para estos días -->
-      <section class="prono" id="inicioPronostico" aria-label="Esta semana en tu zona" hidden></section>
-      <p class="ini-pie">Apoya, no reemplaza, el criterio de tu ingeniero.</p>
+      <section class="prono" id="inicioPronostico" aria-label="Esta semana en tu zona" data-i18n-attr="aria-label:iniPronoAria" hidden></section>
+      <p class="ini-pie" data-i18n="iniPie">Apoya, no reemplaza, el criterio de tu ingeniero.</p>
     </div>
 
     <div class="ini-barra">
       <div class="ini-wrap">
         <div class="ini-botones">
-          <button type="button" class="ini-btn ini-btn-1" id="btnSonda"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v11"/><path d="M8 14h8l-1 7h-6z"/><path d="M5 6l2 2M19 6l-2 2"/></svg><span>Medir con la sonda</span></button>
+          <button type="button" class="ini-btn ini-btn-1" id="btnSonda"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v11"/><path d="M8 14h8l-1 7h-6z"/><path d="M5 6l2 2M19 6l-2 2"/></svg><span data-i18n="iniSonda">Medir con la sonda</span></button>
           <button type="button" class="ini-btn ini-btn-2" id="btnWhatsapp"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12a8.5 8.5 0 0 1-12.6 7.4L3 21l1.6-5.2A8.5 8.5 0 1 1 21 12z"/></svg><span>WhatsApp</span></button>
         </div>
         <p class="ini-aviso" id="inicioAviso" role="status" hidden></p>
-        <a class="ini-ir" id="irReporte" href="#reporte">Ver el reporte completo →</a>
+        <a class="ini-ir" id="irReporte" href="#reporte" data-i18n="iniIrReporte">Ver el reporte completo →</a>
       </div>
     </div>
   </section>

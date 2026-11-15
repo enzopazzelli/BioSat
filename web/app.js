@@ -45,7 +45,8 @@ const state = {zona:'zona_2_secano_este', prio:new Set(['agua','suelo']), riego:
   periodo:'normal', dT:0, dP:0, elegida:null, bandeja:'A', vivo:null};
 
 const $ = s => document.querySelector(s);
-const nf = (n, d=0) => Number(n).toLocaleString('es-AR', {minimumFractionDigits:d, maximumFractionDigits:d});
+// Números con el formato del idioma elegido (D-35): 33,7 en español y 33.7 en inglés.
+const nf = (n, d=0) => window.Idioma ? Idioma.nf(n, d) : Number(n).toLocaleString('es-AR', {minimumFractionDigits:d, maximumFractionDigits:d});
 const sum = (a, f=x=>x) => a.reduce((s,x)=>s+f(x), 0);
 const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const mix = (token, pct) => `color-mix(in oklab, var(${token}) ${Math.round(pct)}%, var(--surface))`;
@@ -681,7 +682,10 @@ const TEXTOS_INICIO = {
   esActual: 'Tu rotación de hoy ya es la que mejor encaja',
   hoy: 'Hoy', propuesta: 'Con el cambio',
   validada: 'Revisada por un productor de la zona', sinValidar: 'Todavía sin validar en la zona',
-  sinDato: 'sin dato', tira: 'Suelo mes a mes. {detalle}'
+  sinDato: 'sin dato', tira: 'Suelo mes a mes. {detalle}',
+  mesesPeladosAria: '{nom}: {n} meses de suelo pelado',
+  seguir: 'seguir con tu rotación de hoy',
+  abrirKit: 'Abrir la pantalla del kit'
 };
 const ICONO_NIVEL = [
   '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.7 2.7L16 9.8"/></svg>',
@@ -731,7 +735,7 @@ function renderInicio(){
   $('#inicioPelados').textContent = d.esActual || pa === null ? String(pm) : `${pa} → ${pm}`;
   const filas = d.esActual || !d.actual ? [[TEXTOS_INICIO.hoy, d.mejor.cal]] : [[TEXTOS_INICIO.hoy, d.actual.cal], [TEXTOS_INICIO.propuesta, d.mejor.cal]];
   $('#inicioTira').innerHTML = tiraHTML(filas);
-  const peladosTxt = filas.map(([nom, cal]) => `${nom}: ${L.mesesPelados(cal)} meses de suelo pelado`).join('. ');
+  const peladosTxt = filas.map(([nom, cal]) => TEXTOS_INICIO.mesesPeladosAria.replace('{nom}', nom).replace('{n}', L.mesesPelados(cal))).join('. ');
   $('#inicioTira').setAttribute('aria-label', TEXTOS_INICIO.tira.replace('{detalle}', peladosTxt));
   $('#inicioValidacion').textContent = VALIDADA[state.zona] ? TEXTOS_INICIO.validada : TEXTOS_INICIO.sinValidar;
   $('#inicioValidacion').dataset.validada = VALIDADA[state.zona] ? 'si' : 'no';
@@ -742,7 +746,7 @@ function avisoInicio(html){ const a = $('#inicioAviso'); a.innerHTML = html || '
 async function medirConSonda(){
   const L = window.InicioLogica, lector = window.BioSatArduino;
   if (!lector || typeof lector.soportado !== 'function' || !lector.soportado()){
-    avisoInicio(`${esc(L.TEXTOS.sondaNoDisponible)} <a href="kit.html?zona=${encodeURIComponent(state.zona)}">Abrir la pantalla del kit</a>`);
+    avisoInicio(`${esc(L.TEXTOS.sondaNoDisponible)} <a href="kit.html?zona=${encodeURIComponent(state.zona)}">${esc(TEXTOS_INICIO.abrirKit)}</a>`);
     return;
   }
   try {
@@ -767,7 +771,8 @@ function renderPronostico(){
   if (!z){ cajas.forEach(c => { c.hidden = true; c.innerHTML = ''; }); return; }
   const T = P.TEXTOS, r = P.resumen(z.pronostico_7_dias, P.hoyLocalISO(new Date()));
   const fmt = (t, o) => t.replace(/\{(\w+)\}/g, (_, k) => o[k]);
-  const dias = (t, n) => fmt(t, {n}).replace(/^1 días/, '1 día').replace(/^1 noches/, '1 noche');   // singular
+  const dias = (t, n) => fmt(t, {n}).replace(/^1 días/, '1 día').replace(/^1 noches/, '1 noche')
+    .replace(/^1 days/, '1 day').replace(/^1 nights/, '1 night');   // singular, en español y en inglés
   const fecha = bajadoEl(METEO.fecha_generacion), cab = `<p class="prono-titulo">${esc(T.titulo)}</p>`;
   let tarjeta, tabla = '';
   if (!r.vigente) tarjeta = `${cab}<p class="prono-vencido">${esc(fmt(T.vencido, {fecha}))}</p>`;
@@ -778,7 +783,7 @@ function renderPronostico(){
     renglones.push(dias(T.calor, r.diasCalor), dias(T.helada, r.diasHelada), dias(T.hoja, r.diasHojaMojada));
     // Sin el promedio de viento de 24 h no hay dato: decir "0 días con viento bajo" sería falso.
     if (r.hayViento) renglones.push(dias(T.viento, r.diasVientoBajo));
-    tarjeta = `${cab}<p class="prono-sub">${esc(r.n === 1 ? 'Hoy' : fmt(T.sub, {n: r.n}))}</p>
+    tarjeta = `${cab}<p class="prono-sub">${esc(r.n === 1 ? T.hoy : fmt(T.sub, {n: r.n}))}</p>
       <ul class="prono-lista">${renglones.map(t => `<li>${esc(t)}</li>`).join('')}</ul>
       <p class="prono-nota">${esc(fmt(T.complemento, {mes: MES_L[MES_HOY]}))} ${esc(r.hayViento ? T.criterio : T.criterioCalor)}</p>
       <p class="prono-fuente">${esc(fmt(T.fuente, {fecha}))}</p>`;
@@ -796,7 +801,7 @@ function renderPronostico(){
 async function mandarWhatsapp(){
   const L = window.InicioLogica, d = datosInicio(), z = ZONAS[state.zona];
   const texto = L.textoWhatsApp({zona: z.nombre, mes: MES_L[MES_HOY], nivelTexto: L.TEXTOS.nivel[d.sem.nivel],
-    razonCorta: L.razonCorta(d.sem.senales), rotacion: d.esActual ? 'seguir con tu rotación de hoy' : (d.mejor ? d.mejor.nombre : ''),
+    razonCorta: L.razonCorta(d.sem.senales), rotacion: d.esActual ? TEXTOS_INICIO.seguir : (d.mejor ? d.mejor.nombre : ''),
     siembraMes: d.ps ? MES_L[d.ps.mes - 1] : null, enlace: location.href.split('#')[0]});
   if (navigator.share){
     try { await navigator.share({title: 'BioSat', text: texto}); return; }
@@ -1029,7 +1034,30 @@ async function cargarDatos(){
   IMG = await cargarImagenes();
 }
 
+/* ---------- Idioma (D-35): solo español e inglés. Los textos en español quedan en su lugar;
+   web/idioma.js los cambia por los de web/textos-en.js y avisa para volver a dibujar. ---------- */
+function nombresRotaciones(){
+  for (const z of Object.keys(ROT)) for (const r of ROT[z]){
+    if (r.nombreEs === undefined) r.nombreEs = r.nombre;
+    r.nombre = (window.Idioma && Idioma.rotacion(r.id)) || r.nombreEs;
+  }
+}
+function prepararIdioma(){
+  // La vista detallada (completo.html) sigue en español en esta etapa: solo muestra el aviso en inglés.
+  if (!window.Idioma || document.body.dataset.pagina === 'completo') return;
+  Idioma.registrar('inicio', window.InicioLogica && InicioLogica.TEXTOS);
+  Idioma.registrar('pronostico', window.PronosticoLogica && PronosticoLogica.TEXTOS);
+  Idioma.registrar('appInicio', TEXTOS_INICIO);
+  Idioma.registrar('meses', MES_L);
+  Idioma.registrar('mesesCortos', MES);
+  Idioma.registrar('estado', ESTADO);
+  Idioma.registrar('zonas', ZONAS);
+  nombresRotaciones();
+  Idioma.alCambiar(() => { nombresRotaciones(); renderTodo(); });
+}
+
 cargarDatos().then(() => {
+  prepararIdioma();
   iniciarRespuestas();
   renderTodo();
   mostrarVista();
