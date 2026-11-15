@@ -24,7 +24,7 @@ Avance contado de las casillas de los planes: **Enzo 80%, Santi 81%, Vale 77%, S
 
 ## 2. Qué funciona hoy en la app
 
-Las **153 pruebas automáticas de la app** (`node --test "tests/*.test.js"`) están en verde, con D-33 incluido. La versión nueva se revisó a 390 px con `scripts/captura-movil.mjs` y en un celular de verdad. **Falta probarla sin internet en el celular.**
+Las **154 pruebas automáticas de la app** (`node --test "tests/*.test.js"`) están en verde, con D-33 incluido. La versión nueva se revisó a 390 px con `scripts/captura-movil.mjs` y en un celular de verdad. **Falta probarla sin internet en el celular.**
 
 - **Asistente de inicio:** 4 preguntas con el mapa real de Santiago del Estero. La pregunta 1 nombra la característica de la zona y abajo sus localidades.
 - **Inicio** (`web/index.html`): semáforo de la zona en el mes actual (o de la sonda, después de medir), lo que mejor encaja con la próxima siembra y la tira de 12 meses, y la barra con Medir con la sonda y WhatsApp.
