@@ -9,6 +9,7 @@
     // Textos fijos del HTML: elementos con data-i18n="clave" (o data-i18n-attr="atributo:clave").
     html: {
       iniCambiar: 'Change',
+      satNdviSrc: 'Landsat 8/9 · NDVI at 100 m',
       datosDron: 'Drone image: each person opens it from their own device; it is not saved or uploaded.',
       iniMejorT: 'Best fit for your farm',
       iniSiembra: 'Next sowing',
@@ -316,6 +317,12 @@
         lineaGris: 'image without NDVI',
         lineaOtraZona: 'It is in Zone {n}, not the selected one.',
         lineaFuera: 'It is outside Santiago del Estero.'
+      },
+
+      // web/satelite-logica.js · SateliteLogica.TEXTOS (satélite del lote, D-40)
+      satelite: {
+        locale: 'en-US',
+        visorSrc: 'Landsat · about {m} m per pixel in this viewer (30 m original)'
       },
 
       // web/sectores-logica.js · SectoresLogica.TEXTOS (sectores del lote, D-39)

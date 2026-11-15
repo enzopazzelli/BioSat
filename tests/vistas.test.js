@@ -198,3 +198,11 @@ test('D-39: exportar e importar sectores', () => {
   assert.ok(idsIndex.has('sectExportar') && idsIndex.has('sectImportar'));
   assert.match(index, /id="sectArchivo"[^>]*accept="\.geojson,\.json"/);
 });
+
+test('D-40: los rótulos de Landsat dicen la resolución real', () => {
+  for (const [nombre, html] of [['index', index], ['completo', completo]]) {
+    assert.doesNotMatch(html, /Landsat · 30 m<|Landsat 8\/9 · 30 m/, nombre);
+    assert.match(html, /id="visorSrc"/, nombre);
+    assert.match(html, /NDVI a 100 m/, nombre);
+  }
+});

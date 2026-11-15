@@ -245,6 +245,12 @@ function renderVisor(){
   visor.layers.forEach(l => l.remove());
   visor.layers = mostrar.map(id => L.imageOverlay(urlDe(id), id === 'dron' ? dron.recuadro : bounds,
     {alt: id === 'dron' ? TD.caja : 'Imagen Landsat'}).addTo(visor.map));
+  // D-40: el rótulo dice la resolución real de la imagen de Landsat de la zona (se mide cuando carga).
+  const capaLandsat = visor.layers[mostrar.findIndex(id => id !== 'dron')];
+  if (capaLandsat && window.SateliteLogica) capaLandsat.once('load', ev => {
+    const img = ev.target.getElement();
+    if (img && img.naturalWidth) $('#visorSrc').textContent = SateliteLogica.rotuloResolucion(SateliteLogica.metrosPorPixelZona(im.meta.bbox, img.naturalWidth));
+  });
   const zi = zonifImagen();
   $('#zonifBox').innerHTML = zi
     ? `<button type="button" class="capa" data-zonif aria-pressed="${!!visor.zonif}">Zonas con variables AIZAL (k-means)<small>D-25</small></button>`
@@ -1129,6 +1135,7 @@ function prepararIdioma(){
   Idioma.registrar('pronostico', window.PronosticoLogica && PronosticoLogica.TEXTOS);
   Idioma.registrar('dron', window.DronLogica && DronLogica.TEXTOS);
   Idioma.registrar('sectores', window.SectoresLogica && SectoresLogica.TEXTOS);
+  Idioma.registrar('satelite', window.SateliteLogica && SateliteLogica.TEXTOS);
   Idioma.registrar('appInicio', TEXTOS_INICIO);
   Idioma.registrar('asistente', window.BioSatAsistente && BioSatAsistente.TEXTOS);
   Idioma.registrar('frases', window.FrasesLogica && FrasesLogica.TEXTOS);
