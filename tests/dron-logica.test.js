@@ -31,3 +31,51 @@ test('recuadroLatLon envuelve las 4 esquinas (UTM 20 S, simétrico al meridiano 
 test('metrosPorPixel: 0,01° de longitud a -27° en 100 px', () => {
   assert.ok(Math.abs(D.metrosPorPixel([[-27.01, -63.01], [-27, -63]], 100) - 9.92) < 0.05);
 });
+
+test('tipoImagen', () => {
+  assert.equal(D.tipoImagen({bandas: 3, bits: [8, 8, 8], formato: 'uint', fotometrica: 2}), 'rgb');
+  assert.equal(D.tipoImagen({bandas: 4, bits: [8, 8, 8, 8], formato: 'uint', fotometrica: 2}), 'rgb');
+  assert.equal(D.tipoImagen({bandas: 5, bits: [16, 16, 16, 16, 16], formato: 'uint', fotometrica: 1}), 'multi');
+  assert.equal(D.tipoImagen({bandas: 4, bits: [16, 16, 16, 16], formato: 'uint', fotometrica: 1}), 'multi');
+  assert.equal(D.tipoImagen({bandas: 1, bits: [32], formato: 'float', fotometrica: 1}), 'una_decimal');
+  assert.equal(D.tipoImagen({bandas: 1, bits: [16], formato: 'uint', fotometrica: 1}), 'gris');
+});
+
+test('pareceNdvi: todo lo válido entre -1 y 1', () => {
+  assert.equal(D.pareceNdvi(Float32Array.from([-0.2, 0.5, 0.9, -9999]), -9999), true);
+  assert.equal(D.pareceNdvi(Float32Array.from([0.2, 1.7]), null), false);
+  assert.equal(D.pareceNdvi(Float32Array.from([NaN, NaN]), null), false);
+});
+
+test('descripcionesBandas lee GDAL_METADATA y bandasSugeridas no confunde red edge con rojo', () => {
+  const xml = '<GDALMetadata><Item name="DESCRIPTION" sample="2" role="description">Red</Item><Item name="DESCRIPTION" sample="3" role="description">NIR</Item></GDALMetadata>';
+  assert.deepEqual(D.descripcionesBandas(xml, 5), ['', '', 'Red', 'NIR', '']);
+  assert.deepEqual(D.descripcionesBandas(undefined, 2), ['', '']);
+  assert.deepEqual(D.bandasSugeridas(['Blue', 'Green', 'Red', 'NIR', 'RedEdge']), {rojo: 2, nir: 3});
+  assert.deepEqual(D.bandasSugeridas(['Red edge', 'Red', 'Near Infrared']), {rojo: 1, nir: 2});
+  assert.deepEqual(D.bandasSugeridas(['Rojo', 'Infrarrojo cercano']), {rojo: 0, nir: 1});
+  assert.deepEqual(D.bandasSugeridas(['', '', '']), {rojo: null, nir: null});
+});
+
+test('ndvi: sin dato, 0/0 y máscara alfa quedan en NaN', () => {
+  const v = D.ndvi(Uint16Array.from([100, 0, 50, 7]), Uint16Array.from([300, 0, 50, 7]), 7);
+  assert.ok(Math.abs(v[0] - 0.5) < 1e-6 && Number.isNaN(v[1]) && v[2] === 0 && Number.isNaN(v[3]));
+  const m = D.ndvi(Uint8Array.from([10, 10]), Uint8Array.from([30, 30]), null, Uint8Array.from([255, 0]));
+  assert.ok(Math.abs(m[0] - 0.5) < 1e-6 && Number.isNaN(m[1]));
+});
+
+test('resumenNdvi: mediana y fracción por debajo del umbral (estricto), sin contar NaN', () => {
+  const r = D.resumenNdvi(Float32Array.from([0.1, 0.2, 0.3, 0.6, NaN]), 0.25);
+  assert.ok(Math.abs(r.mediana - 0.25) < 1e-6);
+  assert.equal(r.fraccionBajo, 0.5);
+  assert.equal(r.validos, 4);
+  assert.deepEqual(D.resumenNdvi(Float32Array.from([NaN]), 0.25), {mediana: null, fraccionBajo: null, validos: 0});
+});
+
+test('fechaDeTiff y avisoTamano', () => {
+  assert.equal(D.fechaDeTiff('2026:11:03 10:30:00'), '2026-11-03');
+  assert.equal(D.fechaDeTiff(''), null);
+  assert.equal(D.fechaDeTiff('basura'), null);
+  assert.equal(D.avisoTamano(200e6), null);
+  assert.equal(typeof D.avisoTamano(1.5 * 1024 ** 3), 'string');
+});
