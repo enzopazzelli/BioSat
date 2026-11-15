@@ -85,3 +85,34 @@ test('imagenes/escenas.json: compuestos de Earth Engine, livianos y distintos de
     }
   }
 });
+
+test('desmonte_zonas.json: serie 2001-2024 real, riesgo entre 0 y 1, método elegido = mayor AUC', () => {
+  const j = leer('desmonte_zonas.json');
+  metaCompleta(j.meta, 'desmonte');
+  assert.deepEqual(Object.keys(j.zonas), ZONAS);
+  const met = j.evaluacion.metodos;
+  const clasif = ['regresion_logistica', 'random_forest', 'gradient_boosting'];
+  const mejor = clasif.reduce((a, b) => (met[b].auc > met[a].auc ? b : a));
+  assert.equal(j.evaluacion.metodo_elegido, mejor);
+  assert.ok(j.evaluacion.tasa_base > 0 && j.evaluacion.tasa_base < 1);
+  assert.ok(!('temporal_lstm_o_transformer' in met), 'queda la clave vieja del modelo temporal');
+  assert.ok(typeof met.temporal.error_ha_pct === 'number');
+  for (const z of ZONAS) {
+    const d = j.zonas[z];
+    assert.equal(d.desmonte_ha_por_anio.desde, 2001);
+    assert.equal(d.desmonte_ha_por_anio.valores.length, 24);
+    assert.ok(d.riesgo_medio_0_1 === null || (d.riesgo_medio_0_1 >= 0 && d.riesgo_medio_0_1 <= 1));
+    assert.notEqual(d.confianza, 'alta', `${z}: el riesgo no puede tener confianza alta`);
+    assert.ok(d.riesgo_n < 100 ? d.confianza === 'baja' : d.confianza === 'media');
+    assert.deepEqual(d.proyeccion_ha.anios, [2025, 2026, 2027, 2028]);
+  }
+});
+
+test('la app lee las claves que existen en desmonte_zonas.json', () => {
+  const app = fs.readFileSync(path.join(__dirname, '..', 'web', 'app.js'), 'utf8');
+  const nom = app.match(/const NOM = \{([^}]*)\}/)[1];
+  const claves = [...nom.matchAll(/(\w+):'/g)].map(m => m[1]);
+  const met = leer('desmonte_zonas.json').evaluacion.metodos;
+  for (const k of claves) assert.ok(k in met, `la app pide evaluacion.metodos.${k} y no está`);
+  assert.ok(claves.includes('temporal') && claves.includes('gradient_boosting'));
+});
