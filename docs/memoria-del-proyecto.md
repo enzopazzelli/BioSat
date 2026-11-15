@@ -105,10 +105,12 @@ Fuera de `docs/`: `PLAN.md` (plan general y ruta), `planes/` (plan y checklist d
 10. App para el celular: Inicio simple, Reporte completo con PDF y vista detallada (D-31). Integrada en `main` y probada en un celular de verdad.
 11. Guía de armado en protoboard: el kit para principiantes alcanza para la estación (D-32, `arduino/GUIA-PROTOBOARD.md`).
 12. Revisión de ramas a las 10:00: no queda trabajo sin integrar en `main`.
+13. Hallazgo: la app dice "suelo pelado" donde el satélite solo ve poca vegetación verde, y muestra modelos y fuentes que no se usan. Plan para corregirlo antes de la demo (D-33, `docs/superpowers/plans/2026-11-15-app-sin-datos-falsos.md`).
 
 ## 9. Pendientes y alertas
 
 - **Idioma EN/ES:** última etapa de las sugerencias de la organización; necesita diseño propio. Las rotaciones de Vale en inglés pasan por su revisión.
+- **App sin datos falsos (D-33):** "suelo pelado" del satélite → "sin verde", tabla de métodos real, textos sin MapBiomas ni LART y nombres de los grupos AIZAL. Plan con 3 formas de arreglarlo en `docs/superpowers/plans/2026-11-15-app-sin-datos-falsos.md`.
 - **Kit Arduino:** armado con `arduino/GUIA-PROTOBOARD.md`, sellado del LM35, calibración y lecturas reales (sin ellas, la pantalla del kit solo anda en vivo).
 - **Entrega:** guion, video o diapositivas, página del proyecto en Space Apps, declaración de uso de IA, 2 ensayos, hora y formato de entrega.
 - **Santi:** publicar el visor de Earth Engine; verificar la fragilidad y los meses de suelo pelado. La contraseña de Meteomatics no se cambia, por practicidad (D-29).

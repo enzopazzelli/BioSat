@@ -218,4 +218,14 @@ Según la página oficial de premios (`NASA Space Apps Challenge - awards.mhtml`
   - **Guía para armarlo:** `arduino/GUIA-PROTOBOARD.md`, con el plan de ubicación en la protoboard, el armado por fases con verificaciones, la calibración, el uso con la app, los problemas comunes y diagramas Mermaid. Está pensada para que la ejecute una persona u otro agente.
   - **Extra opcional:** elegir la bandeja A, B o C con el control remoto del kit (receptor en A4). Va con los cambios de código especificados.
   - **Ojo:** si el LCD no trae pines soldados, hay que soldarle la tira de 16. El LM35 hay que sellarlo antes de meterlo en la tierra.
+- **D-33 (Hallazgo: la app muestra cosas que no son ciertas; plan para corregirlas antes de la demo):**
+  - **Qué se encontró** (repaso de los datos del 15/11):
+    - **El satélite no mide "suelo pelado".** El umbral de NDVI 0,25 marca poca vegetación verde, que incluye el rastrojo y el pasto seco, pero la app dice "tienen el suelo pelado". Además, el número depende mucho del umbral: la Zona 2 en noviembre da 11 %, 84 % o 92 % de lotes con NDVI 0,20, 0,25 o 0,30. En todas las zonas, cada mes que la app muestra como pelado es "dudoso" según el propio pipeline, y la app no usa esa marca. La exactitud no se puede medir porque no hay datos de campo (`null`, y está bien así).
+    - **La tabla de métodos** muestra "CNN + LSTM" y "CNN + Transformer", que vienen del prototipo simulado y nunca se corrieron, y dice "Método usado: sin definir".
+    - **Hay textos que nombran fuentes que no se usan:** MapBiomas y LART.
+    - **Los 5 grupos de la zonificación no tienen nombre** (la app dice "grupo 2") y se presentan como "Zonificación AIZAL", aunque son un k-means del equipo con las variables de AIZAL.
+  - **No es un problema:** el monte nativo de `suelo_zonas.json` tiene valor en las 5 zonas (lo que está en `null` son estadísticas que no se aplican). Los meses pelados de cada rotación salen del calendario de Vale, no del satélite.
+  - **Pedido de Enzo:** "que la app no muestre cosas falsas en la demo". No se miden datos nuevos; se corrige lo que la app dice.
+  - **3 formas de arreglar el semáforo:** (1) llamarlo por lo que mide, "lotes sin verde (pelados o con rastrojo seco)" (recomendada); (2) mostrar la duda con el rango de los 3 umbrales; (3) sacar el suelo pelado del semáforo. Con cualquiera, se arreglan la tabla de métodos y los textos, y se ponen nombres a los grupos (propuesta en el plan, a confirmar por Santi o Vale).
+  - **Plan, con los lugares exactos del código y los pasos:** `docs/superpowers/plans/2026-11-15-app-sin-datos-falsos.md`. **Pendiente:** elegir la forma (si nadie decide otra cosa, la 1) y quién lo hace. Vale preguntó por esta tarea.
 

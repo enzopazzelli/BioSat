@@ -60,9 +60,21 @@ Avance de cada integrante, contado desde las casillas de su plan en [`planes/`](
 ### Lo más urgente
 
 1. **Kit Arduino: está programado, falta armarlo y probarlo.** El sketch, el lector Web Serial, el esquema y la [guía de armado en protoboard](arduino/GUIA-PROTOBOARD.md) están en [`arduino/`](arduino/README.md) (Enzo se hizo cargo; D-32: el kit para principiantes alcanza). Falta armar el kit, sellar el LM35, calibrar y grabar lecturas reales. **La entrega** (guion, video y página del proyecto) sigue sin empezar: congelamiento hoy a las 15:00, entrega a las 19:00.
-2. **Datos reales de Earth Engine (D-30):** suelo, desmontes, zonificación, suelo pelado e imágenes ahora salen de fuentes reales (`ia_desmonte/`). **Las métricas del pitch cambian:** usar solo las de [`docs/datos-y-metodos.md`](docs/datos-y-metodos.md). El visor de Earth Engine sigue sin publicar.
-3. **Vale: confirmar `requiere_hacienda` y el permiso del productor.** Enzo completó 7 valores según el texto de cada rotación, y la entrevista deja pendiente el permiso por escrito para usar sus frases.
-4. **Enzo: probar el lector con el Arduino real, decidir si Meteomatics entra en la demo, ensayar la pantalla del kit en la pantalla grande y probar la app nueva sin internet en el celular.** La app para el celular (D-31) ya está en `main` y se probó en un celular de verdad.
+2. **La app muestra cosas que no son ciertas (D-33). Para quien lo tome antes de las 15:00 (Vale preguntó).**
+   - **El problema:** el semáforo y la sección 4 dicen "suelo pelado", pero el satélite (NDVI < 0,25) no lo distingue del rastrojo ni del pasto seco. Además, el número depende mucho del umbral: en la Zona 2, en noviembre, da 11 %, 84 % o 92 % de lotes con NDVI 0,20, 0,25 o 0,30. También hay otras cosas falsas:
+     - la tabla de métodos muestra "CNN + LSTM" y "CNN + Transformer", que nunca se corrieron;
+     - hay textos que nombran MapBiomas y LART, que no se usan;
+     - los grupos AIZAL no tienen nombre.
+   - **Formas de arreglarlo:**
+     1. Llamarlo por lo que mide, "lotes sin verde (pelados o con rastrojo seco)". **Es la recomendada:** unos 45 min.
+     2. Mostrar la duda, con el rango de los 3 umbrales.
+     3. Sacar el suelo pelado del semáforo.
+
+     Con cualquiera, se corrigen la tabla y los textos y se ponen nombres a los grupos (Santi o Vale los confirman).
+   - **Plan con los pasos y los lugares exactos del código:** [`docs/superpowers/plans/2026-11-15-app-sin-datos-falsos.md`](docs/superpowers/plans/2026-11-15-app-sin-datos-falsos.md).
+3. **Datos reales de Earth Engine (D-30):** suelo, desmontes, zonificación, suelo pelado e imágenes ahora salen de fuentes reales (`ia_desmonte/`). **Las métricas del pitch cambian:** usar solo las de [`docs/datos-y-metodos.md`](docs/datos-y-metodos.md). El visor de Earth Engine sigue sin publicar.
+4. **Vale: confirmar `requiere_hacienda` y el permiso del productor.** Enzo completó 7 valores según el texto de cada rotación, y la entrevista deja pendiente el permiso por escrito para usar sus frases.
+5. **Enzo: probar el lector con el Arduino real, decidir si Meteomatics entra en la demo, ensayar la pantalla del kit en la pantalla grande y probar la app nueva sin internet en el celular.** La app para el celular (D-31) ya está en `main` y se probó en un celular de verdad.
 
 ### Lo que falta, por persona
 
@@ -136,12 +148,12 @@ Sale solo de las casillas sin tildar de cada plan. Panorama completo y riesgos: 
 **Últimas decisiones:**
 
 <!-- AUTO:DECISIONES:INICIO -->
+- **D-33**: Hallazgo: la app muestra cosas que no son ciertas; plan para corregirlas antes de la demo
 - **D-32**: El kit para principiantes alcanza para la estación de BioSat: guía de protoboard
 - **D-31**: App para el celular: Inicio simple y Reporte completo
 - **D-30**: Datos reales de Earth Engine reemplazan al prototipo simulado
 - **D-29**: Contraseña de Meteomatics: se deja como está, por practicidad
 - **D-28**: Sugerencias de la organización: asistente de inicio, mapa real y app más fácil
-- **D-27**: Pantalla del kit para el jurado, guía "Del kit al campo" y Arduino Uno por USB
 
 Todas las decisiones están en la [bitácora](docs/reglas-y-bitacora.md).
 <!-- AUTO:DECISIONES:FIN -->
@@ -210,7 +222,7 @@ BioSat/
 │   │   ├── 05_Logistica_Antropico_y_Servicios/ (2 archivos)  <-- B26-B29, B32-B37: caminos, población
 │   │   └── 06_Embeddings_IA_AlphaEarth/ (2 archivos)         <-- Embeddings AlphaEarth 64D (DeepMind)
 │   └── imagenes/ (23 archivos)                               <-- Compuestos de mediana Landsat del visor y mapa de la zonificación (Earth Engine)
-├── docs/ (29 archivos)                                       <-- Documentación del equipo
+├── docs/ (30 archivos)                                       <-- Documentación del equipo
 ├── ia_desmonte/                                              <-- Pipeline de datos reales con Earth Engine: suelo, desmontes, zonificación, suelo pelado e imágenes
 │   ├── __init__.py
 │   ├── comun.py
