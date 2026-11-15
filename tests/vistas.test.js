@@ -162,3 +162,11 @@ test('D-38: index.html carga el lector de dron sin internet y tiene su caja en e
   assert.ok(idsIndex.has('dronBox') && idsIndex.has('dronArchivo'));
   assert.match(index, /id="dronArchivo"[^>]*accept="\.tif,\.tiff"/);
 });
+
+test('D-38: tarjeta del dron en el Reporte, línea en el Inicio y aviso en la vista detallada', () => {
+  for (const id of ['dronFicha', 'dronComparacion', 'dronFecha', 'dronTecnica', 'dronCambiarZona', 'inicioDron', 'inicioDronTxt', 'inicioDronLink']) assert.ok(idsIndex.has(id), id);
+  assert.match(index, /id="inicioDronLink"[^>]*href="#satelite"/);
+  assert.ok(index.indexOf('id="inicioDron"') < index.indexOf('class="ini-mejor"'));
+  assert.match(completo, /id="dronEnReporte"[\s\S]*?href="index\.html#satelite"/);
+  assert.match(index, /data-i18n="datosDron"/);
+});

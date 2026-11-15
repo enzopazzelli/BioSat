@@ -9,6 +9,7 @@
     // Textos fijos del HTML: elementos con data-i18n="clave" (o data-i18n-attr="atributo:clave").
     html: {
       iniCambiar: 'Change',
+      datosDron: 'Drone image: each person opens it from their own device; it is not saved or uploaded.',
       iniMejorT: 'Best fit for your farm',
       iniSiembra: 'Next sowing',
       iniPelados: 'Months of bare soil',
@@ -283,6 +284,7 @@
         cmpIzq: '← Landsat',
         cmpDer: 'Drone →',
         titulo: 'Your field, seen by the drone',
+        paraIngeniero: 'For your agronomist',
         cambiarZona: 'Switch to Zone {n}',
         cmpMediana: 'Median NDVI of the field: {ndvi}.',
         cmpSuperficie: '{pct} % of the surface without active green cover (NDVI below {umbral}).',

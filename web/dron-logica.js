@@ -33,6 +33,7 @@
     cmpDer: 'Dron →',
     // Tarjeta del Reporte (app.js)
     titulo: 'Tu lote, visto por el dron',
+    paraIngeniero: 'Para tu ingeniero',
     cambiarZona: 'Cambiar a la Zona {n}',
     cmpMediana: 'NDVI mediano del lote: {ndvi}.',
     cmpSuperficie: '{pct} % de la superficie sin cobertura vegetal activa (NDVI menor a {umbral}).',

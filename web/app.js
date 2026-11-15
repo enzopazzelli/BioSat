@@ -269,6 +269,57 @@ function renderVisor(){
   aplicarCortina();
 }
 
+/* ---------- Imagen de dron: tarjeta del Reporte y línea del Inicio (D-38) ---------- */
+// Resumen del vuelo para DronLogica (tipo 'pendiente' mientras espera las bandas o la confirmación del NDVI).
+function resumenDron(){
+  const d = window.BioSatDron && BioSatDron.estado();
+  if (!d || !d.url) return null;
+  return {tipo: String(d.tipo).startsWith('pendiente') ? 'pendiente' : d.tipo, fecha: d.fecha,
+    mediana: d.resumen ? d.resumen.mediana : null, fraccionBajo: d.resumen ? d.resumen.fraccionBajo : null,
+    zonaLote: d.zonaLote, departamento: d.departamento, zonaElegida: Number(state.zona[5])};
+}
+function renderDron(){
+  if (!window.DronLogica) return;
+  const D = DronLogica, T = D.TEXTOS, d = window.BioSatDron && BioSatDron.estado(), r = resumenDron();
+  if ($('#inicioDron')){
+    $('#inicioDronTxt').textContent = r ? D.lineaInicio(r) : '';
+    $('#inicioDronLink').textContent = r ? T.verEnMapa : D.lineaInicio(null) + ' →';
+  }
+  const box = $('#dronFicha');
+  if (!box) return;
+  box.hidden = !r;
+  if (!r) return;
+  $('#dronFichaT').textContent = T.titulo;
+  $('#dronFichaSrc').textContent = T.capa.replace('{fecha}', D.fechaCorta(d.fecha));
+  $('#dronFechaT').textContent = T.fechaVuelo;
+  $('#dronFechaBox').hidden = !!d.fecha;
+  const mes = d.fecha ? Number(d.fecha.slice(5, 7)) - 1 : null;
+  const frac = mes === null ? null : ((((DIAG.zonas || {})[state.zona] || {}).fraccion_pelado || [])[mes] ?? null);
+  const meta = DIAG.meta || {};
+  $('#dronComparacion').innerHTML = D.comparacion(r, {fraccionZonaMes: frac, mesNombre: mes === null ? '' : MES_L[mes],
+    periodo: meta.periodo || '', umbral: typeof meta.umbral_ndvi === 'number' ? meta.umbral_ndvi : 0.25})
+    .map(t => `<li>${esc(t)}</li>`).join('');
+  const bz = $('#dronCambiarZona'), otra = r.zonaLote !== null && r.zonaLote !== r.zonaElegida;
+  bz.hidden = !otra;
+  if (otra){ bz.textContent = T.cambiarZona.replace('{n}', r.zonaLote); bz.dataset.zona = r.zonaLote; }
+  $('#dronIngT').textContent = T.paraIngeniero;
+  $('#dronTecnica').innerHTML = D.fichaTecnica({tipo: r.tipo, bandas: d.bandas, epsg: d.epsg, metrosPixel: d.metrosPixel,
+    anchoOriginal: d.anchoOriginal, altoOriginal: d.altoOriginal, anchoCalculo: d.anchoCalculo}).map(t => `<li>${esc(t)}</li>`).join('');
+}
+document.addEventListener('change', e => {
+  if (e.target.id === 'dronFecha' && window.BioSatDron) BioSatDron.ponerFecha(e.target.value);
+});
+document.addEventListener('click', e => {
+  const b = e.target.closest('#dronCambiarZona');
+  if (!b || !window.AsistenteLogica) return;
+  const id = Object.keys(ZONAS).find(z => z[5] === b.dataset.zona);
+  if (!id) return;
+  respuestas = Object.assign({}, respuestas || {}, {zona: id});
+  AsistenteLogica.guardar(almacen(), respuestas);
+  aplicarRespuestas(respuestas);
+  renderTodo();
+});
+
 /* ---------- Zonificación AIZAL y presión de desmonte (D-25) ---------- */
 function zonifTexto(){
   const c = ((ZONIF.comparacion_biosat || {})[state.zona]) || {};
@@ -890,7 +941,7 @@ document.addEventListener('click', async e => {
 });
 
 /* ---------- Render general y eventos ---------- */
-function renderTodo(){ renderInicio(); renderPronostico(); renderTuCampo(); renderFrases(); renderStats(); renderCalendario(); renderPaneles(); renderDesmonte(); renderTrade(); renderCards(); renderSim(); renderDecidir(); renderVisor(); renderConclusiones(); }
+function renderTodo(){ renderInicio(); renderPronostico(); renderTuCampo(); renderFrases(); renderStats(); renderCalendario(); renderPaneles(); renderDesmonte(); renderTrade(); renderCards(); renderSim(); renderDecidir(); renderVisor(); renderDron(); renderConclusiones(); }
 function renderClima(){ renderFrases(); renderStats(); renderCalendario(); renderPaneles(); renderTrade(); renderCards(); renderSim(); renderConclusiones(); }
 document.addEventListener('click', e => {
   const cb = e.target.closest('[data-capa]');
