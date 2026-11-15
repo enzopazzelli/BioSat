@@ -86,7 +86,9 @@ Trabajo de Santi: notebook de zonificación y modelo de desmontes, pipeline auto
 
 Fuera de `docs/`: `PLAN.md` (plan general y ruta), `planes/` (plan y checklist de cada persona), `CONTEXTO.md` (histórico del 13/11), `ESTRUCTURA_DATOS.md`.
 
-## 8. Cómo se llegó hasta acá (línea de tiempo del 14/11)
+## 8. Cómo se llegó hasta acá (línea de tiempo del 14 y 15/11)
+
+**Sábado 14/11**
 
 1. Repo unificado, README que se actualiza solo, plan y mockup (D-15 a D-17).
 2. Análisis de zonas, visor GIS en Earth Engine y Zona 5 confirmada (D-18 a D-21).
@@ -97,10 +99,17 @@ Fuera de `docs/`: `PLAN.md` (plan general y ruta), `planes/` (plan y checklist d
 7. Kit Arduino completo (sketch, lector, esquema) y el repaso del repo con lo que falta por persona.
 8. Sugerencias de la organización: asistente de inicio, mapa real y app más fácil (D-28). El idioma EN/ES quedó para después.
 
+**Domingo 15/11**
+
+9. Datos reales de Earth Engine en lugar del prototipo simulado; las métricas del pitch cambian (D-30).
+10. App para el celular: Inicio simple, Reporte completo con PDF y vista detallada (D-31). Integrada en `main` y probada en un celular de verdad.
+11. Guía de armado en protoboard: el kit para principiantes alcanza para la estación (D-32, `arduino/GUIA-PROTOBOARD.md`).
+12. Revisión de ramas a las 10:00: no queda trabajo sin integrar en `main`.
+
 ## 9. Pendientes y alertas
 
 - **Idioma EN/ES:** última etapa de las sugerencias de la organización; necesita diseño propio. Las rotaciones de Vale en inglés pasan por su revisión.
-- **Kit Arduino:** armado, sellado del LM35, calibración y lecturas reales (sin ellas, la pantalla del kit solo anda en vivo).
+- **Kit Arduino:** armado con `arduino/GUIA-PROTOBOARD.md`, sellado del LM35, calibración y lecturas reales (sin ellas, la pantalla del kit solo anda en vivo).
 - **Entrega:** guion, video o diapositivas, página del proyecto en Space Apps, declaración de uso de IA, 2 ensayos, hora y formato de entrega.
 - **Santi:** publicar el visor de Earth Engine; verificar la fragilidad y los meses de suelo pelado. La contraseña de Meteomatics no se cambia, por practicidad (D-29).
 - **Vale:** confirmar los 7 `requiere_hacienda`, conseguir por escrito el permiso del productor y validar (o declarar sin validar) las zonas 1 a 4.
@@ -120,7 +129,7 @@ Fuera de `docs/`: `PLAN.md` (plan general y ruta), `planes/` (plan y checklist d
 
 ```bash
 python -m http.server 8000        # y abrir http://localhost:8000/web/
-node --test tests/*.test.js       # 71 pruebas
+node --test "tests/*.test.js"     # 112 pruebas (con el patrón entre comillas; "node --test tests/" no las encuentra)
 python -X utf8 scripts/actualizar_readme.py
 node arduino/esquema/generar-esquema.js          # regenera el esquema del Arduino
 python -X utf8 scripts/generar_mapa_santiago.py  # regenera el mapa (necesita internet)

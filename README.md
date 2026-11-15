@@ -50,19 +50,19 @@ Avance de cada integrante, contado desde las casillas de su plan en [`planes/`](
 <!-- AUTO:AVANCE:INICIO -->
 | Persona | Rama | Avance | Tareas |
 |---|---|---|---|
-| [Enzo · Integración y app](planes/1-enzo.md) | `enzo-app` | `▓▓▓▓▓▓▓▓░░` 76% | 35/46 |
+| [Enzo · Integración y app](planes/1-enzo.md) | `enzo-app` | `▓▓▓▓▓▓▓▓░░` 80% | 37/46 |
 | [Santi · Suelo, satélite e IA](planes/2-santi.md) | `santi-datos-ia` | `▓▓▓▓▓▓▓▓░░` 81% | 22/27 |
 | [Vale · Campo y agronomía](planes/3-vale.md) | `vale-rotaciones` | `▓▓▓▓▓▓▓▓░░` 77% | 17/22 |
 | [Sara · Kit Arduino y relato](planes/4-sara.md) | `sara-arduino-entrega` | `▓▓░░░░░░░░` 20% | 5/25 |
-| **Total** | | `▓▓▓▓▓▓▓░░░` **66%** | **79/120** |
+| **Total** | | `▓▓▓▓▓▓▓░░░` **68%** | **81/120** |
 <!-- AUTO:AVANCE:FIN -->
 
 ### Lo más urgente
 
-1. **Kit Arduino: está programado, falta armarlo y probarlo.** El sketch, el lector Web Serial y el esquema están en [`arduino/`](arduino/README.md) (Enzo se hizo cargo). Falta armar el kit, sellar el LM35, calibrar y grabar lecturas reales. **La entrega** (guion, video y página del proyecto) sigue sin empezar.
+1. **Kit Arduino: está programado, falta armarlo y probarlo.** El sketch, el lector Web Serial, el esquema y la [guía de armado en protoboard](arduino/GUIA-PROTOBOARD.md) están en [`arduino/`](arduino/README.md) (Enzo se hizo cargo; D-32: el kit para principiantes alcanza). Falta armar el kit, sellar el LM35, calibrar y grabar lecturas reales. **La entrega** (guion, video y página del proyecto) sigue sin empezar: congelamiento hoy a las 15:00, entrega a las 19:00.
 2. **Datos reales de Earth Engine (D-30):** suelo, desmontes, zonificación, suelo pelado e imágenes ahora salen de fuentes reales (`ia_desmonte/`). **Las métricas del pitch cambian:** usar solo las de [`docs/datos-y-metodos.md`](docs/datos-y-metodos.md). El visor de Earth Engine sigue sin publicar.
 3. **Vale: confirmar `requiere_hacienda` y el permiso del productor.** Enzo completó 7 valores según el texto de cada rotación, y la entrevista deja pendiente el permiso por escrito para usar sus frases.
-4. **Enzo: sumar el lector de Sara apenas llegue, decidir si Meteomatics entra en la demo y ensayar la pantalla del kit en la pantalla grande.**
+4. **Enzo: probar el lector con el Arduino real, decidir si Meteomatics entra en la demo, ensayar la pantalla del kit en la pantalla grande y probar la app nueva sin internet en el celular.** La app para el celular (D-31) ya está en `main` y se probó en un celular de verdad.
 
 ### Lo que falta, por persona
 
@@ -70,7 +70,7 @@ Sale solo de las casillas sin tildar de cada plan. Panorama completo y riesgos: 
 
 <!-- AUTO:PENDIENTE:INICIO -->
 <details>
-<summary><b>Enzo</b>: 11 pendientes (<a href="planes/1-enzo.md">plan completo</a>)</summary>
+<summary><b>Enzo</b>: 9 pendientes (<a href="planes/1-enzo.md">plan completo</a>)</summary>
 
 - Último merge de funciones a `main` _(Congelamiento)_
 - Revisar el README final con Sara _(Entrega)_
@@ -81,8 +81,6 @@ Sale solo de las casillas sin tildar de cada plan. Panorama completo y riesgos: 
 - Ensayar `web/kit.html` y `web/campo.html` en la pantalla grande de la demo, con el kit conectado _(Agregadas por Enzo)_
 - Cerrar `PLAN.md`: sumar kit y guía en la sección 1 y contestar las preguntas abiertas _(Agregadas por Enzo)_
 - Probar de nuevo la app publicada en el celular y sin internet después del último merge _(Agregadas por Enzo)_
-- Probar el Inicio y el Reporte en un celular de verdad (Chrome de Android), con y sin internet _(App para el celular y reporte completo)_
-- Revisión final de las ramas `santi-datos-ia` y `enzo-app` antes de integrar la app a `main` _(App para el celular y reporte completo)_
 
 </details>
 
