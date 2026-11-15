@@ -78,7 +78,7 @@ _Salen del repaso del repo. Cada uno decide cómo abordarlas; si no corresponden
 - [x] Reporte completo en una sola página con 7 secciones abiertas, conclusiones calculadas, Guardar PDF y Compartir
 - [x] Conservar la página de antes como vista detallada (`web/completo.html`)
 - [x] Asistente: la pregunta 1 nombra la característica de la zona y abajo sus localidades
-- [ ] Probar el Inicio y el Reporte en un celular de verdad (Chrome de Android), con y sin internet
+- [x] Probar el Inicio y el Reporte en un celular de verdad *(Enzo, 15/11: se ve bien)*
 - [ ] Revisión final de las ramas `santi-datos-ia` y `enzo-app` antes de integrar la app a `main`
 
 ## Listo cuando
