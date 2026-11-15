@@ -483,8 +483,19 @@ Según la página oficial de premios (`NASA Space Apps Challenge - awards.mhtml`
   - **Pruebas:**
     - 5 de Python (sin internet) y `tests/satelite-logica.test.js` (4): 205 de JS y 44 de Python en verde;
     - en el navegador, con un lote **sintético** de prueba (`tests/fixtures/lotes/`): capas, cortina, línea de comparación, motivo de Landsat, un vuelo que no cae sobre el recorte, sin `lotes.json` y en inglés.
-  - **Pendiente:**
-    - **correr el recorte real**: falta el ID del proyecto de Earth Engine (`EE_PROJECT`), que no está anotado en el repositorio, y la fecha del vuelo;
-    - el permiso para publicar el recorte del lote;
-    - el motivo de una fuente sin pasada sale en español también en inglés (lo escribe el script).
+  - **Recorte real (15/11):** Enzo pasó el proyecto de Earth Engine (va por la variable `EE_PROJECT`, no se escribe en el repositorio), la fecha del vuelo y el permiso para publicar el recorte.
+    - **La fecha:** el ingeniero dijo "julio de este año", sin día. Para no inventarlo, el script suma `--mes AAAA-MM`: busca la pasada limpia dentro del mes, la más cercana a su mitad, y la rotula "en el mes del vuelo", sin días al vuelo. La tarjeta compara con la zona en julio usando ese mes.
+    - **El comando:** `EE_PROJECT=<id> python -X utf8 -m ia_desmonte.recorte_lote --tif D:/User/Desktop/NDVI.tif --mes 2026-07 --nombre capital_zona1`.
+    - **Pasadas:**
+      - Sentinel-2 del **17/07/2026** (103 × 140 celdas de 10 m);
+      - Landsat 8 del **16/07/2026** (35 × 48 celdas de 30 m);
+      - las dos 100 % sin nubes en el recuadro. En julio había 8 pasadas de Sentinel-2 y 3 de Landsat.
+    - **Comparación en la misma superficie:** NDVI mediano **0,42 con el dron**, **0,22 con Sentinel-2** y **0,28 con Landsat**. Con la zona: en julio, 2 de cada 10 lotes de la Zona 1 tienen NDVI mediano menor a 0,25.
+    - **La diferencia entre el dron y el satélite no se corrige ni se explica en la app.** Se muestran los dos con su resolución y su fecha. Hipótesis a confirmar:
+      - el día exacto del vuelo (puede no ser el 16 o 17 de julio);
+      - la calibración del NDVI de DJI (bandas más angostas, reflectancia calibrada o no);
+      - la mezcla de cultivo y entresurco en un píxel de 10 a 30 m.
+    - **Atribución:** con una capa de Sentinel-2 a la vista, el mapa suma "Contiene datos modificados de Copernicus Sentinel (2026)", como piden sus condiciones de uso.
+    - **Pruebas:** 45 de Python y 206 de JS en verde. Con el `NDVI.tif` real en Chrome se vieron las 4 capas, la cortina "Satélite contra dron", las líneas de comparación y la atribución, sin errores.
+  - **Pendiente:** el motivo de una fuente sin pasada sale en español también en inglés (lo escribe el script).
 
