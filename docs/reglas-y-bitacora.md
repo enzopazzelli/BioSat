@@ -570,4 +570,13 @@ Según la página oficial de premios (`NASA Space Apps Challenge - awards.mhtml`
     - Pruebas en `tests/arduino-pines.test.js`: los mismos pines que el original y la lectura invertida.
     - Compilado y subido a la placa. Guía, sección 7 bis.
     - **Falta:** probarlo al aire y en agua, y recalibrar `SALITRE_AGUA_RAW`.
+  - **Guía completa de la variante (15/11, 17:45):** [`arduino/GUIA-PROTOBOARD-HUMEDAD-SUELO.md`](../arduino/GUIA-PROTOBOARD-HUMEDAD-SUELO.md). Es la guía del kit tal como se arma ahora. La original queda para el sensor de nivel de agua y avisa arriba que existe esta. Suma:
+    - lo que ya se probó y lo que falta;
+    - la conexión del módulo (VCC a A3, AO a A0, GND al riel − y DO sin conectar);
+    - los comandos de `arduino-cli` que se usaron (compilación verificada en esta PC);
+    - una prueba del sensor al aire, en agua y en agua salada;
+    - la calibración con la bandeja C humedecida con agua común, el orden A, C y B, y enjuagar la horquilla al salir de la B;
+    - qué hacer si el sensor no separa el agua salada de la común: no cargar un umbral inventado y decirlo en el pitch;
+    - los pasos para el DHT11 en `null` y para el LCD que no prende;
+    - anotar en `meta.notas` de `data/arduino_bandejas_demo.json` qué sensor se usó, porque sus `agua_raw` no se comparan con los del sensor de nivel de agua.
 

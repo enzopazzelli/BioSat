@@ -10,8 +10,10 @@ Tabla de cables, por pin y por componente: [`esquema/tabla-de-conexiones.md`](es
 
 | Archivo | Para qué |
 |---|---|
-| **`GUIA-PROTOBOARD.md`** | **Guía de armado paso a paso en la protoboard, con diagramas, para una persona o un agente** |
+| **`GUIA-PROTOBOARD-HUMEDAD-SUELO.md`** | **La guía del kit tal como se arma desde el 15/11: con el sensor de humedad de tierra resistivo.** Armado por fases, prueba del sensor, calibración y problemas del DHT11 y del LCD |
+| `GUIA-PROTOBOARD.md` | Guía de armado paso a paso en la protoboard con el sensor de nivel de agua del kit, con diagramas, para una persona o un agente |
 | `biosat_estacion_campo/biosat_estacion_campo.ino` | El programa del Arduino. Una línea JSON cada 2 segundos, LCD y 3 LEDs |
+| `biosat_estacion_humedad_suelo/biosat_estacion_humedad_suelo.ino` | El mismo programa para el sensor de humedad de tierra resistivo: mismos pines y la lectura dada vuelta (`1023 − lectura`), así `agua_raw` significa lo mismo |
 | `lector-web-serial.js` | Lee el USB desde Chrome o Edge. La app lo carga sola |
 | `esquema/pines.json` | **La fuente única** de los pines. De acá salen el esquema y la tabla |
 | `esquema/generar-esquema.js` | Regenera el esquema y la tabla: `node arduino/esquema/generar-esquema.js` |

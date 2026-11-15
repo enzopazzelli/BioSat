@@ -1,5 +1,7 @@
 # Guía de armado en protoboard · Estación de campo BioSat
 
+> **Desde el 15/11 el kit se arma con un sensor de humedad de tierra resistivo** en lugar del sensor de nivel de agua. Para ese armado, usar la guía completa de la variante: [`GUIA-PROTOBOARD-HUMEDAD-SUELO.md`](GUIA-PROTOBOARD-HUMEDAD-SUELO.md). Esta guía queda para el sensor de nivel de agua del kit.
+
 > **Para quien la ejecute (persona o agente):** esta guía alcanza para armar, probar y calibrar el kit sin preguntar nada. Los pines salen de [`esquema/pines.json`](esquema/pines.json), que es la **fuente única**: el programa ([`biosat_estacion_campo/biosat_estacion_campo.ino`](biosat_estacion_campo/biosat_estacion_campo.ino)) y la [tabla de conexiones](esquema/tabla-de-conexiones.md) ya coinciden con ella. Si cambiás un cable, cambiá `pines.json` y el `#define` del programa, y corré `node arduino/esquema/generar-esquema.js` y `node --test tests/*.test.js`.
 
 ## 1. La respuesta corta: sí, tu kit sirve para la app
@@ -323,6 +325,8 @@ sequenceDiagram
   **Nunca inventar números**: si no se midió, la lista queda vacía.
 
 ## 7 bis. Variante con un sensor de humedad de tierra resistivo (15/11)
+
+> **La guía completa de esta variante**, con el armado por fases, la prueba del sensor, la calibración y los problemas del DHT11 y del LCD, está en [`GUIA-PROTOBOARD-HUMEDAD-SUELO.md`](GUIA-PROTOBOARD-HUMEDAD-SUELO.md). Esta sección es el resumen.
 
 Si en lugar del sensor de nivel de agua se usa un **sensor de humedad de tierra resistivo**, hay que cargar **otro programa**: [`biosat_estacion_humedad_suelo/biosat_estacion_humedad_suelo.ino`](biosat_estacion_humedad_suelo/biosat_estacion_humedad_suelo.ino). El sensor es una horquilla con dos patas metálicas y un módulo con potenciómetro, con 4 pines: VCC, GND, DO y AO. El programa original queda igual.
 

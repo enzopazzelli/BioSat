@@ -199,11 +199,14 @@ BioSat/
 ├── archivo/                                                  <-- Material archivado que no alimenta la app
 │   └── prototipo-ia-simulado/ (38 archivos)                  <-- Primer prototipo de IA con datos SIMULADOS (no se usa; ver LEEME-PRIMERO.md)
 ├── arduino/                                                  <-- Kit Arduino: sketch, lector Web Serial, esquema y guía de armado
+│   ├── GUIA-PROTOBOARD-HUMEDAD-SUELO.md                      <-- Guía de armado en protoboard · Variante con sensor de hum...
 │   ├── GUIA-PROTOBOARD.md                                    <-- Guía de armado en protoboard · Estación de campo BioSat
 │   ├── lector-web-serial.js                                  <-- Lee el Arduino por USB desde Chrome o Edge (window.BioSatArduino)
 │   ├── README.md                                             <-- Guía del kit: cómo armarlo, cargarlo, calibrarlo y usarlo con la app
 │   ├── biosat_estacion_campo/                                <-- Sketch del Arduino Uno (línea JSON cada 2 s, LCD y LEDs)
 │   │   └── biosat_estacion_campo.ino
+│   ├── biosat_estacion_humedad_suelo/
+│   │   └── biosat_estacion_humedad_suelo.ino
 │   └── esquema/                                              <-- Esquema de conexiones: pines.json es la fuente; el resto se genera
 │       ├── componentes-disponibles.webp                      <-- Las piezas que tiene el equipo
 │       ├── concepto-original.jpeg                            <-- Imagen del plan inicial (con LCD I2C; no es la que se arma)
