@@ -350,7 +350,7 @@ function renderDron(){
   if (lote && window.SateliteLogica) for (const [k, f] of Object.entries(lote.datos.fuentes || {})){
     if (!f){ lineas.push(SateliteLogica.TEXTOS.sinFuente.replace('{fuente}', FUENTES_SAT[k]).replace('{motivo}', (lote.datos.motivos || {})[k] || '')); continue; }
     const c = nd && SateliteLogica.compararNdvi(nd, f.ndvi);
-    if (c) lineas.push(SateliteLogica.lineaComparacion(c, Object.assign({nombre: FUENTES_SAT[k]}, f), d.fecha));
+    if (c) lineas.push(SateliteLogica.lineaComparacion(c, Object.assign({nombre: FUENTES_SAT[k]}, f), d.fecha || lote.datos.fecha_vuelo));
   }
   $('#dronComparacion').innerHTML = lineas.map(t => `<li>${esc(t)}</li>`).join('');
   const bz = $('#dronCambiarZona'), otra = r.zonaLote !== null && r.zonaLote !== r.zonaElegida;
