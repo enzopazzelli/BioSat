@@ -50,11 +50,11 @@ Avance de cada integrante, contado desde las casillas de su plan en [`planes/`](
 <!-- AUTO:AVANCE:INICIO -->
 | Persona | Rama | Avance | Tareas |
 |---|---|---|---|
-| [Enzo · Integración y app](planes/1-enzo.md) | `enzo-app` | `▓▓▓▓▓▓▓▓░░` 85% | 44/52 |
+| [Enzo · Integración y app](planes/1-enzo.md) | `enzo-app` | `▓▓▓▓▓▓▓▓░░` 82% | 46/56 |
 | [Santi · Suelo, satélite e IA](planes/2-santi.md) | `santi-datos-ia` | `▓▓▓▓▓▓▓▓░░` 76% | 22/29 |
 | [Vale · Campo y agronomía](planes/3-vale.md) | `vale-rotaciones` | `▓▓▓▓▓▓▓░░░` 72% | 18/25 |
 | [Sara · Kit Arduino y relato](planes/4-sara.md) | `sara-arduino-entrega` | `▓▓░░░░░░░░` 19% | 5/26 |
-| **Total** | | `▓▓▓▓▓▓▓░░░` **67%** | **89/132** |
+| **Total** | | `▓▓▓▓▓▓▓░░░` **67%** | **91/136** |
 <!-- AUTO:AVANCE:FIN -->
 
 ### Lo más urgente
@@ -85,7 +85,7 @@ Sale solo de las casillas sin tildar de cada plan. Panorama completo y riesgos: 
 
 <!-- AUTO:PENDIENTE:INICIO -->
 <details>
-<summary><b>Enzo</b>: 8 pendientes (<a href="planes/1-enzo.md">plan completo</a>)</summary>
+<summary><b>Enzo</b>: 10 pendientes (<a href="planes/1-enzo.md">plan completo</a>)</summary>
 
 - Último merge de funciones a `main` _(Congelamiento)_
 - Revisar el README final con Sara _(Entrega)_
@@ -95,6 +95,8 @@ Sale solo de las casillas sin tildar de cada plan. Panorama completo y riesgos: 
 - Ensayar `web/kit.html` y `web/campo.html` en la pantalla grande de la demo, con el kit conectado _(Agregadas por Enzo)_
 - Cerrar `PLAN.md`: sumar kit y guía en la sección 1 y contestar las preguntas abiertas _(Agregadas por Enzo)_
 - Probar de nuevo la app publicada en el celular y sin internet después del último merge _(Agregadas por Enzo)_
+- Probarlo en un celular de verdad _(Lector de imágenes de dron)_
+- Etapa 2: marcar sectores, guardarlos en el navegador, exportarlos e importarlos (GeoJSON) y sacarlos en el PDF _(Lector de imágenes de dron)_
 
 </details>
 
@@ -155,12 +157,12 @@ Sale solo de las casillas sin tildar de cada plan. Panorama completo y riesgos: 
 **Últimas decisiones:**
 
 <!-- AUTO:DECISIONES:INICIO -->
+- **D-38**: Lector de imágenes de dron, etapa 1
 - **D-37**: Sugerencia de un ingeniero: imágenes de dron y pasar de la zona al lote; hoja de ruta de Vale
 - **D-36**: Corrección: el visor del Reporte no mostraba la imagen Landsat
 - **D-35**: Botón de idioma ES/EN, etapa 1: lo que se ve primero, en inglés
 - **D-34**: Inicio en la PC y el pronóstico de Meteomatics entra en la app
 - **D-33**: Hallazgo: la app muestra cosas que no son ciertas; plan para corregirlas antes de la demo
-- **D-32**: El kit para principiantes alcanza para la estación de BioSat: guía de protoboard
 
 Todas las decisiones están en la [bitácora](docs/reglas-y-bitacora.md).
 <!-- AUTO:DECISIONES:FIN -->
@@ -229,7 +231,7 @@ BioSat/
 │   │   ├── 05_Logistica_Antropico_y_Servicios/ (2 archivos)  <-- B26-B29, B32-B37: caminos, población
 │   │   └── 06_Embeddings_IA_AlphaEarth/ (2 archivos)         <-- Embeddings AlphaEarth 64D (DeepMind)
 │   └── imagenes/ (23 archivos)                               <-- Compuestos de mediana Landsat del visor y mapa de la zonificación (Earth Engine)
-├── docs/ (36 archivos)                                       <-- Documentación del equipo
+├── docs/ (38 archivos)                                       <-- Documentación del equipo
 ├── ia_desmonte/                                              <-- Pipeline de datos reales con Earth Engine: suelo, desmontes, zonificación, suelo pelado e imágenes
 │   ├── __init__.py
 │   ├── comun.py
@@ -276,6 +278,7 @@ BioSat/
 │   ├── arduino-pines.test.js
 │   ├── asistente-logica.test.js
 │   ├── datos-contratos.test.js                               <-- Prueba la forma de los datos reales de ia_desmonte/
+│   ├── dron-logica.test.js
 │   ├── frases-logica.test.js
 │   ├── idioma-logica.test.js                                 <-- Prueba la lógica del idioma: solo español e inglés (D-35)
 │   ├── inicio-logica.test.js                                 <-- Prueba el semáforo, la próxima siembra y el WhatsApp del Inicio
@@ -284,8 +287,14 @@ BioSat/
 │   ├── mapa-santiago.test.js
 │   ├── pronostico-logica.test.js                             <-- Prueba el resumen y el vencimiento del pronóstico de Meteomatics
 │   ├── textos-en.test.js                                     <-- Prueba que el inglés no tenga huecos ni claves sobrantes (D-35)
-│   └── vistas.test.js                                        <-- Prueba las vistas Inicio, Reporte y la vista detallada (completo.html)
-└── web/ (44 archivos)                                        <-- App web BioSat (abrir con un servidor: ver Inicio rápido)
+│   ├── vistas.test.js                                        <-- Prueba las vistas Inicio, Reporte y la vista detallada (completo.html)
+│   └── fixtures/
+│       ├── dron_multi_utm20s.tif
+│       ├── dron_ndvi_4326.tif
+│       ├── dron_rgb_utm20s.tif
+│       ├── dron_sin_coordenadas.tif
+│       └── generar_tif_prueba.py
+└── web/ (50 archivos)                                        <-- App web BioSat (abrir con un servidor: ver Inicio rápido)
 ```
 <!-- AUTO:ESTRUCTURA:FIN -->
 

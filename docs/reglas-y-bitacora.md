@@ -327,3 +327,74 @@ Según la página oficial de premios (`NASA Space Apps Challenge - awards.mhtml`
   - **Falta la fuente:** la hoja de ruta se basa en la minuta `minuta_mejoras_app_drones_sensores_2026-11-15.md`, que no está en el repositorio. Se le pidió a Vale que la suba (`planes/3-vale.md`).
   - **Aplicado en la app (hallazgo de la hoja de ruta, §4):** el semáforo decía "faltan unos 110 mm de agua para lo que pide el cultivo", pero la cuenta es lluvia − ET0, una referencia climática. La demanda de un cultivo concreto sería ET0 × Kc, que la app sí usa para el agua de cada rotación. Ahora dice "la lluvia típica queda unos 110 mm por debajo de la evaporación de referencia (ET0)" (en inglés, "typical rain falls about 110 mm short of reference evapotranspiration (ET0)"), y la explicación del semáforo aclara que no es lo que pide un cultivo concreto. La lógica y los umbrales no cambian. 3 pruebas nuevas, 158 en verde. Revisado a 390 px en español y en inglés.
   - **Decisión (Enzo, 15/11):** el resto de la hoja de ruta (expediente por lote, sectores, informe versionado, datos guardados con usuarios y permisos) **no se construye ahora**: es otro proyecto. Va al pitch como "cómo seguimos": de la zona al lote, con el dron como el escalón que sigue después de Landsat en la escalera de escalas. Tarea en `planes/4-sara.md`.
+- **D-38 (Lector de imágenes de dron, etapa 1):**
+  - **Por qué:** sigue a D-37. La app trabajaba solo con datos típicos o pasados por zona; el lector suma un dato **del presente y del lote**. Completa la escalera de escalas: NASA POWER (50 km) → Meteomatics (9 km) → Landsat (30 m) → **dron (centímetros)** → sonda.
+  - **Decisiones de Enzo (15/11):**
+    - un **lector**: cada uno abre su propio .tif, no hay un vuelo cargado en el repositorio; Enzo busca un .tif real para la demo;
+    - nivel 2 (ver y leer el lote) y después nivel 3 (sectores);
+    - **todo en el navegador**, con geotiff.js 2.1.3 y proj4js 2.12.1 en `web/vendor/`;
+    - una **línea en el Inicio**.
+  - **Diseño y plan:** `docs/superpowers/specs/2026-11-15-lector-dron-design.md` y `docs/superpowers/plans/2026-11-15-lector-dron-etapa-1.md`.
+  - **Qué hace la etapa 1:**
+    - **Reporte, sección 4:** botón "Abrir un .tif de dron". El archivo se lee de a partes y achicado a 2048 px como máximo, nunca sale del equipo y no se guarda. Avisa si pesa más de 1 GB.
+    - **Mapa:** la imagen aparece en su lugar como capa "Dron · fecha" y con la cortina "Landsat contra dron". Al abrirla, el mapa va al lote.
+    - **Según el archivo:**
+      - una **foto RGB** se ve, sin NDVI, y la app lo dice;
+      - una **multiespectral** calcula el NDVI con las bandas roja e infrarroja que nombra el archivo, o las elige el usuario;
+      - una **banda decimal entre −1 y 1** se usa como NDVI solo si el usuario lo confirma;
+      - **lo demás** se ve en grises.
+    - **Tarjeta "Tu lote, visto por el dron":** NDVI mediano, porcentaje de la superficie sin cobertura vegetal activa (mismo umbral que Landsat, `meta.umbral_ndvi`) y la comparación con la zona en el **mes del vuelo**.
+      - Landsat cuenta *lotes* y el dron mide *superficie*: lo comparable es el NDVI mediano del lote con el criterio de Landsat.
+      - Sin fecha en el archivo, se puede escribir.
+      - Si el lote cae en otra zona, no se compara con la elegida y aparece "Cambiar a la Zona N". Si cae fuera de la provincia, se dice.
+    - **"Para tu ingeniero":** bandas usadas, sistema de coordenadas, resolución de cálculo, que el NDVI es aproximado si el mosaico no está calibrado y que el recuadro es recto.
+    - **Inicio:** una línea "Tu lote, según el dron (fecha): NDVI mediano · % sin cobertura activa", o "foto en color, sin NDVI", con "Ver en el mapa →". Sin vuelo, un enlace "¿Tenés una imagen de dron? Abrila en el Reporte". El semáforo no cambia.
+    - **Vista detallada:** un aviso que lleva al Reporte.
+    - **Sistemas de coordenadas:** WGS84, UTM norte y sur, Web Mercator y POSGAR 2007 (fajas 1 a 7). Con otro sistema o sin coordenadas, la app avisa y no pone capa.
+    - **Departamento y zona del lote:** salen del mapa del asistente (`data/santiago_mapa.json`), con la transformación deducida de los 5 puntos de NASA POWER.
+    - **Inglés (D-35):** todos los textos nuevos. La fecha sigue el idioma: 03/11 en español y 11/03 en inglés.
+  - **Decisiones del diseñador:**
+    - **Sin atajos por cámara:** el orden de las bandas depende de la cámara y del programa de mosaico, y un atajo equivocado daría un NDVI falso.
+    - **El lector va solo en el Reporte.**
+    - **El .tif no se guarda.**
+  - **Pruebas:**
+    - `tests/dron-logica.test.js` (18) y pruebas nuevas en `tests/vistas.test.js` y `tests/textos-en.test.js`: 180 en verde.
+    - 4 GeoTIFF **sintéticos** de prueba en `tests/fixtures/` (los genera `generar_tif_prueba.py`). Nunca se muestran como un vuelo real.
+    - Revisado en Chrome a 390 px y a 1440 px, en español y en inglés, sin errores de JavaScript:
+      - abrir cada archivo;
+      - abrir un segundo archivo (queda una sola capa);
+      - cambiar de idioma y de zona con el dron abierto;
+      - un archivo sin coordenadas y uno que no es TIFF.
+  - **Decisiones tomadas al construirlo:**
+    - **La fecha sigue el idioma** (03/11 en español, 11/03 en inglés): en inglés, "03/11" se lee 11 de marzo.
+    - **Si el lote cae en otra zona o fuera de la provincia, no se compara con la zona elegida:** sería comparar con otro lugar. Para ver la comparación hay que tocar "Cambiar a la Zona N".
+    - **Un archivo que falla reemplaza al anterior:** el estado muestra el error del último intento.
+    - **`dron.js` lee `CLIMA`, `DIAG` y `MAPA` de `app.js`** en vez de recibirlos por parámetro.
+  - **Revisión final** (la hizo el mismo autor, sin un revisor aparte). Encontró dos problemas y los arregló con pruebas:
+    - con `?lang=en`, la caja del dron quedaba en español;
+    - `readRasters` leía el original entero antes de achicarlo y un ortomosaico real podía tirar la pestaña del celular. Ahora lee de a franjas: un .tif de prueba de 75 MB (3000 × 2500 px y 5 bandas) se lee en 2,5 s con los mismos números.
+  - **Mejoras menores, para después:**
+    - la atribución del mapa sigue diciendo Landsat cuando se ve el dron;
+    - una foto RGB con `GDAL_NODATA` y sin banda alfa dibuja el borde en negro;
+    - un GeoTIFF ubicado con `ModelTransformation` puede mostrar "no se pudo leer como GeoTIFF" sin decir la causa;
+    - el aviso de más de 1 GB aparece mientras se lee, no antes;
+    - con el lote fuera de la zona elegida, la cortina "Landsat contra dron" sigue disponible, aunque abajo no hay Landsat de ese lugar.
+  - Las pruebas de la app son 184. **Ojo:** un commit de esta rama (`bfe1377`) quedó con 2 pruebas fallando; lo arregla el siguiente (`e74d3c0`).
+  - **Prueba con el .tif real de Enzo (15/11, `drone.tif` en la raíz, no va a Git):**
+    - **El archivo:**
+      - 33,6 MB, 18 990 × 13 321 px, 2,25 cm por píxel;
+      - 3 bandas de 8 bits: **foto en color, sin infrarrojo**, así que no hay NDVI;
+      - comprimido en JPEG y guardado en **YCbCr**;
+      - con máscara interna del área válida y 6 versiones reducidas (un COG);
+      - EPSG:32721 (UTM 21 S), vuelo del 07/03/2024.
+    - **Dónde cae:** en −27,67; −58,75, cerca de la ciudad de Corrientes, **fuera de Santiago del Estero**. Mide unos 428 × 300 m.
+    - **Lo que mostró y se arregló, con pruebas:**
+      - el lector solo reconocía la foto como color si estaba guardada en RGB: la trataba como gris y los colores salían cambiados. Ahora el YCbCr también es foto en color y se pasa a RGB con la misma fórmula que `readRGB` de geotiff.js;
+      - no usaba las versiones reducidas: decodificaba 250 millones de píxeles. Ahora lee la más chica que alcanza (2374 px de ancho);
+      - no usaba la máscara: el borde fuera del vuelo salía en negro. Ahora queda transparente;
+      - "Para tu ingeniero" decía "los números se calculan" en una foto sin NDVI. Ahora dice "se muestra una versión de…".
+    - **Resultado:** se lee en 1,2 a 1,6 s en Chrome (en la PC y emulando un celular de 390 px), con colores naturales. La línea del Inicio dice "Tu lote, según el dron (07/03): foto en color, sin NDVI. Está fuera de Santiago del Estero."; en inglés, la fecha sale 03/07. Sin errores de JavaScript. 184 pruebas en verde.
+  - **Pendiente:**
+    - probarlo en un celular de verdad;
+    - para mostrar NDVI hace falta un vuelo con cámara multiespectral;
+    - la etapa 2 (sectores) viene después.

@@ -21,6 +21,10 @@
 <script src="frases-logica.js" defer></script>
 <script src="inicio-logica.js" defer></script>
 <script src="pronostico-logica.js" defer></script>
+<script src="vendor/geotiff.js" defer></script>
+<script src="vendor/proj4.js" defer></script>
+<script src="dron-logica.js" defer></script>
+<script src="dron.js" defer></script>
 <script src="app.js" defer></script>
 </head>
 <body>
@@ -50,6 +54,7 @@
     </div>
 
     <div class="ini-wrap ini-cuerpo">
+      <p class="ini-dron" id="inicioDron"><span id="inicioDronTxt"></span> <a id="inicioDronLink" href="#satelite"></a></p>
       <section class="ini-mejor" aria-labelledby="inicioMejorT">
         <p class="ini-eyebrow" id="inicioMejorT" data-i18n="iniMejorT">Lo que mejor encaja en tu campo</p>
         <h2 class="ini-rotacion" id="inicioRotacion"></h2>
@@ -205,11 +210,25 @@
             <div class="range-ends"><span id="cortIzq"></span><span id="cortDer"></span></div>
           </div>
           <div id="zonifBox"></div>
+          <div class="dron-box" id="dronBox">
+            <span class="visor-t" id="dronCajaT">Imagen de tu dron</span>
+            <button type="button" class="capa" id="dronAbrir">Abrir un .tif de dron</button>
+            <input type="file" id="dronArchivo" accept=".tif,.tiff" hidden>
+            <p class="gis-note" id="dronPrivado"></p>
+            <div id="dronEstado" role="status" aria-live="polite"></div>
+          </div>
           <div id="rampa" hidden><div class="ramp"></div><div class="ramp-lbl"><span>Suelo descubierto o rastrojo seco</span><span>Cultivo o monte verde</span></div></div>
           <p class="gis-note" id="celdaNota"></p>
           <p class="gis-note mono" id="escena"></p>
           <p class="gis-note" id="gisNota"></p>
         </div>
+      </div>
+      <div class="card panel dron-ficha" id="dronFicha" hidden>
+        <div class="panel-h"><h3 id="dronFichaT"></h3><span class="src" id="dronFichaSrc"></span></div>
+        <label class="dron-campo" id="dronFechaBox" hidden><span id="dronFechaT"></span><input type="date" id="dronFecha"></label>
+        <ul class="dron-lista" id="dronComparacion"></ul>
+        <button type="button" class="capa" id="dronCambiarZona" hidden></button>
+        <details class="para-ingeniero"><summary id="dronIngT"></summary><ul class="dron-lista" id="dronTecnica"></ul></details>
       </div>
       <details class="detalle-tecnico" id="detalleTecnico" open>
         <summary id="detalleResumen"></summary>
@@ -315,6 +334,7 @@
     <div>
       <h3>Qué es real y qué es de ejemplo</h3>
       <ul>
+        <li data-i18n="datosDron">Imagen de dron: la abre cada uno desde su equipo; no se guarda ni se sube.</li>
         <li>Real: los números de clima (NASA POWER), el calendario, el simulador, las imágenes del visor (compuestos de Landsat hechos en Earth Engine), el suelo (SoilGrids 2.0), los meses sin cobertura vegetal activa (Landsat 2021-2025), la historia y el riesgo de desmonte (Hansen v1.13) y la zonificación del equipo con las variables de AIZAL. Fuentes y métodos: docs/datos-y-metodos.md.</li>
         <li>Revisado: las rotaciones de la Zona 5 las revisó un productor de la zona. Las de las zonas 1 a 4 todavía no están validadas. Los puntajes salen de reglas visibles.</li>
         <li>Pendiente: las lecturas grabadas del kit Arduino.</li>

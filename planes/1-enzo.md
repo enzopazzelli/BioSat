@@ -89,6 +89,12 @@ _Salen del repaso del repo. Cada uno decide cómo abordarlas; si no corresponden
 - [x] Pantalla del kit: la máxima de hoy a 9 km entre NASA POWER y la sonda
 - [x] Cargar el secreto `METEOMATICS_PASSWORD` en GitHub (Settings → Secrets and variables → Actions) y correr una vez el workflow "Actualizar pronostico de Meteomatics" *(15/11 11:06: corrió bien y subió el pronóstico del 15 al 22/11, commit `4ea751a`)*
 
+### Lector de imágenes de dron · 15/11 (D-38)
+- [x] Etapa 1: abrir un GeoTIFF de dron en el Reporte, verlo en el mapa con la cortina Landsat contra dron, NDVI del lote comparado con la zona y la línea del Inicio (`web/dron-logica.js` y `web/dron.js`, con pruebas)
+- [x] Probar la etapa 1 con un .tif real (lo consigue Enzo): tamaño, bandas, sistema de coordenadas, tiempo de lectura *(15/11: `drone.tif`, foto RGB de 33,6 MB en UTM 21 S, cerca de Corrientes; se lee en 1,2 a 1,6 s en Chrome; ver D-38)*
+- [ ] Probarlo en un celular de verdad
+- [ ] Etapa 2: marcar sectores, guardarlos en el navegador, exportarlos e importarlos (GeoJSON) y sacarlos en el PDF
+
 ## Listo cuando
 
 - Hay un link público que funciona en celular y una copia que funciona sin internet.

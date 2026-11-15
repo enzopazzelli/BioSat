@@ -155,3 +155,23 @@ test('D-37: la explicación del semáforo aclara que la falta de agua es lluvia 
   assert.match(metodo, /evaporación de referencia \(ET0\)/);
   assert.match(metodo, /no es lo que pide un cultivo concreto/);
 });
+
+test('D-38: index.html carga el lector de dron sin internet y tiene su caja en el visor', () => {
+  for (const s of ['vendor/geotiff.js', 'vendor/proj4.js', 'dron-logica.js', 'dron.js']) assert.match(index, new RegExp(`<script src="${s}" defer>`), s);
+  assert.ok(index.indexOf('dron.js') < index.indexOf('app.js'));
+  assert.ok(idsIndex.has('dronBox') && idsIndex.has('dronArchivo'));
+  assert.match(index, /id="dronArchivo"[^>]*accept="\.tif,\.tiff"/);
+});
+
+test('D-38: tarjeta del dron en el Reporte, línea en el Inicio y aviso en la vista detallada', () => {
+  for (const id of ['dronFicha', 'dronComparacion', 'dronFecha', 'dronTecnica', 'dronCambiarZona', 'inicioDron', 'inicioDronTxt', 'inicioDronLink']) assert.ok(idsIndex.has(id), id);
+  assert.match(index, /id="inicioDronLink"[^>]*href="#satelite"/);
+  assert.ok(index.indexOf('id="inicioDron"') < index.indexOf('class="ini-mejor"'));
+  assert.match(completo, /id="dronEnReporte"[\s\S]*?href="index\.html#satelite"/);
+  assert.match(index, /data-i18n="datosDron"/);
+});
+
+test('D-38: la caja del dron se vuelve a dibujar con cada renderTodo (si no, con ?lang=en queda en español)', () => {
+  const f = app.slice(app.indexOf('function renderDron'), app.indexOf('function renderDron') + 600);
+  assert.match(f, /BioSatDron\.render\(\)/);
+});

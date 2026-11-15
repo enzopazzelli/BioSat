@@ -15,3 +15,8 @@ data/raw_nasa_power/*_1981_2025.json
 ia_desmonte/salidas/*.geojson
 ia_desmonte/salidas/*.pkl
 ia_desmonte/salidas/*.npz
+
+# Imágenes de dron (D-38): pesan mucho y no van a Git. El lector las abre desde el equipo de cada uno.
+# Solo los .tif de la raíz; los de prueba de tests/fixtures/ sí se suben.
+/*.tif
+/*.tiff
