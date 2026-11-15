@@ -174,4 +174,8 @@ Según la página oficial de premios (`NASA Space Apps Challenge - awards.mhtml`
     - En Earth Engine, el nitrógeno de SoilGrids viene en mg/kg (se verificó contra la API de ISRIC).
     - GRIP4 está en `GRIP4/Central-South-America`.
     - La zonificación real da una silueta más baja que la del prototipo, y el JSON lo dice.
+  - **Resultados principales:**
+    - Random forest elegido por validación cruzada (AUC 0,78); en la prueba 2016-2025 da 0,63, con una tasa base del 9 %.
+    - La caída entre las dos cifras se explica como hipótesis (Ley de Bosques), no como hecho.
+    - Las etiquetas de Hansen se leen a 30 m: a 250 m el promedio inflaba la tasa de desmonte al 23 %.
   - **Diseño y plan:** `docs/superpowers/specs/2026-11-14-datos-reales-design.md` y `docs/superpowers/plans/2026-11-14-datos-reales.md`.
