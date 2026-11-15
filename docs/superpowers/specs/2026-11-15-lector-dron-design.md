@@ -14,6 +14,7 @@ El lector le da a BioSat **un dato del presente y del lote**. El productor o el 
 - Construir un **lector**: cada uno abre su propio archivo. No hay un vuelo cargado en el repositorio. Enzo busca un .tif real para la demo.
 - **Nivel 2:** ver la imagen y leerla (NDVI y comparación con la zona). **Después, nivel 3:** marcar sectores.
 - **Todo en el navegador** (enfoque A) y una **herramienta propia** para dibujar sectores.
+- **Una línea en el Inicio** con el dato del dron ("Tu lote, según el dron"), que lleva a la sección 4. El semáforo no cambia.
 
 ## 2. Objetivos, no objetivos y lo que no puede pasar
 
@@ -22,6 +23,7 @@ El lector le da a BioSat **un dato del presente y del lote**. El productor o el 
 - Mostrarlo en su lugar sobre el mapa del Reporte y compararlo con Landsat usando la cortina que ya existe.
 - Si hay banda roja e infrarroja (o el archivo ya es un NDVI): mapa de NDVI del lote, NDVI mediano, porcentaje de la superficie sin cobertura vegetal activa y comparación honesta con la zona.
 - Decir en qué departamento y zona de BioSat cae el lote, y avisar si no coincide con la zona elegida.
+- Una línea en el Inicio con el dato del dron y un enlace al mapa (§5.5).
 - **Etapa 2:** dibujar sectores, anotar qué revisar, ver su NDVI, guardarlos en el navegador, exportarlos e importarlos (GeoJSON) y sacarlos en el PDF.
 
 **No objetivos (por ahora)**
@@ -127,6 +129,25 @@ Todo en un módulo puro, `web/dron-logica.js`, con pruebas:
   - si cae fuera de Santiago del Estero, la app avisa que la comparación con las zonas no aplica.
 - **Calibración:** la app no puede saber si el mosaico está calibrado a reflectancia, así que siempre aclara "si el mosaico no está calibrado a reflectancia, el NDVI es aproximado".
 
+### 5.5 La línea del Inicio (pedido de Enzo, 15/11)
+
+El Inicio es la pantalla donde el productor decide, así que el dato del dron aparece ahí en una línea, debajo de la tarjeta del semáforo y antes de "Lo que mejor encaja en tu campo". El semáforo **no cambia**: sigue mostrando lo típico de la zona.
+
+```
+┌ (tarjeta del semáforo, igual que hoy) ────────────┐
+└───────────────────────────────────────────────────┘
+  Tu lote, según el dron (03/11): NDVI mediano 0,41
+  · 18 % sin cobertura activa.  Ver en el mapa →
+```
+
+- **Con NDVI:** fecha del vuelo, NDVI mediano y porcentaje de la superficie sin cobertura activa.
+- **Foto RGB:** "Tu lote, según el dron (03/11): foto en color, sin NDVI. Ver en el mapa →".
+- **Sin fecha:** "(fecha sin dato)" en lugar de la fecha.
+- **Si el lote cae en otra zona:** se suma "Está en la Zona N, no en la elegida".
+- **Sin vuelo abierto:** un enlace discreto, "¿Tenés una imagen de dron? Abrila en el Reporte →", que lleva a `#satelite`.
+- **De dónde sale:** en la etapa 1, del vuelo abierto en esta visita a la página (si se recarga, se vuelve a abrir el .tif). En la etapa 2, del resumen del vuelo guardado en el navegador, así que sigue ahí al volver.
+- El texto lo arma una función pura de `dron-logica.js`, con pruebas y su inglés.
+
 ### 5.4 Sectores (nivel 3, segunda etapa)
 
 - **Dibujar:** el botón "Marcar un sector" activa el modo dibujo. Cada toque en el mapa suma un punto; hay botones "Deshacer punto", "Cerrar sector" (con 3 puntos o más) y "Cancelar".
@@ -155,6 +176,7 @@ Todos los textos nuevos van en `DronLogica.TEXTOS`, con claves, se registran con
   - textos de la comparación (con y sin fecha, con y sin NIR, otra zona, fuera de la provincia);
   - fecha del `DateTime` de TIFF;
   - punto en polígono y zona del lote;
+  - la línea del Inicio en sus 5 casos;
   - área de un polígono en hectáreas;
   - GeoJSON de ida y vuelta (etapa 2).
 - **Archivos de prueba:** 2 o 3 GeoTIFF chicos y **sintéticos** (RGB, multiespectral en UTM 20 S, NDVI en EPSG:4326), generados con un script en Python (`tifffile` y `numpy`). Viven en `tests/fixtures/`. Son datos de prueba: **nunca se muestran en la app como un vuelo real.**
@@ -170,7 +192,7 @@ Todos los textos nuevos van en `DronLogica.TEXTOS`, con claves, se registran con
 
 ## 9. Etapas
 
-1. **Etapa 1, nivel 2:** lector, ubicación, NDVI, comparación, capa y cortina, inglés, pruebas y documentación. Termina cuando se abre el .tif real de Enzo y se lee bien.
+1. **Etapa 1, nivel 2:** lector, ubicación, NDVI, comparación, capa y cortina, la línea del Inicio, inglés, pruebas y documentación. Termina cuando se abre el .tif real de Enzo y se lee bien.
 2. **Etapa 2, nivel 3:** sectores, guardado en el navegador, exportar e importar, PDF, pruebas y documentación.
 
 Cada etapa tiene su plan, se trabaja en una rama y se integra a `main` con la aprobación de Enzo.
