@@ -1,0 +1,304 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>BioSat · Reporte completo, vista detallada</title>
+<meta name="description" content="Herramienta de apoyo a la decisión para comparar rotaciones de cultivos en las 5 zonas de Santiago del Estero con datos de la NASA. NASA Space Apps 2026.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Hanken+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="vendor/leaflet.css">
+<link rel="stylesheet" href="estilos.css">
+<link rel="stylesheet" href="asistente.css">
+<script src="vendor/leaflet.js"></script>
+<script src="../arduino/lector-web-serial.js" defer onerror="this.remove()"></script>
+<script src="asistente-logica.js" defer></script>
+<script src="asistente.js" defer></script>
+<script src="frases-logica.js" defer></script>
+<script src="inicio-logica.js" defer></script>
+<script src="app.js" defer></script>
+</head>
+<body data-pagina="completo">
+<div id="tip" role="tooltip" hidden></div>
+
+<header class="top">
+  <div class="wrap top-row">
+    <a class="brand" href="#tu-campo" aria-label="BioSat, ir al inicio">
+      <svg viewBox="0 0 32 32" aria-hidden="true">
+        <ellipse cx="16" cy="12" rx="13" ry="5" style="fill:none;stroke:var(--accent)" stroke-width="1.6" transform="rotate(-18 16 12)"/>
+        <circle cx="27" cy="7.5" r="2.4" style="fill:var(--heat)"/>
+        <path d="M4 27h24" style="stroke:var(--ink)" stroke-width="2" stroke-linecap="round"/>
+        <path d="M16 27v-8" style="stroke:var(--st-cultivo)" stroke-width="2" stroke-linecap="round"/>
+        <path d="M16 21c-3.5 0-5.5-2-5.5-5 3.2 0 5.5 1.8 5.5 5zM16 20c3 0 5-1.8 5-4.6-2.9 0-5 1.7-5 4.6z" style="fill:var(--st-cultivo)"/>
+      </svg>
+      <span class="brand-name">BioSat</span>
+      <span class="brand-sub">Rotaciones para Santiago del Estero</span>
+    </a>
+    <p class="top-note"><a class="volver-inicio" href="index.html">← Volver al inicio</a> <span class="tag">Vista detallada</span> Apoya, no reemplaza, tu criterio ni el de tu agrónomo.</p>
+  </div>
+  <nav class="steps" aria-label="Pasos">
+    <div class="wrap">
+      <ol>
+        <li><a href="#tu-campo" data-sec="tu-campo"><b>1</b>Tu campo</a></li>
+        <li><a href="#calendario" data-sec="calendario"><b>2</b>Tu año</a></li>
+        <li><a href="#comparar" data-sec="comparar"><b>3</b>Comparar rotaciones</a></li>
+        <li><a href="#simulador" data-sec="simulador"><b>4</b>¿Y si el clima viene peor?</a></li>
+        <li><a href="#antes-de-decidir" data-sec="antes-de-decidir"><b>5</b>Antes de decidir</a></li>
+      </ol>
+    </div>
+  </nav>
+</header>
+
+<main>
+  <!-- PASO 1 -->
+  <section id="tu-campo" class="sec">
+    <div class="wrap">
+      <header class="sec-head">
+        <div>
+          <p class="eyebrow">Paso 1 de 5</p>
+          <h2>¿Dónde está tu campo y qué te importa?</h2>
+          <p class="lede">Estas son tus respuestas. Con eso BioSat arma el calendario de tu lote y ordena las rotaciones. Las podés cambiar cuando quieras.</p>
+        </div>
+      </header>
+      <div class="campo">
+        <div class="card tu-campo" id="tuCampo"></div>
+        <div class="card zona-ficha" id="zonaFicha"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PASO 2 -->
+  <section id="calendario" class="sec">
+    <div class="wrap">
+      <header class="sec-head">
+        <div>
+          <p class="eyebrow">Paso 2 de 5</p>
+          <h2>¿Qué le pasa a tu campo durante el año?</h2>
+          <p class="en-una-frase" id="fraseCalor" hidden></p>
+          <p class="lede" id="calLede"></p>
+        </div>
+        <div class="seg" role="group" aria-label="Período de los datos">
+          <button type="button" id="perNormal" aria-pressed="true">Normal 1991–2020</button>
+          <button type="button" id="perReciente" aria-pressed="false">Últimos 5 años</button>
+        </div>
+      </header>
+
+      <div class="stats" id="stats"></div>
+      <div class="esc-chip" id="escChip" hidden></div>
+
+      <div class="card cal-box">
+        <div class="cal-scroll"><div class="cal" id="cal"></div></div>
+        <div class="legend" id="legend"></div>
+        <details class="tabla">
+          <summary>Ver los números en una tabla</summary>
+          <div class="tabla-scroll" id="tabla"></div>
+        </details>
+      </div>
+
+      <div class="insights" id="insights"></div>
+
+      <div class="card visor" id="visor">
+        <div id="mapaGis" role="img" aria-label="Mapa con imágenes Landsat de la zona elegida"></div>
+        <div class="visor-side">
+          <div class="panel-h"><h3>Visor del lote</h3><span class="src">Landsat · 30 m</span></div>
+          <p class="hint">Imágenes reales de tu zona. En verano se ven los cultivos verdes; en invierno, los lotes pelados.</p>
+          <div class="capas" id="capas" role="group" aria-label="Capa del mapa"></div>
+          <div><span class="visor-t">Comparar con cortina</span><div class="capas" id="cmps" role="group" aria-label="Comparación"></div></div>
+          <div id="cortinaBox" hidden>
+            <label for="cortina" class="visor-t">Mové la cortina</label>
+            <input type="range" id="cortina" min="0" max="100" value="50">
+            <div class="range-ends"><span id="cortIzq"></span><span id="cortDer"></span></div>
+          </div>
+          <div id="zonifBox"></div>
+          <div id="rampa" hidden><div class="ramp"></div><div class="ramp-lbl"><span>Suelo pelado o seco</span><span>Cultivo o monte verde</span></div></div>
+          <p class="gis-note" id="celdaNota"></p>
+          <p class="gis-note mono" id="escena"></p>
+          <p class="gis-note" id="gisNota"></p>
+        </div>
+      </div>
+
+      <!-- El sensor queda a la vista: es lo que se muestra en la demo (ver el ledger de la tarea 6). -->
+      <article class="card panel panel-sensor">
+          <div class="panel-h"><h3>Lo que mide el sensor</h3><span class="src">Kit Arduino · 1 m²</span></div>
+          <div class="trays" role="group" aria-label="Bandeja de demostración" id="trays"></div>
+          <div class="read" id="read"></div>
+          <div class="semaforo" id="semaforo"></div>
+          <div class="vs" id="vs"></div>
+          <button type="button" class="btn-off" id="btnArduino" disabled title="No se encontró el lector (arduino/lector-web-serial.js)">Conectar Arduino por USB</button>
+          <div class="kit-links"><a class="btn" id="linkKit" href="kit.html">Pantalla del kit</a><a class="capa" href="campo.html">Del kit al campo</a></div>
+          <p class="pending" id="sensorNota"></p>
+        </article>
+
+      <details class="detalle-tecnico" id="detalleTecnico">
+        <summary id="detalleResumen"></summary>
+        <div class="panels">
+            <article class="card panel">
+              <div class="panel-h"><h3>Tu suelo</h3><span class="src">AIZAL V4 · grilla de 500 m</span></div>
+              <dl class="soil" id="soil"></dl>
+              <p class="pending" id="soilNota"></p>
+            </article>
+            <article class="card panel">
+              <div class="panel-h"><h3>Lo que ve el satélite</h3><span class="src">Landsat 8/9 · 30 m</span></div>
+              <p class="hint">Meses en que tu zona suele quedar con el suelo pelado, según las imágenes:</p>
+              <div>
+                <div class="mini-cal" id="miniSat"></div>
+                <div class="strip-lbl" id="miniSatLbl"></div>
+              </div>
+              <div class="tabla-scroll">
+                <table>
+                  <thead><tr><th>Método</th><th>Exactitud</th><th>F1</th></tr></thead>
+                  <tbody id="metodos"></tbody>
+                </table>
+              </div>
+              <p class="pending" id="satNota"></p>
+            </article>
+        </div>
+        <div class="card desmonte" id="panelDesmonte">
+          <div class="desmonte-col">
+            <div class="panel-h"><h3>Presión de desmonte en tu zona</h3><span class="src">Modelo predictivo · D-25</span></div>
+            <div class="desmonte-nivel" id="desmonteNivel"></div>
+            <p class="hint" id="desmonteTexto"></p>
+          </div>
+          <div class="desmonte-col">
+            <span class="visor-t">Hectáreas desmontadas por año</span>
+            <svg class="spark-d" id="desmonteSerie" viewBox="0 0 320 90" preserveAspectRatio="none" role="img" aria-label="Desmonte anual de la zona"></svg>
+            <p class="hint" id="desmonteSerieNota"></p>
+          </div>
+          <div class="desmonte-col">
+            <div class="tabla-scroll"><table>
+              <thead><tr><th>Modelo</th><th>AUC</th><th>F1 o error</th></tr></thead>
+              <tbody id="desmonteMetodos"></tbody>
+            </table></div>
+            <p class="pending" id="desmonteNota"></p>
+          </div>
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <!-- PASO 3 -->
+  <section id="comparar" class="sec">
+    <div class="wrap">
+      <header class="sec-head">
+        <div>
+          <p class="eyebrow">Paso 3 de 5</p>
+          <h2>Tu rotación de hoy contra 2 alternativas</h2>
+          <p class="en-una-frase" id="fraseMejor" hidden></p>
+          <p class="lede" id="cmpLede"></p>
+        </div>
+      </header>
+      <p class="motor-note">Cada tarjeta responde las 5 preguntas que pide la NASA. Los puntajes salen de reglas visibles sobre cada rotación (abajo, "¿Cómo ordena BioSat?") y los números de clima son reales.</p>
+      <div class="card trade">
+        <div class="trade-h"><h3>Lo que se gana y lo que se paga</h3><span id="tradeConf"></span></div>
+        <div class="tabla-scroll"><svg id="tradeSvg" viewBox="0 0 640 300" role="img" aria-label="Agua que pide cada rotación contra meses con suelo protegido"></svg></div>
+        <p class="hint">Lo ideal es arriba a la izquierda: más meses de suelo protegido pidiendo menos agua. A la derecha de la línea punteada, la rotación pide más agua de la que llueve en el año y depende del agua guardada en el suelo o del riego.</p>
+      </div>
+      <div class="cards" id="cards"></div>
+      <details class="card motor-detalle">
+        <summary>¿Cómo ordena BioSat las rotaciones?</summary>
+        <ol>
+          <li>Cada rotación recibe una nota de 0 a 3 por prioridad, con reglas fijas: <strong>ahorrar agua</strong> según su demanda de agua (baja 3, media 2, alta 1); <strong>frenar el salitre</strong> según cuántos meses de mayo a octubre deja el suelo cubierto; <strong>recuperar el suelo</strong> según los meses sin suelo pelado, más 1 si suma una leguminosa a una rotación con otras secciones (no en monocultivo); <strong>sumar forraje</strong> 3 si da forraje; <strong>ingreso</strong> según su ingreso (alto 3, medio 2, bajo 1).</li>
+          <li>Se promedian solo las prioridades que marcaste en el paso 1.</li>
+          <li>Si una rotación necesita algo que no tenés (riego, hacienda, maquinaria), se avisa; si necesita riego y no tenés, pasa al final.</li>
+          <li>Las reglas de secciones (A gramíneas, B leguminosas, C raíz profunda, D coberturas) se muestran como control: no esconden nada.</li>
+          <li>Los números de exposición salen del clima de NASA POWER cruzado con el calendario de cada rotación.</li>
+        </ol>
+      </details>
+    </div>
+  </section>
+
+  <!-- PASO 4 -->
+  <section id="simulador" class="sec">
+    <div class="wrap">
+      <header class="sec-head">
+        <div>
+          <p class="eyebrow">Paso 4 de 5</p>
+          <h2>¿Y si el clima viene peor?</h2>
+          <p class="en-una-frase" id="fraseSim" hidden></p>
+          <p class="lede">Mové la lluvia y la temperatura. El calendario del paso 2 y los números de cada rotación cambian con vos.</p>
+        </div>
+      </header>
+      <div class="sim">
+        <div class="card sim-ctrl">
+          <label for="simP">Lluvia <output id="simPout" for="simP">0 %</output></label>
+          <input type="range" id="simP" min="-30" max="20" step="5" value="0">
+          <div class="range-ends"><span>−30 %</span><span>+20 %</span></div>
+          <label for="simT">Temperatura <output id="simTout" for="simT">+0,0 °C</output></label>
+          <input type="range" id="simT" min="0" max="2.5" step="0.5" value="0">
+          <div class="range-ends"><span>+0 °C</span><span>+2,5 °C</span></div>
+          <div class="presets" id="presets">
+            <button type="button" data-p="-30" data-t="0">Año seco</button>
+            <button type="button" data-p="0" data-t="1.5">Más calor</button>
+            <button type="button" data-p="-20" data-t="2">Seco y caluroso</button>
+            <button type="button" data-p="0" data-t="0">Volver a lo normal</button>
+          </div>
+          <p class="hint">Suma la temperatura a cada día real del período y cambia la lluvia en la misma proporción todos los meses. No es un pronóstico: sirve para ver qué rotación aguanta mejor. Las heladas no se recalculan.</p>
+        </div>
+        <div class="card sim-out" id="simOut"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PASO 5 -->
+  <section id="antes-de-decidir" class="sec">
+    <div class="wrap">
+      <header class="sec-head">
+        <div>
+          <p class="eyebrow">Paso 5 de 5</p>
+          <h2>Antes de decidir, revisá esto con tu agrónomo</h2>
+          <p class="en-una-frase" id="fraseListo" hidden></p>
+          <p class="lede">El satélite no ve todo. Esta lista junta lo que falta saber y los riesgos de la rotación que elijas.</p>
+        </div>
+      </header>
+      <div class="decidir">
+        <div class="card elegir">
+          <fieldset>
+            <legend>¿Qué rotación querés revisar?</legend>
+            <div id="elegir" style="display:grid;gap:8px"></div>
+          </fieldset>
+        </div>
+        <div class="card lista">
+          <h3 id="listaTitulo"></h3>
+          <ul class="check" id="checklist"></ul>
+          <div class="lista-actions">
+            <button type="button" class="btn" id="copiar">Copiar la lista</button>
+            <span id="copiado" role="status" class="hint"></span>
+          </div>
+          <textarea id="listaTxt" aria-label="Lista para copiar" readonly hidden></textarea>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="pie">
+  <div class="wrap pie-grid">
+    <div>
+      <h3>De dónde salen los datos</h3>
+      <ul>
+        <li>Clima: NASA POWER (MERRA-2), datos diarios 1981–2025, un punto por zona. Es un modelo de reanálisis con celdas de unos 50 km, no una medición en tu lote.</li>
+        <li>Demanda de agua: evapotranspiración de referencia (ET0) con la fórmula de Hargreaves, a partir de la temperatura máxima y mínima.</li>
+        <li>Helada: mínima de 3 °C o menos a 2 m de altura (a ras del suelo puede ser 0 °C).</li>
+      </ul>
+    </div>
+    <div>
+      <h3>Qué es real y qué es de ejemplo</h3>
+      <ul>
+        <li>Real: todos los números de clima, el calendario climático, el simulador, el riesgo año por año y las imágenes Landsat del visor.</li>
+        <li>Borrador: las rotaciones, hasta que Vale cargue las validadas. Los puntajes salen de reglas visibles.</li>
+        <li>Pendiente hasta que se carguen: suelo (AIZAL V4), diagnóstico de IA con Landsat y lecturas grabadas del kit.</li>
+      </ul>
+    </div>
+    <div>
+      <h3>BioSat · NASA Space Apps 2026</h3>
+      <ul>
+        <li>Desafío: Field Shift: Adapting Farms with NASA Data.</li>
+        <li>Sede Santiago del Estero.</li>
+        <li>Esta herramienta apoya, no reemplaza, la decisión del productor ni el criterio del agrónomo.</li>
+      </ul>
+    </div>
+  </div>
+</footer>
+</body>
+</html>

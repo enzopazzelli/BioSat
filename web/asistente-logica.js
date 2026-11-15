@@ -103,6 +103,7 @@
   // Abre solo la primera vez; con ?asistente=1 se abre siempre (demos y pruebas).
   function debeAbrir(respuestas, buscar) {
     if (/(?:^|[?&])asistente=1(?:&|$)/.test(String(buscar || ''))) return true;
+    if (/(?:^|[?&])asistente=0(?:&|$)/.test(String(buscar || ''))) return false;   // links de demo y capturas
     return !(respuestas && respuestas.hecho === true);
   }
 

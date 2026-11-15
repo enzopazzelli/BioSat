@@ -354,7 +354,26 @@ function iniciarRespuestas(){
   respuestas = window.AsistenteLogica ? AsistenteLogica.leer(almacen(), ZONAS) : null;
   if (respuestas) aplicarRespuestas(respuestas);
 }
+/* ---------- Vistas (D-31): Inicio y Reporte en index.html; completo.html es la página de antes ---------- */
+// Hash (sin el numeral) de cada sección del Reporte: con cualquiera de ellos se muestra la vista Reporte.
+const SECCIONES_REPORTE = ['reporte', 'calendario', 'comparar', 'simulador', 'satelite', 'sonda', 'antes-de-decidir', 'datos'];
+const hayVistas = () => !!document.getElementById('vista-inicio');
+function mostrarVista(){
+  if (!hayVistas()) return;
+  const h = decodeURIComponent(location.hash.slice(1)), enReporte = SECCIONES_REPORTE.includes(h);
+  const ini = document.getElementById('vista-inicio'), rep = document.getElementById('vista-reporte');
+  ini.hidden = enReporte; rep.hidden = !enReporte;
+  document.body.dataset.vista = enReporte ? 'reporte' : 'inicio';
+  const destino = enReporte && h !== 'reporte' ? document.getElementById(h) : (enReporte ? rep : ini);
+  const titulo = destino.querySelector('h1, h2') || destino;
+  titulo.setAttribute('tabindex', '-1');
+  titulo.focus({preventScroll:true});
+  if (destino === rep || destino === ini) window.scrollTo(0, 0); else destino.scrollIntoView();
+}
+window.addEventListener('hashchange', mostrarVista);
+
 function irAlCalendario(){
+  if (hayVistas()){ location.hash = ''; mostrarVista(); return; }   // en index.html, después del asistente se ve el Inicio
   const s = $('#calendario');
   s.setAttribute('tabindex', '-1');
   s.focus({preventScroll:true});
@@ -714,7 +733,7 @@ if ('IntersectionObserver' in window){
   }, {rootMargin:'-45% 0px -50% 0px'});
   document.querySelectorAll('main > section').forEach(s => io.observe(s));
 }
-links[0].setAttribute('aria-current','step');
+if (links[0]) links[0].setAttribute('aria-current','step');   // la barra de pasos solo existe en completo.html
 
 /* ---------- Carga de datos (docs/contratos-de-datos.md) ---------- */
 async function cargarJSON(ruta){
@@ -828,7 +847,9 @@ async function cargarDatos(){
 cargarDatos().then(() => {
   iniciarRespuestas();
   renderTodo();
-  if (window.AsistenteLogica && AsistenteLogica.debeAbrir(respuestas, location.search)) abrirAsistente();
+  mostrarVista();
+  // En la vista detallada (completo.html) el asistente no se abre solo: usa las respuestas ya guardadas.
+  if (document.body.dataset.pagina !== 'completo' && window.AsistenteLogica && AsistenteLogica.debeAbrir(respuestas, location.search)) abrirAsistente();
 }).catch(err => {
   console.error(err);
   document.querySelector('main').insertAdjacentHTML('afterbegin',

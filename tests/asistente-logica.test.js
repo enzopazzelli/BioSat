@@ -186,3 +186,9 @@ test('el asistente ya no presenta la zona con el nombre de un pueblo', () => {
   assert.doesNotMatch(js, /\{pueblo\}/);
   assert.match(js, /etiquetaZona/);
 });
+
+test('?asistente=0 evita que se abra solo (para links de demo y capturas)', () => {
+  assert.equal(A.debeAbrir(null, '?asistente=0'), false);
+  assert.equal(A.debeAbrir(null, '?zona=x&asistente=0'), false);
+  assert.equal(A.debeAbrir(null, ''), true);
+});
