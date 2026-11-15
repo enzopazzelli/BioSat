@@ -155,8 +155,12 @@
       <p class="motor-note">Cada tarjeta responde las 5 preguntas que pide la NASA. Los puntajes salen de reglas visibles sobre cada rotación (abajo, "¿Cómo ordena BioSat?") y los números de clima son reales.</p>
       <div class="card trade">
         <div class="trade-h"><h3>Lo que se gana y lo que se paga</h3><span id="tradeConf"></span></div>
-        <div class="tabla-scroll"><svg id="tradeSvg" viewBox="0 0 640 300" role="img" aria-label="Agua que pide cada rotación contra meses con suelo protegido"></svg></div>
-        <p class="hint">Lo ideal es arriba a la izquierda: más meses de suelo protegido pidiendo menos agua. A la derecha de la línea punteada, la rotación pide más agua de la que llueve en el año y depende del agua guardada en el suelo o del riego.</p>
+        <p class="hint" id="tradeAyuda" data-i18n="tradeAyuda">Agua que pide cada rotación y meses que deja el suelo protegido. Menos agua es mejor; más meses protegidos es mejor.</p>
+        <div class="trade-barras" id="tradeBarras"></div>
+        <details class="para-ingeniero trade-puntos"><summary data-i18n="tradePuntos">Para tu ingeniero: el mismo dato en un gráfico</summary>
+          <div class="tabla-scroll"><svg id="tradeSvg" viewBox="0 0 640 300" role="img" aria-label="Agua que pide cada rotación contra meses con suelo protegido"></svg></div>
+          <p class="hint">Lo ideal es arriba a la izquierda: más meses de suelo protegido pidiendo menos agua. A la derecha de la línea punteada, la rotación pide más agua de la que llueve en el año y depende del agua guardada en el suelo o del riego.</p>
+        </details>
       </div>
       <div class="cards" id="cards"></div>
       <details class="card motor-detalle">

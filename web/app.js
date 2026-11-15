@@ -182,6 +182,17 @@ function renderTrade(){
       <text class="pls" x="${sx(p.x) + dx}" y="${sy(p.y) + 9 + dy}" text-anchor="${an}">${esc(p.r.nombre)}</text></g>`;
   });
   $('#tradeSvg').innerHTML = g;
+  // D-42: lo mismo en barras, legible en el celular. Una fila por rotación en el orden de las tarjetas, con el número escrito.
+  const TR = TEXTOS_REPORTE, maxAgua = Math.max(P, ...pts.map(q => q.x)) * 1.05;
+  const pct = v => Math.max(0, Math.min(100, v / maxAgua * 100)).toFixed(1);
+  $('#tradeBarras').innerHTML = ranking().map(({r}, idx) => {
+    const q = pts.find(x => x.r === r);
+    return `<div class="tb-fila">
+      <div class="tb-nombre"><b>${idx + 1}º</b> <span class="kind">${r.tipo}</span> ${esc(r.nombre)}</div>
+      <div class="tb-par"><span class="tb-et">${TR.tbAgua}</span><span class="tb-barra" aria-hidden="true"><i style="width:${pct(q.x)}%"></i><s style="left:${pct(P)}%"></s></span><span class="tb-v">${nf(q.x)} mm</span></div>
+      <div class="tb-par"><span class="tb-et">${TR.tbSuelo}</span><span class="tb-barra suelo" aria-hidden="true"><i style="width:${(q.y / 12 * 100).toFixed(1)}%"></i></span><span class="tb-v">${TR.tbMeses.replace('{n}', q.y)}</span></div>
+    </div>`;
+  }).join('') + `<p class="hint tb-nota">${TR.tbLluvia.replace('{mm}', nf(P))}</p>`;
   $('#tradeConf').innerHTML = `Agua que pide ${cf('agua')} · meses protegidos ${cf('rot')}`;
 }
 
@@ -1017,6 +1028,8 @@ document.addEventListener('click', e => {
 /* ---------- Reporte (D-31): cabecera, conclusiones, PDF y compartir. Diseño 4.6 ---------- */
 const TEXTOS_REPORTE = {
   // D-42: tarjetas de las alternativas
+  tbAgua: 'Agua que pide', tbSuelo: 'Suelo protegido', tbMeses: '{n} de 12 meses',
+  tbLluvia: 'La marca en la barra del agua es la lluvia del año en tu zona: {mm} mm. Si la barra pasa la marca, la rotación pide más agua de la que llueve.',
   verDetalle: 'Ver todo el detalle', ganaPoco: 'Poco, frente a lo que hacés hoy', gana: 'Gana', paga: 'Paga',
   puntoPartida: 'Es tu punto de partida: las otras rotaciones se comparan contra esta.',
   tiraAria: 'Meses de suelo pelado: {meses}', tiraAriaSin: 'Sin meses de suelo pelado',

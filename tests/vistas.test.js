@@ -258,3 +258,18 @@ test('D-42: la tarjeta muestra lo clave y despliega el resto en "Ver todo el det
   assert.match(f, /t\.cuesta\.filter\(.*\.slice\(0, 2\)/);   // sin repetir lo que ya dice un aviso
   assert.match(f, /class="strip" role="img" aria-label=/);
 });
+
+test('D-42: lo que se gana y lo que se paga va en barras; el gráfico de puntos queda para el ingeniero', () => {
+  for (const [nombre, html] of [['index', index], ['completo', completo]]) {
+    assert.match(html, /id="tradeBarras"/, nombre);
+    assert.match(html, /<details class="para-ingeniero trade-puntos">[\s\S]*?id="tradeSvg"/, nombre);
+  }
+  assert.match(app, /function renderTrade\(\)[\s\S]*?#tradeBarras/);
+});
+
+// Un error de sintaxis deja la app entera sin funcionar y las pruebas de texto no lo ven (pasó el 15/11 con D-42).
+test('los scripts de la app se pueden interpretar sin errores de sintaxis', () => {
+  for (const f of fs.readdirSync(WEB).filter(n => n.endsWith('.js'))) {
+    assert.doesNotThrow(() => new Function(leer(f)), f);
+  }
+});
