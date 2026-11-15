@@ -50,11 +50,11 @@ Avance de cada integrante, contado desde las casillas de su plan en [`planes/`](
 <!-- AUTO:AVANCE:INICIO -->
 | Persona | Rama | Avance | Tareas |
 |---|---|---|---|
-| [Enzo · Integración y app](planes/1-enzo.md) | `enzo-app` | `▓▓▓▓▓▓▓▓░░` 84% | 51/61 |
+| [Enzo · Integración y app](planes/1-enzo.md) | `enzo-app` | `▓▓▓▓▓▓▓▓░░` 83% | 52/63 |
 | [Santi · Suelo, satélite e IA](planes/2-santi.md) | `santi-datos-ia` | `▓▓▓▓▓▓▓▓░░` 76% | 22/29 |
 | [Vale · Campo y agronomía](planes/3-vale.md) | `vale-rotaciones` | `▓▓▓▓▓▓▓░░░` 72% | 18/25 |
 | [Sara · Kit Arduino y relato](planes/4-sara.md) | `sara-arduino-entrega` | `▓▓░░░░░░░░` 19% | 5/26 |
-| **Total** | | `▓▓▓▓▓▓▓░░░` **68%** | **96/141** |
+| **Total** | | `▓▓▓▓▓▓▓░░░` **68%** | **97/143** |
 <!-- AUTO:AVANCE:FIN -->
 
 ### Lo más urgente
@@ -85,7 +85,7 @@ Sale solo de las casillas sin tildar de cada plan. Panorama completo y riesgos: 
 
 <!-- AUTO:PENDIENTE:INICIO -->
 <details>
-<summary><b>Enzo</b>: 10 pendientes (<a href="planes/1-enzo.md">plan completo</a>)</summary>
+<summary><b>Enzo</b>: 11 pendientes (<a href="planes/1-enzo.md">plan completo</a>)</summary>
 
 - Último merge de funciones a `main` _(Congelamiento)_
 - Revisar el README final con Sara _(Entrega)_
@@ -97,6 +97,7 @@ Sale solo de las casillas sin tildar de cada plan. Panorama completo y riesgos: 
 - Probar de nuevo la app publicada en el celular y sin internet después del último merge _(Agregadas por Enzo)_
 - Probarlo en un celular de verdad _(Lector de imágenes de dron)_
 - Volver a exportar las imágenes NDVI de Landsat de las zonas con la paleta de la leyenda (hoy no coinciden) _(Satélite del lote)_
+- Cargar los cortes reales del ingeniero y anotar el resultado _(Clases del ingeniero)_
 
 </details>
 
@@ -157,12 +158,12 @@ Sale solo de las casillas sin tildar de cada plan. Panorama completo y riesgos: 
 **Últimas decisiones:**
 
 <!-- AUTO:DECISIONES:INICIO -->
+- **D-41**: Clases del ingeniero
 - **D-40**: Rótulo honesto de Landsat y recorte satelital del lote
 - **D-39**: Sectores del lote, etapa 2 del dron
 - **D-38**: Lector de imágenes de dron, etapa 1
 - **D-37**: Sugerencia de un ingeniero: imágenes de dron y pasar de la zona al lote; hoja de ruta de Vale
 - **D-36**: Corrección: el visor del Reporte no mostraba la imagen Landsat
-- **D-35**: Botón de idioma ES/EN, etapa 1: lo que se ve primero, en inglés
 
 Todas las decisiones están en la [bitácora](docs/reglas-y-bitacora.md).
 <!-- AUTO:DECISIONES:FIN -->
@@ -231,7 +232,7 @@ BioSat/
 │   │   ├── 05_Logistica_Antropico_y_Servicios/ (2 archivos)  <-- B26-B29, B32-B37: caminos, población
 │   │   └── 06_Embeddings_IA_AlphaEarth/ (2 archivos)         <-- Embeddings AlphaEarth 64D (DeepMind)
 │   └── imagenes/ (29 archivos)                               <-- Compuestos de mediana Landsat del visor y mapa de la zonificación (Earth Engine)
-├── docs/ (42 archivos)                                       <-- Documentación del equipo
+├── docs/ (44 archivos)                                       <-- Documentación del equipo
 ├── ia_desmonte/                                              <-- Pipeline de datos reales con Earth Engine: suelo, desmontes, zonificación, suelo pelado e imágenes
 │   ├── __init__.py
 │   ├── comun.py

@@ -498,4 +498,27 @@ Según la página oficial de premios (`NASA Space Apps Challenge - awards.mhtml`
     - **Atribución:** con una capa de Sentinel-2 a la vista, el mapa suma "Contiene datos modificados de Copernicus Sentinel (2026)", como piden sus condiciones de uso.
     - **Pruebas:** 45 de Python y 206 de JS en verde. Con el `NDVI.tif` real en Chrome se vieron las 4 capas, la cortina "Satélite contra dron", las líneas de comparación y la atribución, sin errores.
   - **Pendiente:** el motivo de una fuente sin pasada sale en español también en inglés (lo escribe el script).
+- **D-41 (Clases del ingeniero):**
+  - **Por qué:** el ingeniero leyó el NDVI del lote de la Zona 1 en tres clases (rojo = maleza, amarillo = zona afectada, verde = vigoroso). Enzo: "sumá la clasificación por clases con los cortes del ingeniero".
+  - **Decisión de Enzo:** los cortes **se cargan en la app**. Todavía no los tenemos, y no se inventan (D-33).
+  - **Diseño y plan:** `docs/superpowers/specs/2026-11-15-clases-del-ingeniero-design.md` y `docs/superpowers/plans/2026-11-15-clases-del-ingeniero.md`.
+  - **Qué hace:**
+    - **Formulario:** con un vuelo con NDVI, la tarjeta del dron muestra "Clases del ingeniero", con dos cortes de NDVI (se escriben con coma o con punto) y los tres nombres. El texto de ejemplo es "Maleza", "Zona afectada" y "Vigoroso", pero no se aplica nada hasta tocar "Aplicar". Valida que los cortes estén entre −1 y 1, que el bajo sea menor que el alto y que los nombres no estén vacíos.
+    - **Resultado:** "Clases del ingeniero (cortes cargados en este navegador): Maleza X % · Zona afectada Y % · Vigoroso Z %", calculado sobre la superficie con dato.
+    - **Capa** "Dron · clases del ingeniero" en rojo, amarillo y verde, con su leyenda (nombres y rangos).
+    - **Sectores:** en cada sector, el % por clase, si se midió con el mismo vuelo. El GeoJSON exportado suma `clases`.
+    - **Guardado:** los cortes y los nombres quedan con el vuelo (IndexedDB) y la capa se rearma al restaurar. Un vuelo nuevo arranca sin clases, y "Borrar clases" las quita.
+    - **Bordes:** `NDVI < bajo`, `bajo ≤ NDVI < alto` y `NDVI ≥ alto`.
+  - **Encontrado al probarlo:** con un campo numérico, Chrome descartaba "0,25" con coma. Ahora es un campo de texto con teclado decimal, que acepta coma y punto.
+  - **Pruebas:**
+    - 212 de JS en verde: `clasificar`, `validarClases`, `textoClases`, `valoresEnPoligono` y las clases en el GeoJSON.
+    - Con el archivo de prueba multiespectral y cortes 0,25 y 0,6:
+      - lote: 30 % / 70 % / 0 %;
+      - sector: 0 % / 100 % / 0 %;
+      - errores de validación;
+      - restaurar al recargar;
+      - foto RGB sin bloque.
+    - Con el `NDVI.tif` real y **cortes de prueba** (0,30 y 0,50), no del ingeniero: Maleza 18 % · Zona afectada 54 % · Vigoroso 28 %.
+  - **Espacio en blanco bajo el mapa (Enzo, 15/11):** con el dron, el recorte y las clases, la columna de botones del visor llegaba a 1350 px y el mapa medía 460, así que quedaban 890 px en blanco en la PC. Ahora el mapa se estira con la columna, que tiene un máximo de 760 px y se desplaza por dentro. Leaflet vuelve a medir el mapa con un `ResizeObserver`. En el celular no cambia (340 px).
+  - **Pendiente:** los cortes reales del ingeniero.
 

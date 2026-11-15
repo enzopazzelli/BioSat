@@ -99,6 +99,13 @@
     const fecha = window.DronLogica ? DronLogica.fechaCorta(s.vuelo && s.vuelo.fecha) : ((s.vuelo && s.vuelo.fecha) || '');
     return fmt(T().ndviLinea, {ndvi: nf(s.ndvi.mediana, 2), pct, fecha});
   }
+  // D-41: % por clase del ingeniero dentro del sector, si hay clases y el sector se midió con este vuelo.
+  function lineaClases(s) {
+    const k = window.BioSatDron && BioSatDron.clases(), nd = window.BioSatDron && BioSatDron.ndviActual();
+    if (!k || !nd || !s.vuelo || s.vuelo.id !== nd.vuelo.id) return null;
+    const r = window.DronLogica.clasificar(S.valoresEnPoligono(nd, s.puntos), k.c.cortes);
+    return r.total ? {texto: DronLogica.textoClases(k.c, r), clases: {nombres: k.c.nombres, cortes: k.c.cortes, porcentajes: r.porcentajes}} : null;
+  }
   function ficha(s) {
     const campo = (k, rotulo) => `<label class="dron-campo">${esc(rotulo)}<textarea data-sector-campo="${k}" rows="2">${esc(s[k])}</textarea></label>
       <p class="solo-print"><strong>${esc(rotulo)}:</strong> ${esc(s[k])}</p>`;
@@ -106,6 +113,7 @@
       <div class="sect-cab"><button type="button" class="sect-ir" data-sector-ir>${esc(fmt(T().sector, {n: s.n}))} · ${esc(etiquetaEstado(s.estado))}</button>
         <span class="mono sect-sup">${esc(S.superficieTexto(s.ha))}</span></div>
       <p class="sect-ndvi">${esc(lineaNdvi(s))}</p>
+      ${lineaClases(s) ? `<p class="sect-clases">${esc(lineaClases(s).texto)}</p>` : ''}
       <div class="capas sect-estados">${S.ESTADOS.map(e => `<button type="button" class="capa" data-sector-estado="${e}" aria-pressed="${e === s.estado}">${esc(etiquetaEstado(e))}</button>`).join('')}</div>
       ${campo('nota', T().nota)}
       ${s.estado !== 'revisar' ? campo('hallazgo', T().hallazgo) : ''}
@@ -137,7 +145,7 @@
   }
 
   // ---------- Exportar e importar (GeoJSON, contrato de datos §11) ----------
-  const exportarTexto = () => JSON.stringify(S.aGeoJSON(sectores, {umbral: umbral()}), null, 2);
+  const exportarTexto = () => JSON.stringify(S.aGeoJSON(sectores, {umbral: umbral(), clasesDe: s => (lineaClases(s) || {}).clases || null}), null, 2);
   function exportar() {
     const url = URL.createObjectURL(new Blob([exportarTexto()], {type: 'application/geo+json'}));
     const a = document.createElement('a');

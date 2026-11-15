@@ -71,3 +71,17 @@ test('superficieTexto: hectáreas desde 0,1 ha; debajo, metros cuadrados', () =>
   assert.equal(S.superficieTexto(0.1), '0,1 ha');
   assert.equal(S.superficieTexto(0.0015), '15 m²');
 });
+
+test('valoresEnPoligono devuelve los píxeles del sector (lo usan el NDVI y las clases)', () => {
+  const v = S.valoresEnPoligono(G, pol(-64, -63.998));
+  assert.equal(v.length, 4); assert.equal(v.filter(Number.isFinite).length, 3);
+  assert.equal(S.valoresEnPoligono(G, pol(-63.9, -63.8)).length, 0);
+  assert.deepEqual(S.ndviEnPoligono(G, pol(-64, -63.998), 0.25), {mediana: 0.5, fraccionBajo: 0, validos: 3});
+});
+
+test('aGeoJSON suma las clases del sector cuando hay', () => {
+  const clases = {nombres: ['Maleza', 'Zona afectada', 'Vigoroso'], cortes: [0.25, 0.6], porcentajes: [0, 100, 0]};
+  const g = S.aGeoJSON([S1], {umbral: 0.25, clasesDe: () => clases});
+  assert.deepEqual(g.features[0].properties.clases, clases);
+  assert.equal(S.aGeoJSON([S1], {umbral: 0.25}).features[0].properties.clases, undefined);
+});

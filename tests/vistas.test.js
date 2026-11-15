@@ -213,3 +213,13 @@ test('D-40: app.js carga los recortes del lote sin romper si falta lotes.json', 
   assert.match(f, /catch/);
   assert.match(app, /cargarLotesSat\(\)/);
 });
+
+test('D-41: la tarjeta del dron tiene el bloque de clases y el visor su leyenda', () => {
+  assert.ok(idsIndex.has('dronClases') && idsIndex.has('leyendaClases'));
+});
+
+test('en la PC el mapa del visor se estira con la columna de botones, que tiene un alto máximo (sin espacio en blanco)', () => {
+  const css = fs.readFileSync(path.join(WEB, 'estilos.css'), 'utf8');
+  assert.match(css, /@media \(min-width:901px\)\{#mapaGis\{height:auto;min-height:460px\}\.visor-side\{max-height:760px;overflow-y:auto\}\}/);
+  assert.match(app, /new ResizeObserver\(\(\) => visor\.map && visor\.map\.invalidateSize/);
+});

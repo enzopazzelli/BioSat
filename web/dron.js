@@ -49,6 +49,7 @@
       restaurado: true, guardado: true});
     datos = v.ndvi ? {bandas: [], ancho: v.ndvi.ancho, alto: v.ndvi.alto, sinDato: null, mascara: null, ndvi: v.ndvi.valores}
       : {bandas: [], ancho: 0, alto: 0, sinDato: null, mascara: null, ndvi: null};
+    dibujarClases();   // D-41: la capa de clases se rearma (no se guarda la imagen)
     avisar('restaurado');
   }
   async function borrarGuardado() {
@@ -57,6 +58,33 @@
     estado = null; datos = null;
     avisar('borrado');
   }
+  // ---------- Clases del ingeniero (D-41) ----------
+  const COLORES_CLASES = [[165, 0, 38], [254, 224, 139], [26, 152, 80]];
+  function dibujarClases() {
+    if (!estado || !estado.clases || !datos || !datos.ndvi) { if (estado) estado.urlClases = null; return; }
+    const [bajo, alto] = estado.clases.cortes, v = datos.ndvi;
+    estado.urlClases = lienzo(datos.ancho, datos.alto, i => Number.isFinite(v[i]) ? COLORES_CLASES[v[i] < bajo ? 0 : v[i] < alto ? 1 : 2] : null);
+  }
+  // Devuelve null si se aplicó, o la clave del error de validación.
+  function ponerClases(c) {
+    if (!estado || estado.tipo !== 'ndvi' || !datos || !datos.ndvi) return 'clasesRango';
+    const val = L.validarClases(c);
+    if (!val.ok) return val.error;
+    estado.clases = {cortes: c.cortes.slice(), nombres: c.nombres.map(n => n.trim())};
+    dibujarClases();
+    avisar('cambio');
+    return null;
+  }
+  function quitarClases() {
+    if (!estado) return;
+    delete estado.clases; estado.urlClases = null;
+    avisar('cambio');
+  }
+  function clases() {
+    if (!estado || !estado.clases || !datos || !datos.ndvi) return null;
+    return {c: estado.clases, resumen: L.clasificar(datos.ndvi, estado.clases.cortes)};
+  }
+
   // NDVI achicado del vuelo actual, para medir sectores (sectores.js). null si no hay NDVI.
   function ndviActual() {
     if (!estado || estado.tipo !== 'ndvi' || !datos || !datos.ndvi) return null;
@@ -264,5 +292,5 @@
   document.addEventListener('DOMContentLoaded', () => { renderCaja(); restaurar(); });
 
   window.BioSatDron = {abrir, estado: () => estado, alCambiar: fn => oyentes.push(fn), elegirBandas, confirmarNdvi, ponerFecha,
-    render: renderCaja, ndviActual, borrarGuardado};
+    render: renderCaja, ndviActual, borrarGuardado, ponerClases, quitarClases, clases};
 })();

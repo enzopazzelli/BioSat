@@ -489,6 +489,7 @@ No es un archivo de `data/`: lo genera la app cuando alguien toca **Exportar** e
   - `ndvi_mediano` y `fraccion_sin_cobertura` salen de los píxeles del NDVI achicado cuyo centro cae dentro del polígono, con el umbral `umbral_ndvi` (el mismo que Landsat);
   - van en `null` si el sector no cae sobre una imagen con NDVI;
   - `vuelo_fecha` y `vuelo_archivo` dicen con qué vuelo se midió.
+- **`clases` (opcional, D-41):** `{nombres: [3], cortes: [bajo, alto], porcentajes: [3]}`. Es el % de la superficie del sector con dato en cada clase del ingeniero, solo si se cargaron sus cortes y el sector se midió con ese vuelo.
 - **Importar:** suma los polígonos (`Polygon` o cada parte de un `MultiPolygon`, solo el anillo exterior) como sectores nuevos, numerados después de los que hay. Un polígono con los mismos puntos que uno existente no se duplica. Lo que no es polígono se saltea. No se borra nada.
 - **Dónde vive en la app:**
   - los sectores, en `localStorage` (`biosat.sectores.v1`, `{version: 1, sectores: [...]}`), con los puntos en `[lat, lon]`;

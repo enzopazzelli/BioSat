@@ -33,6 +33,21 @@
     cmpDer: 'Dron →',
     guardadoVuelo: 'Vuelo guardado en este navegador: {nombre}. Está disponible sin internet.',
     borrarVuelo: 'Borrar el vuelo guardado',
+    clasesTitulo: 'Clases del ingeniero',
+    clasesAyuda: 'Cargá los cortes de NDVI y los nombres que usa el ingeniero para este lote. La app no propone cortes.',
+    clasesBajo: 'Corte bajo (NDVI)',
+    clasesAlto: 'Corte alto (NDVI)',
+    clasesNombre1: 'Debajo del corte bajo',
+    clasesNombre2: 'Entre los cortes',
+    clasesNombre3: 'Arriba del corte alto',
+    clasesAplicar: 'Aplicar',
+    clasesBorrar: 'Borrar clases',
+    clasesResultado: 'Clases del ingeniero (cortes cargados en este navegador): {texto}.',
+    clasesRango: 'Los cortes tienen que ser números entre -1 y 1.',
+    clasesOrden: 'El corte bajo tiene que ser menor que el alto.',
+    clasesNombres: 'Escribí los tres nombres.',
+    capaClases: 'Dron · clases del ingeniero',
+    leyendaClase: '{nombre}: {rango}',
     noGuardadoVuelo: 'No se pudo guardar el vuelo en este navegador (falta espacio o está bloqueado): para verlo otra vez, volvé a abrir el .tif.',
     // Tarjeta del Reporte (app.js)
     titulo: 'Tu lote, visto por el dron',
@@ -203,12 +218,32 @@
     return m ? m.i : null;
   }
 
+  // ---------- Clases del ingeniero (D-41): cortes y nombres cargados en la app, nunca inventados ----------
+  // v < bajo → clase 0; bajo ≤ v < alto → clase 1; v ≥ alto → clase 2. NaN no cuenta.
+  function clasificar(valores, cortes) {
+    const [bajo, alto] = cortes, conteos = [0, 0, 0];
+    for (const v of valores) {
+      if (!Number.isFinite(v)) continue;
+      conteos[v < bajo ? 0 : v < alto ? 1 : 2]++;
+    }
+    const total = conteos[0] + conteos[1] + conteos[2];
+    return {conteos, total, porcentajes: conteos.map(c => total ? Math.round(c / total * 100) : null)};
+  }
+  function validarClases(c) {
+    const cortes = (c && c.cortes) || [], nombres = (c && c.nombres) || [];
+    if (cortes.length !== 2 || !cortes.every(x => Number.isFinite(x) && x >= -1 && x <= 1)) return {ok: false, error: 'clasesRango'};
+    if (!(cortes[0] < cortes[1])) return {ok: false, error: 'clasesOrden'};
+    if (nombres.length !== 3 || !nombres.every(n => typeof n === 'string' && n.trim())) return {ok: false, error: 'clasesNombres'};
+    return {ok: true, error: null};
+  }
+  const textoClases = (c, r) => c.nombres.map((n, i) => `${n.trim()} ${r.porcentajes[i] === null ? '—' : r.porcentajes[i]} %`).join(' · ');
+
   // ---------- Vuelo guardado en el navegador (D-39) ----------
   const idVuelo = e => `${e.nombre}|${e.bytes}|${e.fecha || ''}`;
   // Lo que se guarda en IndexedDB: el estado (sin lo que solo sirve en pantalla), el NDVI achicado y la imagen dibujada.
   function paqueteVuelo(estado, ndvi, png, ahora) {
     const e = Object.assign({}, estado);
-    for (const k of ['url', 'leyendo', 'aviso', 'error', 'avisoGuardado', 'restaurado']) delete e[k];
+    for (const k of ['url', 'urlClases', 'leyendo', 'aviso', 'error', 'avisoGuardado', 'restaurado']) delete e[k];
     return {version: 1, id: idVuelo(estado), estado: e,
       ndvi: ndvi ? {valores: ndvi.valores, ancho: ndvi.ancho, alto: ndvi.alto} : null, png, guardado: ahora};
   }
@@ -353,7 +388,7 @@
   const L = {TEXTOS, defProj4, epsgDe, recuadroLatLon, metrosPorPixel, tipoImagen, pareceNdvi, descripcionesBandas,
     bandasSugeridas, ndvi, resumenNdvi, fechaDeTiff, avisoTamano, transformacionMapa, parsearPath, zonaDelPunto,
     lineaInicio, comparacion, fichaTecnica, fechaCorta: diaMes, tramos, ycbcrARgb, elegirVista, elegirMascara,
-    idVuelo, paqueteVuelo, vueloDePaquete};
+    idVuelo, paqueteVuelo, vueloDePaquete, clasificar, validarClases, textoClases};
   if (typeof module !== 'undefined' && module.exports) module.exports = L;
   else window.DronLogica = L;
 })();
