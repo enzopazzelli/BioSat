@@ -128,8 +128,59 @@
     return fmt(TEXTOS.avisoTamano, {gb: (bytes / GB).toLocaleString(TEXTOS.locale, {maximumFractionDigits: 1})});
   }
 
+  // ---------- Zona del lote (mapa del asistente: data/santiago_mapa.json) ----------
+  // El mapa está en coordenadas de dibujo: x es lineal en la longitud e y en la latitud. La transformación se deduce
+  // de los puntos de NASA POWER (puntosSvg[n] = {x, y}; puntosGeo[n] = {lat, lon}) por mínimos cuadrados.
+  function ajuste(pares) {
+    const n = pares.length, mx = pares.reduce((a, p) => a + p[0], 0) / n, my = pares.reduce((a, p) => a + p[1], 0) / n;
+    const sxy = pares.reduce((a, p) => a + (p[0] - mx) * (p[1] - my), 0), sxx = pares.reduce((a, p) => a + (p[0] - mx) ** 2, 0);
+    const pend = sxy / sxx;
+    return [pend, my - pend * mx];
+  }
+  function transformacionMapa(puntosSvg, puntosGeo) {
+    const ns = Object.keys(puntosGeo).filter(n => puntosSvg[n]);
+    const [ax, bx] = ajuste(ns.map(n => [puntosGeo[n].lon, puntosSvg[n].x]));
+    const [ay, by] = ajuste(ns.map(n => [puntosGeo[n].lat, puntosSvg[n].y]));
+    return {ax, bx, ay, by};
+  }
+
+  // Path SVG con M, L y Z absolutos → anillos de [x, y].
+  function parsearPath(d) {
+    const anillos = [];
+    let actual = null;
+    for (const m of String(d).matchAll(/([MLZ])\s*(?:(-?[\d.]+)[,\s]+(-?[\d.]+))?/gi)) {
+      const c = m[1].toUpperCase();
+      if (c === 'M') { actual = [[+m[2], +m[3]]]; anillos.push(actual); }
+      else if (c === 'L' && actual) actual.push([+m[2], +m[3]]);
+      else if (c === 'Z') actual = null;
+    }
+    return anillos;
+  }
+
+  // Punto dentro de un conjunto de anillos, por paridad (sirve para huecos y para varias partes).
+  function dentro(x, y, anillos) {
+    let adentro = false;
+    for (const a of anillos) {
+      for (let i = 0, j = a.length - 1; i < a.length; j = i++) {
+        const [xi, yi] = a[i], [xj, yj] = a[j];
+        if ((yi > y) !== (yj > y) && x < (xj - xi) * (y - yi) / (yj - yi) + xi) adentro = !adentro;
+      }
+    }
+    return adentro;
+  }
+
+  // Departamento y zona de BioSat del punto; null si cae fuera de Santiago del Estero.
+  function zonaDelPunto(lat, lon, mapa, t) {
+    const x = t.ax * lon + t.bx, y = t.ay * lat + t.by;
+    for (const dep of (mapa && mapa.departamentos) || []) {
+      if (!dep._anillos) Object.defineProperty(dep, '_anillos', {value: parsearPath(dep.d)});
+      if (dentro(x, y, dep._anillos)) return {departamento: dep.nombre, zona: dep.zona};
+    }
+    return null;
+  }
+
   const L = {TEXTOS, defProj4, epsgDe, recuadroLatLon, metrosPorPixel, tipoImagen, pareceNdvi, descripcionesBandas,
-    bandasSugeridas, ndvi, resumenNdvi, fechaDeTiff, avisoTamano};
+    bandasSugeridas, ndvi, resumenNdvi, fechaDeTiff, avisoTamano, transformacionMapa, parsearPath, zonaDelPunto};
   if (typeof module !== 'undefined' && module.exports) module.exports = L;
   else window.DronLogica = L;
 })();

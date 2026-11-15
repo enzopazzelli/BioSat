@@ -79,3 +79,27 @@ test('fechaDeTiff y avisoTamano', () => {
   assert.equal(D.avisoTamano(200e6), null);
   assert.equal(typeof D.avisoTamano(1.5 * 1024 ** 3), 'string');
 });
+
+const MAPA = require('../data/santiago_mapa.json'), CLIMA = require('../data/clima_zonas.json');
+const GEO = Object.fromEntries(Object.entries(CLIMA.zonas).map(([id, z]) => [id[5], {lat: z.lat, lon: z.lon}]));
+
+test('transformacionMapa reproduce los 5 puntos de NASA POWER del mapa', () => {
+  const t = D.transformacionMapa(MAPA.puntos, GEO);
+  for (const n of Object.keys(GEO)) {
+    assert.ok(Math.abs(t.ax * GEO[n].lon + t.bx - MAPA.puntos[n].x) < 0.2, n);
+    assert.ok(Math.abs(t.ay * GEO[n].lat + t.by - MAPA.puntos[n].y) < 0.2, n);
+  }
+});
+
+test('parsearPath separa los anillos', () => {
+  const a = D.parsearPath('M0,0L10,0L10,10L0,10ZM20,20L30,20L30,30Z');
+  assert.equal(a.length, 2);
+  assert.equal(a[0].length, 4);
+  assert.deepEqual(a[1][2], [30, 30]);
+});
+
+test('zonaDelPunto: el punto de cada zona cae en su zona; Buenos Aires queda afuera', () => {
+  const t = D.transformacionMapa(MAPA.puntos, GEO);
+  for (const n of Object.keys(GEO)) assert.equal(D.zonaDelPunto(GEO[n].lat, GEO[n].lon, MAPA, t).zona, Number(n), n);
+  assert.equal(D.zonaDelPunto(-34.6, -58.4, MAPA, t), null);
+});
