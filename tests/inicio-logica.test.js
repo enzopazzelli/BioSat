@@ -83,3 +83,19 @@ test('el texto de WhatsApp sin próxima siembra no deja huecos', () => {
 test('hay un aviso para cuando el navegador no puede leer la sonda', () => {
   assert.match(L.TEXTOS.sondaNoDisponible, /Chrome|Edge/);
 });
+
+test('razón corta para WhatsApp: hasta 2 señales en atención o cuidado', () => {
+  const s = L.semaforoZona(9, {falta: 131, d35: 4, helada: 0}, 0.525);
+  assert.equal(L.razonCorta(s.senales), 'falta agua y suelo pelado');
+  assert.equal(L.razonCorta(L.semaforoZona(3, {falta: 35, d35: 0, helada: 0}, 0).senales), '');
+  assert.equal(L.razonCorta(undefined), '');
+});
+
+test('hay un aviso para cuando no hay conexión', () => {
+  assert.match(L.TEXTOS.sinConexion, /conexión/);
+});
+
+test('el error de la sonda se explica en lenguaje simple', () => {
+  assert.match(L.TEXTOS.sondaError, /USB/);
+  assert.doesNotMatch(L.TEXTOS.sondaError, /Failed|requestPort/);
+});

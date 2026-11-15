@@ -737,6 +737,39 @@ function renderInicio(){
   $('#inicioValidacion').dataset.validada = VALIDADA[state.zona] ? 'si' : 'no';
 }
 
+/* ---------- Botones del Inicio (D-31): sonda y WhatsApp. Diseño 4.7 y 4.8 ---------- */
+function avisoInicio(html){ const a = $('#inicioAviso'); a.innerHTML = html || ''; a.hidden = !html; }
+async function medirConSonda(){
+  const L = window.InicioLogica, lector = window.BioSatArduino;
+  if (!lector || typeof lector.soportado !== 'function' || !lector.soportado()){
+    avisoInicio(`${esc(L.TEXTOS.sondaNoDisponible)} <a href="kit.html?zona=${encodeURIComponent(state.zona)}">Abrir la pantalla del kit</a>`);
+    return;
+  }
+  try {
+    await lector.conectar(lectura => { state.vivo = lectura; renderPaneles(); renderInicio(); });
+    avisoInicio('');
+  } catch (err) {
+    console.warn('Sonda:', err);   // el detalle técnico queda en la consola
+    avisoInicio(esc(L.TEXTOS.sondaError));
+  }
+}
+async function mandarWhatsapp(){
+  const L = window.InicioLogica, d = datosInicio(), z = ZONAS[state.zona];
+  const texto = L.textoWhatsApp({zona: z.nombre, mes: MES_L[MES_HOY], nivelTexto: L.TEXTOS.nivel[d.sem.nivel],
+    razonCorta: L.razonCorta(d.sem.senales), rotacion: d.esActual ? 'seguir con tu rotación de hoy' : (d.mejor ? d.mejor.nombre : ''),
+    siembraMes: d.ps ? MES_L[d.ps.mes - 1] : null, enlace: location.href.split('#')[0]});
+  if (navigator.share){
+    try { await navigator.share({title: 'BioSat', text: texto}); return; }
+    catch (err) { if (err && err.name === 'AbortError') return; }
+  }
+  if (navigator.onLine === false){ avisoInicio(esc(L.TEXTOS.sinConexion)); return; }
+  window.open('https://wa.me/?text=' + encodeURIComponent(texto), '_blank', 'noopener');
+}
+document.addEventListener('click', e => {
+  if (e.target.closest('#btnSonda')){ medirConSonda(); return; }
+  if (e.target.closest('#btnWhatsapp')){ mandarWhatsapp(); }
+});
+
 /* ---------- Render general y eventos ---------- */
 function renderTodo(){ renderInicio(); renderTuCampo(); renderFrases(); renderStats(); renderCalendario(); renderPaneles(); renderDesmonte(); renderTrade(); renderCards(); renderSim(); renderDecidir(); renderVisor(); }
 function renderClima(){ renderFrases(); renderStats(); renderCalendario(); renderPaneles(); renderTrade(); renderCards(); renderSim(); }

@@ -27,6 +27,9 @@
     sonda: ['El suelo de tu lote está bien.', 'El suelo de tu lote necesita atención.',
       'El suelo de tu lote está en riesgo: caliente o seco.'],
     sondaTemp: 'La sonda marca {t} °C en el suelo.',
+    razonCorta: {falta: 'falta agua', pelado: 'suelo pelado', d35: 'mucho calor', helada: 'heladas'},
+    sinConexion: 'No hay conexión a internet: el mensaje se puede mandar cuando vuelva la señal.',
+    sondaError: 'No se pudo conectar la sonda. Revisá que esté enchufada por USB y elegí su puerto cuando el navegador lo pida.',
     sondaNoDisponible: 'Este celular o navegador no puede leer la sonda por USB. Usá Chrome o Edge en una computadora, o abrí la pantalla del kit.',
     whatsapp: {
       inicio: 'BioSat · {zona} · {mes}: {nivel}',
@@ -94,6 +97,13 @@
     return [...String(cal || '')].filter(c => c === 'D').length;
   }
 
+  // Las señales en atención o cuidado, en pocas palabras (para WhatsApp): hasta 2, de mayor a menor.
+  function razonCorta(senales) {
+    return (senales || []).filter(s => s.nivel > 0)
+      .sort((x, y) => (y.nivel - x.nivel) || (ORDEN.indexOf(x.id) - ORDEN.indexOf(y.id)))
+      .slice(0, 2).map(s => TEXTOS.razonCorta[s.id]).join(' y ');
+  }
+
   function textoWhatsApp(d) {
     const w = TEXTOS.whatsapp;
     let t = fmt(w.inicio, {zona: d.zona, mes: d.mes, nivel: d.nivelTexto});
@@ -103,7 +113,7 @@
     return t + fmt(w.cierre, {enlace: d.enlace});
   }
 
-  const L = {NIVELES, TEXTOS, UMBRALES, semaforoZona, semaforoSonda, proximaSiembra, mesesPelados, textoWhatsApp};
+  const L = {NIVELES, TEXTOS, UMBRALES, semaforoZona, semaforoSonda, proximaSiembra, mesesPelados, razonCorta, textoWhatsApp};
   if (typeof module !== 'undefined' && module.exports) module.exports = L;
   else window.InicioLogica = L;
 })();

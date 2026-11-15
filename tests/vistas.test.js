@@ -70,3 +70,17 @@ test('el Inicio tiene todos sus elementos', () => {
 test('las rotaciones adaptadas conservan el mes de siembra (para la próxima siembra)', () => {
   assert.match(app, /siembra:\s*x\.siembra_mes/);
 });
+
+test('app.js conecta los botones del Inicio: sonda, WhatsApp y el aviso sin conexión', () => {
+  assert.match(app, /closest\('#btnSonda'\)/);
+  assert.match(app, /closest\('#btnWhatsapp'\)/);
+  assert.match(app, /wa\.me\/\?text=/);
+  assert.match(app, /navigator\.share/);
+  assert.match(app, /sondaNoDisponible/);
+  assert.match(app, /sinConexion/);
+});
+
+test('app.js muestra el error de la sonda en lenguaje simple, no el mensaje técnico', () => {
+  assert.match(app, /TEXTOS\.sondaError/);
+  assert.doesNotMatch(app, /No se pudo conectar la sonda: ' \+ err\.message/);
+});
