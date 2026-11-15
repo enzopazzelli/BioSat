@@ -86,3 +86,33 @@ def zona_imagen():
     """Imagen con la banda `zona` (1 a 5) para saber a qué zona pertenece cada píxel."""
     import ee
     return zonas_fc().reduceToImage(['num'], ee.Reducer.first()).rename('zona').toInt()
+
+
+def puntos_al_azar(n, semilla):
+    """n puntos al azar, uniformes en la superficie de la provincia (proporcional al área de cada zona).
+
+    Se generan en esta PC (sin Earth Engine) para después pedirle a Earth Engine solo el valor en esos puntos.
+    Devuelve un DataFrame con lon, lat y zona (1 a 5).
+    """
+    import numpy as np
+    import pandas as pd
+    from shapely import contains_xy
+    from shapely.geometry import shape
+    formas = [(f['properties']['num'], shape(f['geometry'])) for f in zonas_geojson()['features']]
+    oeste, sur, este, norte = formas[0][1].bounds
+    for _, g in formas[1:]:
+        b = g.bounds
+        oeste, sur, este, norte = min(oeste, b[0]), min(sur, b[1]), max(este, b[2]), max(norte, b[3])
+    rng = np.random.default_rng(semilla)
+    partes, total = [], 0
+    while total < n:
+        # uniforme en el área: longitud uniforme y seno de la latitud uniforme
+        lon = rng.uniform(oeste, este, 4 * n)
+        lat = np.degrees(np.arcsin(rng.uniform(np.sin(np.radians(sur)), np.sin(np.radians(norte)), 4 * n)))
+        zona = np.zeros(len(lon), dtype=int)
+        for num, g in formas:
+            zona[(zona == 0) & contains_xy(g, lon, lat)] = num
+        dentro = zona > 0
+        partes.append(pd.DataFrame({'lon': lon[dentro], 'lat': lat[dentro], 'zona': zona[dentro]}))
+        total += int(dentro.sum())
+    return pd.concat(partes, ignore_index=True).head(n)

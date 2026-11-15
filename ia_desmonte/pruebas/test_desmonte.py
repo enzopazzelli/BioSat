@@ -28,11 +28,12 @@ def tabla_con_zona1_de_40_puntos():
     return df
 
 
-def test_elegir_toma_el_mayor_auc_y_la_justificacion_lo_dice():
-    m = {'regresion_logistica': {'auc': .80, 'f1': .4}, 'random_forest': {'auc': .84, 'f1': .45},
-         'gradient_boosting': {'auc': .83, 'f1': .47}, 'tasa_base': 0.1}
+def test_elegir_usa_la_validacion_cruzada_del_entrenamiento_no_la_prueba():
+    m = {'regresion_logistica': {'auc': .80, 'auc_cv': .78}, 'random_forest': {'auc': .79, 'auc_cv': .83},
+         'gradient_boosting': {'auc': .82, 'auc_cv': .81}, 'tasa_base': 0.1}
     nombre, texto = elegir(m)
-    assert nombre == 'random_forest' and '0,84' in texto and '0,80' in texto
+    assert nombre == 'random_forest'
+    assert '0,83' in texto and '0,78' in texto and '0,79' in texto   # dice la validación cruzada y la prueba
 
 
 def test_evaluar_con_datos_sinteticos_de_prueba_devuelve_metricas_validas():
@@ -41,7 +42,8 @@ def test_evaluar_con_datos_sinteticos_de_prueba_devuelve_metricas_validas():
     assert set(r) >= {'regresion_logistica', 'random_forest', 'gradient_boosting', 'tasa_base'}
     for k in ('regresion_logistica', 'random_forest', 'gradient_boosting'):
         assert 0.5 < r[k]['auc'] <= 1
-        assert set(r[k]) >= {'auc', 'f1', 'accuracy', 'kappa', 'pr_auc', 'umbral'}
+        assert set(r[k]) >= {'auc', 'auc_cv', 'f1', 'accuracy', 'kappa', 'pr_auc', 'umbral'}
+        assert 0.5 < r[k]['auc_cv'] <= 1
     assert 0 < r['tasa_base'] < 1
 
 
@@ -51,3 +53,33 @@ def test_riesgo_zona_con_pocos_puntos_es_baja():
     assert r['zona_1_riego_salitre']['riesgo'] == 0.3
     assert r['zona_3_monte_semiarido']['n'] == 0 and r['zona_3_monte_semiarido']['riesgo'] is None
     assert confianza_riesgo(40) == 'baja' and confianza_riesgo(100) == 'media'
+
+
+def test_indice_rejilla_ubica_cada_punto_en_su_celda():
+    import numpy as np
+    from ia_desmonte.desmonte import REJILLA, indice_rejilla
+    from ia_desmonte.comun import BBOX_PROVINCIA
+    oeste, sur, este, norte = BBOX_PROVINCIA
+    f, c = indice_rejilla(np.array([oeste + 0.0001, oeste + 2.5 * REJILLA]), np.array([norte - 0.0001, norte - 1.5 * REJILLA]))
+    assert list(f) == [0, 1] and list(c) == [0, 2]
+
+
+def test_leer_rejilla_devuelve_el_valor_de_la_celda():
+    import numpy as np
+    from ia_desmonte.desmonte import REJILLA, leer_rejilla
+    from ia_desmonte.comun import BBOX_PROVINCIA
+    oeste, _, _, norte = BBOX_PROVINCIA
+    capa = np.arange(12, dtype=float).reshape(3, 4)
+    v = leer_rejilla({'x': capa}, np.array([oeste + 3.5 * REJILLA]), np.array([norte - 2.5 * REJILLA]))
+    assert v['x'][0] == capa[2, 3]
+
+
+def test_leer_rejilla_fuera_de_la_grilla_da_nan():
+    import numpy as np
+    from ia_desmonte.desmonte import REJILLA, leer_rejilla
+    from ia_desmonte.comun import BBOX_PROVINCIA
+    oeste, _, _, norte = BBOX_PROVINCIA
+    capa = np.ones((3, 4))
+    v = leer_rejilla({'x': capa}, np.array([oeste + 0.5 * REJILLA, oeste + 0.5 * REJILLA]),
+                     np.array([norte - 0.5 * REJILLA, norte - 10 * REJILLA]))   # el segundo cae al sur de la grilla
+    assert v['x'][0] == 1 and np.isnan(v['x'][1])

@@ -26,3 +26,17 @@ def test_geometrias_validas_y_area_de_la_provincia():
         assert g.is_valid, f['properties']['zona']
         total += g.area * 111.32 ** 2 * math.cos(math.radians(g.centroid.y))
     assert abs(total - 136351) / 136351 < 0.02   # superficie oficial de Santiago del Estero
+
+
+def test_puntos_al_azar_caen_en_su_zona_y_son_reproducibles():
+    from shapely.geometry import Point, shape
+    from ia_desmonte.zonas import puntos_al_azar
+    df = puntos_al_azar(3000, semilla=7)
+    assert len(df) == 3000 and set(df.columns) >= {'lon', 'lat', 'zona'}
+    formas = {f['properties']['num']: shape(f['geometry']) for f in zonas_geojson()['features']}
+    for _, r in df.sample(200, random_state=1).iterrows():
+        assert formas[int(r['zona'])].contains(Point(r['lon'], r['lat']))
+    assert puntos_al_azar(3000, semilla=7).equals(df)
+    # proporcional al área: la Zona 3 (la más grande) tiene más puntos que la Zona 1
+    cuenta = df['zona'].value_counts()
+    assert cuenta[3] > cuenta[1]

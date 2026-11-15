@@ -86,13 +86,13 @@ test('imagenes/escenas.json: compuestos de Earth Engine, livianos y distintos de
   }
 });
 
-test('desmonte_zonas.json: serie 2001-2025 real, riesgo entre 0 y 1, método elegido = mayor AUC', () => {
+test('desmonte_zonas.json: serie 2001-2025 real, riesgo entre 0 y 1, método elegido = mayor AUC en validación cruzada', () => {
   const j = leer('desmonte_zonas.json');
   metaCompleta(j.meta, 'desmonte');
   assert.deepEqual(Object.keys(j.zonas), ZONAS);
   const met = j.evaluacion.metodos;
   const clasif = ['regresion_logistica', 'random_forest', 'gradient_boosting'];
-  const mejor = clasif.reduce((a, b) => (met[b].auc > met[a].auc ? b : a));
+  const mejor = clasif.reduce((a, b) => (met[b].auc_cv > met[a].auc_cv ? b : a));   // se elige sin mirar la prueba
   assert.equal(j.evaluacion.metodo_elegido, mejor);
   assert.ok(j.evaluacion.tasa_base > 0 && j.evaluacion.tasa_base < 1);
   assert.ok(!('temporal_lstm_o_transformer' in met), 'queda la clave vieja del modelo temporal');

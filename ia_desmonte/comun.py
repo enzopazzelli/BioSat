@@ -93,6 +93,27 @@ def muestras_por_tandas(imagen, region, n, escala, semilla, tanda=4000, mascara=
     return df.drop(columns=['estrato_muestra'], errors='ignore')
 
 
+def valores_en_puntos(imagen, puntos, escala, tanda=3000):
+    """Pide a Earth Engine el valor de `imagen` solo en los puntos dados (DataFrame con lon y lat), a `escala` m.
+
+    Devuelve las filas de `puntos` donde la imagen no está enmascarada, con una columna por banda.
+    Es mucho más barato que muestrear toda la región, y a 30 m las etiquetas de Hansen quedan exactas.
+    """
+    import ee
+    import pandas as pd
+    filas = []
+    for desde in range(0, len(puntos), tanda):
+        parte = puntos.iloc[desde:desde + tanda]
+        fc = ee.FeatureCollection([ee.Feature(ee.Geometry.Point([float(r.lon), float(r.lat)]), {'id': int(i)})
+                                   for i, r in parte.iterrows()])
+        res = imagen.sampleRegions(collection=fc, properties=['id'], scale=escala, tileScale=8, geometries=False)
+        datos = con_reintentos(lambda: res.getInfo())
+        filas.extend(f['properties'] for f in datos['features'])
+        print(f'  puntos {desde + len(parte)}/{len(puntos)}: {len(filas)} con dato')
+    valores = pd.DataFrame(filas).set_index('id')
+    return puntos.join(valores, how='inner')
+
+
 UTM_20S = 'EPSG:32720'  # Santiago del Estero cae entera en la zona UTM 20 Sur: distancias en metros reales
 
 

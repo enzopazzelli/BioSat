@@ -14,16 +14,18 @@ import pickle
 import numpy as np
 import pandas as pd
 
-from ia_desmonte.comun import (BBOX_PROVINCIA, DATA, HANSEN, SALIDAS, SEMILLA, ULTIMO_ANIO, UMBRAL_MONTE, ZONAS, con_reintentos,
-                               distancia_m, escribir_json, iniciar_ee, meta_base, muestras_por_tandas)
+from ia_desmonte.comun import (BBOX_PROVINCIA, DATA, HANSEN, SALIDAS, SEMILLA, ULTIMO_ANIO, UMBRAL_MONTE, UTM_20S, ZONAS,
+                               con_reintentos, distancia_m, escribir_json, iniciar_ee, meta_base, valores_en_puntos)
 
-PREDICTORES = ['dist_sin_monte_m', 'dist_desmonte_previo_m', 'dist_caminos_m', 'pendiente_grados', 'area_protegida',
-               'poblacion_densidad', 'deficit_hidrico_mm', 'arcilla_pct', 'ph', 'zona']
+PREDICTORES = ['dist_sin_monte_m', 'dist_desmonte_previo_m', 'dist_desmonte_reciente_m', 'monte_1km_pct',
+               'dist_caminos_m', 'pendiente_grados', 'area_protegida', 'poblacion_densidad', 'deficit_hidrico_mm',
+               'arcilla_pct', 'ph', 'zona']
 NUMERICOS = [p for p in PREDICTORES if p != 'zona']
 NOMBRES = {'regresion_logistica': 'regresión logística', 'random_forest': 'random forest',
            'gradient_boosting': 'gradient boosting'}
-N_MUESTRA = 10000
-ESCALA_MUESTRA = 250
+N_MUESTRA = 10000          # puntos de monte por muestra
+ESCALA_MUESTRA = 30        # los valores se leen a 30 m: las etiquetas de Hansen quedan exactas
+ESCALA_DIST = 250          # las distancias y la fragmentación se calculan a 250 m
 TOPE_DIST_M = 25000
 TOPE_CAMINOS_M = 50000
 ANIOS = list(range(2001, ULTIMO_ANIO + 1))
@@ -59,28 +61,29 @@ def entrenar(nombre, df):
     return _modelo(nombre).fit(df[PREDICTORES], df['desmonte'])
 
 
-def _umbral_f1(nombre, df):
-    """Umbral que maximiza F1 con validación cruzada de 5 partes sobre el entrenamiento (nunca sobre la prueba)."""
-    from sklearn.metrics import precision_recall_curve
+def _validacion_cruzada(nombre, df):
+    """AUC y umbral de F1 con validación cruzada de 5 partes sobre el entrenamiento (nunca sobre la prueba)."""
+    from sklearn.metrics import precision_recall_curve, roc_auc_score
     from sklearn.model_selection import StratifiedKFold, cross_val_predict
     cv = StratifiedKFold(5, shuffle=True, random_state=SEMILLA)
     p = cross_val_predict(_modelo(nombre), df[PREDICTORES], df['desmonte'], cv=cv, method='predict_proba')[:, 1]
     prec, rec, umb = precision_recall_curve(df['desmonte'], p)
     f1 = 2 * prec * rec / np.maximum(prec + rec, 1e-12)
-    return float(umb[int(np.argmax(f1[:-1]))])
+    return float(roc_auc_score(df['desmonte'], p)), float(umb[int(np.argmax(f1[:-1]))])
 
 
 def evaluar(train, test):
-    """Entrena los 3 modelos con `train` y los mide con `test`."""
+    """Entrena los 3 modelos con `train` y los mide con `test` (y con validación cruzada dentro de `train`)."""
     from sklearn.metrics import (accuracy_score, average_precision_score, cohen_kappa_score, f1_score,
                                  roc_auc_score)
     salida = {}
     for nombre in NOMBRES:
-        umbral = _umbral_f1(nombre, train)
+        auc_cv, umbral = _validacion_cruzada(nombre, train)
         p = entrenar(nombre, train).predict_proba(test[PREDICTORES])[:, 1]
         pred = (p >= umbral).astype(int)
         y = test['desmonte']
-        salida[nombre] = {'auc': round(float(roc_auc_score(y, p)), 3), 'f1': round(float(f1_score(y, pred)), 3),
+        salida[nombre] = {'auc': round(float(roc_auc_score(y, p)), 3), 'auc_cv': round(auc_cv, 3),
+                          'f1': round(float(f1_score(y, pred)), 3),
                           'accuracy': round(float(accuracy_score(y, pred)), 3),
                           'kappa': round(float(cohen_kappa_score(y, pred)), 3),
                           'pr_auc': round(float(average_precision_score(y, p)), 3), 'umbral': round(umbral, 3)}
@@ -93,13 +96,18 @@ def _coma(x):
 
 
 def elegir(metodos):
-    """Elige el método de mayor AUC en la prueba y escribe la justificación con los mismos números."""
-    candidatos = {k: v for k, v in metodos.items() if k in NOMBRES}
-    nombre = max(candidatos, key=lambda k: candidatos[k]['auc'])
-    otros = sorted((k for k in candidatos if k != nombre), key=lambda k: -candidatos[k]['auc'])
-    texto = (f'{NOMBRES[nombre].capitalize()} tiene el AUC más alto en la prueba {PRUEBA} '
-             f'({_coma(candidatos[nombre]["auc"])}), contra '
-             + ' y '.join(f'{_coma(candidatos[k]["auc"])} de {NOMBRES[k]}' for k in otros) + '.')
+    """Elige el método de mayor AUC en la validación cruzada del entrenamiento (sin mirar la prueba).
+
+    La justificación se escribe con los mismos números: la validación cruzada que decidió y la prueba que mide.
+    """
+    c = {k: v for k, v in metodos.items() if k in NOMBRES}
+    nombre = max(c, key=lambda k: c[k]['auc_cv'])
+    otros = sorted((k for k in c if k != nombre), key=lambda k: -c[k]['auc_cv'])
+    texto = (f'Se eligió {NOMBRES[nombre]} porque tiene el AUC más alto en la validación cruzada del entrenamiento '
+             f'({_coma(c[nombre]["auc_cv"])}, contra '
+             + ' y '.join(f'{_coma(c[k]["auc_cv"])} de {NOMBRES[k]}' for k in otros)
+             + f'). En la prueba {PRUEBA}, que no se usó para elegir, mide AUC {_coma(c[nombre]["auc"])} ('
+             + ', '.join(f'{NOMBRES[k]} {_coma(c[k]["auc"])}' for k in otros) + ').')
     return nombre, texto
 
 
@@ -139,49 +147,122 @@ def _suelo_0_30(ee, var, factor):
     return a.multiply(5).add(b.multiply(10)).add(c.multiply(15)).divide(30).multiply(factor)
 
 
-def predictores(ee, corte):
-    """Imagen con los predictores calculados al año `corte`."""
-    from ia_desmonte.zonas import zona_imagen
+REJILLA = 0.0025  # grados (unos 250 m): tamaño de celda de las capas caras que se bajan como grilla
+CAPAS_REJILLA = ['dist_sin_monte_m', 'dist_desmonte_previo_m', 'dist_desmonte_reciente_m', 'monte_1km_pct',
+                 'dist_caminos_m']
+
+
+def capas_caras(ee, corte):
+    """Distancias y fragmentación al año `corte`: caras de calcular, se bajan una vez como grilla de ~250 m."""
     tc, ly = _hansen(ee)
     t = corte - 2000
     monte = monte_en(ee, corte)
     previa = ly.gte(1).And(ly.lte(t))
+    reciente = ly.gte(max(1, t - 2)).And(ly.lte(t))  # desmonte de los 3 años previos al corte
+    proj = ee.Projection(UTM_20S).atScale(ESCALA_DIST)
+    frag = (monte.unmask(0).reduceResolution(reducer=ee.Reducer.mean(), maxPixels=1024).reproject(proj)
+            .focalMean(1000, 'circle', 'meters').multiply(100))
     region = ee.Geometry.Rectangle(BBOX_PROVINCIA).buffer(60000)
     caminos = ee.FeatureCollection(GRIP4).filterBounds(region)
+    return ee.Image.cat([
+        distancia_m(monte.Not(), ESCALA_DIST, TOPE_DIST_M).rename('dist_sin_monte_m'),
+        distancia_m(previa, ESCALA_DIST, TOPE_DIST_M).rename('dist_desmonte_previo_m'),
+        distancia_m(reciente, ESCALA_DIST, TOPE_DIST_M).rename('dist_desmonte_reciente_m'),
+        frag.rename('monte_1km_pct'),
+        caminos.distance(TOPE_CAMINOS_M, 50).unmask(TOPE_CAMINOS_M).rename('dist_caminos_m'),
+    ]).toFloat()
+
+
+def capas_baratas(ee, corte):
+    """Predictores que se leen rápido en cada punto, a 30 m (enmascarados fuera del monte de `corte`)."""
+    region = ee.Geometry.Rectangle(BBOX_PROVINCIA).buffer(60000)
     wdpa = ee.FeatureCollection(WDPA).filterBounds(region)
-    anio_pob = min(corte, 2020)
     pob = (ee.ImageCollection(WORLDPOP).filter(ee.Filter.eq('country', 'ARG'))
-           .filter(ee.Filter.eq('year', anio_pob)).mosaic())
+           .filter(ee.Filter.eq('year', min(corte, 2020))).mosaic())
     tclim = ee.ImageCollection(TERRACLIMATE).filterDate('1991-01-01', '2021-01-01').select('def')
     return ee.Image.cat([
-        distancia_m(monte.Not(), ESCALA_MUESTRA, TOPE_DIST_M).rename('dist_sin_monte_m'),
-        distancia_m(previa, ESCALA_MUESTRA, TOPE_DIST_M).rename('dist_desmonte_previo_m'),
-        caminos.distance(TOPE_CAMINOS_M, 50).unmask(TOPE_CAMINOS_M).rename('dist_caminos_m'),
         ee.Terrain.slope(ee.Image(NASADEM).select('elevation')).rename('pendiente_grados'),
         ee.Image.constant(0).paint(wdpa, 1).rename('area_protegida'),
         pob.divide(ee.Image.pixelArea().divide(1e6)).unmask(0).rename('poblacion_densidad'),
         tclim.sum().divide(30).multiply(0.1).rename('deficit_hidrico_mm'),
         _suelo_0_30(ee, 'clay', 0.1).rename('arcilla_pct'),
         _suelo_0_30(ee, 'phh2o', 0.1).rename('ph'),
-        zona_imagen(),
-    ]).updateMask(monte)
+    ]).updateMask(monte_en(ee, corte))
+
+
+def indice_rejilla(lon, lat):
+    """Fila y columna de la celda de la grilla que contiene cada punto."""
+    oeste, _, _, norte = BBOX_PROVINCIA
+    return (np.floor((norte - np.asarray(lat)) / REJILLA).astype(int),
+            np.floor((np.asarray(lon) - oeste) / REJILLA).astype(int))
+
+
+def leer_rejilla(rejilla, lon, lat):
+    """Valor de cada capa de la grilla en cada punto; NaN si el punto cae fuera de la grilla (se descarta después)."""
+    f, c = indice_rejilla(lon, lat)
+    salida = {}
+    for k, v in rejilla.items():
+        dentro = (f >= 0) & (f < v.shape[0]) & (c >= 0) & (c < v.shape[1])
+        valores = np.full(len(f), np.nan)
+        valores[dentro] = v[f[dentro], c[dentro]]
+        salida[k] = valores
+    return salida
+
+
+def bajar_rejilla(corte, bloque=512):
+    """Baja las capas caras de `corte` como matrices (una vez; se guardan en salidas/ para no repetir)."""
+    import concurrent.futures
+    ruta = SALIDAS / f'rejilla_{corte}.npz'
+    if ruta.exists():
+        return dict(np.load(ruta))
+    ee = iniciar_ee()
+    img = capas_caras(ee, corte)
+    oeste, sur, este, norte = BBOX_PROVINCIA
+    ancho, alto = int(round((este - oeste) / REJILLA)), int(round((norte - sur) / REJILLA))
+    salida = {k: np.full((alto, ancho), np.nan, dtype='float32') for k in CAPAS_REJILLA}
+
+    def pedir(f0, c0):
+        h, w = min(bloque, alto - f0), min(bloque, ancho - c0)
+        pedido = {'expression': img, 'fileFormat': 'NUMPY_NDARRAY',
+                  'grid': {'dimensions': {'width': w, 'height': h}, 'crsCode': 'EPSG:4326',
+                           'affineTransform': {'scaleX': REJILLA, 'shearX': 0, 'translateX': oeste + c0 * REJILLA,
+                                               'shearY': 0, 'scaleY': -REJILLA, 'translateY': norte - f0 * REJILLA}}}
+        datos = con_reintentos(lambda: ee.data.computePixels(pedido))
+        return f0, c0, h, w, datos
+
+    bloques = [(f0, c0) for f0 in range(0, alto, bloque) for c0 in range(0, ancho, bloque)]
+    with concurrent.futures.ThreadPoolExecutor(max_workers=4) as ex:
+        for i, (f0, c0, h, w, datos) in enumerate(ex.map(lambda b: pedir(*b), bloques), start=1):
+            for k in CAPAS_REJILLA:
+                salida[k][f0:f0 + h, c0:c0 + w] = datos[k]
+            print(f'  grilla {corte}: bloque {i}/{len(bloques)}')
+    SALIDAS.mkdir(parents=True, exist_ok=True)
+    np.savez_compressed(ruta, **salida)
+    return salida
 
 
 def muestras(corte, fin, n, semilla):
     """Puntos al azar en el monte de `corte`, con predictores al corte y etiqueta 'se desmontó en (corte, fin]'."""
     ee = iniciar_ee()
-    from ia_desmonte.zonas import zona_imagen
-    img = predictores(ee, corte)
+    from ia_desmonte.zonas import puntos_al_azar
+    rejilla = bajar_rejilla(corte)
+    img = capas_baratas(ee, corte)
     if fin is not None:
         _, ly = _hansen(ee)
         img = img.addBands(ly.gt(corte - 2000).And(ly.lte(fin - 2000)).rename('desmonte'))
-    donde = monte_en(ee, corte).selfMask().updateMask(zona_imagen().mask())
-    print(f'Muestreando monte {corte} (n={n})')
-    df = muestras_por_tandas(img, ee.Geometry.Rectangle(BBOX_PROVINCIA), n, ESCALA_MUESTRA, semilla, tanda=5000,
-                             mascara=donde)
-    df = df.dropna(subset=['zona'])
-    df['zona'] = df['zona'].astype(int)
-    return df
+    # Puntos uniformes en la provincia; Earth Engine devuelve solo los que caen en monte (imagen enmascarada).
+    candidatos = puntos_al_azar(int(n * 2.8), semilla)
+    print(f'Muestreando monte {corte}: {len(candidatos)} puntos candidatos para ~{n} de monte')
+    crudo = SALIDAS / f'desmonte_valores_{corte}_{fin}.csv'  # lo que devolvió Earth Engine (para no repetirlo)
+    if crudo.exists():
+        df = pd.read_csv(crudo, index_col=0)
+    else:
+        df = valores_en_puntos(img, candidatos, ESCALA_MUESTRA)
+        df.to_csv(crudo)
+    for k, v in leer_rejilla(rejilla, df['lon'].to_numpy(), df['lat'].to_numpy()).items():
+        df[k] = v
+    df = df.dropna(subset=PREDICTORES)
+    return df.head(n).reset_index(drop=True)
 
 
 def serie_anual():
@@ -203,26 +284,26 @@ def serie_anual():
     return salida
 
 
-def monte_pct(anio, umbral=UMBRAL_MONTE):
+def monte_pct(anio, umbral=UMBRAL_MONTE, escala=30):
     """% de la superficie de cada zona con monte al final de `anio`."""
     ee = iniciar_ee()
     from ia_desmonte.zonas import zonas_fc
     area = ee.Image.pixelArea()
     img = ee.Image.cat(area.updateMask(monte_en(ee, anio, umbral)).rename('monte'), area.rename('total'))
-    r = con_reintentos(lambda: img.reduceRegions(collection=zonas_fc(), reducer=ee.Reducer.sum(), scale=30,
+    r = con_reintentos(lambda: img.reduceRegions(collection=zonas_fc(), reducer=ee.Reducer.sum(), scale=escala,
                                                  tileScale=16).getInfo())
     return {f['properties']['zona']: round(100 * f['properties']['monte'] / f['properties']['total'], 2)
             for f in r['features']}
 
 
-def perdida_ha(desde, hasta, umbral=UMBRAL_MONTE):
+def perdida_ha(desde, hasta, umbral=UMBRAL_MONTE, escala=30):
     """Hectáreas desmontadas entre `desde` y `hasta` (inclusive) en cada zona."""
     ee = iniciar_ee()
     from ia_desmonte.zonas import zonas_fc
     tc, ly = _hansen(ee)
     m = tc.gte(umbral).And(ly.gte(desde - 2000)).And(ly.lte(hasta - 2000))
     img = ee.Image.pixelArea().divide(1e4).updateMask(m)
-    r = con_reintentos(lambda: img.reduceRegions(collection=zonas_fc(), reducer=ee.Reducer.sum(), scale=30,
+    r = con_reintentos(lambda: img.reduceRegions(collection=zonas_fc(), reducer=ee.Reducer.sum(), scale=escala,
                                                  tileScale=16).getInfo())
     return {f['properties']['zona']: round(f['properties'].get('sum', 0.0), 1) for f in r['features']}
 
@@ -268,7 +349,7 @@ def armar_json(serie, monte_actual, evaluacion, elegido, justificacion, riesgos,
                 'balancear clases, para que las probabilidades queden calibradas.'),
         script='ia_desmonte/desmonte.py',
         notas=(f'Monte = cobertura arbórea del 2000 >= {UMBRAL_MONTE} % sin pérdida registrada. Hansen no registra el '
-               'monte que vuelve a crecer. Predictores calculados a 250 m y distancias acotadas (25 km; caminos 50 km). GRIP4 es '
+               'monte que vuelve a crecer. Valores leídos a 30 m en puntos al azar uniformes en la provincia; distancias y fragmentación calculadas a 250 m y acotadas (25 km; caminos 50 km). GRIP4 es '
                'una red de caminos de 2018 y se usa igual en todos los cortes. WorldPop llega a 2020: para cortes '
                'posteriores se usa 2020. deficit_hidrico_mm es positivo (falta de agua, TerraClimate 1991-2020).'),
         historia=f'Hansen Global Forest Change v1.13 (2001-{ULTIMO_ANIO}, Landsat 30 m)',
@@ -302,8 +383,8 @@ def _muestras():
 def _sensibilidad():
     filas = []
     for u in (10, 25, 30):
-        m = monte_pct(ULTIMO_ANIO, u)
-        p = perdida_ha(2016, ULTIMO_ANIO, u)
+        m = monte_pct(ULTIMO_ANIO, u, escala=100)  # aproximado a 100 m: solo muestra cuánto cambia con el umbral
+        p = perdida_ha(2016, ULTIMO_ANIO, u, escala=100)
         filas += [[u, z, m[z], p[z]] for z in ZONAS]
     with open(SALIDAS / 'sensibilidad_umbral_monte.csv', 'w', newline='', encoding='utf-8') as f:
         w = csv.writer(f)
@@ -339,4 +420,10 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    import sys
+    if len(sys.argv) == 3 and sys.argv[1] == 'muestra':  # una sola muestra (para correr las 3 en paralelo)
+        corte, fin, semilla = CORTES[sys.argv[2]]
+        SALIDAS.mkdir(parents=True, exist_ok=True)
+        muestras(corte, fin, N_MUESTRA, semilla).to_csv(SALIDAS / f'desmonte_{sys.argv[2]}.csv', index=False)
+    else:
+        main()
