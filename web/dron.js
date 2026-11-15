@@ -91,6 +91,20 @@
   }
 
   // ---------- Lectura ----------
+  // Lee el archivo achicado de a franjas de filas, para no tener nunca el original entero en memoria
+  // (readRasters con width y height lee primero la ventana a resolución completa). Unos 16 millones de valores por franja.
+  async function leerAchicado(img, w0, h0, ancho, alto, n) {
+    if (ancho === w0 && alto === h0) return Array.from(await img.readRasters({interleave: false}));
+    const filas = Math.max(64, Math.floor(16e6 / (w0 * n)));
+    let out = null;
+    for (const t of L.tramos(h0, alto, filas)) {
+      const r = await img.readRasters({window: [0, t.r0, w0, t.r1], width: ancho, height: t.o1 - t.o0, interleave: false});
+      if (!out) out = Array.from(r, b => new b.constructor(ancho * alto));
+      r.forEach((b, i) => out[i].set(b, t.o0 * ancho));
+    }
+    return out;
+  }
+
   async function abrir(blob, nombre) {
     estado = {nombre: nombre || (blob && blob.name) || '', bytes: blob ? blob.size : 0, tipo: null, error: null, url: null,
       resumen: null, bandas: null, descripciones: [], fecha: null, zonaLote: null, departamento: null, leyendo: true,
@@ -110,7 +124,7 @@
       const recuadro = L.recuadroLatLon(img.getBoundingBox(), aLonLat);
       const w0 = img.getWidth(), h0 = img.getHeight(), k = Math.min(1, MAX_LADO / Math.max(w0, h0));
       const ancho = Math.max(1, Math.round(w0 * k)), alto = Math.max(1, Math.round(h0 * k));
-      const rasters = await img.readRasters({width: ancho, height: alto, interleave: false});
+      const rasters = await leerAchicado(img, w0, h0, ancho, alto, bandas);
       const sinDato = img.getGDALNoData();
       const tipo = L.tipoImagen(ficha);
       datos = {bandas: Array.from(rasters), ancho, alto, sinDato: sinDato === null ? null : Number(sinDato),
@@ -189,5 +203,6 @@
   if (window.Idioma) Idioma.alCambiar(renderCaja);
   document.addEventListener('DOMContentLoaded', renderCaja);
 
-  window.BioSatDron = {abrir, estado: () => estado, alCambiar: fn => oyentes.push(fn), elegirBandas, confirmarNdvi, ponerFecha};
+  window.BioSatDron = {abrir, estado: () => estado, alCambiar: fn => oyentes.push(fn), elegirBandas, confirmarNdvi, ponerFecha,
+    render: renderCaja};
 })();

@@ -280,6 +280,7 @@ function resumenDron(){
 }
 function renderDron(){
   if (!window.DronLogica) return;
+  if (window.BioSatDron) BioSatDron.render();   // la caja del visor, ya con el idioma registrado
   const D = DronLogica, T = D.TEXTOS, d = window.BioSatDron && BioSatDron.estado(), r = resumenDron();
   if ($('#inicioDron')){
     $('#inicioDronTxt').textContent = r ? D.lineaInicio(r) : '';

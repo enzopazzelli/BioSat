@@ -150,3 +150,12 @@ test('la fecha de la línea sigue el idioma (en inglés, mes/día)', () => {
   } finally { D.TEXTOS.locale = antes; }
   assert.match(D.lineaInicio({...R, tipo: 'rgb'}), /\(03\/11\)/);
 });
+
+test('tramos: lee el archivo de a franjas que cubren todas las filas, sin huecos ni solapes', () => {
+  const t = D.tramos(6000, 1365, 512);
+  assert.equal(t[0].o0, 0); assert.equal(t[t.length - 1].o1, 1365);
+  assert.equal(t[0].r0, 0); assert.equal(t[t.length - 1].r1, 6000);
+  for (let i = 1; i < t.length; i++) { assert.equal(t[i].o0, t[i - 1].o1); assert.equal(t[i].r0, t[i - 1].r1); }
+  assert.ok(t.every(x => x.r1 - x.r0 <= 512 + 5 && x.o1 > x.o0 && x.r1 > x.r0));
+  assert.deepEqual(D.tramos(60, 60, 512), [{o0: 0, o1: 60, r0: 0, r1: 60}]);
+});

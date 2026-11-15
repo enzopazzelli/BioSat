@@ -177,6 +177,17 @@
     return `${m[1]}-${m[2]}-${m[3]}`;
   }
 
+  // Franjas para leer un archivo grande sin cargarlo entero: cada una cubre filas [r0, r1) del original y llena
+  // las filas [o0, o1) de la versión achicada (alto filas). filasMax = filas del original por franja, aproximado.
+  function tramos(altoOriginal, alto, filasMax) {
+    const k = Math.max(1, Math.floor(filasMax * alto / altoOriginal)), out = [];
+    for (let o0 = 0; o0 < alto; o0 += k) {
+      const o1 = Math.min(alto, o0 + k);
+      out.push({o0, o1, r0: Math.round(o0 * altoOriginal / alto), r1: o1 === alto ? altoOriginal : Math.round(o1 * altoOriginal / alto)});
+    }
+    return out;
+  }
+
   const GB = 1024 ** 3;
   function avisoTamano(bytes) {
     if (!(bytes > GB)) return null;
@@ -300,7 +311,7 @@
 
   const L = {TEXTOS, defProj4, epsgDe, recuadroLatLon, metrosPorPixel, tipoImagen, pareceNdvi, descripcionesBandas,
     bandasSugeridas, ndvi, resumenNdvi, fechaDeTiff, avisoTamano, transformacionMapa, parsearPath, zonaDelPunto,
-    lineaInicio, comparacion, fichaTecnica, fechaCorta: diaMes};
+    lineaInicio, comparacion, fichaTecnica, fechaCorta: diaMes, tramos};
   if (typeof module !== 'undefined' && module.exports) module.exports = L;
   else window.DronLogica = L;
 })();

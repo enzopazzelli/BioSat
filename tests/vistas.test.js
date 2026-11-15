@@ -170,3 +170,8 @@ test('D-38: tarjeta del dron en el Reporte, línea en el Inicio y aviso en la vi
   assert.match(completo, /id="dronEnReporte"[\s\S]*?href="index\.html#satelite"/);
   assert.match(index, /data-i18n="datosDron"/);
 });
+
+test('D-38: la caja del dron se vuelve a dibujar con cada renderTodo (si no, con ?lang=en queda en español)', () => {
+  const f = app.slice(app.indexOf('function renderDron'), app.indexOf('function renderDron') + 600);
+  assert.match(f, /BioSatDron\.render\(\)/);
+});
