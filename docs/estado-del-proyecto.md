@@ -1,6 +1,6 @@
 # Estado del proyecto BioSat
 
-**Corte:** domingo 15/11/2026, 10:00 · **Rama:** `main` · **App publicada:** https://enzopazzelli.github.io/BioSat/web/
+**Corte:** domingo 15/11/2026, 12:50 (se sumaron D-33, D-36 y la sugerencia de imágenes de dron; el avance del kit y de la entrega no se volvió a relevar desde las 10:00) · **Rama:** `main` · **App publicada:** https://enzopazzelli.github.io/BioSat/web/
 
 Este panorama se escribió a mano a partir de `main`, los planes de [`planes/`](../planes/README.md) y el contenido real de `data/`. El avance por persona se actualiza solo en el [README](../README.md).
 
@@ -11,20 +11,20 @@ Este panorama se escribió a mano a partir de `main`, los planes de [`planes/`](
 | Frente | Quién | Estado | Qué hay | Qué falta |
 |---|---|---|---|---|
 | F1 · Clima | Enzo | **Listo** | `clima_zonas.json` completo (1981-2025, 5 zonas, ET0, normal contra reciente) | Nada |
-| F5 · App y motor | Enzo | **Listo** | Inicio simple para el celular, Reporte completo con PDF y vista detallada (D-31). Probado en un celular de verdad (Enzo, 15/11: se ve bien). En la PC, el Inicio va en dos columnas, y el pronóstico de Meteomatics de los próximos días aparece en el Inicio, el Reporte y la pantalla del kit (D-34) | Probar la app publicada sin internet en el celular después del último merge; ensayar la demo en la pantalla grande |
+| F5 · App y motor | Enzo | **Listo** | Inicio simple para el celular, Reporte completo con PDF y vista detallada (D-31). Probado en un celular de verdad (Enzo, 15/11: se ve bien). En la PC, el Inicio va en dos columnas, y el pronóstico de Meteomatics de los próximos días aparece en el Inicio, el Reporte y la pantalla del kit (D-34). Botón ES/EN (D-35). Sin datos falsos (D-33) y el visor del Reporte vuelve a mostrar la imagen Landsat (D-36), publicados el 15/11 a las 12:40 | Probar la app publicada sin internet en el celular después del último merge; ensayar la demo en la pantalla grande |
 | F4 · Rotaciones | Vale | **Casi listo** | 15 rotaciones (5 zonas × 3). Zona 5 revisada por un productor | Validar las zonas 1 a 4 (o decir que no lo están); confirmar `requiere_hacienda` y el permiso del productor; corregir un dato de la evidencia de la Zona 5; revisar el guion |
-| F2 · Suelo y zonificación | Santi + Enzo (D-30) | **Listo, con datos reales** | Zonificación AIZAL en 5 grupos, suelo de SoilGrids 0-30 cm y meses de suelo pelado con Landsat 2021-2025 | Publicar el visor de Earth Engine; sumar lo que responda la profesora. Los 5 grupos ya tienen nombre y la app ya presenta bien el dato del satélite (D-33, rama `enzo-d33`, falta integrarla) |
+| F2 · Suelo y zonificación | Santi + Enzo (D-30) | **Listo, con datos reales** | Zonificación AIZAL en 5 grupos, suelo de SoilGrids 0-30 cm y meses de suelo pelado con Landsat 2021-2025 | Publicar el visor de Earth Engine; sumar lo que responda la profesora. Los 5 grupos ya tienen nombre y la app ya presenta bien el dato del satélite (D-33, en `main` y publicado) |
 | F3 · Modelo de desmontes | Santi + Enzo (D-30) | **Listo, con datos reales** | Random forest validado en el tiempo, riesgo y proyección por zona, índice de fragilidad con fórmula visible | Pasarle a Sara las métricas reales, el mapa de riesgo y la comparación 2000 contra 2025 |
 | F6 · Arduino | Sara (en un simulador web) y Enzo | **Código listo, armado en curso** | Sketch compilado, lector Web Serial sumado a la app y probado con un puerto simulado, esquema y guía de armado en protoboard con el kit para principiantes (D-32). El 15/11 Sara lo está armando en un simulador web; Enzo avanzó con el kit el 14/11 | Probar en la placa real, calibrar y grabar lecturas reales. Si la demo usa el simulador, sus lecturas son simuladas y la pantalla del kit tiene que decirlo (D-33) |
 | F7 · Entrega | Sara (coordina) | **Sin empezar** | Nada | Guion, video o diapositivas, página del proyecto, declaración de IA, ensayos |
 
-Avance contado de las casillas de los planes: **Enzo 80%, Santi 81%, Vale 77%, Sara 20%** (81 de 120 casillas, 68%). Los planes pasaron de 108 a 120 casillas desde el corte del sábado; entre las nuevas están las de la app para el celular (D-31). Las 3 casillas del armado del kit están en el plan de Sara, pero las hace Enzo. Es una medida aproximada: no pesa igual cada tarea.
+Avance contado de las casillas de los planes: **Enzo 85%, Santi 76%, Vale 71%, Sara 20%** (88 de 130 casillas, 68%), según el README del 15/11 a las 12:50. Los planes pasaron de 108 a 130 casillas desde el corte del sábado; entre las nuevas están las de la app para el celular (D-31) las del idioma (D-35) y la de las imágenes de dron (D-37). Las 3 casillas del armado del kit están en el plan de Sara, pero las hace Enzo. Es una medida aproximada: no pesa igual cada tarea.
 
 ---
 
 ## 2. Qué funciona hoy en la app
 
-Las **154 pruebas automáticas de la app** (`node --test "tests/*.test.js"`) están en verde, con D-33 incluido. La versión nueva se revisó a 390 px con `scripts/captura-movil.mjs` y en un celular de verdad. **Falta probarla sin internet en el celular.**
+Las **155 pruebas automáticas de la app** (`node --test "tests/*.test.js"`) y las 39 de `ia_desmonte/pruebas` están en verde, con D-33 y D-36 incluidos. La versión nueva se revisó a 390 px con `scripts/captura-movil.mjs` y en un celular de verdad. **Falta probarla sin internet en el celular.**
 
 - **Asistente de inicio:** 4 preguntas con el mapa real de Santiago del Estero. La pregunta 1 nombra la característica de la zona y abajo sus localidades.
 - **Inicio** (`web/index.html`): semáforo de la zona en el mes actual (o de la sonda, después de medir), lo que mejor encaja con la próxima siembra y la tira de 12 meses, y la barra con Medir con la sonda y WhatsApp.
@@ -58,7 +58,7 @@ Los `null` se muestran en la app como "sin dato". No hay que rellenarlos a mano:
 
 1. **El kit está programado, pero no armado ni probado en la placa.** El sketch compila y el lector funciona con un puerto simulado. Según D-32, el kit para principiantes alcanza y no hace falta comprar nada electrónico. Falta armarlo con `arduino/GUIA-PROTOBOARD.md`, sellar el LM35, calibrar y grabar lecturas reales en `data/arduino_bandejas_demo.json`. Es lo que más tiempo físico necesita y no se puede hacer desde la PC.
 2. **La entrega no empezó.** Falta el guion, el video o las diapositivas, la página del proyecto en Space Apps y la declaración de uso de IA. Solo Sara los tiene asignados, y quedan 9 horas.
-3. ~~**La app muestra cosas que no son ciertas (D-33).**~~ **Arreglado en la rama `enzo-d33` (15/11), falta integrarlo a `main` antes del congelamiento.** La app dice "sin cobertura vegetal activa (suelo descubierto o rastrojo seco)", la tabla de métodos muestra solo el umbral de NDVI con "sin medir", no nombra MapBiomas, LART ni CNN, y los grupos tienen nombre. Detalle en la bitácora (D-33).
+3. ~~**La app muestra cosas que no son ciertas (D-33).**~~ **Arreglado, integrado a `main` y publicado (15/11, 12:40).** La app dice "sin cobertura vegetal activa (suelo descubierto o rastrojo seco)", la tabla de métodos muestra solo el umbral de NDVI con "sin medir", no nombra MapBiomas, LART ni CNN, y los grupos tienen nombre. Detalle en la bitácora (D-33).
 
 ---
 
@@ -78,6 +78,7 @@ Los `null` se muestran en la app como "sin dato". No hay que rellenarlos a mano:
 - **Qué predice la IA:** el modelo de Santi predice desmontes por zona. El suelo pelado sale por umbral, no por IA, y ese umbral no tiene exactitud medida. Conviene decirlo así en el pitch.
 - **Semáforo del Inicio (D-31):** los umbrales son un criterio del equipo, no una norma agronómica. La app lo dice; el pitch también debería decirlo.
 - **Pronóstico de Meteomatics (D-34):** el secreto `METEOMATICS_PASSWORD` ya está cargado. El workflow corrió bien el 15/11 a las 11:06 y desde ahí renueva el pronóstico todos los días a las 06:00. Si la cuenta del hackathon vence, el workflow falla en rojo y, cuando no le quedan días, la tarjeta dice "Pronóstico vencido". Pendiente de Santi: el viento promedio de 24 h y el período de la alerta de helada.
+- **La app publicada se guarda 10 minutos en el navegador (D-36):** GitHub Pages sirve los archivos con `max-age=600`. Después de cada push, recargar forzado (Ctrl + Shift + R; en el celular, incógnito) antes de mostrar la app o de dar algo por roto.
 - **Kit en el simulador web:** si en la demo se muestra el kit del simulador, las lecturas son simuladas. Para no mostrar cosas falsas (D-33), la pantalla del kit tiene que aclararlo.
 
 ---
@@ -99,7 +100,8 @@ Los `null` se muestran en la app como "sin dato". No hay que rellenarlos a mano:
 - Revisión de ramas: `santi-datos-ia`, `vale-rotaciones` y `sara-arduino-entrega` no tienen nada fuera de `main`, y `enzo-app` quedó integrada entera.
 - El Inicio en dos columnas en la PC y el pronóstico de Meteomatics en la app, con actualización diaria (D-34).
 - Botón de idioma ES/EN, etapa 1: el asistente, el Inicio, el marco del Reporte, el kit y la guía del campo en inglés, con `?lang=en` para mandar el link a un jurado (D-35).
-- La app ya no muestra cosas que no son ciertas (D-33): "sin cobertura vegetal activa" con el texto de Vale, la tabla de métodos real, sin fuentes falsas y los 5 grupos con nombre. En la rama `enzo-d33`.
+- La app ya no muestra cosas que no son ciertas (D-33): "sin cobertura vegetal activa" con el texto de Vale, la tabla de métodos real, sin fuentes falsas y los 5 grupos con nombre. Integrado y publicado.
+- El visor del Reporte vuelve a mostrar la imagen Landsat: Leaflet armaba el mapa con el Reporte oculto, en 0 px (D-36). Venía roto desde D-31.
 
 ---
 
@@ -143,3 +145,4 @@ La lista completa, por persona, está en el [README](../README.md#lo-que-falta-p
 1. **Plan B para el kit:** si el armado no llega a tiempo, ¿se graban lecturas a mano en `arduino_bandejas_demo.json` y se muestra la pantalla del kit con "lectura grabada"? La pantalla ya lo soporta, pero los números tienen que ser reales y estar marcados como tales.
 2. **Quién cubre a Sara en la entrega:** hoy Sara tiene el 100% de las tareas de la entrega y no empezó ninguna.
 3. **Cómo se presenta la IA:** igual que arriba, que el equipo cuente lo mismo en el video y en la página.
+4. **Imágenes de dron (D-37, sugerencia del 15/11):** nos sugirieron sumar imágenes de dron actualizadas, porque la app solo trabaja con datos históricos. Vale va a subir los archivos (probablemente .tif). Hay que decidir si entran antes del congelamiento de las 15:00 y cómo se presentan. Qué hace falta saber de los archivos: bitácora, D-37.

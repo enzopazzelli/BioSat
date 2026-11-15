@@ -52,9 +52,9 @@ Avance de cada integrante, contado desde las casillas de su plan en [`planes/`](
 |---|---|---|---|
 | [Enzo · Integración y app](planes/1-enzo.md) | `enzo-app` | `▓▓▓▓▓▓▓▓░░` 85% | 44/52 |
 | [Santi · Suelo, satélite e IA](planes/2-santi.md) | `santi-datos-ia` | `▓▓▓▓▓▓▓▓░░` 76% | 22/29 |
-| [Vale · Campo y agronomía](planes/3-vale.md) | `vale-rotaciones` | `▓▓▓▓▓▓▓░░░` 74% | 17/23 |
+| [Vale · Campo y agronomía](planes/3-vale.md) | `vale-rotaciones` | `▓▓▓▓▓▓▓░░░` 71% | 17/24 |
 | [Sara · Kit Arduino y relato](planes/4-sara.md) | `sara-arduino-entrega` | `▓▓░░░░░░░░` 20% | 5/25 |
-| **Total** | | `▓▓▓▓▓▓▓░░░` **68%** | **88/129** |
+| **Total** | | `▓▓▓▓▓▓▓░░░` **68%** | **88/130** |
 <!-- AUTO:AVANCE:FIN -->
 
 ### Lo más urgente
@@ -112,7 +112,7 @@ Sale solo de las casillas sin tildar de cada plan. Panorama completo y riesgos: 
 </details>
 
 <details>
-<summary><b>Vale</b>: 6 pendientes (<a href="planes/3-vale.md">plan completo</a>)</summary>
+<summary><b>Vale</b>: 7 pendientes (<a href="planes/3-vale.md">plan completo</a>)</summary>
 
 - Revisar la parte agronómica del guion y participar del ensayo _(Entrega)_
 - Confirmar los 7 `requiere_hacienda` que completó Enzo en `data/rotaciones_santiago.json` (Zona 3 las 3, Zona 4 alternativa 2, Zona 5 las 3) _(Agregadas por Enzo)_
@@ -120,6 +120,7 @@ Sale solo de las casillas sin tildar de cada plan. Panorama completo y riesgos: 
 - Validar las zonas 1 a 4 con un productor o un agrónomo del INTA, o dejarlas "sin validar" a propósito y decirlo en la presentación _(Agregadas por Enzo)_
 - Corregir en la evidencia de la Zona 5 el dato que cita humedad en raíces: hoy apunta a los meses de clima, que no tienen ese campo _(Agregadas por Enzo)_
 - Revisar los 15 nombres de las rotaciones en inglés (`web/textos-en.js`, sección `rotaciones`, D-35): los tradujo el equipo y falta tu revisión agronómica _(Agregadas por Enzo)_
+- Subir las imágenes de dron (D-37) con su ficha: lote y zona, fecha del vuelo, dron y cámara (RGB o multiespectral), si el .tif tiene coordenadas y el permiso del dueño del campo. Los .tif... _(Agregadas por Enzo)_
 
 </details>
 
@@ -153,12 +154,12 @@ Sale solo de las casillas sin tildar de cada plan. Panorama completo y riesgos: 
 **Últimas decisiones:**
 
 <!-- AUTO:DECISIONES:INICIO -->
+- **D-37**: Sugerencia: imágenes de dron actualizadas; esperando los archivos de Vale
 - **D-36**: Corrección: el visor del Reporte no mostraba la imagen Landsat
 - **D-35**: Botón de idioma ES/EN, etapa 1: lo que se ve primero, en inglés
 - **D-34**: Inicio en la PC y el pronóstico de Meteomatics entra en la app
 - **D-33**: Hallazgo: la app muestra cosas que no son ciertas; plan para corregirlas antes de la demo
 - **D-32**: El kit para principiantes alcanza para la estación de BioSat: guía de protoboard
-- **D-31**: App para el celular: Inicio simple y Reporte completo
 
 Todas las decisiones están en la [bitácora](docs/reglas-y-bitacora.md).
 <!-- AUTO:DECISIONES:FIN -->

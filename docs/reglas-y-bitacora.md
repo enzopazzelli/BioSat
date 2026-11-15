@@ -228,7 +228,7 @@ Según la página oficial de premios (`NASA Space Apps Challenge - awards.mhtml`
   - **Pedido de Enzo:** "que la app no muestre cosas falsas en la demo". No se miden datos nuevos; se corrige lo que la app dice.
   - **3 formas de arreglar el semáforo:** (1) llamarlo por lo que mide, "lotes sin verde (pelados o con rastrojo seco)" (recomendada); (2) mostrar la duda con el rango de los 3 umbrales; (3) sacar el suelo pelado del semáforo. Con cualquiera, se arreglan la tabla de métodos y los textos, y se ponen nombres a los grupos (propuesta en el plan, a confirmar por Santi o Vale).
   - **Plan, con los lugares exactos del código y los pasos:** `docs/superpowers/plans/2026-11-15-app-sin-datos-falsos.md`.
-  - **Hecho (15/11, Enzo con Claude, rama `enzo-d33`): forma 1, con el texto de Vale.**
+  - **Hecho (15/11, Enzo con Claude, rama `enzo-d33`): forma 1, con el texto de Vale.** Integrado a `main` y publicado el 15/11 a las 12:40.
     - **Semáforo:** "unos 8 de cada 10 lotes de la zona están sin cobertura vegetal activa (suelo descubierto o rastrojo seco)", y la acción "Si tu lote está descubierto, conviene cubrirlo…". Cambia también en la sección 1 del Reporte, en la explicación del semáforo, en el WhatsApp ("lotes sin cobertura activa") y en la frase del mes tranquilo. **La lógica, la clave `pelado` y los umbrales no cambian.**
     - **Sección 4 y visor:** la tira de meses dice "suele verse sin / con cobertura activa"; el texto de arriba aclara que el satélite no distingue el suelo descubierto del rastrojo seco; el visor dice que se ven así "a fines del invierno y en primavera" (en los datos, los meses altos son de septiembre a diciembre, no el invierno). Se suma la frase de escalas de Vale (punto 4): "El satélite muestra el riesgo histórico de tu zona; tu rotación define si tu lote mantiene rastrojo protector o queda expuesto al sol y al viento".
     - **Cuánto depende del umbral:** la nota de la sección 4 dice, con los datos del mes actual, cuántos lotes de cada 10 se ven sin cobertura con NDVI 0,20, 0,25 y 0,30 (`InicioLogica.sensibilidadPelado`, con pruebas; sin números fijos en el código). Zona 2 en noviembre: 1, 8 y 9.
@@ -304,3 +304,20 @@ Según la página oficial de premios (`NASA Space Apps Challenge - awards.mhtml`
   - **Arreglo:** `mostrarVista` llama a `invalidateSize` al mostrar el Reporte, y `renderVisor` solo da por encuadrada la zona si el mapa medía más de 0 px; si no, la vuelve a encuadrar al mostrarlo. Así no se pierde el zoom del usuario al moverse entre secciones del Reporte.
   - **Verificado** en Chrome a 390 px por tres caminos: abriendo `#satelite` directo, entrando desde el Inicio, y cambiando de zona desde el Inicio antes de volver al Reporte. Los tres dan una imagen de 347 × 293 px con zoom 9,25, igual que la vista detallada. Prueba nueva en `tests/vistas.test.js` (155 en verde).
   - **Confirmado en la app publicada** (Enzo, 15/11), después de recargar con Ctrl + Shift + R. Al principio no se veía porque GitHub Pages sirve los archivos con `Cache-Control: max-age=600` y el navegador siguió usando el `app.js` viejo hasta 10 minutos después del deploy. **Para la demo:** después de cada push, recargar forzado (en el celular, abrir en incógnito) antes de mostrar la app o de dar algo por roto.
+- **D-37 (Sugerencia: imágenes de dron actualizadas; esperando los archivos de Vale):**
+  - **Por qué:** nos sugirieron sumar imágenes de dron recientes. Enzo: "nuestra app solo trabaja con datos históricos, pero se necesita mejorar la toma de decisión". Hoy todo lo que ve el productor es típico o pasado: el clima de NASA POWER (1991-2025), las medianas de Landsat (2021-2025) y la historia de desmontes. Lo único del presente son el pronóstico de Meteomatics (D-34) y la sonda.
+  - **Dónde encaja:** completa la escalera de escalas que ya cuenta la app: NASA POWER (50 km), Meteomatics (9 km), Landsat (30 m), **dron (centímetros, un lote, una fecha reciente)** y la sonda (un punto del suelo, hoy).
+  - **Lo que sabemos:** Vale va a subir los archivos y probablemente sean .tif.
+  - **Cómo podría entrar en la app (hipótesis, a confirmar con los archivos):**
+    - Si el .tif es un GeoTIFF (un ortomosaico con coordenadas), un script en Python lo convierte en una imagen liviana para la web (PNG o WebP, como las de `data/imagenes/`) más su recuadro en latitud y longitud. El visor del Reporte lo muestra con Leaflet, igual que Landsat. Para leerlo ya están instalados `tifffile`, `numpy` y `Pillow`. No están GDAL, rasterio ni pyproj: si viene en UTM, hace falta pyproj para pasar el recuadro a latitud y longitud.
+    - Si la cámara es multiespectral (tiene banda del infrarrojo cercano), se puede calcular el NDVI del lote y compararlo con el de Landsat. Si es solo RGB, no hay NDVI, y la app no tiene que decir que lo hay (D-33).
+    - **Los .tif originales no van a Git:** GitHub corta en 100 MB por archivo y un ortomosaico suele pesar más. Se guardan aparte, por ejemplo en Drive, y en el repositorio solo quedan la imagen para la web y sus datos.
+  - **Qué hace falta saber de Vale:**
+    - qué lote es y en qué zona de BioSat está;
+    - la fecha del vuelo;
+    - el dron y la cámara (RGB o multiespectral) y la resolución;
+    - si el .tif tiene coordenadas o es una foto suelta;
+    - si el dueño del campo deja publicarlo;
+    - dónde lo sube (su rama `vale-rotaciones` o Drive).
+  - **Regla (D-33):** la fecha, el lugar, el sensor y la resolución salen del archivo o de Vale. No se inventan, y si falta un dato, la app lo dice.
+  - **Pendiente:** decidir si entra antes del congelamiento (domingo 15:00) y cómo se presenta. Se integra a `main` con la aprobación de Enzo, como el resto.
