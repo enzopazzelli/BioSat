@@ -119,3 +119,11 @@ test('D-38: el dron tiene su inglés con las mismas marcas', () => {
   assert.deepEqual(I.clavesSobrantes(es, en), []);
   for (const k of Object.keys(es)) if (typeof es[k] === 'string') assert.deepEqual(marcas(en[k]), marcas(es[k]), k);
 });
+
+test('D-39: los sectores tienen su inglés con las mismas marcas', () => {
+  const es = require('../web/sectores-logica.js').TEXTOS, en = EN.modulos.sectores;
+  const marcas = t => [...String(t).matchAll(/\{(\w+)\}/g)].map(m => m[1]).sort();
+  assert.ok(en, 'falta modulos.sectores');
+  assert.deepEqual(I.clavesSobrantes(es, en), []);
+  for (const k of Object.keys(es)) if (typeof es[k] === 'string') assert.deepEqual(marcas(en[k]), marcas(es[k]), k);
+});

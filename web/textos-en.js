@@ -315,6 +315,37 @@
         lineaFuera: 'It is outside Santiago del Estero.'
       },
 
+      // web/sectores-logica.js · SectoresLogica.TEXTOS (sectores del lote, D-39)
+      sectores: {
+        locale: 'en-US',
+        titulo: 'Field sectors',
+        marcar: 'Mark a sector',
+        exportar: 'Export',
+        importar: 'Import',
+        dibujando: 'Tap the map to add points ({n} so far). With 3 or more, close the sector.',
+        deshacer: 'Undo point',
+        cerrar: 'Close sector',
+        cancelar: 'Cancel',
+        guardadoAviso: 'Saved in this browser. To share it, export the file.',
+        noGuardado: 'Could not save in this browser: export the sectors so you do not lose them.',
+        vacio: 'No sectors yet. Mark one on the map: it is a place to check in the field.',
+        estadoRevisar: 'To check in the field',
+        estadoRevisado: 'Checked',
+        estadoDescartado: 'Dismissed',
+        sector: 'Sector {n}',
+        nota: 'Note (what the drone shows)',
+        hallazgo: 'What was found in the field',
+        borrar: 'Delete',
+        confirmarBorrar: 'Delete sector {n}?',
+        ha: '{ha} ha',
+        ndviLinea: 'Median NDVI {ndvi} · {pct} % without active cover (flight of {fecha})',
+        sinNdvi: 'No NDVI: the sector is not on an image with NDVI.',
+        importados: '{ok} sectors loaded. Repeated: {rep}. Could not be read: {mal}.',
+        noGeojson: 'The file is not a GeoJSON of sectors.',
+        inicioUno: ' · 1 sector to check',
+        inicioVarios: ' · {n} sectors to check'
+      },
+
       // web/kit-logica.js · KitLogica.TEXTOS (pantalla del kit)
       kit: {
         cierreMas: 'Bare soil is {d} °C hotter than covered soil. The satellite cannot see it: it measures the air over 50 km.',

@@ -35,3 +35,33 @@ test('nuevoSector nace para revisar; conCambios acepta solo estados válidos', (
   assert.equal(r.estado, 'revisado'); assert.equal(r.hallazgo, 'suelo compactado'); assert.equal(r.actualizado, '2026-11-15T14:00:00Z');
   assert.equal(S.conCambios(r, {estado: 'cualquiera'}, 'x').estado, 'revisado');
 });
+
+const S1 = {id: 's1-x', n: 1, puntos: CUAD, ha: 1.094, ndvi: {mediana: 0.18, fraccionBajo: 0.72, validos: 900},
+  vuelo: {id: 'NDVI.tif|1|2026-11-03', fecha: '2026-11-03', archivo: 'NDVI.tif'}, nota: 'mancha clara', estado: 'revisado',
+  hallazgo: 'suelo compactado', creado: 'a', actualizado: 'b'};
+
+test('aGeoJSON y deGeoJSON: ida y vuelta, [lon, lat], anillo cerrado y renumerado', () => {
+  const g = S.aGeoJSON([S1], {umbral: 0.25});
+  assert.equal(g.type, 'FeatureCollection');
+  const c = g.features[0].geometry.coordinates[0];
+  assert.deepEqual(c[0], [-64, -28]); assert.deepEqual(c[0], c[c.length - 1]);
+  assert.equal(g.features[0].properties.ndvi_mediano, 0.18); assert.equal(g.features[0].properties.vuelo_archivo, 'NDVI.tif');
+  const r = S.deGeoJSON(g, [{n: 3, puntos: [[0, 0], [0, 1], [1, 1]]}], 'ahora');
+  assert.equal(r.nuevos.length, 1); assert.equal(r.nuevos[0].n, 4);
+  assert.deepEqual(r.nuevos[0].puntos, CUAD);
+  assert.equal(r.nuevos[0].estado, 'revisado'); assert.equal(r.nuevos[0].hallazgo, 'suelo compactado');
+});
+
+test('deGeoJSON saltea lo que no es polígono, no duplica y rechaza lo que no es GeoJSON', () => {
+  const g = S.aGeoJSON([S1], {umbral: 0.25});
+  g.features.push({type: 'Feature', geometry: {type: 'Point', coordinates: [-64, -28]}, properties: {}});
+  const r = S.deGeoJSON(g, [S1], 'ahora');
+  assert.equal(r.nuevos.length, 0); assert.equal(r.repetidos, 1); assert.equal(r.salteados, 1);
+  assert.equal(S.deGeoJSON({foo: 1}, [], 'ahora').error, 'noGeojson');
+});
+
+test('lineaSectores cuenta solo los que quedan para revisar', () => {
+  assert.equal(S.lineaSectores([]), '');
+  assert.equal(S.lineaSectores([{estado: 'revisar'}]), ' · 1 sector para revisar');
+  assert.equal(S.lineaSectores([{estado: 'revisar'}, {estado: 'revisar'}, {estado: 'revisado'}]), ' · 2 sectores para revisar');
+});

@@ -8,6 +8,38 @@
   const ESTADOS = ['revisar', 'revisado', 'descartado'];
   const M_GRADO = 111320;
 
+  // Textos con claves, listos para traducir (D-35).
+  const TEXTOS = {
+    locale: 'es-AR',
+    titulo: 'Sectores del lote',
+    marcar: 'Marcar un sector',
+    exportar: 'Exportar',
+    importar: 'Importar',
+    dibujando: 'Tocá el mapa para sumar puntos ({n} hasta ahora). Con 3 o más, cerrá el sector.',
+    deshacer: 'Deshacer punto',
+    cerrar: 'Cerrar sector',
+    cancelar: 'Cancelar',
+    guardadoAviso: 'Se guarda en este navegador. Para pasarlo, exportá el archivo.',
+    noGuardado: 'No se pudo guardar en este navegador: exportá los sectores para no perderlos.',
+    vacio: 'Todavía no hay sectores. Marcá uno sobre el mapa: es un lugar para revisar en el campo.',
+    estadoRevisar: 'Para revisar en el campo',
+    estadoRevisado: 'Revisado',
+    estadoDescartado: 'Descartado',
+    sector: 'Sector {n}',
+    nota: 'Nota (lo que se ve desde el dron)',
+    hallazgo: 'Qué se encontró en el lote',
+    borrar: 'Borrar',
+    confirmarBorrar: '¿Borrar el sector {n}?',
+    ha: '{ha} ha',
+    ndviLinea: 'NDVI mediano {ndvi} · {pct} % sin cobertura activa (vuelo del {fecha})',
+    sinNdvi: 'Sin NDVI: el sector no cae sobre una imagen con NDVI.',
+    importados: 'Se cargaron {ok} sectores. Repetidos: {rep}. No se pudieron leer: {mal}.',
+    noGeojson: 'El archivo no es un GeoJSON de sectores.',
+    inicioUno: ' · 1 sector para revisar',
+    inicioVarios: ' · {n} sectores para revisar'
+  };
+  const fmt = (txt, datos) => String(txt).replace(/\{(\w+)\}/g, (_, k) => datos[k]);
+
   // ---------- Superficie ----------
   // Proyección local equirectangular a la latitud media y fórmula del área de un polígono. Puntos: [[lat, lon], ...].
   function areaHa(puntos) {
@@ -61,7 +93,59 @@
     return out;
   }
 
-  const L = {ESTADOS, areaHa, ndviEnPoligono, siguienteNumero, nuevoSector, conCambios};
+  // ---------- GeoJSON (contrato de datos §11) ----------
+  const r7 = v => Math.round(v * 1e7) / 1e7;
+  const clave = puntos => puntos.map(([a, b]) => `${r7(a)},${r7(b)}`).join(';');
+
+  function aGeoJSON(sectores, {umbral}) {
+    return {type: 'FeatureCollection', features: (sectores || []).map(s => {
+      const anillo = s.puntos.map(([lat, lon]) => [lon, lat]);
+      anillo.push(anillo[0]);
+      return {type: 'Feature', geometry: {type: 'Polygon', coordinates: [anillo]}, properties: {
+        n: s.n, estado: s.estado, nota: s.nota, hallazgo: s.hallazgo, ha: Math.round(s.ha * 100) / 100,
+        ndvi_mediano: s.ndvi ? s.ndvi.mediana : null, fraccion_sin_cobertura: s.ndvi ? s.ndvi.fraccionBajo : null,
+        umbral_ndvi: s.ndvi ? umbral : null, vuelo_fecha: s.vuelo ? s.vuelo.fecha : null,
+        vuelo_archivo: s.vuelo ? s.vuelo.archivo : null, creado: s.creado, actualizado: s.actualizado}};
+    })};
+  }
+
+  // Suma los polígonos del archivo como sectores nuevos (numerados después de los que hay). Saltea lo que no es
+  // polígono y no duplica: un polígono con los mismos puntos que uno que ya está cuenta como repetido.
+  function deGeoJSON(obj, sectores, ahora) {
+    const out = {nuevos: [], salteados: 0, repetidos: 0, error: null};
+    if (!obj || obj.type !== 'FeatureCollection' || !Array.isArray(obj.features)) return Object.assign(out, {error: 'noGeojson'});
+    const vistas = new Set((sectores || []).map(s => clave(s.puntos || [])));
+    let todos = (sectores || []).slice();
+    for (const f of obj.features) {
+      const g = f && f.geometry, p = (f && f.properties) || {};
+      const anillos = !g ? [] : g.type === 'Polygon' ? [g.coordinates && g.coordinates[0]]
+        : g.type === 'MultiPolygon' ? (g.coordinates || []).map(c => c && c[0]) : [];
+      if (!anillos.length) { out.salteados++; continue; }
+      for (const a of anillos) {
+        const ok = Array.isArray(a) && a.every(c => Array.isArray(c) && Number.isFinite(c[0]) && Number.isFinite(c[1]));
+        if (!ok || a.length < 4) { out.salteados++; continue; }
+        const puntos = a.slice(0, -1).map(([lon, lat]) => [lat, lon]);
+        if (vistas.has(clave(puntos))) { out.repetidos++; continue; }
+        vistas.add(clave(puntos));
+        const ndvi = Number.isFinite(p.ndvi_mediano) ? {mediana: p.ndvi_mediano, fraccionBajo: p.fraccion_sin_cobertura ?? null, validos: null} : null;
+        const vuelo = p.vuelo_fecha || p.vuelo_archivo ? {id: null, fecha: p.vuelo_fecha || null, archivo: p.vuelo_archivo || null} : null;
+        const s = Object.assign(nuevoSector(todos, {puntos, ndvi, vuelo, ahora}), {
+          estado: ESTADOS.includes(p.estado) ? p.estado : 'revisar',
+          nota: typeof p.nota === 'string' ? p.nota : '', hallazgo: typeof p.hallazgo === 'string' ? p.hallazgo : ''});
+        out.nuevos.push(s);
+        todos = todos.concat(s);
+      }
+    }
+    return out;
+  }
+
+  // ---------- Línea del Inicio ----------
+  function lineaSectores(sectores) {
+    const n = (sectores || []).filter(s => s.estado === 'revisar').length;
+    return n === 0 ? '' : n === 1 ? TEXTOS.inicioUno : fmt(TEXTOS.inicioVarios, {n});
+  }
+
+  const L = {ESTADOS, TEXTOS, areaHa, ndviEnPoligono, siguienteNumero, nuevoSector, conCambios, aGeoJSON, deGeoJSON, lineaSectores};
   if (typeof module !== 'undefined' && module.exports) module.exports = L;
   else window.SectoresLogica = L;
 })();
