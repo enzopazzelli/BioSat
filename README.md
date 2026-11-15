@@ -157,12 +157,12 @@ Sale solo de las casillas sin tildar de cada plan. Panorama completo y riesgos: 
 **Últimas decisiones:**
 
 <!-- AUTO:DECISIONES:INICIO -->
+- **D-42**: Tarjetas de las alternativas, barras de lo que se gana y se paga, y accesibilidad
 - **D-41**: Clases del ingeniero
 - **D-40**: Rótulo honesto de Landsat y recorte satelital del lote
 - **D-39**: Sectores del lote, etapa 2 del dron
 - **D-38**: Lector de imágenes de dron, etapa 1
 - **D-37**: Sugerencia de un ingeniero: imágenes de dron y pasar de la zona al lote; hoja de ruta de Vale
-- **D-36**: Corrección: el visor del Reporte no mostraba la imagen Landsat
 
 Todas las decisiones están en la [bitácora](docs/reglas-y-bitacora.md).
 <!-- AUTO:DECISIONES:FIN -->
@@ -231,7 +231,7 @@ BioSat/
 │   │   ├── 05_Logistica_Antropico_y_Servicios/ (2 archivos)  <-- B26-B29, B32-B37: caminos, población
 │   │   └── 06_Embeddings_IA_AlphaEarth/ (2 archivos)         <-- Embeddings AlphaEarth 64D (DeepMind)
 │   └── imagenes/ (29 archivos)                               <-- Compuestos de mediana Landsat del visor y mapa de la zonificación (Earth Engine)
-├── docs/ (44 archivos)                                       <-- Documentación del equipo
+├── docs/ (46 archivos)                                       <-- Documentación del equipo
 ├── ia_desmonte/                                              <-- Pipeline de datos reales con Earth Engine: suelo, desmontes, zonificación, suelo pelado e imágenes
 │   ├── __init__.py
 │   ├── comun.py

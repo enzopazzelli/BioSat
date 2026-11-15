@@ -235,3 +235,41 @@ test('el NDVI se llama "índice de vegetación", no "verdor" (pedido del 15/11)'
   assert.doesNotMatch(en, /greenness/i);
   assert.match(app, /Índice de vegetación \(NDVI\) · invierno/);
 });
+
+// D-42: accesibilidad. Letra legible en el celular y botones que se puedan tocar con el dedo.
+const css = fs.readFileSync(path.join(WEB, 'estilos.css'), 'utf8');
+test('D-42: ninguna letra menor a .75rem y los textos de ayuda en .875rem o más', () => {
+  const chicas = [...css.matchAll(/font-size:\s*(\d*\.?\d+)rem/g)].map(m => Number(m[1])).filter(v => v < 0.75);
+  assert.deepEqual(chicas, []);
+  assert.match(css, /\.hint\{[^}]*font-size:\.875rem/);
+});
+test('D-42: los botones de capas y los resúmenes desplegables miden al menos 44 px de alto', () => {
+  assert.match(css, /\.btn,\.capa,[^{]*summary\{min-height:44px\}/);
+  // ninguna regla de un summary lo achica por debajo de 44 px
+  const bajos = [...css.matchAll(/([^{}]*summary[^{}]*)\{[^}]*min-height:(\d+)px/g)].filter(m => Number(m[2]) < 44).map(m => m[1].trim());
+  assert.deepEqual(bajos, []);
+});
+
+test('D-42: la tarjeta muestra lo clave y despliega el resto en "Ver todo el detalle"', () => {
+  const f = app.slice(app.indexOf('function renderCards'), app.indexOf('/* ---------- Paso 4'));
+  assert.match(f, /<details class="rot-mas">/);
+  assert.match(f, /TEXTOS_REPORTE\.verDetalle/);
+  assert.match(f, /t\.gana\.slice\(0, 2\)/);
+  assert.match(f, /t\.cuesta\.filter\(.*\.slice\(0, 2\)/);   // sin repetir lo que ya dice un aviso
+  assert.match(f, /class="strip" role="img" aria-label=/);
+});
+
+test('D-42: lo que se gana y lo que se paga va en barras; el gráfico de puntos queda para el ingeniero', () => {
+  for (const [nombre, html] of [['index', index], ['completo', completo]]) {
+    assert.match(html, /id="tradeBarras"/, nombre);
+    assert.match(html, /<details class="para-ingeniero trade-puntos">[\s\S]*?id="tradeSvg"/, nombre);
+  }
+  assert.match(app, /function renderTrade\(\)[\s\S]*?#tradeBarras/);
+});
+
+// Un error de sintaxis deja la app entera sin funcionar y las pruebas de texto no lo ven (pasó el 15/11 con D-42).
+test('los scripts de la app se pueden interpretar sin errores de sintaxis', () => {
+  for (const f of fs.readdirSync(WEB).filter(n => n.endsWith('.js'))) {
+    assert.doesNotThrow(() => new Function(leer(f)), f);
+  }
+});

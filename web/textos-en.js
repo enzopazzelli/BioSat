@@ -9,6 +9,8 @@
     // Textos fijos del HTML: elementos con data-i18n="clave" (o data-i18n-attr="atributo:clave").
     html: {
       iniCambiar: 'Change',
+      tradeAyuda: 'Water each rotation needs and months it keeps the soil covered. Less water is better; more covered months is better.',
+      tradePuntos: 'For your agronomist: the same data in a chart',
       satNdviSrc: 'Landsat 8/9 · NDVI at 100 m',
       datosDron: 'Drone image: each person opens it from their own device; it is not saved or uploaded.',
       iniMejorT: 'Best fit for your farm',
@@ -248,6 +250,11 @@
           4: 'Your soil and your forest, from the satellite', 5: 'You have not measured your field yet.', 5.1: 'The probe measured your field today.',
           6: 'To talk over with your agronomist', 7: 'Where the data comes from'
         },
+        tbAgua: 'Water needed', tbSuelo: 'Soil covered', tbMeses: '{n} of 12 months',
+        tbLluvia: 'The mark on the water bar is the yearly rainfall in your area: {mm} mm. If the bar goes past the mark, the rotation needs more water than it rains.',
+        verDetalle: 'See full details', ganaPoco: 'Little, compared with what you do today', gana: 'Gains', paga: 'Costs',
+        puntoPartida: 'This is your starting point: the other rotations are compared with it.',
+        tiraAria: 'Months of bare soil: {meses}', tiraAriaSin: 'No months of bare soil',
         copiado: 'Link copied.', noCopiado: 'Could not copy: copy the address from the browser bar.'
       },
 
