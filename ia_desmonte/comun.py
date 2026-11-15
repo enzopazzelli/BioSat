@@ -69,11 +69,16 @@ def con_reintentos(fn, intentos=3, espera=5):
             time.sleep(espera * (i + 1))
 
 
-def muestras_por_tandas(imagen, region, n, escala, semilla, tanda=4000):
-    """Toma n puntos al azar de los píxeles no enmascarados de `imagen`, en tandas, y devuelve un DataFrame."""
+def muestras_por_tandas(imagen, region, n, escala, semilla, tanda=4000, mascara=None):
+    """Toma n puntos al azar de los píxeles no enmascarados de `imagen`, en tandas, y devuelve un DataFrame.
+
+    `mascara` (opcional) es una imagen barata de calcular que dice dónde se puede muestrear; si no se da, se usa la
+    máscara de todas las bandas (obliga a Earth Engine a calcular todo `imagen` en la región).
+    """
     import ee
     import pandas as pd
-    mascara = imagen.mask().reduce(ee.Reducer.min())
+    if mascara is None:
+        mascara = imagen.mask().reduce(ee.Reducer.min())
     estrato = ee.Image.constant(1).rename('estrato_muestra').updateMask(mascara).toInt()
     img = imagen.addBands(estrato)
     filas = []
@@ -84,67 +89,6 @@ def muestras_por_tandas(imagen, region, n, escala, semilla, tanda=4000):
         datos = con_reintentos(lambda: fc.getInfo())
         filas.extend(f['properties'] for f in datos['features'])
         print(f'  tanda {i + 1}: {len(datos["features"])} puntos')
-    df = pd.DataFrame(filas)
-    return df.drop(columns=['estrato_muestra'], errors='ignore')
-
-
-def muestra_fc(imagen, region, n, escala, semilla):
-    """FeatureCollection (del lado de Earth Engine) con n puntos al azar de los píxeles no enmascarados de `imagen`."""
-    import ee
-    mascara = imagen.mask().reduce(ee.Reducer.min())
-    estrato = ee.Image.constant(1).rename('estrato_muestra').updateMask(mascara).toInt()
-    return imagen.addBands(estrato).stratifiedSample(numPoints=n, classBand='estrato_muestra', region=region,
-                                                     scale=escala, seed=semilla, dropNulls=True, tileScale=16,
-                                                     geometries=False)
-
-
-def asset_de(nombre):
-    """Ruta de la tabla en el proyecto de Earth Engine (EE_PROJECT)."""
-    return f'projects/{os.environ["EE_PROJECT"]}/assets/biosat_{nombre}'
-
-
-def exportar(fc, nombre):
-    """Exporta `fc` como tabla al proyecto de Earth Engine, en segundo plano y sin límite de tiempo.
-
-    Si la tabla ya existe, no la vuelve a calcular. Devuelve la tarea (o None si ya estaba).
-    """
-    import ee
-    try:
-        ee.data.getAsset(asset_de(nombre))
-        print(f'  {nombre}: ya estaba exportada')
-        return None
-    except ee.EEException:
-        pass
-    tarea = ee.batch.Export.table.toAsset(collection=fc, description=f'biosat_{nombre}', assetId=asset_de(nombre))
-    tarea.start()
-    print(f'  {nombre}: exportando (tarea {tarea.id})')
-    return tarea
-
-
-def esperar(tareas, cada=30):
-    """Espera a que terminen las exportaciones; corta con error si alguna falla."""
-    pendientes = [t for t in tareas if t is not None]
-    while pendientes:
-        time.sleep(cada)
-        for t in list(pendientes):
-            st = t.status()
-            if st['state'] == 'COMPLETED':
-                print(f'  tarea {t.id}: lista')
-                pendientes.remove(t)
-            elif st['state'] in ('FAILED', 'CANCELLED', 'CANCEL_REQUESTED'):
-                raise RuntimeError(f'La exportación {st.get("description")} falló: {st.get("error_message")}')
-
-
-def leer_tabla(nombre, pagina=4000):
-    """Lee una tabla exportada por páginas y devuelve un DataFrame con sus propiedades."""
-    import ee
-    import pandas as pd
-    tabla = ee.FeatureCollection(asset_de(nombre))
-    n = con_reintentos(lambda: tabla.size().getInfo())
-    filas = []
-    for desde in range(0, n, pagina):
-        datos = con_reintentos(lambda: tabla.toList(pagina, desde).getInfo())
-        filas.extend(f['properties'] for f in datos)
     df = pd.DataFrame(filas)
     return df.drop(columns=['estrato_muestra'], errors='ignore')
 

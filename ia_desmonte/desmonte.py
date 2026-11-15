@@ -15,16 +15,15 @@ import numpy as np
 import pandas as pd
 
 from ia_desmonte.comun import (BBOX_PROVINCIA, DATA, HANSEN, SALIDAS, SEMILLA, ULTIMO_ANIO, UMBRAL_MONTE, ZONAS, con_reintentos,
-                               distancia_m, escribir_json, esperar, exportar, iniciar_ee, leer_tabla, meta_base,
-                               muestra_fc)
+                               distancia_m, escribir_json, iniciar_ee, meta_base, muestras_por_tandas)
 
 PREDICTORES = ['dist_sin_monte_m', 'dist_desmonte_previo_m', 'dist_caminos_m', 'pendiente_grados', 'area_protegida',
                'poblacion_densidad', 'deficit_hidrico_mm', 'arcilla_pct', 'ph', 'zona']
 NUMERICOS = [p for p in PREDICTORES if p != 'zona']
 NOMBRES = {'regresion_logistica': 'regresión logística', 'random_forest': 'random forest',
            'gradient_boosting': 'gradient boosting'}
-N_MUESTRA = 15000
-ESCALA_MUESTRA = 100
+N_MUESTRA = 10000
+ESCALA_MUESTRA = 250
 TOPE_DIST_M = 25000
 TOPE_CAMINOS_M = 50000
 ANIOS = list(range(2001, ULTIMO_ANIO + 1))
@@ -168,17 +167,18 @@ def predictores(ee, corte):
     ]).updateMask(monte)
 
 
-def muestras_fc(corte, fin, n, semilla):
+def muestras(corte, fin, n, semilla):
     """Puntos al azar en el monte de `corte`, con predictores al corte y etiqueta 'se desmontó en (corte, fin]'."""
     ee = iniciar_ee()
+    from ia_desmonte.zonas import zona_imagen
     img = predictores(ee, corte)
     if fin is not None:
         _, ly = _hansen(ee)
         img = img.addBands(ly.gt(corte - 2000).And(ly.lte(fin - 2000)).rename('desmonte'))
-    return muestra_fc(img, ee.Geometry.Rectangle(BBOX_PROVINCIA), n, ESCALA_MUESTRA, semilla)
-
-
-def _limpiar(df):
+    donde = monte_en(ee, corte).selfMask().updateMask(zona_imagen().mask())
+    print(f'Muestreando monte {corte} (n={n})')
+    df = muestras_por_tandas(img, ee.Geometry.Rectangle(BBOX_PROVINCIA), n, ESCALA_MUESTRA, semilla, tanda=5000,
+                             mascara=donde)
     df = df.dropna(subset=['zona'])
     df['zona'] = df['zona'].astype(int)
     return df
@@ -268,7 +268,7 @@ def armar_json(serie, monte_actual, evaluacion, elegido, justificacion, riesgos,
                 'balancear clases, para que las probabilidades queden calibradas.'),
         script='ia_desmonte/desmonte.py',
         notas=(f'Monte = cobertura arbórea del 2000 >= {UMBRAL_MONTE} % sin pérdida registrada. Hansen no registra el '
-               'monte que vuelve a crecer. Distancias calculadas a 100 m y acotadas (25 km; caminos 50 km). GRIP4 es '
+               'monte que vuelve a crecer. Predictores calculados a 250 m y distancias acotadas (25 km; caminos 50 km). GRIP4 es '
                'una red de caminos de 2018 y se usa igual en todos los cortes. WorldPop llega a 2020: para cortes '
                'posteriores se usa 2020. deficit_hidrico_mm es positivo (falta de agua, TerraClimate 1991-2020).'),
         historia=f'Hansen Global Forest Change v1.13 (2001-{ULTIMO_ANIO}, Landsat 30 m)',
@@ -290,15 +290,12 @@ CORTES = {'entrenamiento': (2008, 2015, SEMILLA), 'prueba': (2015, ULTIMO_ANIO, 
 
 
 def _muestras():
-    """Las 3 muestras: de los CSV de salidas/ si ya están; si no, se exportan en paralelo en Earth Engine."""
-    faltan = [k for k in CORTES if not (SALIDAS / f'desmonte_{k}.csv').exists()]
-    if faltan:
-        tareas = [exportar(muestras_fc(*CORTES[k][:2], N_MUESTRA, CORTES[k][2]), f'desmonte_{k}_{N_MUESTRA}')
-                  for k in faltan]
-        esperar(tareas)
-        SALIDAS.mkdir(parents=True, exist_ok=True)
-        for k in faltan:
-            _limpiar(leer_tabla(f'desmonte_{k}_{N_MUESTRA}')).to_csv(SALIDAS / f'desmonte_{k}.csv', index=False)
+    """Las 3 muestras: de los CSV de salidas/ si ya están; si no, se piden a Earth Engine y se guardan."""
+    SALIDAS.mkdir(parents=True, exist_ok=True)
+    for k, (corte, fin, semilla) in CORTES.items():
+        ruta = SALIDAS / f'desmonte_{k}.csv'
+        if not ruta.exists():
+            muestras(corte, fin, N_MUESTRA, semilla).to_csv(ruta, index=False)
     return [pd.read_csv(SALIDAS / f'desmonte_{k}.csv') for k in CORTES]
 
 

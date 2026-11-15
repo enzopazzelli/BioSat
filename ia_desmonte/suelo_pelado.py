@@ -1,6 +1,6 @@
 """Meses de suelo pelado por zona con Landsat 2021-2025, y el índice de fragilidad (data/diagnostico_landsat_ia.json, §3).
 
-- Puntos al azar sobre cultivos (ESA WorldCover 2021, clase 40): 1.500 por zona.
+- Puntos al azar sobre cultivos (ESA WorldCover 2021, clase 40): 600 por zona, con NDVI a 100 m.
 - En cada punto: NDVI mediano de cada mes calendario con Landsat 8 y 9 Collection 2 Level-2, 2021-2025,
   sin nubes, sombras, cirros ni nieve (QA_PIXEL).
 - Un mes es "pelado" si al menos la mitad de los puntos de cultivo de la zona tiene NDVI < 0,25.
@@ -12,12 +12,13 @@ import json
 
 import pandas as pd
 
-from ia_desmonte.comun import (BBOX_PROVINCIA, DATA, SALIDAS, SEMILLA, ZONAS, escribir_json, esperar, exportar,
-                               iniciar_ee, leer_tabla, meta_base)
+from ia_desmonte.comun import (BBOX_PROVINCIA, DATA, SALIDAS, SEMILLA, ZONAS, con_reintentos, escribir_json,
+                               iniciar_ee, meta_base)
 
 UMBRALES = (0.20, 0.25, 0.30)
 UMBRAL = 0.25
-PUNTOS_POR_ZONA = 1500
+PUNTOS_POR_ZONA = 600
+ESCALA = 100  # NDVI a 100 m (Earth Engine promedia los píxeles de 30 m): más rápido y alcanza para una fracción por zona
 FORMULA = ('100 * (0,35 * min(dias_calor_40 / 40, 1) + 0,30 * meses_pelados / 12 + 0,20 * min(deficit_mm / 1200, 1) '
            '+ 0,15 * riesgo_desmonte)')
 MESES = [f'm{m:02d}' for m in range(1, 13)]
@@ -86,7 +87,7 @@ def armar_json(fr, nobs, clima, riesgo, monte, obs_por_punto=None):
     meta = meta_base(
         fuente='Landsat 8 y 9 Collection 2 Level-2 (LANDSAT/LC08/C02/T1_L2, LANDSAT/LC09/C02/T1_L2), 2021-2025; '
                'cultivos de ESA WorldCover 2021 (ESA/WorldCover/v200, clase 40)',
-        metodo=(f'{PUNTOS_POR_ZONA} puntos al azar sobre cultivos por zona. En cada punto, NDVI mediano de cada mes '
+        metodo=(f'{PUNTOS_POR_ZONA} puntos al azar sobre cultivos por zona. En cada punto, NDVI mediano (a {ESCALA} m) de cada mes '
                 f'calendario (2021-2025, sin nubes). Mes pelado: al menos la mitad de los puntos con NDVI < {UMBRAL}. '
                 'Sensibilidad con 0,20 y 0,30: si cambia, el mes queda en meses_dudosos.'),
         script='ia_desmonte/suelo_pelado.py',
@@ -125,19 +126,23 @@ def _ndvi_mensual(ee):
 
 
 def tabla_puntos():
-    """Tabla de puntos de cultivo con su NDVI mensual. Se exporta en segundo plano en Earth Engine (sin límite de tiempo)."""
+    """Tabla de puntos de cultivo con su NDVI mensual (una consulta por zona)."""
     ee = iniciar_ee()
     from ia_desmonte.zonas import zona_imagen
     z = zona_imagen()
     cultivos = ee.ImageCollection('ESA/WorldCover/v200').first().select('Map').eq(40)
     estrato = z.updateMask(cultivos).rename('zona')
-    pts = estrato.stratifiedSample(numPoints=0, classBand='zona', classValues=[1, 2, 3, 4, 5],
-                                   classPoints=[PUNTOS_POR_ZONA] * 5, region=ee.Geometry.Rectangle(BBOX_PROVINCIA),
-                                   scale=30, seed=SEMILLA, geometries=True, tileScale=16)
-    fc = _ndvi_mensual(ee).sampleRegions(collection=pts, properties=['zona'], scale=30, tileScale=16, geometries=False)
-    nombre = f'suelo_pelado_{PUNTOS_POR_ZONA}'
-    esperar([exportar(fc, nombre)])
-    df = leer_tabla(nombre)
+    ndvi = _ndvi_mensual(ee)
+    partes = []
+    for i in range(1, 6):
+        pts = estrato.stratifiedSample(numPoints=0, classBand='zona', classValues=[i], classPoints=[PUNTOS_POR_ZONA],
+                                       region=ee.Geometry.Rectangle(BBOX_PROVINCIA), scale=ESCALA, seed=SEMILLA + i,
+                                       geometries=True, tileScale=8)
+        fc = ndvi.sampleRegions(collection=pts, properties=['zona'], scale=ESCALA, tileScale=8, geometries=False)
+        datos = con_reintentos(lambda: fc.getInfo())
+        partes.append(pd.DataFrame([f['properties'] for f in datos['features']]))
+        print(f'  zona {i}: {len(datos["features"])} puntos')
+    df = pd.concat(partes, ignore_index=True)
     for c in MESES + CUENTAS:
         if c not in df:
             df[c] = None
