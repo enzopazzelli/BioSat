@@ -111,3 +111,9 @@ test('las dos páginas describen los datos reales (D-30), no los textos viejos',
   }
   assert.doesNotMatch(app, /todavía son un borrador a validar con productores del sur/);
 });
+
+test('index.html tiene la tarjeta del pronóstico en el Inicio y en el Reporte', () => {
+  assert.ok(idsIndex.has('inicioPronostico'));
+  assert.ok(idsIndex.has('repPronostico'));
+  assert.match(index, /pronostico-logica\.js/);
+});
