@@ -223,6 +223,20 @@ def perdida_ha(desde, hasta, umbral=UMBRAL_MONTE):
     return {f['properties']['zona']: round(f['properties'].get('sum', 0.0), 1) for f in r['features']}
 
 
+def desmonte_reciente_pct(desde=2016, hasta=2024):
+    """% del monte que había al final de `desde - 1` que se desmontó entre `desde` y `hasta`, por zona."""
+    ee = iniciar_ee()
+    from ia_desmonte.zonas import zonas_fc
+    tc, ly = _hansen(ee)
+    area = ee.Image.pixelArea()
+    perdida = tc.gte(UMBRAL_MONTE).And(ly.gte(desde - 2000)).And(ly.lte(hasta - 2000))
+    img = ee.Image.cat(area.updateMask(monte_en(ee, desde - 1)).rename('monte'), area.updateMask(perdida).rename('perdida'))
+    r = con_reintentos(lambda: img.reduceRegions(collection=zonas_fc(), reducer=ee.Reducer.sum(), scale=30,
+                                                 tileScale=16).getInfo())
+    return {f['properties']['zona']: (round(100 * f['properties'].get('perdida', 0) / f['properties']['monte'], 2)
+                                      if f['properties'].get('monte') else None) for f in r['features']}
+
+
 # ------------------------------------------------------------------ armado y corrida
 
 def armar_json(serie, monte_2024, evaluacion, elegido, justificacion, riesgos, n_muestras, proyeccion=None):

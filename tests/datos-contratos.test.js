@@ -47,3 +47,20 @@ test('zonificacion_aizal.json: 5 grupos con perfil real, área que suma 100 y co
   assert.deepEqual(Object.keys(j.comparacion_biosat), ZONAS);
   assert.ok(fs.existsSync(path.join(__dirname, '..', j.meta.imagen.archivo)), 'falta el PNG de la zonificación');
 });
+
+test('diagnostico_landsat_ia.json: 12 meses, fracciones, dudosos y fragilidad entre 0 y 100', () => {
+  const j = leer('diagnostico_landsat_ia.json');
+  metaCompleta(j.meta, 'diagnostico');
+  assert.deepEqual(Object.keys(j.zonas), ZONAS);
+  for (const z of ZONAS) {
+    const d = j.zonas[z];
+    assert.equal(d.meses_suelo_pelado.length, 12);
+    assert.ok(d.meses_suelo_pelado.every(v => typeof v === 'boolean'));
+    assert.equal(d.meses_dudosos.length, 12);
+    assert.equal(d.fraccion_pelado.length, 12);
+    assert.ok(d.fraccion_pelado.every(numONull));
+    assert.ok(d.indice_fragilidad_0_100 === null || (d.indice_fragilidad_0_100 >= 0 && d.indice_fragilidad_0_100 <= 100));
+    assert.ok(CONF.includes(d.confianza) && CONF.includes(d.confianza_fragilidad));
+    assert.ok(d.formula_fragilidad.includes('min('));
+  }
+});
