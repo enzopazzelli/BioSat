@@ -61,9 +61,9 @@
     }
     return adentro;
   }
-  // Píxeles del NDVI achicado cuyo centro cae dentro del sector. null si no hay ninguno válido.
-  function ndviEnPoligono(n, puntos, umbral) {
-    if (!n || !n.valores || !Array.isArray(puntos) || puntos.length < 3) return null;
+  // Valores de los píxeles del NDVI achicado cuyo centro cae dentro del sector (los usan el NDVI y las clases, D-41).
+  function valoresEnPoligono(n, puntos) {
+    if (!n || !n.valores || !Array.isArray(puntos) || puntos.length < 3) return new Float32Array(0);
     const [[s, o], [no, e]] = n.recuadro, dx = (e - o) / n.ancho, dy = (no - s) / n.alto;
     const lats = puntos.map(p => p[0]), lons = puntos.map(p => p[1]);
     const i0 = Math.max(0, Math.floor((Math.min(...lons) - o) / dx)), i1 = Math.min(n.ancho - 1, Math.ceil((Math.max(...lons) - o) / dx));
@@ -72,7 +72,11 @@
     for (let j = j0; j <= j1; j++) for (let i = i0; i <= i1; i++) {
       if (dentro(no - (j + 0.5) * dy, o + (i + 0.5) * dx, puntos)) sel.push(n.valores[j * n.ancho + i]);
     }
-    const r = DL.resumenNdvi(Float32Array.from(sel), umbral);
+    return Float32Array.from(sel);
+  }
+  // NDVI del sector: mediana y fracción bajo el umbral. null si no hay ningún píxel válido.
+  function ndviEnPoligono(n, puntos, umbral) {
+    const r = DL.resumenNdvi(valoresEnPoligono(n, puntos), umbral);
     return r.validos ? r : null;
   }
 
@@ -152,7 +156,7 @@
     return n === 0 ? '' : n === 1 ? TEXTOS.inicioUno : fmt(TEXTOS.inicioVarios, {n});
   }
 
-  const L = {ESTADOS, TEXTOS, areaHa, ndviEnPoligono, siguienteNumero, nuevoSector, conCambios, aGeoJSON, deGeoJSON, lineaSectores, superficieTexto};
+  const L = {ESTADOS, TEXTOS, areaHa, valoresEnPoligono, ndviEnPoligono, siguienteNumero, nuevoSector, conCambios, aGeoJSON, deGeoJSON, lineaSectores, superficieTexto};
   if (typeof module !== 'undefined' && module.exports) module.exports = L;
   else window.SectoresLogica = L;
 })();

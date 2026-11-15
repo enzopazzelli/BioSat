@@ -203,3 +203,20 @@ test('paqueteVuelo y vueloDePaquete: ida y vuelta, con el NDVI como Float32Array
   assert.equal(D.vueloDePaquete({...p, version: 2}), null);
   assert.equal(D.vueloDePaquete({...p, png: null}), null);
 });
+
+// D-41: clases del ingeniero (cortes cargados en la app)
+const CLASES = {cortes: [0.25, 0.6], nombres: ['Maleza', 'Zona afectada', 'Vigoroso']};
+test('clasificar: bordes exactos y sin contar el sin dato', () => {
+  assert.deepEqual(D.clasificar(Float32Array.from([0.1, 0.25, 0.5, 0.6, 0.9, NaN]), [0.25, 0.6]), {conteos: [1, 2, 2], total: 5, porcentajes: [20, 40, 40]});
+  assert.deepEqual(D.clasificar(Float32Array.from([NaN]), [0.25, 0.6]), {conteos: [0, 0, 0], total: 0, porcentajes: [null, null, null]});
+});
+test('validarClases rechaza cortes al revés, fuera de rango o nombres vacíos', () => {
+  assert.deepEqual(D.validarClases(CLASES), {ok: true, error: null});
+  assert.equal(D.validarClases({...CLASES, cortes: [0.6, 0.25]}).error, 'clasesOrden');
+  assert.equal(D.validarClases({...CLASES, cortes: [0.2, 1.5]}).error, 'clasesRango');
+  assert.equal(D.validarClases({...CLASES, cortes: [NaN, 0.5]}).error, 'clasesRango');
+  assert.equal(D.validarClases({...CLASES, nombres: ['Maleza', ' ', 'Vigoroso']}).error, 'clasesNombres');
+});
+test('textoClases', () => {
+  assert.equal(D.textoClases(CLASES, {conteos: [1, 2, 2], total: 5, porcentajes: [20, 40, 40]}), 'Maleza 20 % · Zona afectada 40 % · Vigoroso 40 %');
+});
