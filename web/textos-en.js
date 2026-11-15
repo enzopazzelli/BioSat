@@ -322,7 +322,14 @@
       // web/satelite-logica.js · SateliteLogica.TEXTOS (satélite del lote, D-40)
       satelite: {
         locale: 'en-US',
-        visorSrc: 'Landsat · about {m} m per pixel in this viewer (30 m original)'
+        visorSrc: 'Landsat · about {m} m per pixel in this viewer (30 m original)',
+        cmpLinea: 'Over the same surface: median NDVI {dron} with the drone and {sat} with {fuente} ({res} m, {cuando}).',
+        cmpAntes: '{fecha}, {n} days before the flight',
+        cmpAntesUno: '{fecha}, 1 day before the flight',
+        cmpDespues: '{fecha}, {n} days after the flight',
+        cmpDespuesUno: '{fecha}, 1 day after the flight',
+        cmpMismoDia: '{fecha}, the same day as the flight',
+        cmpPasada: 'pass of {fecha}'
       },
 
       // web/sectores-logica.js · SectoresLogica.TEXTOS (sectores del lote, D-39)
