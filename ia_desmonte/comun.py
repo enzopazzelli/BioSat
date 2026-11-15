@@ -85,3 +85,21 @@ def muestras_por_tandas(imagen, region, n, escala, semilla, tanda=4000):
         print(f'  tanda {i + 1}: {len(datos["features"])} puntos')
     df = pd.DataFrame(filas)
     return df.drop(columns=['_estrato'], errors='ignore')
+
+
+UTM_20S = 'EPSG:32720'  # Santiago del Estero cae entera en la zona UTM 20 Sur: distancias en metros reales
+
+
+def distancia_m(mascara, escala, tope_m):
+    """Distancia en metros al píxel más cercano donde `mascara` vale 1, calculada a `escala` metros.
+
+    Más allá de `tope_m` devuelve `tope_m` (el valor queda acotado y se avisa en los JSON).
+    """
+    import ee
+    proj = ee.Projection(UTM_20S).atScale(escala)
+    vecinos = int(tope_m / escala) + 2
+    gruesa = (mascara.unmask(0).gt(0)
+              .reduceResolution(reducer=ee.Reducer.max(), maxPixels=1024)
+              .reproject(proj))
+    d = gruesa.fastDistanceTransform(vecinos, 'pixels', 'squared_euclidean').sqrt().multiply(escala)
+    return d.reproject(proj).unmask(tope_m).min(tope_m)
