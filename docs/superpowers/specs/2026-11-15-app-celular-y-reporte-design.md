@@ -22,6 +22,7 @@ Antes de eso, la persona **configura su campo** con el asistente de 4 preguntas 
 2. **Un Reporte completo** en una sola página, con las secciones abiertas, para guardar como PDF y compartir.
 3. **Que todo lo que se muestra salga de los datos**, con su fuente y su confianza, igual que hoy.
 4. **La primera pregunta del asistente nombra la zona por su característica**, no por una ciudad.
+5. **La página de hoy se conserva con su diseño actual** como **vista detallada del reporte completo** (`web/completo.html`). Lo pidió Enzo el 15/11: le puede servir como otra forma de ver el reporte completo, además del diseño nuevo.
 
 **No objetivos**
 - El botón EN/ES (etapa siguiente).
@@ -52,7 +53,8 @@ Enzo eligió la A el 15/11.
 1. **Primera vez:** el asistente de 4 preguntas (como hoy, con la pregunta 1 corregida, ver 4.5) y después el Inicio.
 2. **Las siguientes veces:** directo al Inicio, con las respuestas guardadas. "Cambiar" reabre el asistente.
 3. **Del Inicio, "Ver el reporte completo"** lleva a la vista Reporte (`#reporte`); "← Volver" regresa.
-4. **Los cambios de zona, prioridades o escenario** se reflejan en las dos vistas.
+4. **Desde el Reporte**, el enlace "Ver la versión detallada" abre `completo.html`, que es la página de hoy con su diseño. Esa página suma arriba un enlace "← Volver al inicio".
+5. **Los cambios de zona, prioridades o escenario** se reflejan en todas las vistas (las respuestas del asistente se comparten por `localStorage`).
 
 ### 4.2 Inicio (maqueta "B · ELEGIDA")
 
@@ -141,6 +143,12 @@ Es una sola página con las secciones abiertas.
 - **Guardar PDF:** `window.print()` con una hoja de estilos de impresión que muestra solo el Reporte, en una columna, con los plegables abiertos, sin barra fija ni botones y con cortes de página entre secciones.
 - **Compartir:** `navigator.share` con el título y el enlace, si está disponible; si no, copia el enlace y avisa "Enlace copiado".
 
+### 4.6 bis Vista detallada (la página de hoy)
+
+- **`web/completo.html`** es una copia de `web/index.html` tal como está hoy (antes de esta tarea), con el mismo `app.js`, los mismos estilos y el mismo comportamiento: 5 pasos, detalle técnico y todo lo demás.
+- **Lo único que cambia:** arriba se suma un enlace "← Volver al inicio" (`index.html`), y el asistente no se abre solo (usa las respuestas ya guardadas).
+- **`app.js` funciona en las dos páginas:** `renderInicio()` y la navegación entre vistas solo corren si existe `#vista-inicio`, y los `render…()` de siempre encuentran sus `id` en las dos.
+
 ### 4.7 WhatsApp
 
 - **El texto se arma con los datos:** "BioSat · {zona} · {mes}: {NIVEL} ({razón corta}). Lo que mejor encaja: {rotación} (próxima siembra: {mes}). Revisalo con tu ingeniero. {enlace a la app}".
@@ -187,7 +195,8 @@ Es una sola página con las secciones abiertas.
   - el conteo de meses pelados;
   - el texto de WhatsApp, sin `undefined` y con el enlace;
   - el asistente muestra el nombre de la zona y no el pueblo en la pregunta 1.
-- **Las 71 actuales siguen en verde.**
+- **Las actuales siguen en verde** (77 desde que se integraron los datos reales).
+- **`tests/vistas.test.js`:** cada `id` que busca `app.js` existe en `index.html` y en `completo.html` (salvo los del Inicio, que solo están en `index.html`).
 - **Revisión a mano en el navegador:**
   - a 390 px y en una computadora;
   - sin internet;

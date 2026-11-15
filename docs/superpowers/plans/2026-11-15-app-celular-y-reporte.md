@@ -21,7 +21,8 @@
   - los botones miden 44 px o más;
   - el texto sobre la banda tiene contraste de 4,5:1 o más;
   - se mantiene el modo oscuro.
-- **Pruebas:** `node --test tests/*.test.js` tiene que quedar en verde (hoy son 71 en esta rama).
+- **Pruebas:** `node --test tests/*.test.js` tiene que quedar en verde (hoy son 77 en esta rama, con los datos reales de `main`).
+- **La página de hoy se conserva** como vista detallada en `web/completo.html`, con su diseño actual (pedido de Enzo, 15/11; diseño 4.6 bis).
 
 ## Qué revisar especialmente
 
@@ -129,9 +130,11 @@ test('texto de WhatsApp completo y sin huecos', () => {
   - `web/app.js`: `mostrarVista(id)` y el escucha de `hashchange` (`#reporte` muestra el Reporte; cualquier otro, el Inicio). Al cambiar de vista, el foco va al título de la vista.
 - Prueba: `tests/vistas.test.js`
 
+- [ ] **Paso 0: conservar la página de hoy.** Antes de tocar `index.html`, copiarla a `web/completo.html` y sumarle arriba "← Volver al inicio" (`index.html`). En `completo.html` el asistente no se abre solo.
 - [ ] **Paso 1: prueba que falla** (lee los archivos como texto):
   - `index.html` tiene `id="vista-inicio"` y `id="vista-reporte"`;
-  - **cada `$('#x')` y `querySelector('#x')` de `app.js` tiene su `id="x"` en `index.html`**, como guarda contra romper un `render…()`;
+  - **cada `$('#x')` y `querySelector('#x')` de `app.js` tiene su `id="x"` en `index.html` y en `completo.html`** (salvo los del Inicio, que solo van en `index.html`), como guarda contra romper un `render…()`;
+  - el Reporte de `index.html` tiene un enlace a `completo.html`;
   - `index.html` carga `inicio-logica.js` antes que `app.js`.
 - [ ] **Paso 2:** falla.
 - [ ] **Paso 3:** reorganizar. Los bloques existentes se **mueven sin cambiar sus `id`** a sus secciones del Reporte:
