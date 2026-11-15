@@ -100,7 +100,7 @@ Fuera de `docs/`: `PLAN.md` (plan general y ruta), `planes/` (plan y checklist d
 - **Idioma EN/ES:** última etapa de las sugerencias de la organización; necesita diseño propio. Las rotaciones de Vale en inglés pasan por su revisión.
 - **Kit Arduino:** armado, sellado del LM35, calibración y lecturas reales (sin ellas, la pantalla del kit solo anda en vivo).
 - **Entrega:** guion, video o diapositivas, página del proyecto en Space Apps, declaración de uso de IA, 2 ensayos, hora y formato de entrega.
-- **Santi:** cambiar la contraseña de Meteomatics **en el sitio de Meteomatics** (la vieja sigue en el historial público de Git); publicar el visor de Earth Engine; verificar la fragilidad y los meses de suelo pelado.
+- **Santi:** publicar el visor de Earth Engine; verificar la fragilidad y los meses de suelo pelado. La contraseña de Meteomatics no se cambia, por practicidad (D-29).
 - **Vale:** confirmar los 7 `requiere_hacienda`, conseguir por escrito el permiso del productor y validar (o declarar sin validar) las zonas 1 a 4.
 - **Enzo:** decidir si Meteomatics entra en la demo, ensayar la pantalla del kit en la pantalla grande y cerrar `PLAN.md`.
 - **Detalles menores de la última revisión** (no impiden nada): flechita de los plegables, tamaños de letra y botones menores a 44 px, tema elegido en la pregunta 3 solo por color, zonas del asistente sin flechas del teclado, restos en `app.js` y la carpeta `web/` colapsada en el README.
