@@ -100,7 +100,7 @@ La vista detallada (`completo.html`) no lleva el lector, solo un enlace "Para ab
 3. **Qué tipo de imagen es** (función pura, con pruebas):
    - **Foto RGB:** 3 o 4 bandas de 8 bits, RGB. Se ve en color. **Sin NDVI**, y la app lo dice: "Este archivo es una foto en color (RGB): no trae la banda infrarroja que hace falta para el NDVI".
    - **NDVI ya calculado:** 1 banda decimal con valores entre −1 y 1. La app pregunta "¿Este archivo es un NDVI?" y solo lo usa como NDVI si el usuario confirma.
-   - **Multiespectral:** 4 bandas o más. El usuario elige cuál es la roja y cuál la infrarroja. Si las descripciones de las bandas dicen "Red" y "NIR", vienen elegidas. Hay atajos para cámaras conocidas, con el orden de bandas de su fabricante (por ejemplo, MicaSense RedEdge: B, G, R, RE, NIR). Sin descripción ni atajo, no se adivina.
+   - **Multiespectral:** 4 bandas o más. El usuario elige cuál es la roja y cuál la infrarroja. Si las descripciones de las bandas dicen "Red" y "NIR", vienen elegidas. **Sin atajos por cámara en la etapa 1:** el orden de las bandas de un mosaico depende de la cámara y del programa que lo armó, y un atajo equivocado daría un NDVI falso. Sin descripción, no se adivina.
    - **Otra cosa** (1 banda entera, etcetera): se ve en grises, sin NDVI.
 4. **Ubicación:** el recuadro del archivo (`getBoundingBox`) se pasa a latitud y longitud con proj4js. Los sistemas que entiende:
    - WGS84 geográfico (EPSG:4326);
@@ -187,7 +187,7 @@ Todos los textos nuevos van en `DronLogica.TEXTOS`, con claves, se registran con
 
 - Versiones exactas de geotiff.js (2.1.x) y proj4js (2.x). Se copian a `web/vendor/` con su licencia, desde un CDN permitido.
 - Cómo pasar latitud y longitud al mapa de departamentos (§5.3).
-- La forma de la lista de bandas para la multiespectral y los atajos de cámara, siempre con fuente.
+- La forma de la lista de bandas para la multiespectral. Atajos por cámara solo más adelante y con la fuente del fabricante y del programa de mosaico.
 - Estilos, siguiendo los de `.visor` y `.capas`.
 
 ## 9. Etapas
