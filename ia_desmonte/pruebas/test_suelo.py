@@ -25,7 +25,8 @@ def test_ponderar_0_30():
 
 def test_convertir_unidades():
     assert convertir('phh2o', 81) == pytest.approx(8.1)
-    assert convertir('nitrogen', 85) == pytest.approx(0.85)
+    # En Earth Engine el nitrógeno de SoilGrids viene en mg/kg (1770 donde la API de ISRIC da 177 cg/kg): x 0,001.
+    assert convertir('nitrogen', 1770) == pytest.approx(1.77)
     assert convertir('bdod', 136) == pytest.approx(1.36)
     assert convertir('clay', 285) == pytest.approx(28.5)
     assert convertir('soc', 82) == pytest.approx(8.2)

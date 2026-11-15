@@ -1,14 +1,14 @@
-"""Proyección del desmonte anual por zona (2025-2028) con métodos simples probados contra el pasado.
+"""Proyección del desmonte anual por zona (2026-2029) con métodos simples probados contra el pasado.
 
-Con 24 años de historia por zona, una red (LSTM o Transformer) no se justifica: se comparan tres métodos
-simples, se prueban prediciendo 2019-2024 con lo que se sabía hasta 2018, y se elige el de menor error.
+Con 25 años de historia por zona, una red (LSTM o Transformer) no se justifica: se comparan tres métodos
+simples, se prueban prediciendo 2019-2025 con lo que se sabía hasta 2018, y se elige el de menor error.
 """
 import numpy as np
 
 from ia_desmonte.comun import ZONAS
 
 METODOS = ('promedio_3', 'tendencia_8', 'holt')
-ANIOS_PROYECCION = [2025, 2026, 2027, 2028]
+ANIOS_PROYECCION = [2026, 2027, 2028, 2029]
 
 
 def _holt(serie, pasos):
@@ -67,7 +67,7 @@ def elegir_metodo(errores):
 
 
 def proyectar_zonas(series, anios=None):
-    """Elige el método con el backtest y proyecta 2025-2028 para cada zona."""
+    """Elige el método con el backtest y proyecta 2026-2029 para cada zona."""
     anios = anios or list(range(2001, 2001 + len(next(iter(series.values())))))
     errores = backtest(series, anios)
     metodo = elegir_metodo(errores)

@@ -86,7 +86,7 @@ test('imagenes/escenas.json: compuestos de Earth Engine, livianos y distintos de
   }
 });
 
-test('desmonte_zonas.json: serie 2001-2024 real, riesgo entre 0 y 1, método elegido = mayor AUC', () => {
+test('desmonte_zonas.json: serie 2001-2025 real, riesgo entre 0 y 1, método elegido = mayor AUC', () => {
   const j = leer('desmonte_zonas.json');
   metaCompleta(j.meta, 'desmonte');
   assert.deepEqual(Object.keys(j.zonas), ZONAS);
@@ -100,11 +100,11 @@ test('desmonte_zonas.json: serie 2001-2024 real, riesgo entre 0 y 1, método ele
   for (const z of ZONAS) {
     const d = j.zonas[z];
     assert.equal(d.desmonte_ha_por_anio.desde, 2001);
-    assert.equal(d.desmonte_ha_por_anio.valores.length, 24);
+    assert.equal(d.desmonte_ha_por_anio.valores.length, 25);
     assert.ok(d.riesgo_medio_0_1 === null || (d.riesgo_medio_0_1 >= 0 && d.riesgo_medio_0_1 <= 1));
     assert.notEqual(d.confianza, 'alta', `${z}: el riesgo no puede tener confianza alta`);
     assert.ok(d.riesgo_n < 100 ? d.confianza === 'baja' : d.confianza === 'media');
-    assert.deepEqual(d.proyeccion_ha.anios, [2025, 2026, 2027, 2028]);
+    assert.deepEqual(d.proyeccion_ha.anios, [2026, 2027, 2028, 2029]);
   }
 });
 

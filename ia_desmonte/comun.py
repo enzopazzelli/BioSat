@@ -16,7 +16,8 @@ SALIDAS = RAIZ / 'ia_desmonte' / 'salidas'
 ZONAS = ['zona_1_riego_salitre', 'zona_2_secano_este', 'zona_3_monte_semiarido',
          'zona_4_bajos_submeridionales', 'zona_5_sur_serrano']
 SEMILLA = 2026
-HANSEN = 'UMD/hansen/global_forest_change_2024_v1_12'
+HANSEN = 'UMD/hansen/global_forest_change_2025_v1_13'
+ULTIMO_ANIO = 2025  # último año con pérdidas en Hansen v1.13
 UMBRAL_MONTE = 25  # % de cobertura arbórea en el 2000 para contar como monte
 BBOX_PROVINCIA = [-65.3, -30.2, -61.5, -25.5]  # oeste, sur, este, norte
 

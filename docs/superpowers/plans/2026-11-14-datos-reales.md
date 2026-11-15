@@ -144,7 +144,7 @@ def test_escribir_json_rechaza_nan(tmp_path):
 - Estadísticas por zona: media (`valor`), mediana, p10 y p90 (`rango_p10_p90`) y `n_pixeles`.
 - Los campos y códigos del contrato §2 se mantienen.
 - `pdsi`: TerraClimate 1991-2020, × 0,01.
-- `distancia_caminos_km`: GRIP4 (`projects/sat-io/open-datasets/GRIP4/South-America`).
+- `distancia_caminos_km`: GRIP4 (`projects/sat-io/open-datasets/GRIP4/Central-South-America`).
 - `distancia_monte_km` y `monte_nativo_pct`: Hansen, monte de 2024.
 - Confianza: `"media"` en todos.
 - `meta.fuente` cita los IDs de los datasets.

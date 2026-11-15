@@ -2,7 +2,7 @@ import pytest
 from ia_desmonte.comun import ZONAS
 from ia_desmonte.proyeccion import backtest, elegir_metodo, predecir, proyectar_zonas
 
-ANIOS = list(range(2001, 2025))
+ANIOS = list(range(2001, 2026))
 
 
 def test_promedio_3():
@@ -23,13 +23,13 @@ def test_backtest_elige_el_menor_error():
 
 
 def test_backtest_serie_constante_da_error_cero_con_promedio():
-    series = {z: [100.0] * 24 for z in ZONAS}
+    series = {z: [100.0] * 25 for z in ZONAS}
     assert backtest(series, ANIOS)['promedio_3'] == pytest.approx(0.0)
 
 
 def test_proyectar_zonas_devuelve_4_anios_por_zona():
-    series = {z: [float(100 + i) for i in range(24)] for z in ZONAS}
+    series = {z: [float(100 + i) for i in range(25)] for z in ZONAS}
     p = proyectar_zonas(series)
-    assert p['anios'] == [2025, 2026, 2027, 2028]
+    assert p['anios'] == [2026, 2027, 2028, 2029]
     assert all(len(p['valores'][z]) == 4 for z in ZONAS)
     assert p['metodo'] in ('promedio_3', 'tendencia_8', 'holt') and p['error_ha_pct'] >= 0

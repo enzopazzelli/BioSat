@@ -19,7 +19,7 @@ ORDEN = ['suelo', 'desmonte', 'zonificacion', 'suelo_pelado', 'imagenes']
 DATASETS = {
     'hansen': HANSEN, 'soilgrids': 'projects/soilgrids-isric/*_mean (SoilGrids 2.0)',
     'terraclimate': 'IDAHO_EPSCOR/TERRACLIMATE', 'worldcover': 'ESA/WorldCover/v200',
-    'grip4': 'projects/sat-io/open-datasets/GRIP4/South-America', 'wdpa': 'WCMC/WDPA/current/polygons',
+    'grip4': 'projects/sat-io/open-datasets/GRIP4/Central-South-America', 'wdpa': 'WCMC/WDPA/current/polygons',
     'worldpop': 'WorldPop/GP/100m/pop', 'nasadem': 'NASA/NASADEM_HGT/001',
     'landsat': 'LANDSAT/LC08|LC09|LT05|LE07/C02/T1_L2',
     'limites': 'geoBoundaries ARG ADM2 (IGN), ver scripts/generar_mapa_santiago.py',

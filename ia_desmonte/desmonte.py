@@ -1,10 +1,10 @@
 """Historia de desmontes y modelo predictivo por zona (data/desmonte_zonas.json, contrato §8).
 
-- Historia: Hansen Global Forest Change (Landsat, 30 m), pérdida anual 2001-2024 sobre el monte del 2000.
+- Historia: Hansen Global Forest Change (Landsat, 30 m), pérdida anual 2001-2025 sobre el monte del 2000.
 - Modelo: validación en el tiempo. Entrena con el monte y los predictores al 2008 y el desmonte 2009-2015;
-  se prueba con el monte y los predictores al 2015 y el desmonte 2016-2024. Compara regresión logística,
+  se prueba con el monte y los predictores al 2015 y el desmonte 2016-2025. Compara regresión logística,
   random forest y gradient boosting, y elige el de mayor AUC en la prueba.
-- Riesgo por zona: el modelo elegido se reentrena con 2015 -> 2016-2024 y se aplica al monte de 2024.
+- Riesgo por zona: el modelo elegido se reentrena con 2015 -> 2016-2025 y se aplica al monte de 2025.
 
 Uso: EE_PROJECT=<id> python -X utf8 -m ia_desmonte.desmonte
 """
@@ -14,7 +14,7 @@ import pickle
 import numpy as np
 import pandas as pd
 
-from ia_desmonte.comun import (BBOX_PROVINCIA, DATA, HANSEN, SALIDAS, SEMILLA, UMBRAL_MONTE, ZONAS, con_reintentos,
+from ia_desmonte.comun import (BBOX_PROVINCIA, DATA, HANSEN, SALIDAS, SEMILLA, ULTIMO_ANIO, UMBRAL_MONTE, ZONAS, con_reintentos,
                                distancia_m, escribir_json, iniciar_ee, meta_base, muestras_por_tandas)
 
 PREDICTORES = ['dist_sin_monte_m', 'dist_desmonte_previo_m', 'dist_caminos_m', 'pendiente_grados', 'area_protegida',
@@ -26,8 +26,9 @@ N_MUESTRA = 15000
 ESCALA_MUESTRA = 100
 TOPE_DIST_M = 25000
 TOPE_CAMINOS_M = 50000
-ANIOS = list(range(2001, 2025))
-GRIP4 = 'projects/sat-io/open-datasets/GRIP4/South-America'
+ANIOS = list(range(2001, ULTIMO_ANIO + 1))
+PRUEBA = f'2016-{ULTIMO_ANIO}'
+GRIP4 = 'projects/sat-io/open-datasets/GRIP4/Central-South-America'
 WDPA = 'WCMC/WDPA/current/polygons'
 WORLDPOP = 'WorldPop/GP/100m/pop'
 NASADEM = 'NASA/NASADEM_HGT/001'
@@ -96,7 +97,7 @@ def elegir(metodos):
     candidatos = {k: v for k, v in metodos.items() if k in NOMBRES}
     nombre = max(candidatos, key=lambda k: candidatos[k]['auc'])
     otros = sorted((k for k in candidatos if k != nombre), key=lambda k: -candidatos[k]['auc'])
-    texto = (f'{NOMBRES[nombre].capitalize()} tiene el AUC más alto en la prueba 2016-2024 '
+    texto = (f'{NOMBRES[nombre].capitalize()} tiene el AUC más alto en la prueba {PRUEBA} '
              f'({_coma(candidatos[nombre]["auc"])}), contra '
              + ' y '.join(f'{_coma(candidatos[k]["auc"])} de {NOMBRES[k]}' for k in otros) + '.')
     return nombre, texto
@@ -181,7 +182,7 @@ def muestras(corte, fin, n, semilla):
 
 
 def serie_anual():
-    """Hectáreas desmontadas por año (2001-2024) en cada zona, sobre el monte del 2000."""
+    """Hectáreas desmontadas por año (2001-2025) en cada zona, sobre el monte del 2000."""
     ee = iniciar_ee()
     from ia_desmonte.zonas import zonas_fc
     tc, ly = _hansen(ee)
@@ -223,7 +224,7 @@ def perdida_ha(desde, hasta, umbral=UMBRAL_MONTE):
     return {f['properties']['zona']: round(f['properties'].get('sum', 0.0), 1) for f in r['features']}
 
 
-def desmonte_reciente_pct(desde=2016, hasta=2024):
+def desmonte_reciente_pct(desde=2016, hasta=ULTIMO_ANIO):
     """% del monte que había al final de `desde - 1` que se desmontó entre `desde` y `hasta`, por zona."""
     ee = iniciar_ee()
     from ia_desmonte.zonas import zonas_fc
@@ -239,7 +240,7 @@ def desmonte_reciente_pct(desde=2016, hasta=2024):
 
 # ------------------------------------------------------------------ armado y corrida
 
-def armar_json(serie, monte_2024, evaluacion, elegido, justificacion, riesgos, n_muestras, proyeccion=None):
+def armar_json(serie, monte_actual, evaluacion, elegido, justificacion, riesgos, n_muestras, proyeccion=None):
     """JSON del contrato §8."""
     metodos = {k: v for k, v in evaluacion.items() if k in NOMBRES}
     if proyeccion:
@@ -247,7 +248,7 @@ def armar_json(serie, monte_2024, evaluacion, elegido, justificacion, riesgos, n
     zonas = {}
     for z in ZONAS:
         zonas[z] = {
-            'monte_actual_pct': monte_2024[z],
+            'monte_actual_pct': monte_actual[z],
             'desmonte_ha_por_anio': {'desde': ANIOS[0], 'valores': serie[z]},
             'riesgo_medio_0_1': riesgos[z]['riesgo'], 'riesgo_n': riesgos[z]['n'],
             'proyeccion_ha': ({'anios': proyeccion['anios'], 'valores': proyeccion['valores'][z]}
@@ -267,17 +268,17 @@ def armar_json(serie, monte_2024, evaluacion, elegido, justificacion, riesgos, n
                'monte que vuelve a crecer. Distancias calculadas a 100 m y acotadas (25 km; caminos 50 km). GRIP4 es '
                'una red de caminos de 2018 y se usa igual en todos los cortes. WorldPop llega a 2020: para cortes '
                'posteriores se usa 2020. deficit_hidrico_mm es positivo (falta de agua, TerraClimate 1991-2020).'),
-        historia=f'Hansen Global Forest Change v1.12 (2001-2024, Landsat 30 m)',
+        historia=f'Hansen Global Forest Change v1.13 (2001-{ULTIMO_ANIO}, Landsat 30 m)',
         predictores=PREDICTORES,
         validacion=('entrena con monte y predictores al 2008 y desmonte 2009-2015; prueba con monte y predictores '
-                    'al 2015 y desmonte 2016-2024'),
-        horizonte_riesgo=('probabilidad de que un píxel de monte se desmonte en los próximos ~9 años si sigue el '
-                          'patrón 2016-2024'),
+                    f'al 2015 y desmonte {PRUEBA}'),
+        horizonte_riesgo=('probabilidad de que un píxel de monte se desmonte en los próximos ~10 años si sigue el '
+                          f'patrón {PRUEBA}'),
         umbral_monte_pct=UMBRAL_MONTE, muestras=n_muestras)
     return {'meta': meta,
             'evaluacion': {'metodos': metodos, 'metodo_elegido': elegido, 'justificacion_metodo': justificacion,
                            'tasa_base': evaluacion['tasa_base'],
-                           'datos_de_prueba': f'{n_muestras["prueba"]} puntos de monte 2015, desmonte 2016-2024'},
+                           'datos_de_prueba': f'{n_muestras["prueba"]} puntos de monte 2015, desmonte {PRUEBA}'},
             'zonas': zonas}
 
 
@@ -294,19 +295,19 @@ def _leer_o_muestrear(nombre, corte, fin, semilla):
 def _sensibilidad():
     filas = []
     for u in (10, 25, 30):
-        m = monte_pct(2024, u)
-        p = perdida_ha(2016, 2024, u)
+        m = monte_pct(ULTIMO_ANIO, u)
+        p = perdida_ha(2016, ULTIMO_ANIO, u)
         filas += [[u, z, m[z], p[z]] for z in ZONAS]
     with open(SALIDAS / 'sensibilidad_umbral_monte.csv', 'w', newline='', encoding='utf-8') as f:
         w = csv.writer(f)
-        w.writerow(['umbral_cobertura_pct', 'zona', 'monte_2024_pct', 'perdida_2016_2024_ha'])
+        w.writerow(['umbral_cobertura_pct', 'zona', f'monte_{ULTIMO_ANIO}_pct', f'perdida_2016_{ULTIMO_ANIO}_ha'])
         w.writerows(filas)
 
 
 def main():
     train = _leer_o_muestrear('entrenamiento', 2008, 2015, SEMILLA)
-    test = _leer_o_muestrear('prueba', 2015, 2024, SEMILLA + 1)
-    actual = _leer_o_muestrear('riesgo', 2024, None, SEMILLA + 2)
+    test = _leer_o_muestrear('prueba', 2015, ULTIMO_ANIO, SEMILLA + 1)
+    actual = _leer_o_muestrear('riesgo', ULTIMO_ANIO, None, SEMILLA + 2)
     evaluacion = evaluar(train, test)
     elegido, justificacion = elegir(evaluacion)
     print('Evaluación:', evaluacion)
@@ -321,7 +322,7 @@ def main():
     else:
         serie = serie_anual()
         pd.DataFrame({'anio': ANIOS, **serie}).to_csv(ruta_serie, index=False)
-    monte = monte_pct(2024)
+    monte = monte_pct(ULTIMO_ANIO)
     from ia_desmonte.proyeccion import proyectar_zonas
     proyeccion = proyectar_zonas(serie)
     n = {'entrenamiento': len(train), 'prueba': len(test), 'riesgo': len(actual)}
