@@ -1,305 +1,333 @@
 {
   "meta": {
-    "historia": "Hansen Global Forest Change (2001-2023, v1.11 Landsat 30m)",
+    "fuente": "Hansen Global Forest Change (UMD/hansen/global_forest_change_2025_v1_13); predictores: GRIP4 (projects/sat-io/open-datasets/GRIP4/Central-South-America), WDPA (WCMC/WDPA/current/polygons), WorldPop (WorldPop/GP/100m/pop), NASADEM (NASA/NASADEM_HGT/001), TerraClimate (IDAHO_EPSCOR/TERRACLIMATE), SoilGrids 2.0",
+    "metodo": "Clasificación por píxel con validación en el tiempo. Se comparan regresión logística, random forest y gradient boosting; se elige el de mayor AUC en la prueba. Muestra al azar en el monte, sin balancear clases, para que las probabilidades queden calibradas.",
+    "generado_por": "ia_desmonte/desmonte.py",
+    "fecha": "2026-11-15",
+    "notas": "Monte = cobertura arbórea del 2000 >= 25 % sin pérdida registrada. Hansen no registra el monte que vuelve a crecer. Valores leídos a 30 m en puntos al azar uniformes en la provincia; distancias y fragmentación calculadas a 250 m y acotadas (25 km; caminos 50 km). GRIP4 es una red de caminos de 2018 y se usa igual en todos los cortes. WorldPop llega a 2020: para cortes posteriores se usa 2020. deficit_hidrico_mm es positivo (falta de agua, TerraClimate 1991-2020).",
+    "historia": "Hansen Global Forest Change v1.13 (2001-2025, Landsat 30 m)",
     "predictores": [
       "dist_sin_monte_m",
       "dist_desmonte_previo_m",
+      "dist_desmonte_reciente_m",
+      "monte_1km_pct",
       "dist_caminos_m",
       "pendiente_grados",
       "area_protegida",
       "poblacion_densidad",
       "deficit_hidrico_mm",
       "arcilla_pct",
-      "ph"
+      "ph",
+      "zona"
     ],
-    "validacion": "Temporal out-of-time (entrenamiento <= 2015, prueba 2016-2023)",
-    "generado_por": "Pipeline IA Santi (santi-task) · Validado científicamente",
-    "fecha": "2026-11-14",
-    "notas": "Modelo predictivo de desmonte: Random Forest (150 árboles) con importancias y riesgo continuo."
+    "validacion": "entrena con monte y predictores al 2008 y desmonte 2009-2015; prueba con monte y predictores al 2015 y desmonte 2016-2025",
+    "horizonte_riesgo": "probabilidad de que un píxel de monte se desmonte en los próximos ~10 años si sigue el patrón 2016-2025",
+    "umbral_monte_pct": 25,
+    "muestras": {
+      "entrenamiento": 10000,
+      "prueba": 10000,
+      "riesgo": 10000
+    }
   },
   "evaluacion": {
     "metodos": {
       "regresion_logistica": {
-        "auc": 0.986,
-        "f1": 0.934,
-        "accuracy": 0.934,
-        "kappa": 0.867
+        "auc": 0.616,
+        "auc_cv": 0.715,
+        "f1": 0.176,
+        "accuracy": 0.772,
+        "kappa": 0.062,
+        "pr_auc": 0.119,
+        "umbral": 0.182
       },
       "random_forest": {
-        "auc": 0.973,
-        "f1": 0.903,
-        "accuracy": 0.903,
-        "kappa": 0.807,
-        "importancia_variables": {
-          "dist_caminos_m": 0.2841,
-          "dist_desmonte_previo_m": 0.243,
-          "dist_sin_monte_m": 0.2065,
-          "pendiente_grados": 0.0784,
-          "area_protegida": 0.0505,
-          "poblacion_densidad": 0.0424,
-          "arcilla_pct": 0.0368,
-          "deficit_hidrico_mm": 0.0309,
-          "ph": 0.0274
-        }
+        "auc": 0.634,
+        "auc_cv": 0.778,
+        "f1": 0.2,
+        "accuracy": 0.76,
+        "kappa": 0.084,
+        "pr_auc": 0.13,
+        "umbral": 0.176
       },
-      "temporal_lstm_o_transformer": {
-        "error_ha_pct": 7.8,
-        "tendencia": "Proyección autorregresiva 2024-2028 sobre serie histórica 2001-2023"
+      "gradient_boosting": {
+        "auc": 0.629,
+        "auc_cv": 0.769,
+        "f1": 0.179,
+        "accuracy": 0.811,
+        "kappa": 0.078,
+        "pr_auc": 0.126,
+        "umbral": 0.19
+      },
+      "temporal": {
+        "metodo": "promedio_3",
+        "error_ha_pct": 31.2
       }
     },
     "metodo_elegido": "random_forest",
-    "justificacion_metodo": "Random Forest supera a la Regresión Logística en AUC (+0.07) y F1 (+0.06) capturando no linealidades espaciales críticas en la interacción entre distancia a caminos y pendiente."
+    "justificacion_metodo": "Se eligió random forest porque tiene el AUC más alto en la validación cruzada del entrenamiento (0,78, contra 0,77 de gradient boosting y 0,71 de regresión logística). En la prueba 2016-2025, que no se usó para elegir, mide AUC 0,63 (gradient boosting 0,63, regresión logística 0,62).",
+    "tasa_base": 0.0903,
+    "datos_de_prueba": "10000 puntos de monte 2015, desmonte 2016-2025"
   },
   "zonas": {
     "zona_1_riego_salitre": {
-      "monte_actual_pct": 7.8,
+      "monte_actual_pct": 30.97,
       "desmonte_ha_por_anio": {
         "desde": 2001,
-        "hasta": 2023,
         "valores": [
-          120,
-          140,
-          110,
-          95,
-          80,
-          75,
-          60,
-          55,
-          45,
-          40,
-          35,
-          30,
-          25,
-          20,
-          18,
-          15,
-          12,
-          10,
-          8,
-          7,
-          6,
-          5,
-          4
+          7703.6,
+          4849.9,
+          15413.8,
+          16322.5,
+          10976.6,
+          17846.5,
+          16204.8,
+          16620.4,
+          9618.5,
+          15891.4,
+          17420.7,
+          6951.9,
+          12388.8,
+          8588.3,
+          6241.7,
+          4670.7,
+          3982.6,
+          3685.5,
+          2136.7,
+          3627.0,
+          3406.2,
+          3213.4,
+          3280.2,
+          3131.6,
+          3092.6
         ]
       },
-      "riesgo_medio_0_1": 0.08,
+      "riesgo_medio_0_1": 0.053,
+      "riesgo_n": 1203,
       "proyeccion_ha": {
         "anios": [
-          2024,
-          2025,
           2026,
           2027,
-          2028
+          2028,
+          2029
         ],
         "valores": [
-          2,
-          2,
-          2,
-          2,
-          2
+          3168.1,
+          3168.1,
+          3168.1,
+          3168.1
         ]
       },
-      "confianza": "alta · calibrada con Hansen GFC v1.11 y validación temporal out-of-time"
+      "confianza": "media",
+      "confianza_serie": "alta",
+      "confianza_proyeccion": "baja"
     },
     "zona_2_secano_este": {
-      "monte_actual_pct": 21.4,
+      "monte_actual_pct": 32.77,
       "desmonte_ha_por_anio": {
         "desde": 2001,
-        "hasta": 2023,
         "valores": [
-          2800,
-          3400,
-          4200,
-          5100,
-          4800,
-          4500,
-          3900,
-          3200,
-          2900,
-          2400,
-          2100,
-          1800,
-          1600,
-          1450,
-          1300,
-          1150,
-          1050,
-          980,
-          890,
-          820,
-          750,
-          680,
-          620
+          8658.7,
+          5868.0,
+          44927.5,
+          52432.8,
+          50184.3,
+          42432.7,
+          69736.7,
+          40726.0,
+          24316.6,
+          33736.8,
+          90871.0,
+          53809.0,
+          33003.7,
+          23424.2,
+          13785.7,
+          19102.9,
+          18031.9,
+          14386.8,
+          8530.1,
+          14858.8,
+          20387.4,
+          20469.7,
+          14286.6,
+          20726.6,
+          23705.1
         ]
       },
-      "riesgo_medio_0_1": 0.38,
+      "riesgo_medio_0_1": 0.155,
+      "riesgo_n": 1683,
       "proyeccion_ha": {
         "anios": [
-          2024,
-          2025,
           2026,
           2027,
-          2028
+          2028,
+          2029
         ],
         "valores": [
-          529,
-          454,
-          378,
-          303,
-          228
+          19572.8,
+          19572.8,
+          19572.8,
+          19572.8
         ]
       },
-      "confianza": "alta · calibrada con Hansen GFC v1.11 y validación temporal out-of-time"
+      "confianza": "media",
+      "confianza_serie": "alta",
+      "confianza_proyeccion": "baja"
     },
     "zona_3_monte_semiarido": {
-      "monte_actual_pct": 64.2,
+      "monte_actual_pct": 61.0,
       "desmonte_ha_por_anio": {
         "desde": 2001,
-        "hasta": 2023,
         "valores": [
-          1900,
-          2400,
-          3100,
-          4800,
-          5600,
-          5200,
-          4900,
-          4400,
-          4100,
-          3800,
-          3500,
-          3200,
-          2900,
-          2700,
-          2500,
-          2350,
-          2200,
-          2050,
-          1920,
-          1810,
-          1720,
-          1650,
-          1580
+          8004.6,
+          7009.5,
+          31324.9,
+          47663.1,
+          20631.5,
+          13709.9,
+          57876.6,
+          61505.6,
+          42391.9,
+          56188.7,
+          49981.2,
+          42205.9,
+          40811.7,
+          21009.9,
+          12530.6,
+          20665.8,
+          20505.9,
+          17241.6,
+          14207.4,
+          20562.5,
+          27934.8,
+          21445.3,
+          27681.9,
+          31495.1,
+          28340.9
         ]
       },
-      "riesgo_medio_0_1": 0.58,
+      "riesgo_medio_0_1": 0.079,
+      "riesgo_n": 4685,
       "proyeccion_ha": {
         "anios": [
-          2024,
-          2025,
           2026,
           2027,
-          2028
+          2028,
+          2029
         ],
         "valores": [
-          1415,
-          1305,
-          1195,
-          1085,
-          975
+          29172.6,
+          29172.6,
+          29172.6,
+          29172.6
         ]
       },
-      "confianza": "alta · calibrada con Hansen GFC v1.11 y validación temporal out-of-time"
+      "confianza": "media",
+      "confianza_serie": "alta",
+      "confianza_proyeccion": "baja"
     },
     "zona_4_bajos_submeridionales": {
-      "monte_actual_pct": 16.5,
+      "monte_actual_pct": 19.65,
       "desmonte_ha_por_anio": {
         "desde": 2001,
-        "hasta": 2023,
         "valores": [
-          350,
-          420,
-          510,
-          680,
-          620,
-          580,
-          490,
-          430,
-          390,
-          340,
-          310,
-          280,
-          260,
-          240,
-          210,
-          190,
-          175,
-          160,
-          145,
-          135,
-          120,
-          110,
-          95
+          4079.5,
+          2240.2,
+          12212.3,
+          22676.1,
+          28282.4,
+          21761.1,
+          19039.7,
+          24476.5,
+          5665.7,
+          13665.8,
+          21466.7,
+          12230.1,
+          10303.2,
+          10757.6,
+          6011.3,
+          7523.1,
+          7244.5,
+          4818.4,
+          3774.2,
+          4290.1,
+          4155.5,
+          3008.9,
+          3241.1,
+          5271.3,
+          6751.4
         ]
       },
-      "riesgo_medio_0_1": 0.16,
+      "riesgo_medio_0_1": 0.069,
+      "riesgo_n": 1134,
       "proyeccion_ha": {
         "anios": [
-          2024,
-          2025,
           2026,
           2027,
-          2028
+          2028,
+          2029
         ],
         "valores": [
-          81,
-          68,
-          55,
-          41,
-          28
+          5087.9,
+          5087.9,
+          5087.9,
+          5087.9
         ]
       },
-      "confianza": "alta · calibrada con Hansen GFC v1.11 y validación temporal out-of-time"
+      "confianza": "media",
+      "confianza_serie": "alta",
+      "confianza_proyeccion": "baja"
     },
     "zona_5_sur_serrano": {
-      "monte_actual_pct": 44.8,
+      "monte_actual_pct": 30.29,
       "desmonte_ha_por_anio": {
         "desde": 2001,
-        "hasta": 2023,
         "valores": [
-          80,
-          95,
-          110,
-          140,
-          130,
-          115,
-          90,
-          85,
-          70,
-          65,
-          55,
-          50,
-          45,
-          40,
-          35,
-          30,
-          28,
-          25,
-          22,
-          20,
-          18,
-          15,
-          12
+          6690.4,
+          1335.1,
+          10201.1,
+          16254.3,
+          8674.4,
+          11832.3,
+          17500.4,
+          12118.8,
+          6946.4,
+          13418.5,
+          7306.6,
+          5063.4,
+          5764.5,
+          5968.7,
+          4103.4,
+          6104.1,
+          4327.0,
+          4072.2,
+          2654.1,
+          3516.2,
+          1883.1,
+          2036.4,
+          1538.0,
+          3386.4,
+          3628.6
         ]
       },
-      "riesgo_medio_0_1": 0.11,
+      "riesgo_medio_0_1": 0.054,
+      "riesgo_n": 1295,
       "proyeccion_ha": {
         "anios": [
-          2024,
-          2025,
           2026,
           2027,
-          2028
+          2028,
+          2029
         ],
         "valores": [
-          10,
-          7,
-          5,
-          2,
-          2
+          2851.0,
+          2851.0,
+          2851.0,
+          2851.0
         ]
       },
-      "confianza": "alta · calibrada con Hansen GFC v1.11 y validación temporal out-of-time"
+      "confianza": "media",
+      "confianza_serie": "alta",
+      "confianza_proyeccion": "baja"
     }
   }
 }

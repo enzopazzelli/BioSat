@@ -1,0 +1,40 @@
+{
+  "fecha": "2026-11-15",
+  "nota": "Los módulos se corrieron uno por uno el 14 y 15/11/2026 (ver docs/reglas-y-bitacora.md, D-30).",
+  "datasets": {
+    "hansen": "UMD/hansen/global_forest_change_2025_v1_13",
+    "soilgrids": "projects/soilgrids-isric/*_mean (SoilGrids 2.0)",
+    "terraclimate": "IDAHO_EPSCOR/TERRACLIMATE",
+    "worldcover": "ESA/WorldCover/v200",
+    "grip4": "projects/sat-io/open-datasets/GRIP4/Central-South-America",
+    "wdpa": "WCMC/WDPA/current/polygons",
+    "worldpop": "WorldPop/GP/100m/pop",
+    "nasadem": "NASA/NASADEM_HGT/001",
+    "landsat": "LANDSAT/LC08|LC09|LT05|LE07/C02/T1_L2",
+    "limites": "geoBoundaries ARG ADM2 (IGN), ver scripts/generar_mapa_santiago.py"
+  },
+  "semilla": 2026,
+  "umbral_monte_pct": 25,
+  "versiones": {
+    "python": "3.13.5",
+    "ee": "1.7.52",
+    "numpy": "2.2.0",
+    "pandas": "2.2.3",
+    "sklearn": "1.6.0"
+  },
+  "muestras": {
+    "desmonte_por_corte": 10000,
+    "desmonte_escala_m": 30,
+    "desmonte_grilla_grados": 0.0025,
+    "suelo_pelado_puntos_por_zona": 600,
+    "suelo_pelado_escala_m": 100,
+    "zonificacion_puntos": 6000
+  },
+  "modulos": {
+    "suelo": "correcto",
+    "desmonte": "correcto",
+    "zonificacion": "correcto",
+    "suelo_pelado": "correcto",
+    "imagenes": "correcto"
+  }
+}

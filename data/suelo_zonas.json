@@ -1,295 +1,673 @@
 {
   "meta": {
-    "fuente": "AIZAL V4 (SoilGrids 2.0, TerraClimate, MapBiomas Chaco C5, OSM)",
-    "generado_por": "Pipeline IA y Zonificación BioSat (Santi)",
+    "fuente": "SoilGrids 2.0 (projects/soilgrids-isric), TerraClimate (IDAHO_EPSCOR/TERRACLIMATE), GRIP4 (projects/sat-io/open-datasets/GRIP4/Central-South-America), Hansen GFC (UMD/hansen/global_forest_change_2025_v1_13), ESA WorldCover 2021 (ESA/WorldCover/v200)",
+    "metodo": "Media, mediana y percentiles 10 y 90 por zona a 250 m. Suelo: promedio 0-30 cm ponderado por espesor. Se mide sobre tierra agropecuaria (WorldCover clases 30 y 40); si hay menos de 2000 píxeles, sobre la zona completa (ver area_medida).",
+    "generado_por": "ia_desmonte/suelo.py",
     "fecha": "2026-11-14",
-    "notas": "Valores edáficos de referencia zonal basados en perfiles representativos de SoilGrids 2.0 (0-30 cm) y cartografía INTA/AIZAL V4. Calificados con confianza media (estimación zonal de referencia) hasta su reducción interactiva píxel a píxel en Earth Engine."
+    "notas": "SoilGrids es un modelo global (predicción a 250 m): confianza media. Las zonas son la unión de sus departamentos (geoBoundaries/IGN), igual que el mapa de la app. Las distancias se calculan a 250 m y se acotan a 50 km. monte_nativo_pct es el % de la superficie de la zona con monte en 2025. Los satélites no miden salinidad ni compactación profunda.",
+    "umbral_monte_pct": 25,
+    "escala_m": 250
   },
   "zonas": {
     "zona_1_riego_salitre": {
       "ph": {
-        "valor": 8.1,
+        "valor": 7.09,
         "codigo": "B16",
-        "confianza": "media"
+        "confianza": "media",
+        "mediana": 7.1,
+        "rango_p10_p90": [
+          6.88,
+          7.25
+        ],
+        "n_pixeles": 85827,
+        "fuente": "SoilGrids 2.0, 0-30 cm"
       },
       "arcilla_pct": {
-        "valor": 28.5,
+        "valor": 20.72,
         "codigo": "B12",
-        "confianza": "media"
+        "confianza": "media",
+        "mediana": 21.06,
+        "rango_p10_p90": [
+          15.56,
+          25.31
+        ],
+        "n_pixeles": 85827,
+        "fuente": "SoilGrids 2.0, 0-30 cm"
       },
       "arena_pct": {
-        "valor": 32.0,
+        "valor": 36.44,
         "codigo": "B17a",
-        "confianza": "media"
+        "confianza": "media",
+        "mediana": 33.87,
+        "rango_p10_p90": [
+          29.12,
+          48.62
+        ],
+        "n_pixeles": 85827,
+        "fuente": "SoilGrids 2.0, 0-30 cm"
       },
       "limo_pct": {
-        "valor": 39.5,
+        "valor": 42.84,
         "codigo": "B17b",
-        "confianza": "media"
+        "confianza": "media",
+        "mediana": 44.62,
+        "rango_p10_p90": [
+          32.87,
+          48.87
+        ],
+        "n_pixeles": 85827,
+        "fuente": "SoilGrids 2.0, 0-30 cm"
       },
       "carbono_organico_g_kg": {
-        "valor": 8.2,
+        "valor": 13.13,
         "codigo": "B15",
-        "confianza": "media"
+        "confianza": "media",
+        "mediana": 12.93,
+        "rango_p10_p90": [
+          11.69,
+          14.68
+        ],
+        "n_pixeles": 85805,
+        "fuente": "SoilGrids 2.0, 0-30 cm"
       },
       "nitrogeno_g_kg": {
-        "valor": 0.85,
+        "valor": 1.23,
         "codigo": "B11",
-        "confianza": "media"
+        "confianza": "media",
+        "mediana": 1.21,
+        "rango_p10_p90": [
+          1.07,
+          1.4
+        ],
+        "n_pixeles": 85827,
+        "fuente": "SoilGrids 2.0, 0-30 cm"
+      },
+      "densidad_aparente_g_cm3": {
+        "valor": 1.35,
+        "codigo": "B18",
+        "confianza": "media",
+        "mediana": 1.35,
+        "rango_p10_p90": [
+          1.31,
+          1.38
+        ],
+        "n_pixeles": 85805,
+        "fuente": "SoilGrids 2.0, 0-30 cm"
+      },
+      "pdsi": {
+        "valor": -0.54,
+        "codigo": "B05",
+        "confianza": "media",
+        "mediana": -0.53,
+        "rango_p10_p90": [
+          -0.76,
+          -0.32
+        ],
+        "n_pixeles": 86166,
+        "fuente": "TerraClimate 1991-2020"
+      },
+      "distancia_caminos_km": {
+        "valor": 1.41,
+        "codigo": "B36",
+        "confianza": "media",
+        "mediana": 0.94,
+        "rango_p10_p90": [
+          0.19,
+          3.06
+        ],
+        "n_pixeles": 86166,
+        "fuente": "GRIP4 (Meijer y otros, 2018)"
+      },
+      "distancia_monte_km": {
+        "valor": 0.73,
+        "codigo": "B31",
+        "confianza": "media",
+        "mediana": 0.27,
+        "rango_p10_p90": [
+          0.0,
+          1.04
+        ],
+        "n_pixeles": 86166,
+        "fuente": "Hansen GFC, monte 2025 (cobertura >= 25 %)"
+      },
+      "monte_nativo_pct": {
+        "valor": 30.97,
+        "codigo": "Hansen GFC",
+        "confianza": "media",
+        "mediana": null,
+        "rango_p10_p90": null,
+        "n_pixeles": null,
+        "fuente": "Hansen GFC, monte 2025 (cobertura >= 25 %)"
+      },
+      "area_medida": "tierra agropecuaria"
+    },
+    "zona_2_secano_este": {
+      "ph": {
+        "valor": 7.07,
+        "codigo": "B16",
+        "confianza": "media",
+        "mediana": 7.1,
+        "rango_p10_p90": [
+          6.8,
+          7.28
+        ],
+        "n_pixeles": 189250,
+        "fuente": "SoilGrids 2.0, 0-30 cm"
+      },
+      "arcilla_pct": {
+        "valor": 26.04,
+        "codigo": "B12",
+        "confianza": "media",
+        "mediana": 27.12,
+        "rango_p10_p90": [
+          16.87,
+          33.87
+        ],
+        "n_pixeles": 189250,
+        "fuente": "SoilGrids 2.0, 0-30 cm"
+      },
+      "arena_pct": {
+        "valor": 25.94,
+        "codigo": "B17a",
+        "confianza": "media",
+        "mediana": 24.87,
+        "rango_p10_p90": [
+          12.62,
+          41.37
+        ],
+        "n_pixeles": 189250,
+        "fuente": "SoilGrids 2.0, 0-30 cm"
+      },
+      "limo_pct": {
+        "valor": 48.02,
+        "codigo": "B17b",
+        "confianza": "media",
+        "mediana": 47.62,
+        "rango_p10_p90": [
+          40.37,
+          56.12
+        ],
+        "n_pixeles": 189250,
+        "fuente": "SoilGrids 2.0, 0-30 cm"
+      },
+      "carbono_organico_g_kg": {
+        "valor": 15.12,
+        "codigo": "B15",
+        "confianza": "media",
+        "mediana": 14.68,
+        "rango_p10_p90": [
+          13.56,
+          17.18
+        ],
+        "n_pixeles": 189252,
+        "fuente": "SoilGrids 2.0, 0-30 cm"
+      },
+      "nitrogeno_g_kg": {
+        "valor": 1.46,
+        "codigo": "B11",
+        "confianza": "media",
+        "mediana": 1.45,
+        "rango_p10_p90": [
+          1.3,
+          1.62
+        ],
+        "n_pixeles": 189250,
+        "fuente": "SoilGrids 2.0, 0-30 cm"
       },
       "densidad_aparente_g_cm3": {
         "valor": 1.36,
         "codigo": "B18",
-        "confianza": "media"
+        "confianza": "media",
+        "mediana": 1.36,
+        "rango_p10_p90": [
+          1.33,
+          1.39
+        ],
+        "n_pixeles": 189252,
+        "fuente": "SoilGrids 2.0, 0-30 cm"
       },
       "pdsi": {
-        "valor": -2.1,
+        "valor": -0.3,
         "codigo": "B05",
-        "confianza": "media"
+        "confianza": "media",
+        "mediana": -0.36,
+        "rango_p10_p90": [
+          -0.51,
+          0.01
+        ],
+        "n_pixeles": 189334,
+        "fuente": "TerraClimate 1991-2020"
       },
       "distancia_caminos_km": {
-        "valor": 2.1,
+        "valor": 1.79,
         "codigo": "B36",
-        "confianza": "media"
+        "confianza": "media",
+        "mediana": 1.28,
+        "rango_p10_p90": [
+          0.22,
+          3.97
+        ],
+        "n_pixeles": 189334,
+        "fuente": "GRIP4 (Meijer y otros, 2018)"
       },
       "distancia_monte_km": {
-        "valor": 14.5,
+        "valor": 0.28,
         "codigo": "B31",
-        "confianza": "media"
+        "confianza": "media",
+        "mediana": 0.25,
+        "rango_p10_p90": [
+          0.0,
+          0.75
+        ],
+        "n_pixeles": 189334,
+        "fuente": "Hansen GFC, monte 2025 (cobertura >= 25 %)"
       },
       "monte_nativo_pct": {
-        "valor": 7.8,
-        "codigo": "MapBiomas",
-        "confianza": "media"
-      }
-    },
-    "zona_2_secano_este": {
-      "ph": {
-        "valor": 6.8,
-        "codigo": "B16",
-        "confianza": "media"
+        "valor": 32.77,
+        "codigo": "Hansen GFC",
+        "confianza": "media",
+        "mediana": null,
+        "rango_p10_p90": null,
+        "n_pixeles": null,
+        "fuente": "Hansen GFC, monte 2025 (cobertura >= 25 %)"
       },
-      "arcilla_pct": {
-        "valor": 22.0,
-        "codigo": "B12",
-        "confianza": "media"
-      },
-      "arena_pct": {
-        "valor": 46.0,
-        "codigo": "B17a",
-        "confianza": "media"
-      },
-      "limo_pct": {
-        "valor": 32.0,
-        "codigo": "B17b",
-        "confianza": "media"
-      },
-      "carbono_organico_g_kg": {
-        "valor": 12.1,
-        "codigo": "B15",
-        "confianza": "media"
-      },
-      "nitrogeno_g_kg": {
-        "valor": 1.15,
-        "codigo": "B11",
-        "confianza": "media"
-      },
-      "densidad_aparente_g_cm3": {
-        "valor": 1.28,
-        "codigo": "B18",
-        "confianza": "media"
-      },
-      "pdsi": {
-        "valor": -1.8,
-        "codigo": "B05",
-        "confianza": "media"
-      },
-      "distancia_caminos_km": {
-        "valor": 4.5,
-        "codigo": "B36",
-        "confianza": "media"
-      },
-      "distancia_monte_km": {
-        "valor": 3.8,
-        "codigo": "B31",
-        "confianza": "media"
-      },
-      "monte_nativo_pct": {
-        "valor": 21.4,
-        "codigo": "MapBiomas",
-        "confianza": "media"
-      }
+      "area_medida": "tierra agropecuaria"
     },
     "zona_3_monte_semiarido": {
       "ph": {
         "valor": 7.0,
         "codigo": "B16",
-        "confianza": "media"
+        "confianza": "media",
+        "mediana": 7.0,
+        "rango_p10_p90": [
+          6.75,
+          7.25
+        ],
+        "n_pixeles": 109672,
+        "fuente": "SoilGrids 2.0, 0-30 cm"
       },
       "arcilla_pct": {
-        "valor": 18.0,
+        "valor": 24.88,
         "codigo": "B12",
-        "confianza": "media"
+        "confianza": "media",
+        "mediana": 24.68,
+        "rango_p10_p90": [
+          20.81,
+          29.43
+        ],
+        "n_pixeles": 109672,
+        "fuente": "SoilGrids 2.0, 0-30 cm"
       },
       "arena_pct": {
-        "valor": 54.0,
+        "valor": 30.9,
         "codigo": "B17a",
-        "confianza": "media"
+        "confianza": "media",
+        "mediana": 32.12,
+        "rango_p10_p90": [
+          20.12,
+          38.87
+        ],
+        "n_pixeles": 109672,
+        "fuente": "SoilGrids 2.0, 0-30 cm"
       },
       "limo_pct": {
-        "valor": 28.0,
+        "valor": 44.22,
         "codigo": "B17b",
-        "confianza": "media"
+        "confianza": "media",
+        "mediana": 43.62,
+        "rango_p10_p90": [
+          38.12,
+          51.11
+        ],
+        "n_pixeles": 109672,
+        "fuente": "SoilGrids 2.0, 0-30 cm"
       },
       "carbono_organico_g_kg": {
-        "valor": 14.5,
+        "valor": 14.91,
         "codigo": "B15",
-        "confianza": "media"
+        "confianza": "media",
+        "mediana": 14.68,
+        "rango_p10_p90": [
+          13.18,
+          16.93
+        ],
+        "n_pixeles": 109670,
+        "fuente": "SoilGrids 2.0, 0-30 cm"
       },
       "nitrogeno_g_kg": {
-        "valor": 1.3,
+        "valor": 1.46,
         "codigo": "B11",
-        "confianza": "media"
+        "confianza": "media",
+        "mediana": 1.45,
+        "rango_p10_p90": [
+          1.31,
+          1.64
+        ],
+        "n_pixeles": 109672,
+        "fuente": "SoilGrids 2.0, 0-30 cm"
       },
       "densidad_aparente_g_cm3": {
-        "valor": 1.24,
+        "valor": 1.36,
         "codigo": "B18",
-        "confianza": "media"
+        "confianza": "media",
+        "mediana": 1.36,
+        "rango_p10_p90": [
+          1.32,
+          1.39
+        ],
+        "n_pixeles": 109670,
+        "fuente": "SoilGrids 2.0, 0-30 cm"
       },
       "pdsi": {
-        "valor": -2.6,
+        "valor": 0.03,
         "codigo": "B05",
-        "confianza": "media"
+        "confianza": "media",
+        "mediana": 0.2,
+        "rango_p10_p90": [
+          -0.65,
+          0.45
+        ],
+        "n_pixeles": 109919,
+        "fuente": "TerraClimate 1991-2020"
       },
       "distancia_caminos_km": {
-        "valor": 12.8,
+        "valor": 1.75,
         "codigo": "B36",
-        "confianza": "media"
+        "confianza": "media",
+        "mediana": 1.19,
+        "rango_p10_p90": [
+          0.19,
+          3.81
+        ],
+        "n_pixeles": 109919,
+        "fuente": "GRIP4 (Meijer y otros, 2018)"
       },
       "distancia_monte_km": {
-        "valor": 0.4,
+        "valor": 0.24,
         "codigo": "B31",
-        "confianza": "media"
+        "confianza": "media",
+        "mediana": 0.25,
+        "rango_p10_p90": [
+          0.0,
+          0.56
+        ],
+        "n_pixeles": 109919,
+        "fuente": "Hansen GFC, monte 2025 (cobertura >= 25 %)"
       },
       "monte_nativo_pct": {
-        "valor": 64.2,
-        "codigo": "MapBiomas",
-        "confianza": "media"
-      }
+        "valor": 61.0,
+        "codigo": "Hansen GFC",
+        "confianza": "media",
+        "mediana": null,
+        "rango_p10_p90": null,
+        "n_pixeles": null,
+        "fuente": "Hansen GFC, monte 2025 (cobertura >= 25 %)"
+      },
+      "area_medida": "tierra agropecuaria"
     },
     "zona_4_bajos_submeridionales": {
       "ph": {
-        "valor": 7.9,
+        "valor": 7.13,
         "codigo": "B16",
-        "confianza": "media"
+        "confianza": "media",
+        "mediana": 7.15,
+        "rango_p10_p90": [
+          6.9,
+          7.3
+        ],
+        "n_pixeles": 245994,
+        "fuente": "SoilGrids 2.0, 0-30 cm"
       },
       "arcilla_pct": {
-        "valor": 38.0,
+        "valor": 31.09,
         "codigo": "B12",
-        "confianza": "media"
+        "confianza": "media",
+        "mediana": 30.87,
+        "rango_p10_p90": [
+          26.12,
+          37.12
+        ],
+        "n_pixeles": 245994,
+        "fuente": "SoilGrids 2.0, 0-30 cm"
       },
       "arena_pct": {
-        "valor": 21.0,
+        "valor": 21.48,
         "codigo": "B17a",
-        "confianza": "media"
+        "confianza": "media",
+        "mediana": 19.36,
+        "rango_p10_p90": [
+          15.37,
+          32.11
+        ],
+        "n_pixeles": 245994,
+        "fuente": "SoilGrids 2.0, 0-30 cm"
       },
       "limo_pct": {
-        "valor": 41.0,
+        "valor": 47.42,
         "codigo": "B17b",
-        "confianza": "media"
+        "confianza": "media",
+        "mediana": 47.11,
+        "rango_p10_p90": [
+          40.12,
+          54.86
+        ],
+        "n_pixeles": 245994,
+        "fuente": "SoilGrids 2.0, 0-30 cm"
       },
       "carbono_organico_g_kg": {
-        "valor": 10.8,
+        "valor": 16.59,
         "codigo": "B15",
-        "confianza": "media"
+        "confianza": "media",
+        "mediana": 15.73,
+        "rango_p10_p90": [
+          14.77,
+          18.22
+        ],
+        "n_pixeles": 244541,
+        "fuente": "SoilGrids 2.0, 0-30 cm"
       },
       "nitrogeno_g_kg": {
-        "valor": 1.05,
+        "valor": 1.37,
         "codigo": "B11",
-        "confianza": "media"
+        "confianza": "media",
+        "mediana": 1.34,
+        "rango_p10_p90": [
+          1.23,
+          1.55
+        ],
+        "n_pixeles": 245994,
+        "fuente": "SoilGrids 2.0, 0-30 cm"
       },
       "densidad_aparente_g_cm3": {
-        "valor": 1.41,
+        "valor": 1.34,
         "codigo": "B18",
-        "confianza": "media"
+        "confianza": "media",
+        "mediana": 1.35,
+        "rango_p10_p90": [
+          1.31,
+          1.38
+        ],
+        "n_pixeles": 244541,
+        "fuente": "SoilGrids 2.0, 0-30 cm"
       },
       "pdsi": {
-        "valor": -1.5,
+        "valor": -0.52,
         "codigo": "B05",
-        "confianza": "media"
+        "confianza": "media",
+        "mediana": -0.52,
+        "rango_p10_p90": [
+          -0.61,
+          -0.42
+        ],
+        "n_pixeles": 253895,
+        "fuente": "TerraClimate 1991-2020"
       },
       "distancia_caminos_km": {
-        "valor": 8.2,
+        "valor": 1.69,
         "codigo": "B36",
-        "confianza": "media"
+        "confianza": "media",
+        "mediana": 1.06,
+        "rango_p10_p90": [
+          0.19,
+          3.68
+        ],
+        "n_pixeles": 253895,
+        "fuente": "GRIP4 (Meijer y otros, 2018)"
       },
       "distancia_monte_km": {
-        "valor": 6.2,
+        "valor": 0.87,
         "codigo": "B31",
-        "confianza": "media"
+        "confianza": "media",
+        "mediana": 0.56,
+        "rango_p10_p90": [
+          0.0,
+          2.14
+        ],
+        "n_pixeles": 253895,
+        "fuente": "Hansen GFC, monte 2025 (cobertura >= 25 %)"
       },
       "monte_nativo_pct": {
-        "valor": 16.5,
-        "codigo": "MapBiomas",
-        "confianza": "media"
-      }
+        "valor": 19.65,
+        "codigo": "Hansen GFC",
+        "confianza": "media",
+        "mediana": null,
+        "rango_p10_p90": null,
+        "n_pixeles": null,
+        "fuente": "Hansen GFC, monte 2025 (cobertura >= 25 %)"
+      },
+      "area_medida": "tierra agropecuaria"
     },
     "zona_5_sur_serrano": {
       "ph": {
-        "valor": 6.7,
+        "valor": 7.06,
         "codigo": "B16",
-        "confianza": "media"
+        "confianza": "media",
+        "mediana": 7.08,
+        "rango_p10_p90": [
+          6.8,
+          7.3
+        ],
+        "n_pixeles": 57163,
+        "fuente": "SoilGrids 2.0, 0-30 cm"
       },
       "arcilla_pct": {
-        "valor": 19.5,
+        "valor": 20.5,
         "codigo": "B12",
-        "confianza": "media"
+        "confianza": "media",
+        "mediana": 19.43,
+        "rango_p10_p90": [
+          14.56,
+          28.43
+        ],
+        "n_pixeles": 57163,
+        "fuente": "SoilGrids 2.0, 0-30 cm"
       },
       "arena_pct": {
-        "valor": 52.5,
+        "valor": 36.12,
         "codigo": "B17a",
-        "confianza": "media"
+        "confianza": "media",
+        "mediana": 36.12,
+        "rango_p10_p90": [
+          27.62,
+          44.61
+        ],
+        "n_pixeles": 57163,
+        "fuente": "SoilGrids 2.0, 0-30 cm"
       },
       "limo_pct": {
-        "valor": 28.0,
+        "valor": 43.39,
         "codigo": "B17b",
-        "confianza": "media"
+        "confianza": "media",
+        "mediana": 43.81,
+        "rango_p10_p90": [
+          36.31,
+          49.56
+        ],
+        "n_pixeles": 57163,
+        "fuente": "SoilGrids 2.0, 0-30 cm"
       },
       "carbono_organico_g_kg": {
-        "valor": 11.2,
+        "valor": 14.1,
         "codigo": "B15",
-        "confianza": "media"
+        "confianza": "media",
+        "mediana": 13.87,
+        "rango_p10_p90": [
+          12.12,
+          16.36
+        ],
+        "n_pixeles": 57161,
+        "fuente": "SoilGrids 2.0, 0-30 cm"
       },
       "nitrogeno_g_kg": {
-        "valor": 1.02,
+        "valor": 1.27,
         "codigo": "B11",
-        "confianza": "media"
+        "confianza": "media",
+        "mediana": 1.26,
+        "rango_p10_p90": [
+          1.08,
+          1.48
+        ],
+        "n_pixeles": 57163,
+        "fuente": "SoilGrids 2.0, 0-30 cm"
       },
       "densidad_aparente_g_cm3": {
-        "valor": 1.25,
+        "valor": 1.34,
         "codigo": "B18",
-        "confianza": "media"
+        "confianza": "media",
+        "mediana": 1.34,
+        "rango_p10_p90": [
+          1.3,
+          1.38
+        ],
+        "n_pixeles": 57161,
+        "fuente": "SoilGrids 2.0, 0-30 cm"
       },
       "pdsi": {
-        "valor": -1.9,
+        "valor": -0.61,
         "codigo": "B05",
-        "confianza": "media"
+        "confianza": "media",
+        "mediana": -0.62,
+        "rango_p10_p90": [
+          -0.69,
+          -0.52
+        ],
+        "n_pixeles": 57231,
+        "fuente": "TerraClimate 1991-2020"
       },
       "distancia_caminos_km": {
-        "valor": 5.4,
+        "valor": 1.57,
         "codigo": "B36",
-        "confianza": "media"
+        "confianza": "media",
+        "mediana": 0.94,
+        "rango_p10_p90": [
+          0.19,
+          3.19
+        ],
+        "n_pixeles": 57231,
+        "fuente": "GRIP4 (Meijer y otros, 2018)"
       },
       "distancia_monte_km": {
-        "valor": 1.2,
+        "valor": 0.92,
         "codigo": "B31",
-        "confianza": "media"
+        "confianza": "media",
+        "mediana": 0.27,
+        "rango_p10_p90": [
+          0.0,
+          2.03
+        ],
+        "n_pixeles": 57231,
+        "fuente": "Hansen GFC, monte 2025 (cobertura >= 25 %)"
       },
       "monte_nativo_pct": {
-        "valor": 44.8,
-        "codigo": "MapBiomas",
-        "confianza": "media"
-      }
+        "valor": 30.29,
+        "codigo": "Hansen GFC",
+        "confianza": "media",
+        "mediana": null,
+        "rango_p10_p90": null,
+        "n_pixeles": null,
+        "fuente": "Hansen GFC, monte 2025 (cobertura >= 25 %)"
+      },
+      "area_medida": "tierra agropecuaria"
     }
   }
 }

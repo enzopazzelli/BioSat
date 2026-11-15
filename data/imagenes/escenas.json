@@ -6,17 +6,19 @@
       -63.77,
       -27.43
     ],
-    "invierno": {
-      "item": "Compuesto GEE Mediana L8/9 Invierno 2025",
-      "fecha": "2025-08-15",
-      "periodo": "2025-06-01 a 2025-10-31",
-      "nubes": 0.0
-    },
     "verano": {
-      "item": "Compuesto GEE Mediana L8/9 Verano 2025",
-      "fecha": "2025-01-15",
+      "item": "Mediana Landsat 8/9 · 32 escenas",
+      "fecha": "2025-01-30",
       "periodo": "2024-12-01 a 2025-03-31",
-      "nubes": 0.0
+      "n_escenas": 32,
+      "fuente": "Google Earth Engine (Collection 2 Level-2, sin nubes)"
+    },
+    "invierno": {
+      "item": "Mediana Landsat 8/9 · 44 escenas",
+      "fecha": "2025-08-16",
+      "periodo": "2025-06-01 a 2025-10-31",
+      "n_escenas": 44,
+      "fuente": "Google Earth Engine (Collection 2 Level-2, sin nubes)"
     }
   },
   "z2": {
@@ -26,17 +28,19 @@
       -62.02,
       -27.35
     ],
-    "invierno": {
-      "item": "Compuesto GEE Mediana L8/9 Invierno 2025",
-      "fecha": "2025-08-15",
-      "periodo": "2025-06-01 a 2025-10-31",
-      "nubes": 0.0
-    },
     "verano": {
-      "item": "Compuesto GEE Mediana L8/9 Verano 2025",
-      "fecha": "2025-01-15",
+      "item": "Mediana Landsat 8/9 · 35 escenas",
+      "fecha": "2025-01-30",
       "periodo": "2024-12-01 a 2025-03-31",
-      "nubes": 0.0
+      "n_escenas": 35,
+      "fuente": "Google Earth Engine (Collection 2 Level-2, sin nubes)"
+    },
+    "invierno": {
+      "item": "Mediana Landsat 8/9 · 42 escenas",
+      "fecha": "2025-08-16",
+      "periodo": "2025-06-01 a 2025-10-31",
+      "n_escenas": 42,
+      "fuente": "Google Earth Engine (Collection 2 Level-2, sin nubes)"
     }
   },
   "z3": {
@@ -46,23 +50,26 @@
       -62.45,
       -26.28
     ],
-    "invierno": {
-      "item": "Compuesto GEE Mediana L8/9 Invierno 2025",
-      "fecha": "2025-08-15",
-      "periodo": "2025-06-01 a 2025-10-31",
-      "nubes": 0.0
-    },
     "verano": {
-      "item": "Compuesto GEE Mediana L8/9 Verano 2025",
-      "fecha": "2025-01-15",
+      "item": "Mediana Landsat 8/9 · 22 escenas",
+      "fecha": "2025-01-30",
       "periodo": "2024-12-01 a 2025-03-31",
-      "nubes": 0.0
+      "n_escenas": 22,
+      "fuente": "Google Earth Engine (Collection 2 Level-2, sin nubes)"
+    },
+    "invierno": {
+      "item": "Mediana Landsat 8/9 · 28 escenas",
+      "fecha": "2025-08-16",
+      "periodo": "2025-06-01 a 2025-10-31",
+      "n_escenas": 28,
+      "fuente": "Google Earth Engine (Collection 2 Level-2, sin nubes)"
     },
     "anio2000": {
-      "item": "Compuesto GEE Mediana L5/7 Año 2000",
-      "fecha": "2000-10-15",
-      "periodo": "1999-06-01 a 2001-10-31",
-      "nubes": 0.0
+      "item": "Mediana Landsat 5/7 · 19 escenas",
+      "fecha": "2000-09-30",
+      "periodo": "2000-08-01 a 2000-11-30",
+      "n_escenas": 19,
+      "fuente": "Google Earth Engine (Collection 2 Level-2, sin nubes)"
     }
   },
   "z4": {
@@ -72,17 +79,19 @@
       -62.43,
       -28.16
     ],
-    "invierno": {
-      "item": "Compuesto GEE Mediana L8/9 Invierno 2025",
-      "fecha": "2025-08-15",
-      "periodo": "2025-06-01 a 2025-10-31",
-      "nubes": 0.0
-    },
     "verano": {
-      "item": "Compuesto GEE Mediana L8/9 Verano 2025",
-      "fecha": "2025-01-15",
+      "item": "Mediana Landsat 8/9 · 33 escenas",
+      "fecha": "2025-01-30",
       "periodo": "2024-12-01 a 2025-03-31",
-      "nubes": 0.0
+      "n_escenas": 33,
+      "fuente": "Google Earth Engine (Collection 2 Level-2, sin nubes)"
+    },
+    "invierno": {
+      "item": "Mediana Landsat 8/9 · 43 escenas",
+      "fecha": "2025-08-16",
+      "periodo": "2025-06-01 a 2025-10-31",
+      "n_escenas": 43,
+      "fuente": "Google Earth Engine (Collection 2 Level-2, sin nubes)"
     }
   },
   "z5": {
@@ -92,17 +101,19 @@
       -63.29,
       -29.2
     ],
-    "invierno": {
-      "item": "Compuesto GEE Mediana L8/9 Invierno 2025",
-      "fecha": "2025-08-15",
-      "periodo": "2025-06-01 a 2025-10-31",
-      "nubes": 0.0
-    },
     "verano": {
-      "item": "Compuesto GEE Mediana L8/9 Verano 2025",
-      "fecha": "2025-01-15",
+      "item": "Mediana Landsat 8/9 · 35 escenas",
+      "fecha": "2025-01-30",
       "periodo": "2024-12-01 a 2025-03-31",
-      "nubes": 0.0
+      "n_escenas": 35,
+      "fuente": "Google Earth Engine (Collection 2 Level-2, sin nubes)"
+    },
+    "invierno": {
+      "item": "Mediana Landsat 8/9 · 49 escenas",
+      "fecha": "2025-08-16",
+      "periodo": "2025-06-01 a 2025-10-31",
+      "n_escenas": 49,
+      "fuente": "Google Earth Engine (Collection 2 Level-2, sin nubes)"
     }
   }
 }
