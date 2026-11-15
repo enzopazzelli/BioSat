@@ -15,7 +15,8 @@ import numpy as np
 import pandas as pd
 
 from ia_desmonte.comun import (BBOX_PROVINCIA, DATA, HANSEN, SALIDAS, SEMILLA, ULTIMO_ANIO, UMBRAL_MONTE, ZONAS, con_reintentos,
-                               distancia_m, escribir_json, iniciar_ee, meta_base, muestras_por_tandas)
+                               distancia_m, escribir_json, esperar, exportar, iniciar_ee, leer_tabla, meta_base,
+                               muestra_fc)
 
 PREDICTORES = ['dist_sin_monte_m', 'dist_desmonte_previo_m', 'dist_caminos_m', 'pendiente_grados', 'area_protegida',
                'poblacion_densidad', 'deficit_hidrico_mm', 'arcilla_pct', 'ph', 'zona']
@@ -167,15 +168,17 @@ def predictores(ee, corte):
     ]).updateMask(monte)
 
 
-def muestras(corte, fin, n, semilla):
+def muestras_fc(corte, fin, n, semilla):
     """Puntos al azar en el monte de `corte`, con predictores al corte y etiqueta 'se desmontó en (corte, fin]'."""
     ee = iniciar_ee()
     img = predictores(ee, corte)
     if fin is not None:
         _, ly = _hansen(ee)
         img = img.addBands(ly.gt(corte - 2000).And(ly.lte(fin - 2000)).rename('desmonte'))
-    print(f'Muestreando monte {corte} (n={n})')
-    df = muestras_por_tandas(img, ee.Geometry.Rectangle(BBOX_PROVINCIA), n, ESCALA_MUESTRA, semilla)
+    return muestra_fc(img, ee.Geometry.Rectangle(BBOX_PROVINCIA), n, ESCALA_MUESTRA, semilla)
+
+
+def _limpiar(df):
     df = df.dropna(subset=['zona'])
     df['zona'] = df['zona'].astype(int)
     return df
@@ -282,14 +285,21 @@ def armar_json(serie, monte_actual, evaluacion, elegido, justificacion, riesgos,
             'zonas': zonas}
 
 
-def _leer_o_muestrear(nombre, corte, fin, semilla):
-    ruta = SALIDAS / f'desmonte_{nombre}.csv'
-    if ruta.exists():
-        return pd.read_csv(ruta)
-    df = muestras(corte, fin, N_MUESTRA, semilla)
-    SALIDAS.mkdir(parents=True, exist_ok=True)
-    df.to_csv(ruta, index=False)
-    return df
+CORTES = {'entrenamiento': (2008, 2015, SEMILLA), 'prueba': (2015, ULTIMO_ANIO, SEMILLA + 1),
+          'riesgo': (ULTIMO_ANIO, None, SEMILLA + 2)}
+
+
+def _muestras():
+    """Las 3 muestras: de los CSV de salidas/ si ya están; si no, se exportan en paralelo en Earth Engine."""
+    faltan = [k for k in CORTES if not (SALIDAS / f'desmonte_{k}.csv').exists()]
+    if faltan:
+        tareas = [exportar(muestras_fc(*CORTES[k][:2], N_MUESTRA, CORTES[k][2]), f'desmonte_{k}_{N_MUESTRA}')
+                  for k in faltan]
+        esperar(tareas)
+        SALIDAS.mkdir(parents=True, exist_ok=True)
+        for k in faltan:
+            _limpiar(leer_tabla(f'desmonte_{k}_{N_MUESTRA}')).to_csv(SALIDAS / f'desmonte_{k}.csv', index=False)
+    return [pd.read_csv(SALIDAS / f'desmonte_{k}.csv') for k in CORTES]
 
 
 def _sensibilidad():
@@ -305,9 +315,7 @@ def _sensibilidad():
 
 
 def main():
-    train = _leer_o_muestrear('entrenamiento', 2008, 2015, SEMILLA)
-    test = _leer_o_muestrear('prueba', 2015, ULTIMO_ANIO, SEMILLA + 1)
-    actual = _leer_o_muestrear('riesgo', ULTIMO_ANIO, None, SEMILLA + 2)
+    train, test, actual = _muestras()
     evaluacion = evaluar(train, test)
     elegido, justificacion = elegir(evaluacion)
     print('Evaluación:', evaluacion)

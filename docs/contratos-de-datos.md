@@ -112,6 +112,10 @@ Suelo y paisaje por zona, a partir de AIZAL V4 (o de SoilGrids como plan B).
 
 - `confianza` puede ser `"alta"`, `"media"` o `"baja"`. La app la muestra junto a cada dato.
 - **Los satélites no miden salinidad ni compactación profunda:** eso queda como "qué falta saber" en las fichas.
+- **Desde D-30 (datos reales de Earth Engine, `ia_desmonte/suelo.py`):**
+  - Cada campo suma `mediana`, `rango_p10_p90` (`[p10, p90]` o `null`), `n_pixeles` y `fuente`.
+  - Cada zona suma `area_medida`: `"tierra agropecuaria"` (WorldCover clases 30 y 40) o `"zona completa"`, si hay poca tierra agropecuaria.
+  - `monte_nativo_pct` sale de Hansen GFC (cobertura del 2000 de 25 % o más, sin pérdida hasta 2025) y su código es `"Hansen GFC"`.
 
 ---
 
@@ -156,6 +160,14 @@ Resultado del módulo de IA con Landsat. **Solo valores calculados por el modelo
 
 - `meses_suelo_pelado` tiene 12 valores (enero a diciembre): `true` si en ese mes la zona suele tener el suelo pelado. Va directo al calendario. Si el dato sale de [`scripts/gee_exportar_zonas.js`](../scripts/gee_exportar_zonas.js), vale `true` cuando `prob_pelado_mXX` es 0,5 o más.
 - `indice_fragilidad_0_100` se calcula con una **fórmula visible** (por ejemplo, meses pelados × días de calor × lluvias intensas), escrita en `formula_fragilidad`.
+- **Desde D-30 (`ia_desmonte/suelo_pelado.py`):**
+  - Cada zona suma:
+    - `meses_dudosos`: 12 booleanos; el mes cambia con el umbral 0,20 o 0,30, o no tiene datos;
+    - `fraccion_pelado`: 12 fracciones o `null`, con umbral 0,25;
+    - `fraccion_pelado_umbral_020` y `fraccion_pelado_umbral_030`;
+    - `n_puntos_con_dato` y `obs_limpias_por_punto`;
+    - `confianza_fragilidad`, que es `"baja"`.
+  - `evaluacion.metodos` tiene solo `umbral_ndvi`, con exactitud y F1 en `null`, porque no hay datos de campo.
 
 ---
 
@@ -247,6 +259,14 @@ Las exporta [`scripts/gee_exportar_zonas.js`](../scripts/gee_exportar_zonas.js) 
 
   Solo se muestran las capas cuya estación (`invierno`, `verano`, `anio2000`) figura en el archivo.
 
+- **Desde D-30 (`ia_desmonte/imagenes.py`):**
+  - Las imágenes de `data/imagenes/` son **compuestos de mediana de Landsat hechos en Earth Engine**, sin nubes:
+    - verano, de diciembre de 2024 a marzo de 2025;
+    - invierno, de junio a octubre de 2025;
+    - año 2000 con Landsat 5 y 7.
+  - Cada estación lleva `item` (por ejemplo, "Mediana Landsat 8/9 · 40 escenas"), `fecha` (el centro del período), `periodo`, `n_escenas` y `fuente`. Ya no lleva `nubes`.
+  - Las vistas previas de `web/img/` siguen siendo escenas sueltas de Planetary Computer, y solo se usan como respaldo.
+
 ---
 
 ## 6. Kit Arduino (F6 · Sara)
@@ -324,6 +344,11 @@ Zonificación de la provincia con k-means sobre clima y suelo de AIZAL, propuest
 - **`grupos`:** un elemento por grupo. `nombre` lo pone el equipo mirando el perfil (por ejemplo, "Sur fresco y serrano").
 - **`meta.imagen`** (opcional): PNG de los grupos con su recuadro `[oeste, sur, este, norte]`. Si está, el visor de la app muestra la capa "Zonas AIZAL".
 - **`comparacion_biosat`:** dice qué grupo AIZAL domina en la celda de cada zona de BioSat y en qué porcentaje. Sirve para validar las 5 zonas.
+- **Desde D-30 (`ia_desmonte/zonificacion.py`):**
+  - Usa las mismas variables que AIZAL V4, tomadas de TerraClimate 1991-2020, SoilGrids 2.0 y NASADEM.
+  - `meta` suma `silueta_media`, `siluetas_por_k` y `variables`.
+  - Cada grupo suma `n` y un `perfil` con todas las variables.
+  - La comparación usa los polígonos de cada zona (sus departamentos), no la celda de NASA POWER.
 
 ---
 
@@ -360,8 +385,19 @@ Modelo predictivo de desmontes por zona (D-25). Lo genera la parte B de [`script
 }
 ```
 
-- **`riesgo_medio_0_1`:** probabilidad media de desmonte del monte que queda en la celda de la zona. La app la muestra como "presión de desmonte".
-- **`proyeccion_ha`:** sale del modelo temporal (LSTM o Transformer). Si no llega a tiempo, queda en `null`.
+- **`riesgo_medio_0_1`:** probabilidad media de desmonte del monte que queda en la zona en los próximos ~10 años, si sigue el patrón 2016-2025 (ver `meta.horizonte_riesgo`). La app la muestra como "presión de desmonte".
+- **`proyeccion_ha`:** desde D-30 sale de un método simple probado contra 2019-2025: promedio de 3 años, tendencia de 8 años u Holt (`ia_desmonte/proyeccion.py`). Proyecta 2026-2029.
+- **Desde D-30 (`ia_desmonte/desmonte.py`, Hansen v1.13):**
+  - `evaluacion.metodos` tiene:
+    - `regresion_logistica`, `random_forest` y `gradient_boosting`, cada uno con `auc`, `f1`, `accuracy`, `kappa`, `pr_auc` y `umbral`;
+    - `temporal`, con `metodo` y `error_ha_pct`, que reemplaza a `temporal_lstm_o_transformer`.
+  - `evaluacion` también suma `tasa_base`, `justificacion_metodo` (escrita con los mismos números) y `datos_de_prueba`.
+  - Cada zona suma:
+    - `riesgo_n`: puntos de monte usados;
+    - `confianza`: `"baja"` si `riesgo_n < 100`;
+    - `confianza_serie`: `"alta"`;
+    - `confianza_proyeccion`: `"baja"`.
+  - La serie `desmonte_ha_por_anio` va de 2001 a 2025.
 
 ---
 

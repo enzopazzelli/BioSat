@@ -160,3 +160,18 @@ Según la página oficial de premios (`NASA Space Apps Challenge - awards.mhtml`
   - **Situación:** la clave de la cuenta de Meteomatics del hackathon entró en el código con el PR #5 (commit `6488ad7`) y salió en `ce7f282`. Desde entonces el script la lee de `METEOMATICS_PASSWORD`, pero la clave vieja sigue en el historial público de Git.
   - **Decisión (Enzo):** no se cambia la contraseña. Es una decisión de practicidad: es la cuenta del hackathon, Meteomatics no entra en la app y cambiarla no suma nada a la demo. Deja de figurar como urgente.
   - **Si cambia algo:** si se viera un uso indebido de la cuenta, se cambia la clave en el sitio de Meteomatics en ese momento.
+- **D-30 (Datos reales de Earth Engine reemplazan al prototipo simulado):**
+  - **Qué se encontró:** en el repaso del 14/11 apareció que el modelo de desmontes, la historia de desmontes, el riesgo por zona, el suelo y la zonificación de `main` salían de un prototipo con **datos simulados** (`np.random` y valores escritos a mano), y que las imágenes "de Earth Engine" eran copias de las de Planetary Computer.
+  - **Decisión (Enzo):** rehacer todo con datos reales, con lo que más confianza dé y simulando lo menos posible. Se usa Google Earth Engine desde Python, con el proyecto de Enzo (nivel Comunidad, no comercial).
+  - **Qué cambia:**
+    - El pipeline vive en `ia_desmonte/`.
+    - El prototipo pasa a `archivo/prototipo-ia-simulado/`, con un aviso.
+    - **Fuentes:** Hansen v1.13 (desmontes 2001-2025), SoilGrids 2.0, TerraClimate, Landsat 2021-2025, ESA WorldCover, GRIP4, WDPA, WorldPop y NASADEM.
+    - **Validación del modelo:** entrena con el monte de 2008 y se prueba con el desmonte 2016-2025.
+    - Cada número lleva su fuente, su método y su confianza (alta, media o baja).
+  - **Las métricas cambian:** las del prototipo (AUC 0,986) no eran reales. Las nuevas son más bajas y defendibles. Están en `docs/datos-y-metodos.md`, que se genera solo a partir de los JSON. Antes de grabar el pitch, Santi y Sara tienen que usar estas.
+  - **Hallazgos de la corrida:**
+    - En Earth Engine, el nitrógeno de SoilGrids viene en mg/kg (se verificó contra la API de ISRIC).
+    - GRIP4 está en `GRIP4/Central-South-America`.
+    - La zonificación real da una silueta más baja que la del prototipo, y el JSON lo dice.
+  - **Diseño y plan:** `docs/superpowers/specs/2026-11-14-datos-reales-design.md` y `docs/superpowers/plans/2026-11-14-datos-reales.md`.

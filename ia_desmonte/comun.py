@@ -88,6 +88,67 @@ def muestras_por_tandas(imagen, region, n, escala, semilla, tanda=4000):
     return df.drop(columns=['estrato_muestra'], errors='ignore')
 
 
+def muestra_fc(imagen, region, n, escala, semilla):
+    """FeatureCollection (del lado de Earth Engine) con n puntos al azar de los píxeles no enmascarados de `imagen`."""
+    import ee
+    mascara = imagen.mask().reduce(ee.Reducer.min())
+    estrato = ee.Image.constant(1).rename('estrato_muestra').updateMask(mascara).toInt()
+    return imagen.addBands(estrato).stratifiedSample(numPoints=n, classBand='estrato_muestra', region=region,
+                                                     scale=escala, seed=semilla, dropNulls=True, tileScale=16,
+                                                     geometries=False)
+
+
+def asset_de(nombre):
+    """Ruta de la tabla en el proyecto de Earth Engine (EE_PROJECT)."""
+    return f'projects/{os.environ["EE_PROJECT"]}/assets/biosat_{nombre}'
+
+
+def exportar(fc, nombre):
+    """Exporta `fc` como tabla al proyecto de Earth Engine, en segundo plano y sin límite de tiempo.
+
+    Si la tabla ya existe, no la vuelve a calcular. Devuelve la tarea (o None si ya estaba).
+    """
+    import ee
+    try:
+        ee.data.getAsset(asset_de(nombre))
+        print(f'  {nombre}: ya estaba exportada')
+        return None
+    except ee.EEException:
+        pass
+    tarea = ee.batch.Export.table.toAsset(collection=fc, description=f'biosat_{nombre}', assetId=asset_de(nombre))
+    tarea.start()
+    print(f'  {nombre}: exportando (tarea {tarea.id})')
+    return tarea
+
+
+def esperar(tareas, cada=30):
+    """Espera a que terminen las exportaciones; corta con error si alguna falla."""
+    pendientes = [t for t in tareas if t is not None]
+    while pendientes:
+        time.sleep(cada)
+        for t in list(pendientes):
+            st = t.status()
+            if st['state'] == 'COMPLETED':
+                print(f'  tarea {t.id}: lista')
+                pendientes.remove(t)
+            elif st['state'] in ('FAILED', 'CANCELLED', 'CANCEL_REQUESTED'):
+                raise RuntimeError(f'La exportación {st.get("description")} falló: {st.get("error_message")}')
+
+
+def leer_tabla(nombre, pagina=4000):
+    """Lee una tabla exportada por páginas y devuelve un DataFrame con sus propiedades."""
+    import ee
+    import pandas as pd
+    tabla = ee.FeatureCollection(asset_de(nombre))
+    n = con_reintentos(lambda: tabla.size().getInfo())
+    filas = []
+    for desde in range(0, n, pagina):
+        datos = con_reintentos(lambda: tabla.toList(pagina, desde).getInfo())
+        filas.extend(f['properties'] for f in datos)
+    df = pd.DataFrame(filas)
+    return df.drop(columns=['estrato_muestra'], errors='ignore')
+
+
 UTM_20S = 'EPSG:32720'  # Santiago del Estero cae entera en la zona UTM 20 Sur: distancias en metros reales
 
 

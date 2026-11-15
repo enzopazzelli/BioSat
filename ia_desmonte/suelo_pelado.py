@@ -12,8 +12,8 @@ import json
 
 import pandas as pd
 
-from ia_desmonte.comun import (BBOX_PROVINCIA, DATA, SALIDAS, SEMILLA, ZONAS, con_reintentos, escribir_json,
-                               iniciar_ee, meta_base)
+from ia_desmonte.comun import (BBOX_PROVINCIA, DATA, SALIDAS, SEMILLA, ZONAS, escribir_json, esperar, exportar,
+                               iniciar_ee, leer_tabla, meta_base)
 
 UMBRALES = (0.20, 0.25, 0.30)
 UMBRAL = 0.25
@@ -112,7 +112,8 @@ def _ndvi_mensual(ee):
         malo = (qa.bitwiseAnd(1 << 1).neq(0).Or(qa.bitwiseAnd(1 << 3).neq(0))
                 .Or(qa.bitwiseAnd(1 << 4).neq(0)).Or(qa.bitwiseAnd(1 << 5).neq(0)))
         sr = img.select(['SR_B4', 'SR_B5']).multiply(0.0000275).add(-0.2)
-        return sr.normalizedDifference(['SR_B5', 'SR_B4']).rename('ndvi').updateMask(malo.Not())
+        ndvi = sr.normalizedDifference(['SR_B5', 'SR_B4']).rename('ndvi').updateMask(malo.Not())
+        return ee.Image(ndvi.copyProperties(img, ['system:time_start']))  # sin fecha no se puede filtrar por mes
     region = ee.Geometry.Rectangle(BBOX_PROVINCIA)
     col = (ee.ImageCollection('LANDSAT/LC08/C02/T1_L2').merge(ee.ImageCollection('LANDSAT/LC09/C02/T1_L2'))
            .filterBounds(region).filterDate('2021-01-01', '2026-01-01').map(limpiar))
@@ -124,23 +125,19 @@ def _ndvi_mensual(ee):
 
 
 def tabla_puntos():
-    """Tabla de puntos de cultivo con su NDVI mensual (una consulta por zona)."""
+    """Tabla de puntos de cultivo con su NDVI mensual. Se exporta en segundo plano en Earth Engine (sin límite de tiempo)."""
     ee = iniciar_ee()
     from ia_desmonte.zonas import zona_imagen
     z = zona_imagen()
     cultivos = ee.ImageCollection('ESA/WorldCover/v200').first().select('Map').eq(40)
     estrato = z.updateMask(cultivos).rename('zona')
-    ndvi = _ndvi_mensual(ee)
-    partes = []
-    for i in range(1, 6):
-        pts = estrato.stratifiedSample(numPoints=0, classBand='zona', classValues=[i], classPoints=[PUNTOS_POR_ZONA],
-                                       region=ee.Geometry.Rectangle(BBOX_PROVINCIA), scale=30, seed=SEMILLA + i,
-                                       geometries=True, tileScale=8)
-        fc = ndvi.sampleRegions(collection=pts, properties=['zona'], scale=30, tileScale=8, geometries=False)
-        datos = con_reintentos(lambda: fc.getInfo())
-        partes.append(pd.DataFrame([f['properties'] for f in datos['features']]))
-        print(f'  zona {i}: {len(datos["features"])} puntos')
-    df = pd.concat(partes, ignore_index=True)
+    pts = estrato.stratifiedSample(numPoints=0, classBand='zona', classValues=[1, 2, 3, 4, 5],
+                                   classPoints=[PUNTOS_POR_ZONA] * 5, region=ee.Geometry.Rectangle(BBOX_PROVINCIA),
+                                   scale=30, seed=SEMILLA, geometries=True, tileScale=16)
+    fc = _ndvi_mensual(ee).sampleRegions(collection=pts, properties=['zona'], scale=30, tileScale=16, geometries=False)
+    nombre = f'suelo_pelado_{PUNTOS_POR_ZONA}'
+    esperar([exportar(fc, nombre)])
+    df = leer_tabla(nombre)
     for c in MESES + CUENTAS:
         if c not in df:
             df[c] = None
