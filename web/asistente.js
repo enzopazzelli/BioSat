@@ -96,7 +96,9 @@
 
   // ------------------------------------------------------------------ Ventana
   let ventana = null;
+  let redibujar = null;   // la pregunta abierta, para cambiar de idioma sin cerrar la ventana (D-35)
   const abierto = () => !!ventana;
+  if (window.Idioma) Idioma.alCambiar(() => { if (redibujar) redibujar(); });
 
   function abrir(opciones) {
     if (ventana) return;
@@ -114,6 +116,7 @@
     raiz.innerHTML = `<div class="asist-caja">
       <div class="asist-barra" aria-hidden="true">${'<span></span>'.repeat(PANTALLAS)}</div>
       <div class="asist-cab"><p class="asist-pregunta"></p>
+        <div data-idioma-boton></div>
         <button type="button" class="asist-saltar" data-asist-saltar aria-label="${esc(TEXTOS.comun.saltarAyuda)}">${esc(TEXTOS.comun.saltar)}</button></div>
       <h2 id="asist-titulo" tabindex="-1"></h2>
       <p class="asist-ayuda"></p>
@@ -189,8 +192,14 @@
       atras.textContent = TEXTOS.comun.atras;
       atras.style.visibility = pantalla === 0 ? 'hidden' : 'visible';
       q('.asist-sig').textContent = pantalla === PANTALLAS - 1 ? TEXTOS.p4.terminar : TEXTOS.comun.siguiente;
+      const saltar = q('[data-asist-saltar]');   // también cambia con el idioma (D-35)
+      saltar.textContent = TEXTOS.comun.saltar;
+      saltar.setAttribute('aria-label', TEXTOS.comun.saltarAyuda);
       if (moverFoco) q('#asist-titulo').focus();
     }
+    // D-35: si se cambia el idioma con la ventana abierta, se redibuja la pregunta actual con las mismas respuestas.
+    redibujar = () => dibujar(false);
+    if (window.Idioma && Idioma.pintar) Idioma.pintar();
 
     // Al redibujar se reemplazan los botones: el foco vuelve al mismo, para quien usa el teclado.
     function enfocar(selector) { const el = raiz.querySelector(selector); if (el) el.focus(); }
@@ -198,6 +207,7 @@
     function cerrar(motivo) {
       document.removeEventListener('keydown', alTeclear);
       ventana = null;
+      redibujar = null;
       raiz.remove();
       for (const el of apagados) el.removeAttribute('inert');
       document.documentElement.style.overflow = overflowPrevio;

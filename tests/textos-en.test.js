@@ -87,3 +87,8 @@ test('el asistente y el kit en inglés no traducen claves que no existen en espa
     assert.deepEqual(I.clavesSobrantes(w.BioSatKit.TEXTOS, EN.modulos.kit), [], 'kit');
   }
 });
+
+test('el asistente está traducido entero (comun y las 4 preguntas)', () => {
+  assert.ok(EN.modulos.asistente, 'falta modulos.asistente');
+  assert.deepEqual(Object.keys(EN.modulos.asistente).sort(), ['comun', 'p1', 'p2', 'p3', 'p4']);
+});

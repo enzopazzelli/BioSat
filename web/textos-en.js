@@ -77,6 +77,59 @@
         tabla: {dia: 'Day', temp: 'High / low', lluvia: 'Rain', helada: 'Frost', hoja: 'Wet leaves (night)', si: 'Yes', no: '—'}
       },
 
+      // web/asistente.js · BioSatAsistente.TEXTOS
+      asistente: {
+        comun: {
+          progreso: 'Question {n} of 4',
+          atras: '← Back',
+          siguiente: 'Next →',
+          saltar: 'Skip',
+          saltarAyuda: 'Skip the assistant',
+          si: 'Yes',
+          no: 'No'
+        },
+        p1: {
+          titulo: 'Where is your farm?',
+          ayuda: 'Tap your area, or its color on the map.',
+          grupo: 'Your farm’s area',
+          mapaAlt: 'Map of Santiago del Estero with the 5 areas',
+          depTitulo: '{nombre} · area {num}',
+          mapaPie: 'Boundaries: IGN, via geoBoundaries (CC BY 3.0 IGO). Areas are drawn by department, approximately. The climate of each one comes from a NASA POWER point.',
+          elegida: 'selected'
+        },
+        p2: {
+          titulo: 'What do you have on your farm?',
+          ayuda: 'Tap to switch between Yes and No. If you are not sure, just continue.',
+          riego: {t: 'Irrigation', d: 'water to irrigate the crops'},
+          hacienda: {t: 'Livestock', d: 'cows, goats or other animals'},
+          maq: {t: 'No-till seeder or roller', d: 'to sow without plowing'}
+        },
+        p3: {
+          titulo: 'What worries you most?',
+          ayuda: 'Choose up to 3. You can leave it blank.',
+          lleno: 'You already chose 3. Remove one to change it.',
+          agua: 'Save water',
+          salitre: 'Stop the salt',
+          suelo: 'Look after the soil',
+          forraje: 'Have more grass',
+          ingreso: 'Make it pay'
+        },
+        p4: {
+          titulo: 'This is what we understood',
+          campo: 'Your farm',
+          porDefecto: '{lista} (the usual ones)',
+          tiene: 'You have',
+          preocupa: 'You worry about',
+          nada: 'Nothing in particular',
+          aviso: 'You can change it later whenever you want.',
+          terminar: 'See my farm →',
+          zona: 'Area {num} · {nombre}',
+          riego: 'Irrigation',
+          hacienda: 'Livestock',
+          maq: 'No-till seeder or roller'
+        }
+      },
+
       // web/app.js · TEXTOS_INICIO
       appInicio: {
         eyebrow: 'Your farm · Zone {num}',

@@ -1048,6 +1048,7 @@ function prepararIdioma(){
   Idioma.registrar('inicio', window.InicioLogica && InicioLogica.TEXTOS);
   Idioma.registrar('pronostico', window.PronosticoLogica && PronosticoLogica.TEXTOS);
   Idioma.registrar('appInicio', TEXTOS_INICIO);
+  Idioma.registrar('asistente', window.BioSatAsistente && BioSatAsistente.TEXTOS);
   Idioma.registrar('meses', MES_L);
   Idioma.registrar('mesesCortos', MES);
   Idioma.registrar('estado', ESTADO);

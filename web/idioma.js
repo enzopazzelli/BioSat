@@ -77,6 +77,7 @@
   const nf = (n, d = 0) => Number(n).toLocaleString(I.locale(actual), {minimumFractionDigits: d, maximumFractionDigits: d});
   const rotacion = id => (actual === 'en' && EN.rotaciones[id]) || null;
 
-  window.Idioma = {actual: () => actual, registrar, cambiar, alCambiar: fn => oyentes.push(fn), nf, rotacion};
+  // pintar(): dibuja los botones ES | EN que aparecieron después de cargar (por ejemplo, en el asistente).
+  window.Idioma = {actual: () => actual, registrar, cambiar, alCambiar: fn => oyentes.push(fn), nf, rotacion, pintar: pintarBotones};
   aplicarHtml();   // los scripts van con defer: el HTML ya está armado
 })();
