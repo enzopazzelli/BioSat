@@ -106,6 +106,7 @@ Fuera de `docs/`: `PLAN.md` (plan general y ruta), `planes/` (plan y checklist d
 11. Guía de armado en protoboard: el kit para principiantes alcanza para la estación (D-32, `arduino/GUIA-PROTOBOARD.md`).
 12. Revisión de ramas a las 10:00: no queda trabajo sin integrar en `main`.
 13. Hallazgo: la app dice "suelo pelado" donde el satélite solo ve poca vegetación verde, y muestra modelos y fuentes que no se usan. Plan para corregirlo antes de la demo (D-33, `docs/superpowers/plans/2026-11-15-app-sin-datos-falsos.md`).
+14. El Inicio va en dos columnas en la PC, y el pronóstico de Meteomatics (ECMWF, 9 km) entra en la app: tarjeta "Esta semana en tu zona" en el Inicio y el Reporte, la máxima de hoy en la pantalla del kit y una actualización diaria con GitHub Actions (D-34).
 
 ## 9. Pendientes y alertas
 
@@ -115,7 +116,7 @@ Fuera de `docs/`: `PLAN.md` (plan general y ruta), `planes/` (plan y checklist d
 - **Entrega:** guion, video o diapositivas, página del proyecto en Space Apps, declaración de uso de IA, 2 ensayos, hora y formato de entrega.
 - **Santi:** publicar el visor de Earth Engine; verificar la fragilidad y los meses de suelo pelado. La contraseña de Meteomatics no se cambia, por practicidad (D-29).
 - **Vale:** confirmar los 7 `requiere_hacienda`, conseguir por escrito el permiso del productor y validar (o declarar sin validar) las zonas 1 a 4.
-- **Enzo:** decidir si Meteomatics entra en la demo, ensayar la pantalla del kit en la pantalla grande y cerrar `PLAN.md`.
+- **Enzo:** cargar el secreto `METEOMATICS_PASSWORD` en GitHub (D-34), ensayar la pantalla del kit en la pantalla grande y cerrar `PLAN.md`.
 - **Detalles menores de la última revisión** (no impiden nada): flechita de los plegables, tamaños de letra y botones menores a 44 px, tema elegido en la pregunta 3 solo por color, zonas del asistente sin flechas del teclado, restos en `app.js` y la carpeta `web/` colapsada en el README.
 
 ## 10. Reglas que no se rompen
@@ -131,7 +132,9 @@ Fuera de `docs/`: `PLAN.md` (plan general y ruta), `planes/` (plan y checklist d
 
 ```bash
 python -m http.server 8000        # y abrir http://localhost:8000/web/
-node --test "tests/*.test.js"     # 112 pruebas (con el patrón entre comillas; "node --test tests/" no las encuentra)
+node --test "tests/*.test.js"     # 126 pruebas (con el patrón entre comillas; "node --test tests/" no las encuentra)
+python -X utf8 -m pytest scripts/pruebas -q      # pruebas de los scripts (sin internet)
+ANCHO=1440 node scripts/captura-movil.mjs "http://localhost:8000/web/index.html" pc.png 1100   # la app en otro ancho
 python -X utf8 scripts/actualizar_readme.py
 node arduino/esquema/generar-esquema.js          # regenera el esquema del Arduino
 python -X utf8 scripts/generar_mapa_santiago.py  # regenera el mapa (necesita internet)

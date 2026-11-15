@@ -228,4 +228,27 @@ Según la página oficial de premios (`NASA Space Apps Challenge - awards.mhtml`
   - **Pedido de Enzo:** "que la app no muestre cosas falsas en la demo". No se miden datos nuevos; se corrige lo que la app dice.
   - **3 formas de arreglar el semáforo:** (1) llamarlo por lo que mide, "lotes sin verde (pelados o con rastrojo seco)" (recomendada); (2) mostrar la duda con el rango de los 3 umbrales; (3) sacar el suelo pelado del semáforo. Con cualquiera, se arreglan la tabla de métodos y los textos, y se ponen nombres a los grupos (propuesta en el plan, a confirmar por Santi o Vale).
   - **Plan, con los lugares exactos del código y los pasos:** `docs/superpowers/plans/2026-11-15-app-sin-datos-falsos.md`. **Pendiente:** elegir la forma (si nadie decide otra cosa, la 1) y quién lo hace. Vale preguntó por esta tarea.
+- **D-34 (Inicio en la PC y el pronóstico de Meteomatics entra en la app):**
+  - **Por qué:**
+    - Enzo: "cuando abro la app desde el navegador de la PC se ve la vista del celular pero con bordes". El Inicio tenía 560 px de ancho máximo en cualquier pantalla.
+    - Meteomatics "da info valiosa": la app mostraba lo **típico** de cada mes (NASA POWER), pero no lo que viene **esta semana**. Ejemplo: en la Zona 2 el semáforo dice "faltan unos 110 mm de agua", y el pronóstico del 14/11 anunciaba 136 mm de lluvia para el 15/11 y hojas mojadas 6 de 7 días.
+  - **Corrección:** D-29 no decidió que Meteomatics quedara fuera. Solo decidió no cambiar la contraseña, y uno de sus motivos era que la app no lo usaba en ese momento. **Decisión (Enzo, 15/11): entra.**
+  - **Qué se hizo:**
+    - **Inicio en dos columnas desde 1024 px**, solo con CSS: a la izquierda el semáforo con su color; a la derecha lo que mejor encaja, el pronóstico y los botones. Por debajo de 1024 px no cambia nada.
+    - **Tarjeta "Esta semana en tu zona"** en el Inicio y en la sección 1 del Reporte. En el Reporte va con una tabla por día. Muestra:
+      - la lluvia total y el día de más lluvia;
+      - los días de más de 38 °C;
+      - las alertas de helada;
+      - los días con hoja mojada (favorece hongos);
+      - los días con viento de menos de 15 km/h (para pulverizar).
+
+      Los umbrales salen de `docs/integracion-meteomatics.md` §5 y son un criterio del equipo; la tarjeta lo dice. La lógica está en `web/pronostico-logica.js`, con pruebas.
+    - **Nunca se muestra un pronóstico vencido como actual:** los días que ya pasaron no se cuentan y, sin días por delante, la tarjeta dice "Pronóstico vencido" sin números. La fecha de hoy es la local, no la UTC. `-999` (el "sin dato" de Meteomatics) y `null` no se suman.
+    - **El semáforo no cambia:** sigue mostrando lo típico del mes. La tarjeta lo complementa y lo dice.
+    - **Actualización diaria:** el workflow `.github/workflows/actualizar-meteomatics.yml` corre a las 06:00 y sube el pronóstico del día. La contraseña vive en el secreto `METEOMATICS_PASSWORD` y nunca llega al navegador. **Falta que Enzo cargue el secreto.**
+    - **Protección:** si la descarga de una zona falla, `scripts/descargar_meteomatics.py` ya no pisa el archivo bueno (antes, si fallaban todas, lo escribía vacío). Tiene pruebas en `scripts/pruebas/` (pytest, sin internet).
+    - **Pantalla del kit:** suma "Pronóstico para hoy (Meteomatics, 9 km): máxima X °C" entre NASA POWER (50 km) y la sonda, como escalón de la escalera de escalas. Solo aparece si el pronóstico trae el día de hoy.
+    - **`scripts/captura-movil.mjs` acepta `ANCHO`**, para revisar la app en tablet y en compu.
+  - **No entra:** la vista detallada (`completo.html`) no lleva la tarjeta.
+  - **Diseño y plan:** `docs/superpowers/specs/2026-11-15-inicio-pc-y-meteomatics-design.md` y `docs/superpowers/plans/2026-11-15-inicio-pc-y-meteomatics.md`.
 

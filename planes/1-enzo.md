@@ -68,7 +68,7 @@ Que un productor recorra los 5 pasos de la app sin ayuda, con números de clima 
 _Salen del repaso del repo. Cada uno decide cómo abordarlas; si no corresponden, se borran._
 - [ ] Mostrar en la app y en el README el link del visor de Earth Engine cuando Santi lo publique
 - [x] Verificar que el visor use las imágenes de Earth Engine cuando Santi suba `data/imagenes/escenas.json` *(D-30: compuestos reales de Earth Engine)*
-- [ ] Decidir si Meteomatics entra en la app (alertas a 7-10 días, `data/meteomatics_santiago_zonas.json`) o queda fuera de la demo
+- [x] Decidir si Meteomatics entra en la app (alertas a 7-10 días, `data/meteomatics_santiago_zonas.json`) o queda fuera de la demo *(15/11: entra como tarjeta "Esta semana en tu zona", D-34)*
 - [ ] Ensayar `web/kit.html` y `web/campo.html` en la pantalla grande de la demo, con el kit conectado
 - [ ] Cerrar `PLAN.md`: sumar kit y guía en la sección 1 y contestar las preguntas abiertas
 - [ ] Probar de nuevo la app publicada en el celular y sin internet después del último merge
@@ -80,6 +80,13 @@ _Salen del repaso del repo. Cada uno decide cómo abordarlas; si no corresponden
 - [x] Asistente: la pregunta 1 nombra la característica de la zona y abajo sus localidades
 - [x] Probar el Inicio y el Reporte en un celular de verdad *(Enzo, 15/11: se ve bien)*
 - [x] Revisión final de las ramas `santi-datos-ia` y `enzo-app` antes de integrar la app a `main` *(15/11: `santi-datos-ia` no tiene nada fuera de `main`; `enzo-app` quedó integrada entera)*
+
+### Inicio en la PC y pronóstico de Meteomatics · 15/11 (D-34)
+- [x] Inicio en dos columnas desde 1024 px (solo CSS; el celular no cambia)
+- [x] Tarjeta "Esta semana en tu zona" en el Inicio y en el Reporte, que nunca muestra un pronóstico vencido como actual (`web/pronostico-logica.js`, con pruebas)
+- [x] Actualización diaria del pronóstico con GitHub Actions; el script no pisa el archivo si falla una zona
+- [x] Pantalla del kit: la máxima de hoy a 9 km entre NASA POWER y la sonda
+- [ ] Cargar el secreto `METEOMATICS_PASSWORD` en GitHub (Settings → Secrets and variables → Actions) y correr una vez el workflow "Actualizar pronostico de Meteomatics"
 
 ## Listo cuando
 
