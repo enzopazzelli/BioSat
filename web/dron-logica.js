@@ -31,6 +31,9 @@
     cmp: 'Landsat contra dron',
     cmpIzq: '← Landsat',
     cmpDer: 'Dron →',
+    guardadoVuelo: 'Vuelo guardado en este navegador: {nombre}. Está disponible sin internet.',
+    borrarVuelo: 'Borrar el vuelo guardado',
+    noGuardadoVuelo: 'No se pudo guardar el vuelo en este navegador (falta espacio o está bloqueado): para verlo otra vez, volvé a abrir el .tif.',
     // Tarjeta del Reporte (app.js)
     titulo: 'Tu lote, visto por el dron',
     paraIngeniero: 'Para tu ingeniero',
@@ -200,6 +203,21 @@
     return m ? m.i : null;
   }
 
+  // ---------- Vuelo guardado en el navegador (D-39) ----------
+  const idVuelo = e => `${e.nombre}|${e.bytes}|${e.fecha || ''}`;
+  // Lo que se guarda en IndexedDB: el estado (sin lo que solo sirve en pantalla), el NDVI achicado y la imagen dibujada.
+  function paqueteVuelo(estado, ndvi, png, ahora) {
+    const e = Object.assign({}, estado);
+    for (const k of ['url', 'leyendo', 'aviso', 'error', 'avisoGuardado', 'restaurado']) delete e[k];
+    return {version: 1, id: idVuelo(estado), estado: e,
+      ndvi: ndvi ? {valores: ndvi.valores, ancho: ndvi.ancho, alto: ndvi.alto} : null, png, guardado: ahora};
+  }
+  function vueloDePaquete(p) {
+    if (!p || p.version !== 1 || !p.png || !p.estado || !Array.isArray(p.estado.recuadro)) return null;
+    const ndvi = p.ndvi && p.ndvi.valores ? {valores: Float32Array.from(p.ndvi.valores), ancho: p.ndvi.ancho, alto: p.ndvi.alto} : null;
+    return {estado: Object.assign({}, p.estado), ndvi, png: p.png};
+  }
+
   // Franjas para leer un archivo grande sin cargarlo entero: cada una cubre filas [r0, r1) del original y llena
   // las filas [o0, o1) de la versión achicada (alto filas). filasMax = filas del original por franja, aproximado.
   function tramos(altoOriginal, alto, filasMax) {
@@ -334,7 +352,8 @@
 
   const L = {TEXTOS, defProj4, epsgDe, recuadroLatLon, metrosPorPixel, tipoImagen, pareceNdvi, descripcionesBandas,
     bandasSugeridas, ndvi, resumenNdvi, fechaDeTiff, avisoTamano, transformacionMapa, parsearPath, zonaDelPunto,
-    lineaInicio, comparacion, fichaTecnica, fechaCorta: diaMes, tramos, ycbcrARgb, elegirVista, elegirMascara};
+    lineaInicio, comparacion, fichaTecnica, fechaCorta: diaMes, tramos, ycbcrARgb, elegirVista, elegirMascara,
+    idVuelo, paqueteVuelo, vueloDePaquete};
   if (typeof module !== 'undefined' && module.exports) module.exports = L;
   else window.DronLogica = L;
 })();

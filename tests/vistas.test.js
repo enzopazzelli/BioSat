@@ -175,3 +175,26 @@ test('D-38: la caja del dron se vuelve a dibujar con cada renderTodo (si no, con
   const f = app.slice(app.indexOf('function renderDron'), app.indexOf('function renderDron') + 600);
   assert.match(f, /BioSatDron\.render\(\)/);
 });
+
+test('D-39: al restaurar el vuelo guardado, el visor muestra el dron y va al lote cuando el mapa se ve', () => {
+  const oyente = app.slice(app.indexOf('BioSatDron.alCambiar('), app.indexOf('BioSatDron.alCambiar(') + 400);
+  assert.match(oyente, /motivo === 'nuevo' \|\| motivo === 'restaurado'/);
+  const vista = app.slice(app.indexOf('function mostrarVista'), app.indexOf("window.addEventListener('hashchange', mostrarVista)"));
+  assert.match(vista, /visor\.irAlDron/);
+});
+
+test('D-39: si el vuelo se restauró antes de que app.js termine de arrancar, app.js lo toma igual', () => {
+  const ini = app.slice(app.indexOf('BioSatDron.alCambiar('), app.indexOf('BioSatDron.alCambiar(') + 900);
+  assert.match(ini, /BioSatDron\.estado\(\)[^\n]*restaurado/);
+});
+
+test('D-39: tarjeta de sectores en el Reporte, con sus scripts antes de app.js', () => {
+  for (const id of ['sectoresCard', 'sectMarcar', 'sectDibujo', 'sectLista', 'sectAviso']) assert.ok(idsIndex.has(id), id);
+  for (const s of ['sectores-logica.js', 'sectores.js']) assert.ok(index.indexOf(s) > 0 && index.indexOf(s) < index.indexOf('app.js'), s);
+  assert.ok(index.indexOf('id="sectoresCard"') > index.indexOf('id="dronFicha"'));
+});
+
+test('D-39: exportar e importar sectores', () => {
+  assert.ok(idsIndex.has('sectExportar') && idsIndex.has('sectImportar'));
+  assert.match(index, /id="sectArchivo"[^>]*accept="\.geojson,\.json"/);
+});

@@ -283,6 +283,9 @@
         cmp: 'Landsat vs. drone',
         cmpIzq: '← Landsat',
         cmpDer: 'Drone →',
+        guardadoVuelo: 'Flight saved in this browser: {nombre}. It is available offline.',
+        borrarVuelo: 'Delete the saved flight',
+        noGuardadoVuelo: 'The flight could not be saved in this browser (no space or blocked): to see it again, reopen the .tif.',
         titulo: 'Your field, seen by the drone',
         paraIngeniero: 'For your agronomist',
         cambiarZona: 'Switch to Zone {n}',
@@ -313,6 +316,38 @@
         lineaGris: 'image without NDVI',
         lineaOtraZona: 'It is in Zone {n}, not the selected one.',
         lineaFuera: 'It is outside Santiago del Estero.'
+      },
+
+      // web/sectores-logica.js · SectoresLogica.TEXTOS (sectores del lote, D-39)
+      sectores: {
+        locale: 'en-US',
+        titulo: 'Field sectors',
+        marcar: 'Mark a sector',
+        exportar: 'Export',
+        importar: 'Import',
+        dibujando: 'Tap the map to add points ({n} so far). With 3 or more, close the sector.',
+        deshacer: 'Undo point',
+        cerrar: 'Close sector',
+        cancelar: 'Cancel',
+        guardadoAviso: 'Saved in this browser. To share it, export the file.',
+        noGuardado: 'Could not save in this browser: export the sectors so you do not lose them.',
+        vacio: 'No sectors yet. Mark one on the map: it is a place to check in the field.',
+        estadoRevisar: 'To check in the field',
+        estadoRevisado: 'Checked',
+        estadoDescartado: 'Dismissed',
+        sector: 'Sector {n}',
+        nota: 'Note (what the drone shows)',
+        hallazgo: 'What was found in the field',
+        borrar: 'Delete',
+        confirmarBorrar: 'Delete sector {n}?',
+        ha: '{ha} ha',
+        m2: '{m2} m²',
+        ndviLinea: 'Median NDVI {ndvi} · {pct} % without active cover (flight of {fecha})',
+        sinNdvi: 'No NDVI: the sector is not on an image with NDVI.',
+        importados: '{ok} sectors loaded. Repeated: {rep}. Could not be read: {mal}.',
+        noGeojson: 'The file is not a GeoJSON of sectors.',
+        inicioUno: ' 1 sector to check.',
+        inicioVarios: ' {n} sectors to check.'
       },
 
       // web/kit-logica.js · KitLogica.TEXTOS (pantalla del kit)

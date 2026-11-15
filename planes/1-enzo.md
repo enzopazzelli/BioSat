@@ -93,7 +93,8 @@ _Salen del repaso del repo. Cada uno decide cómo abordarlas; si no corresponden
 - [x] Etapa 1: abrir un GeoTIFF de dron en el Reporte, verlo en el mapa con la cortina Landsat contra dron, NDVI del lote comparado con la zona y la línea del Inicio (`web/dron-logica.js` y `web/dron.js`, con pruebas)
 - [x] Probar la etapa 1 con un .tif real (lo consigue Enzo): tamaño, bandas, sistema de coordenadas, tiempo de lectura *(15/11: `drone.tif`, foto RGB de 33,6 MB en UTM 21 S, cerca de Corrientes; se lee en 1,2 a 1,6 s en Chrome; ver D-38)*
 - [ ] Probarlo en un celular de verdad
-- [ ] Etapa 2: marcar sectores, guardarlos en el navegador, exportarlos e importarlos (GeoJSON) y sacarlos en el PDF
+- [x] Etapa 2: marcar sectores con nota, estado y qué se encontró; el vuelo y los sectores guardados en el navegador para el campo sin internet; exportar e importar (GeoJSON) y en el PDF (D-39, `web/sectores-logica.js` y `web/sectores.js`, con pruebas)
+- [ ] Probar la etapa 2 con el `NDVI.tif` real de un DJI multiespectral (lo consigue Enzo)
 
 ## Listo cuando
 

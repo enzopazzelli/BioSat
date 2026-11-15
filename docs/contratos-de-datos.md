@@ -454,3 +454,44 @@ Pronóstico diario de Meteomatics (modelo europeo ECMWF, 9 km) para el punto de 
 - **Vigencia:** la app solo cuenta los días (ya corridos al día anterior) de hoy en adelante, con la fecha local. Si no queda ninguno, muestra "Pronóstico vencido (bajado el {fecha_generacion})" sin números.
 - **Contraseña:** solo en la variable `METEOMATICS_PASSWORD` (secreto de GitHub Actions o variable local). Nunca va en el repo ni en el navegador (D-29).
 - La forma del archivo se prueba en `tests/datos-contratos.test.js`, y el workflow corre esa prueba antes de subir un pronóstico nuevo.
+
+---
+
+## 11. Sectores del lote exportados (`biosat-sectores-AAAA-MM-DD.geojson`, D-39)
+
+No es un archivo de `data/`: lo genera la app cuando alguien toca **Exportar** en la tarjeta "Sectores del lote", y lo lee **Importar**. Sirve para pasarle los sectores a otra persona (el ingeniero, el productor) o abrirlos en Google Earth o QGIS.
+
+```json
+{
+  "type": "FeatureCollection",
+  "features": [{
+    "type": "Feature",
+    "geometry": {"type": "Polygon", "coordinates": [[[-64.0, -28.0], [-63.999, -28.0], [-63.999, -27.999], [-64.0, -27.999], [-64.0, -28.0]]]},
+    "properties": {
+      "n": 1, "estado": "revisado", "nota": "mancha clara al norte", "hallazgo": "suelo compactado en la entrada",
+      "ha": 1.09, "ndvi_mediano": 0.18, "fraccion_sin_cobertura": 0.72, "umbral_ndvi": 0.25,
+      "vuelo_fecha": "2026-11-03", "vuelo_archivo": "NDVI.tif",
+      "creado": "2026-11-15T13:00:00.000Z", "actualizado": "2026-11-15T14:00:00.000Z"
+    }
+  }]
+}
+```
+
+- **Coordenadas:** en el orden GeoJSON, `[longitud, latitud]`, WGS84, con el anillo cerrado (el último punto repite el primero).
+- **`estado`:**
+  - `revisar`: para revisar en el campo, el estado con el que nace todo sector;
+  - `revisado`;
+  - `descartado`.
+
+  Un sector es un lugar para revisar, no un diagnóstico (D-33).
+- **`nota`** es lo que se ve desde el dron. **`hallazgo`** es lo que se confirmó en el lote; lo escribe una persona.
+- **NDVI:**
+  - `ndvi_mediano` y `fraccion_sin_cobertura` salen de los píxeles del NDVI achicado cuyo centro cae dentro del polígono, con el umbral `umbral_ndvi` (el mismo que Landsat);
+  - van en `null` si el sector no cae sobre una imagen con NDVI;
+  - `vuelo_fecha` y `vuelo_archivo` dicen con qué vuelo se midió.
+- **Importar:** suma los polígonos (`Polygon` o cada parte de un `MultiPolygon`, solo el anillo exterior) como sectores nuevos, numerados después de los que hay. Un polígono con los mismos puntos que uno existente no se duplica. Lo que no es polígono se saltea. No se borra nada.
+- **Dónde vive en la app:**
+  - los sectores, en `localStorage` (`biosat.sectores.v1`, `{version: 1, sectores: [...]}`), con los puntos en `[lat, lon]`;
+  - el vuelo achicado, en IndexedDB (base `biosat`, almacén `vuelo`, clave `actual`).
+- La lógica y sus pruebas están en `web/sectores-logica.js` y `tests/sectores-logica.test.js`.
+

@@ -2,7 +2,8 @@
 // Sirve para revisar el Inicio y el Reporte como se ven en el teléfono: Chrome sin ventana no baja de 500 px
 // de ancho, así que una captura común no muestra el diseño de celular.
 //
-// Uso (con la app servida: python -m http.server 8000):
+// Uso (con la app servida: python -m http.server 8000). EVAL2 (D-39): después de EVAL recarga la página y corre otro código.
+// Uso:
 //   node scripts/captura-movil.mjs "http://localhost:8000/web/index.html" inicio.png [alto] [oscuro]
 //   ZONA=zona_5_sur_serrano node scripts/captura-movil.mjs "http://localhost:8000/web/index.html#reporte" reporte.png 1400
 //   EVAL='document.title' node scripts/captura-movil.mjs "http://localhost:8000/web/" x.png   (corre JS y muestra el resultado)
@@ -56,6 +57,11 @@ await espera(1500);
 if (process.env.EVAL) {   // código para probar algo en la página (devuelve un texto)
   const ev = await cdp('Runtime.evaluate', {expression: process.env.EVAL, awaitPromise: true, returnByValue: true});
   console.log('EVAL:', JSON.stringify(ev.result && ev.result.value));
+}
+if (process.env.EVAL2) {   // D-39: recarga la página (mismo perfil: queda lo guardado) y corre un segundo código
+  await cdp('Page.reload'); await espera(4000);
+  const ev = await cdp('Runtime.evaluate', {expression: process.env.EVAL2, awaitPromise: true, returnByValue: true});
+  console.log('EVAL2:', JSON.stringify(ev.result && ev.result.value));
 }
 const r = await cdp('Runtime.evaluate', {expression: 'innerWidth + "x" + document.documentElement.scrollWidth', returnByValue: true});
 const shot = await cdp('Page.captureScreenshot', {format: 'png'});

@@ -192,3 +192,14 @@ test('fichaTecnica de una foto RGB no habla de números calculados', () => {
   assert.ok(t.includes('Archivo de 18990 × 13321 píxeles. Se muestra una versión de 2048 píxeles de ancho, de unos 21 cm por píxel.'));
   assert.ok(!t.some(s => /números/.test(s)));
 });
+
+test('paqueteVuelo y vueloDePaquete: ida y vuelta, con el NDVI como Float32Array', () => {
+  const e = {nombre: 'NDVI.tif', bytes: 10, fecha: '2026-11-03', tipo: 'ndvi', recuadro: [[-28, -64], [-27.9, -63.9]], url: 'blob:x', leyendo: false, error: null};
+  const p = D.paqueteVuelo(e, {valores: Float32Array.from([0.1, 0.2]), ancho: 2, alto: 1}, new Blob(['png']), 'ahora');
+  assert.equal(p.id, 'NDVI.tif|10|2026-11-03'); assert.equal(p.estado.url, undefined);
+  const r = D.vueloDePaquete(structuredClone(p));
+  assert.ok(r.ndvi.valores instanceof Float32Array); assert.equal(r.ndvi.valores[1], Float32Array.from([0.2])[0]);
+  assert.equal(r.estado.tipo, 'ndvi');
+  assert.equal(D.vueloDePaquete({...p, version: 2}), null);
+  assert.equal(D.vueloDePaquete({...p, png: null}), null);
+});

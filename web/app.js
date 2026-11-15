@@ -283,7 +283,8 @@ function renderDron(){
   if (window.BioSatDron) BioSatDron.render();   // la caja del visor, ya con el idioma registrado
   const D = DronLogica, T = D.TEXTOS, d = window.BioSatDron && BioSatDron.estado(), r = resumenDron();
   if ($('#inicioDron')){
-    $('#inicioDronTxt').textContent = r ? D.lineaInicio(r) : '';
+    const pendientes = window.SectoresLogica && window.BioSatSectores ? SectoresLogica.lineaSectores(BioSatSectores.lista()) : '';
+    $('#inicioDronTxt').textContent = r ? D.lineaInicio(r) + pendientes : '';
     $('#inicioDronLink').textContent = r ? T.verEnMapa : D.lineaInicio(null) + ' →';
   }
   const box = $('#dronFicha');
@@ -444,7 +445,7 @@ function mostrarVista(){
   // Leaflet midió el mapa cuando el Reporte estaba oculto (0 px): al mostrarlo hay que volver a medir y encuadrar.
   if (enReporte && visor.map){
     visor.map.invalidateSize({animate:false});
-    if (visor.zonaVista !== state.zona) renderVisor();
+    if (visor.zonaVista !== state.zona || visor.irAlDron) renderVisor();
   }
 }
 window.addEventListener('hashchange', mostrarVista);
@@ -942,7 +943,7 @@ document.addEventListener('click', async e => {
 });
 
 /* ---------- Render general y eventos ---------- */
-function renderTodo(){ renderInicio(); renderPronostico(); renderTuCampo(); renderFrases(); renderStats(); renderCalendario(); renderPaneles(); renderDesmonte(); renderTrade(); renderCards(); renderSim(); renderDecidir(); renderVisor(); renderDron(); renderConclusiones(); }
+function renderTodo(){ renderInicio(); renderPronostico(); renderTuCampo(); renderFrases(); renderStats(); renderCalendario(); renderPaneles(); renderDesmonte(); renderTrade(); renderCards(); renderSim(); renderDecidir(); renderVisor(); renderDron(); if (window.BioSatSectores) BioSatSectores.render(); renderConclusiones(); }
 function renderClima(){ renderFrases(); renderStats(); renderCalendario(); renderPaneles(); renderTrade(); renderCards(); renderSim(); renderConclusiones(); }
 document.addEventListener('click', e => {
   const cb = e.target.closest('[data-capa]');
@@ -1127,6 +1128,7 @@ function prepararIdioma(){
   Idioma.registrar('inicio', window.InicioLogica && InicioLogica.TEXTOS);
   Idioma.registrar('pronostico', window.PronosticoLogica && PronosticoLogica.TEXTOS);
   Idioma.registrar('dron', window.DronLogica && DronLogica.TEXTOS);
+  Idioma.registrar('sectores', window.SectoresLogica && SectoresLogica.TEXTOS);
   Idioma.registrar('appInicio', TEXTOS_INICIO);
   Idioma.registrar('asistente', window.BioSatAsistente && BioSatAsistente.TEXTOS);
   Idioma.registrar('frases', window.FrasesLogica && FrasesLogica.TEXTOS);
@@ -1141,9 +1143,12 @@ function prepararIdioma(){
   Idioma.alCambiar(() => { nombresRotaciones(); renderTodo(); });
   // D-38: cuando se abre (o cambia) la imagen del dron, se vuelve a dibujar todo; con un archivo nuevo, el visor va a esa capa.
   if (window.BioSatDron) BioSatDron.alCambiar(motivo => {
-    if (motivo === 'nuevo'){ visor.capa = 'dron'; visor.cmp = 'no'; visor.irAlDron = true; }
+    // D-39: con un vuelo restaurado también: en el campo, lo primero que se quiere ver es el lote.
+    if (motivo === 'nuevo' || motivo === 'restaurado'){ visor.capa = 'dron'; visor.cmp = 'no'; visor.irAlDron = true; }
     renderTodo();
   });
+  // El vuelo guardado se restaura apenas carga la página, a veces antes de llegar acá: si ya está, se toma igual.
+  if (window.BioSatDron && BioSatDron.estado() && BioSatDron.estado().restaurado){ visor.capa = 'dron'; visor.cmp = 'no'; visor.irAlDron = true; }
 }
 
 cargarDatos().then(() => {
