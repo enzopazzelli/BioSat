@@ -1,5 +1,5 @@
 /* BioSat · app web v1. Lee los JSON de data/ (ver docs/contratos-de-datos.md). */
-let CLIMA = {}, IMG = {}, ROT = {}, FUENTE_ROT = {}, SUELO_Z = {}, DIAG = {}, ARDUINO = null, FUENTE_IMG = '', ZONIF = {}, DESMONTE = {};
+let CLIMA = {}, IMG = {}, ROT = {}, FUENTE_ROT = {}, VALIDADA = {}, SUELO_Z = {}, DIAG = {}, ARDUINO = null, FUENTE_IMG = '', ZONIF = {}, DESMONTE = {};
 
 const MES = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
 const MES_L = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
@@ -674,8 +674,71 @@ function renderFrases(){
   setFrase('#fraseSim', FrasesLogica.fraseCalorMas(ZONAS[state.zona].lugar, g, sum(clima('normal', 0, 0), m => m.d40), sum(clima('normal', g, 0), m => m.d40)));
 }
 
+/* ---------- Inicio (D-31): semáforo, lo que mejor encaja y la sonda. Diseño 4.2 a 4.4 ---------- */
+const MES_HOY = new Date().getMonth();
+const TEXTOS_INICIO = {
+  eyebrow: 'Tu campo · Zona {num}',
+  esActual: 'Tu rotación de hoy ya es la que mejor encaja',
+  hoy: 'Hoy', propuesta: 'Con el cambio',
+  validada: 'Revisada por un productor de la zona', sinValidar: 'Todavía sin validar en la zona',
+  sinDato: 'sin dato', tira: 'Suelo mes a mes. {detalle}'
+};
+const ICONO_NIVEL = [
+  '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.7 2.7L16 9.8"/></svg>',
+  '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v6"/><path d="M12 16.5v.5"/></svg>',
+  '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l10 18H2z"/><path d="M12 10v5"/><path d="M12 18v.5"/></svg>'
+];
+const cap = t => t ? t.charAt(0).toUpperCase() + t.slice(1) : t;
+// Datos del Inicio, también los usa el WhatsApp (Task 5).
+function datosInicio(){
+  const L = window.InicioLogica, c = clima('reciente', 0, 0)[MES_HOY];
+  const frac = ((DIAG.zonas || {})[state.zona] || {}).fraccion_pelado;
+  const fp = Array.isArray(frac) ? frac[MES_HOY] : null;
+  const sz = L.semaforoZona(MES_HOY, {falta: c ? c.et0 - c.lluvia : null, d35: c && c.d35, helada: c && c.helada}, fp ?? null);
+  const ss = L.semaforoSonda(state.vivo);
+  const rk = ranking(), mejor = rk.length ? rk[0].r : null;
+  const actual = (ROT[state.zona] || []).find(r => r.tipo === 'Actual') || null;
+  const ps = mejor ? L.proximaSiembra(mejor.seq.map(x => ({cultivo:x.n, siembra_mes:x.siembra})), MES_HOY) : null;
+  return {sz, ss, sem: ss || sz, mejor, actual, esActual: !!(mejor && actual && mejor.id === actual.id), ps};
+}
+function tiraHTML(filas){
+  const cab = MES.map((m, i) => `<span class="${i === MES_HOY ? 'hoy' : ''}">${m[0]}</span>`).join('');
+  return `<div class="tira-fila tira-cab"><span></span>${cab}</div>` + filas.map(([nombre, cal]) =>
+    `<div class="tira-fila"><span class="tira-nom">${esc(nombre)}</span>${[...cal].map((s, i) =>
+      `<span class="t-${s}${i === MES_HOY ? ' hoy' : ''}"></span>`).join('')}</div>`).join('')
+    + '<div class="tira-ley">' + Object.entries(ESTADO).map(([k, e]) => `<span><i class="t-${k}"></i>${e.label}</span>`).join('') + '</div>';
+}
+function renderInicio(){
+  if (!hayVistas() || !window.InicioLogica) return;
+  const L = window.InicioLogica, z = ZONAS[state.zona], d = datosInicio(), n = d.sem.nivel;
+  $('#inicioEyebrow').textContent = TEXTOS_INICIO.eyebrow.replace('{num}', z.num);
+  $('#inicioZona').textContent = z.nombre;
+  $('#inicioLocalidades').textContent = z.zona;
+  $('#inicioBanda').dataset.nivel = n;
+  const rotulo = d.ss ? L.TEXTOS.rotulo.sonda : L.TEXTOS.rotulo.zona.replace('{mes}', MES_L[MES_HOY]);
+  $('#inicioNivel').innerHTML = `${ICONO_NIVEL[n]}<span class="ini-nivel-txt"><strong>${L.TEXTOS.nivel[n]}</strong><span>${esc(rotulo)}</span></span>`;
+  $('#inicioRazon').textContent = d.sem.razon;
+  $('#inicioAccion').textContent = d.ss ? (n ? L.TEXTOS.accion.pelado : L.TEXTOS.accion.bien) : d.sz.accion;
+  if (!d.mejor){
+    $('#inicioRotacion').textContent = TEXTOS_INICIO.sinDato;
+    $('#inicioSiembra').textContent = $('#inicioPelados').textContent = '—';
+    $('#inicioTira').innerHTML = ''; $('#inicioValidacion').textContent = '';
+    return;
+  }
+  $('#inicioRotacion').textContent = d.esActual ? TEXTOS_INICIO.esActual : d.mejor.nombre;
+  $('#inicioSiembra').textContent = d.ps ? cap(MES_L[d.ps.mes - 1]) : TEXTOS_INICIO.sinDato;
+  const pm = L.mesesPelados(d.mejor.cal), pa = d.actual ? L.mesesPelados(d.actual.cal) : null;
+  $('#inicioPelados').textContent = d.esActual || pa === null ? String(pm) : `${pa} → ${pm}`;
+  const filas = d.esActual || !d.actual ? [[TEXTOS_INICIO.hoy, d.mejor.cal]] : [[TEXTOS_INICIO.hoy, d.actual.cal], [TEXTOS_INICIO.propuesta, d.mejor.cal]];
+  $('#inicioTira').innerHTML = tiraHTML(filas);
+  const peladosTxt = filas.map(([nom, cal]) => `${nom}: ${L.mesesPelados(cal)} meses de suelo pelado`).join('. ');
+  $('#inicioTira').setAttribute('aria-label', TEXTOS_INICIO.tira.replace('{detalle}', peladosTxt));
+  $('#inicioValidacion').textContent = VALIDADA[state.zona] ? TEXTOS_INICIO.validada : TEXTOS_INICIO.sinValidar;
+  $('#inicioValidacion').dataset.validada = VALIDADA[state.zona] ? 'si' : 'no';
+}
+
 /* ---------- Render general y eventos ---------- */
-function renderTodo(){ renderTuCampo(); renderFrases(); renderStats(); renderCalendario(); renderPaneles(); renderDesmonte(); renderTrade(); renderCards(); renderSim(); renderDecidir(); renderVisor(); }
+function renderTodo(){ renderInicio(); renderTuCampo(); renderFrases(); renderStats(); renderCalendario(); renderPaneles(); renderDesmonte(); renderTrade(); renderCards(); renderSim(); renderDecidir(); renderVisor(); }
 function renderClima(){ renderFrases(); renderStats(); renderCalendario(); renderPaneles(); renderTrade(); renderCards(); renderSim(); }
 document.addEventListener('click', e => {
   const cb = e.target.closest('[data-capa]');
@@ -689,7 +752,7 @@ document.addEventListener('click', e => {
 });
 $('#btnArduino').addEventListener('click', async () => {
   try {
-    await window.BioSatArduino.conectar(lectura => { state.vivo = lectura; renderPaneles(); });
+    await window.BioSatArduino.conectar(lectura => { state.vivo = lectura; renderPaneles(); renderInicio(); });
   } catch (err) {
     $('#sensorNota').textContent = 'No se pudo conectar el Arduino: ' + err.message;
   }
@@ -697,7 +760,7 @@ $('#btnArduino').addEventListener('click', async () => {
 
 
 document.addEventListener('click', e => {
-  if (e.target.closest('#btnCambiar')){ abrirAsistente(); return; }
+  if (e.target.closest('#btnCambiar') || e.target.closest('#btnCambiarInicio')){ abrirAsistente(); return; }
   const tb = e.target.closest('[data-bandeja]');
   if (tb){ state.bandeja = tb.dataset.bandeja; renderPaneles(); return; }
   const ps = e.target.closest('#presets button');
@@ -776,7 +839,7 @@ function adaptarRotaciones(lista){
     const sumaLeguminosa = at.aporte_nitrogeno === 'positivo' && secciones.size >= 2 ? 1 : 0;
     return {
       id:r.id, tipo:r.tipo === 'actual' ? 'Actual' : `Alternativa ${++alt}`, nombre:r.nombre || 'Sin nombre',
-      seq:(r.secuencia || []).map(x => ({n:x.cultivo, s:x.seccion})),
+      seq:(r.secuencia || []).map(x => ({n:x.cultivo, s:x.seccion, siembra: x.siembra_mes})),
       cal,
       attr:{
         agua:{baja:3, media:2, alta:1}[at.demanda_agua] ?? null,
@@ -837,6 +900,7 @@ async function cargarDatos(){
     const v = (rotVale.zonas || {})[z], b = (rotBorrador.zonas || {})[z];
     const deVale = v && Array.isArray(v.rotaciones) && v.rotaciones.length >= 3;
     ROT[z] = adaptarRotaciones(((deVale ? v : b) || {}).rotaciones || []);
+    VALIDADA[z] = !!(deVale && v.validado_por && v.validado_por !== 'sin validar');
     FUENTE_ROT[z] = deVale
       ? `Rotaciones cargadas por Vale (${v.validado_por || 'sin validar'}).`
       : 'Rotaciones: borrador del equipo, sin validar todavía.';

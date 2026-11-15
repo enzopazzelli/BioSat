@@ -50,3 +50,23 @@ test('las dos páginas cargan la lógica del Inicio antes que app.js', () => {
     assert.ok(a > 0 && a < b);
   }
 });
+
+test('los colores del semáforo existen en claro y en oscuro', () => {
+  const css = leer('estilos.css');
+  const oscuro = css.slice(css.indexOf('prefers-color-scheme: dark'));
+  for (const t of ['--sem-bien', '--sem-atencion', '--sem-cuidado', '--sem-tinta']) {
+    assert.match(css, new RegExp(t + ':'), t);
+    assert.match(oscuro, new RegExp(t + ':'), t + ' en oscuro');
+  }
+});
+
+test('el Inicio tiene todos sus elementos', () => {
+  for (const id of ['inicioBanda', 'inicioNivel', 'inicioRazon', 'inicioAccion', 'inicioRotacion', 'inicioSiembra',
+    'inicioPelados', 'inicioTira', 'inicioValidacion', 'btnSonda', 'btnWhatsapp', 'irReporte', 'btnCambiarInicio']) {
+    assert.ok(idsIndex.has(id), id);
+  }
+});
+
+test('las rotaciones adaptadas conservan el mes de siembra (para la próxima siembra)', () => {
+  assert.match(app, /siembra:\s*x\.siembra_mes/);
+});
