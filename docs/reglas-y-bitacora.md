@@ -398,3 +398,49 @@ Según la página oficial de premios (`NASA Space Apps Challenge - awards.mhtml`
     - probarlo en un celular de verdad;
     - para mostrar NDVI hace falta un vuelo con cámara multiespectral;
     - la etapa 2 (sectores) viene después.
+- **D-39 (Sectores del lote, etapa 2 del dron):**
+  - **Por qué:** la etapa 1 deja *ver* el lote; la 2 deja *señalar dónde ir a mirar*. Sigue el circuito de la hoja de ruta de Vale (D-37): detectar → verificar en el campo → registrar. Una mancha es un sector **para revisar**, no un diagnóstico (D-33).
+  - **Decisiones de Enzo (15/11):**
+    - con un vuelo multiespectral: se va a probar con un `NDVI.tif` real de un DJI;
+    - **para el ingeniero o el asesor que recorre el campo**: la ficha tiene estado cambiable y "Qué se encontró", separado de la nota;
+    - **enfoque B:** se guardan también la imagen achicada y su NDVI, para tener todo en el celular sin internet.
+  - **Diseño y plan:** `docs/superpowers/specs/2026-11-15-lector-dron-etapa-2-design.md` y `docs/superpowers/plans/2026-11-15-lector-dron-etapa-2.md`.
+  - **Qué hace:**
+    - **Tarjeta "Sectores del lote"** en la sección 4. "Marcar un sector" activa el dibujo: cada toque en el mapa suma un punto, con Deshacer punto, Cerrar sector (desde 3 puntos) y Cancelar.
+    - **Ficha de cada sector:**
+      - número y superficie (en hectáreas desde 0,1 ha; debajo, en m²);
+      - NDVI mediano y % sin cobertura activa dentro del sector, con la fecha del vuelo con que se midió, o "Sin NDVI";
+      - estado (para revisar en el campo, revisado o descartado);
+      - nota y "Qué se encontró en el lote";
+      - Borrar, y tocar el título lleva el mapa al sector.
+    - **En el mapa:** cada sector es un polígono con su número, con el color de acento si está para revisar y gris si no.
+    - **Guardado:**
+      - el vuelo (PNG y NDVI achicados) va a IndexedDB y se restaura al volver, con la capa del dron a la vista y el mapa en el lote;
+      - los sectores van a `localStorage`;
+      - "Borrar el vuelo guardado" lo quita;
+      - si el navegador no deja guardar, la app avisa y sigue.
+    - **Exportar e importar** en GeoJSON (contrato de datos §11). Importar suma sin duplicar.
+    - **PDF:** la lista sale con la nota y el hallazgo como texto.
+    - **Inicio:** la línea del dron suma "1 sector para revisar." o "N sectores…".
+    - **Inglés:** todos los textos nuevos.
+    - **`scripts/captura-movil.mjs`:** suma `EVAL2`, que recarga la página y corre un segundo código, para probar lo guardado.
+  - **Decisiones tomadas al construirlo:**
+    - al restaurar el vuelo, el visor muestra el dron y va al lote, aunque el diseño decía "sin mover el mapa": en el campo, lo primero que se quiere ver es el lote, y con Landsat elegido el dron no se veía;
+    - la cuenta del Inicio va como oración aparte, porque la línea ya termina en punto;
+    - mientras se dibuja, tocar un sector existente suma un punto en vez de abrir su ficha;
+    - al importar se conservan el NDVI y la fecha del vuelo del archivo.
+  - **Problema encontrado en el navegador y arreglado:** el vuelo se restauraba antes de que `app.js` terminara de arrancar, y la capa del dron no aparecía. Ahora `app.js` lo toma igual.
+  - **Pruebas:**
+    - `tests/sectores-logica.test.js` (8) y pruebas nuevas en `tests/dron-logica.test.js`, `tests/vistas.test.js` y `tests/textos-en.test.js`: 198 en verde.
+    - Revisado en Chrome a 390 px y en la PC, en español y en inglés, sin errores de JavaScript:
+      - marcar sobre las dos mitades del archivo de prueba (NDVI 0,50 y 0,00);
+      - estado y hallazgo guardados;
+      - un toque fuera del modo dibujo y un cambio de zona en medio de un dibujo;
+      - un sector sobre la foto RGB ("Sin NDVI");
+      - `localStorage` lleno y sin IndexedDB;
+      - restaurar después de recargar y borrar el vuelo guardado;
+      - exportar, importar e importar repetido.
+  - **Pendiente:**
+    - probarlo con el `NDVI.tif` real y en un celular de verdad;
+    - `fertilizer.tfw` llegó sin su `.tif`: por el nombre, puede ser una prescripción de DJI Terra (dosis, no NDVI), que queda fuera de esta etapa.
+

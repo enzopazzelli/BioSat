@@ -50,11 +50,11 @@ Avance de cada integrante, contado desde las casillas de su plan en [`planes/`](
 <!-- AUTO:AVANCE:INICIO -->
 | Persona | Rama | Avance | Tareas |
 |---|---|---|---|
-| [Enzo · Integración y app](planes/1-enzo.md) | `enzo-app` | `▓▓▓▓▓▓▓▓░░` 82% | 46/56 |
+| [Enzo · Integración y app](planes/1-enzo.md) | `enzo-app` | `▓▓▓▓▓▓▓▓░░` 82% | 47/57 |
 | [Santi · Suelo, satélite e IA](planes/2-santi.md) | `santi-datos-ia` | `▓▓▓▓▓▓▓▓░░` 76% | 22/29 |
 | [Vale · Campo y agronomía](planes/3-vale.md) | `vale-rotaciones` | `▓▓▓▓▓▓▓░░░` 72% | 18/25 |
 | [Sara · Kit Arduino y relato](planes/4-sara.md) | `sara-arduino-entrega` | `▓▓░░░░░░░░` 19% | 5/26 |
-| **Total** | | `▓▓▓▓▓▓▓░░░` **67%** | **91/136** |
+| **Total** | | `▓▓▓▓▓▓▓░░░` **67%** | **92/137** |
 <!-- AUTO:AVANCE:FIN -->
 
 ### Lo más urgente
@@ -96,7 +96,7 @@ Sale solo de las casillas sin tildar de cada plan. Panorama completo y riesgos: 
 - Cerrar `PLAN.md`: sumar kit y guía en la sección 1 y contestar las preguntas abiertas _(Agregadas por Enzo)_
 - Probar de nuevo la app publicada en el celular y sin internet después del último merge _(Agregadas por Enzo)_
 - Probarlo en un celular de verdad _(Lector de imágenes de dron)_
-- Etapa 2: marcar sectores, guardarlos en el navegador, exportarlos e importarlos (GeoJSON) y sacarlos en el PDF _(Lector de imágenes de dron)_
+- Probar la etapa 2 con el `NDVI.tif` real de un DJI multiespectral (lo consigue Enzo) _(Lector de imágenes de dron)_
 
 </details>
 
@@ -157,12 +157,12 @@ Sale solo de las casillas sin tildar de cada plan. Panorama completo y riesgos: 
 **Últimas decisiones:**
 
 <!-- AUTO:DECISIONES:INICIO -->
+- **D-39**: Sectores del lote, etapa 2 del dron
 - **D-38**: Lector de imágenes de dron, etapa 1
 - **D-37**: Sugerencia de un ingeniero: imágenes de dron y pasar de la zona al lote; hoja de ruta de Vale
 - **D-36**: Corrección: el visor del Reporte no mostraba la imagen Landsat
 - **D-35**: Botón de idioma ES/EN, etapa 1: lo que se ve primero, en inglés
 - **D-34**: Inicio en la PC y el pronóstico de Meteomatics entra en la app
-- **D-33**: Hallazgo: la app muestra cosas que no son ciertas; plan para corregirlas antes de la demo
 
 Todas las decisiones están en la [bitácora](docs/reglas-y-bitacora.md).
 <!-- AUTO:DECISIONES:FIN -->
@@ -231,7 +231,7 @@ BioSat/
 │   │   ├── 05_Logistica_Antropico_y_Servicios/ (2 archivos)  <-- B26-B29, B32-B37: caminos, población
 │   │   └── 06_Embeddings_IA_AlphaEarth/ (2 archivos)         <-- Embeddings AlphaEarth 64D (DeepMind)
 │   └── imagenes/ (23 archivos)                               <-- Compuestos de mediana Landsat del visor y mapa de la zonificación (Earth Engine)
-├── docs/ (38 archivos)                                       <-- Documentación del equipo
+├── docs/ (40 archivos)                                       <-- Documentación del equipo
 ├── ia_desmonte/                                              <-- Pipeline de datos reales con Earth Engine: suelo, desmontes, zonificación, suelo pelado e imágenes
 │   ├── __init__.py
 │   ├── comun.py
@@ -286,6 +286,7 @@ BioSat/
 │   ├── lector-serial.test.js
 │   ├── mapa-santiago.test.js
 │   ├── pronostico-logica.test.js                             <-- Prueba el resumen y el vencimiento del pronóstico de Meteomatics
+│   ├── sectores-logica.test.js
 │   ├── textos-en.test.js                                     <-- Prueba que el inglés no tenga huecos ni claves sobrantes (D-35)
 │   ├── vistas.test.js                                        <-- Prueba las vistas Inicio, Reporte y la vista detallada (completo.html)
 │   └── fixtures/
@@ -294,7 +295,7 @@ BioSat/
 │       ├── dron_rgb_utm20s.tif
 │       ├── dron_sin_coordenadas.tif
 │       └── generar_tif_prueba.py
-└── web/ (50 archivos)                                        <-- App web BioSat (abrir con un servidor: ver Inicio rápido)
+└── web/ (53 archivos)                                        <-- App web BioSat (abrir con un servidor: ver Inicio rápido)
 ```
 <!-- AUTO:ESTRUCTURA:FIN -->
 
