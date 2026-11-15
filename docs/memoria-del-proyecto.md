@@ -107,10 +107,11 @@ Fuera de `docs/`: `PLAN.md` (plan general y ruta), `planes/` (plan y checklist d
 12. Revisión de ramas a las 10:00: no queda trabajo sin integrar en `main`.
 13. Hallazgo: la app dice "suelo pelado" donde el satélite solo ve poca vegetación verde, y muestra modelos y fuentes que no se usan. Plan para corregirlo antes de la demo (D-33, `docs/superpowers/plans/2026-11-15-app-sin-datos-falsos.md`).
 14. El Inicio va en dos columnas en la PC, y el pronóstico de Meteomatics (ECMWF, 9 km) entra en la app: tarjeta "Esta semana en tu zona" en el Inicio y el Reporte, la máxima de hoy en la pantalla del kit y una actualización diaria con GitHub Actions (D-34).
+15. Botón de idioma ES/EN, etapa 1: el asistente, el Inicio, el marco del Reporte, el kit y la guía del campo en inglés; lo que sigue en español lo avisa en inglés (D-35).
 
 ## 9. Pendientes y alertas
 
-- **Idioma EN/ES:** última etapa de las sugerencias de la organización; necesita diseño propio. Las rotaciones de Vale en inglés pasan por su revisión.
+- **Idioma EN/ES (D-35):** la etapa 1 está hecha. Falta la etapa 2: el cuerpo del Reporte, los plegables, la vista detallada y los textos largos de las rotaciones. Vale tiene que revisar los nombres de las rotaciones en inglés.
 - **App sin datos falsos (D-33):** "suelo pelado" del satélite → "sin verde", tabla de métodos real, textos sin MapBiomas ni LART y nombres de los grupos AIZAL. Plan con 3 formas de arreglarlo en `docs/superpowers/plans/2026-11-15-app-sin-datos-falsos.md`.
 - **Kit Arduino:** armado con `arduino/GUIA-PROTOBOARD.md`, sellado del LM35, calibración y lecturas reales (sin ellas, la pantalla del kit solo anda en vivo).
 - **Entrega:** guion, video o diapositivas, página del proyecto en Space Apps, declaración de uso de IA, 2 ensayos, hora y formato de entrega.

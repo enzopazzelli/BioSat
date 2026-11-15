@@ -257,4 +257,27 @@ Según la página oficial de premios (`NASA Space Apps Challenge - awards.mhtml`
     - **Le toca a Santi:** pedir `wind_speed_mean_10m_24h:ms` en el script y confirmar el período de la helada (`planes/2-santi.md`).
   - **No entra:** la vista detallada (`completo.html`) no lleva la tarjeta.
   - **Diseño y plan:** `docs/superpowers/specs/2026-11-15-inicio-pc-y-meteomatics-design.md` y `docs/superpowers/plans/2026-11-15-inicio-pc-y-meteomatics.md`.
+- **D-35 (Botón de idioma ES/EN, etapa 1: lo que se ve primero, en inglés):**
+  - **Por qué:** lo sugirió la organización de Space Apps (D-28). Enzo: "Si bien nosotros elegimos algo para Santiago del Estero, esto debe poder verse en inglés". **Solo dos idiomas: español (el de siempre) e inglés.**
+  - **Cómo funciona:**
+    - Un botón `ES | EN` cambia el idioma sin recargar la página, así también anda sin internet.
+    - La app recuerda el idioma elegido, y un link con `?lang=en` abre directo en inglés.
+    - Los números siguen el idioma ("33.7 °C" en inglés).
+    - Los textos en español quedan donde estaban. El inglés vive en `web/textos-en.js`, y `web/idioma.js` reemplaza los textos en su lugar y avisa para volver a dibujar. La lógica pura, con pruebas, está en `web/idioma-logica.js`.
+  - **Qué quedó en inglés:**
+    - el asistente;
+    - el Inicio, con la tarjeta del pronóstico y el mensaje de WhatsApp;
+    - el marco del Reporte: título, botones, chips, títulos de sección, conclusiones y la tarjeta "Tu campo";
+    - la pantalla del kit y la guía del campo;
+    - los nombres de las zonas y de las 15 rotaciones.
+  - **Qué sigue en español (etapa 2):**
+    - el cuerpo detallado del Reporte, que está escrito dentro de `app.js`;
+    - los plegables "Para tu ingeniero";
+    - la vista detallada;
+    - los textos largos de las rotaciones.
 
+    En inglés, el Reporte lo avisa ("Some details of this report are still in Spanish.") y la vista detallada también ("This detailed view is only in Spanish for now.").
+  - **Pendiente de revisión:** los nombres de las rotaciones en inglés son traducción del equipo y **los tiene que revisar Vale** (`planes/3-vale.md`).
+  - **Para no chocar con D-33:** quien cambie un texto en español que tiene clave en `web/textos-en.js` tiene que actualizar también el inglés. El plan de D-33 lo dice.
+  - **De paso:** en `inicio-logica.js`, `frases-logica.js`, `pronostico-logica.js` y `kit-logica.js` había palabras y formatos fijos en español en el código: el "y" que une las señales, los meses, los días de la semana y `es-AR`. Pasaron a sus objetos `TEXTOS`, con pruebas.
+  - **Diseño y plan:** `docs/superpowers/specs/2026-11-15-idioma-es-en-design.md` y `docs/superpowers/plans/2026-11-15-idioma-es-en.md`.
