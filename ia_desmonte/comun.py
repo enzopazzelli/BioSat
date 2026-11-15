@@ -74,18 +74,18 @@ def muestras_por_tandas(imagen, region, n, escala, semilla, tanda=4000):
     import ee
     import pandas as pd
     mascara = imagen.mask().reduce(ee.Reducer.min())
-    estrato = ee.Image.constant(1).rename('_estrato').updateMask(mascara).toInt()
+    estrato = ee.Image.constant(1).rename('estrato_muestra').updateMask(mascara).toInt()
     img = imagen.addBands(estrato)
     filas = []
     for i in range(math.ceil(n / tanda)):
         cuantos = min(tanda, n - i * tanda)
-        fc = img.stratifiedSample(numPoints=cuantos, classBand='_estrato', region=region, scale=escala,
+        fc = img.stratifiedSample(numPoints=cuantos, classBand='estrato_muestra', region=region, scale=escala,
                                   seed=semilla + i, dropNulls=True, tileScale=8, geometries=False)
         datos = con_reintentos(lambda: fc.getInfo())
         filas.extend(f['properties'] for f in datos['features'])
         print(f'  tanda {i + 1}: {len(datos["features"])} puntos')
     df = pd.DataFrame(filas)
-    return df.drop(columns=['_estrato'], errors='ignore')
+    return df.drop(columns=['estrato_muestra'], errors='ignore')
 
 
 UTM_20S = 'EPSG:32720'  # Santiago del Estero cae entera en la zona UTM 20 Sur: distancias en metros reales
