@@ -356,7 +356,9 @@ Las secciones **Estado del proyecto**, **Lo que falta**, **Últimas decisiones**
 - **Decisiones:** salen de la [bitácora](docs/reglas-y-bitacora.md).
 - **Estructura:** sale de los archivos del repo. Para darle descripción a un archivo nuevo, agregalo en `DESCRIPCIONES` dentro del script.
 - **Qué no tocar a mano:** lo que está entre las marcas `<!-- AUTO:... -->`, porque se pisa. El resto del README sí se edita a mano.
-- **Después de un push:** como el robot puede subir un commit, hacé `git pull --rebase` antes de tu próximo push.
+- **Después de un push:** como el robot puede subir un commit, traé `main` antes de tu próximo push:
+  - si solo tenés commits comunes, `git pull --rebase`;
+  - **si tenés un merge sin subir** (por ejemplo, integraste la rama de otro), usá `git pull --ff-only` o `git pull --rebase=merges`. `git pull --rebase` a secas aplana el merge y reescribe los commits de la otra persona: su rama deja de figurar como integrada y le genera conflictos (pasó el 15/11 con la rama de Vale; se arregló con `git merge -s ours`).
 
 ---
 
