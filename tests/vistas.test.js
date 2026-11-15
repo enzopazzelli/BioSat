@@ -249,3 +249,12 @@ test('D-42: los botones de capas y los resúmenes desplegables miden al menos 44
   const bajos = [...css.matchAll(/([^{}]*summary[^{}]*)\{[^}]*min-height:(\d+)px/g)].filter(m => Number(m[2]) < 44).map(m => m[1].trim());
   assert.deepEqual(bajos, []);
 });
+
+test('D-42: la tarjeta muestra lo clave y despliega el resto en "Ver todo el detalle"', () => {
+  const f = app.slice(app.indexOf('function renderCards'), app.indexOf('/* ---------- Paso 4'));
+  assert.match(f, /<details class="rot-mas">/);
+  assert.match(f, /TEXTOS_REPORTE\.verDetalle/);
+  assert.match(f, /t\.gana\.slice\(0, 2\)/);
+  assert.match(f, /t\.cuesta\.filter\(.*\.slice\(0, 2\)/);   // sin repetir lo que ya dice un aviso
+  assert.match(f, /class="strip" role="img" aria-label=/);
+});

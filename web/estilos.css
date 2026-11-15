@@ -518,3 +518,16 @@ input[type=range]{width:100%;accent-color:var(--accent)}
   .sect-ficha textarea,.sect-acciones,.sect-estados,.sect-borrar,.sect-dibujo{display:none!important}
   .solo-print{display:block}
 }
+/* D-42: tarjetas de las alternativas: lo clave a la vista y el resto desplegable */
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+.gp{list-style:none;margin:0;padding:0;display:grid;gap:6px;font-size:.95rem}
+.gp li{display:grid;grid-template-columns:22px 1fr;gap:4px;align-items:start;line-height:1.35}
+.gp-i{font-weight:800;text-align:center}
+.gp-gana .gp-i{color:var(--ok)}
+.gp-paga .gp-i{color:var(--crit)}
+.gp-base{margin:0;font-size:.95rem;color:var(--muted)}
+.rot-mas{border-top:1px solid var(--line);padding-top:4px}
+.rot-mas>summary{cursor:pointer;font-weight:700;color:var(--accent);display:flex;align-items:center;min-height:44px}
+.rot-detalle{display:grid;gap:14px;padding-top:8px}
+.rot-detalle .tradeoff{grid-template-columns:1fr}
+

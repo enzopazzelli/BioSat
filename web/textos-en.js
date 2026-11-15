@@ -248,6 +248,9 @@
           4: 'Your soil and your forest, from the satellite', 5: 'You have not measured your field yet.', 5.1: 'The probe measured your field today.',
           6: 'To talk over with your agronomist', 7: 'Where the data comes from'
         },
+        verDetalle: 'See full details', ganaPoco: 'Little, compared with what you do today', gana: 'Gains', paga: 'Costs',
+        puntoPartida: 'This is your starting point: the other rotations are compared with it.',
+        tiraAria: 'Months of bare soil: {meses}', tiraAriaSin: 'No months of bare soil',
         copiado: 'Link copied.', noCopiado: 'Could not copy: copy the address from the browser bar.'
       },
 

@@ -769,29 +769,43 @@ function renderCards(){
       `Días de más de 40 °C con el cultivo en pie: ${nf(m.calor,1)} por año (NASA POWER, ${nombrePeriodo()}${escenario() ? ', con escenario' : ''}).`,
       ...r.evid
     ];
+    // D-42: arriba lo clave (nombre, tira, ajuste, avisos y 2 cosas que gana y 2 que paga); el resto en "Ver todo el detalle".
+    const T = TEXTOS_REPORTE;
+    const gp = (clase, icono, quien, x) => `<li class="${clase}"><span class="gp-i" aria-hidden="true">${icono}</span><span class="sr-only">${quien}: </span>${esc(x)}</li>`;
+    const resumenGP = t.base
+      ? `<p class="gp-base">${esc(T.puntoPartida)}</p>`
+      : `<ul class="gp">${(t.gana.slice(0, 2).length ? t.gana.slice(0, 2) : [T.ganaPoco]).map(x => gp('gp-gana', '✔', T.gana, x)).join('')}${t.cuesta.filter(x => !p.avisos.some(([, av]) => av.slice(0, 24) === x.slice(0, 24))).slice(0, 2).map(x => gp('gp-paga', '✘', T.paga, x)).join('')}</ul>`;   // sin repetir lo que ya dice un aviso
+    const pel = [...r.cal].map((s, i) => s === 'D' ? MES_L[i] : null).filter(Boolean);
+    const ariaTira = pel.length ? T.tiraAria.replace('{meses}', pel.join(', ')) : T.tiraAriaSin;
     return `<article class="card rot ${p.viable ? '' : 'off'}">
       <div class="rot-h"><span class="rank">${idx + 1}<sup>º</sup></span><span class="kind">${r.tipo}</span><h3>${esc(r.nombre)}</h3></div>
-      <div class="seq">${seq}</div>
-      <div><div class="strip">${strip}</div><div class="strip-lbl">${MES.map(x => `<span>${x[0]}</span>`).join('')}</div></div>
+      <div><div class="strip" role="img" aria-label="${esc(ariaTira)}">${strip}</div><div class="strip-lbl" aria-hidden="true">${MES.map(x => `<span>${x[0]}</span>`).join('')}</div></div>
       <div class="score"><div class="score-top"><span>Cuánto se ajusta a tus prioridades ${cf('puntaje')}</span><b>${p.pct === null ? '—' : p.pct + ' %'}</b></div>
-        <div class="meter"><i style="width:${p.pct ?? 0}%"></i></div><div class="prio-rows">${pr}</div></div>
+        <div class="meter"><i style="width:${p.pct ?? 0}%"></i></div></div>
       ${p.avisos.length ? `<div class="avisos">${p.avisos.map(([t,x]) => `<span class="aviso ${t}">${t === 'crit' ? '⛔' : '⚠'} ${x}</span>`).join('')}</div>` : ''}
-      <div class="expo">
-        <div><b>${m.pelados}</b><span>meses de suelo pelado</span></div>
-        <div><b>${nf(m.calor,1)}</b><span>días de más de 40 °C con cultivo en pie</span></div>
-        <div><b>${nf(m.tormentas,1)}</b><span>tormentas fuertes sobre suelo pelado</span></div>
-      </div>
-      ${bloqueTrade}
-      ${bloqueRiesgo}
-      <ul class="reglas">${reg}</ul>
-      <div class="cinco">
-        <div><h4>1 · Por qué se sugiere</h4><p>${esc(r.porque)}</p></div>
-        <div><h4>2 · Qué evidencia la respalda</h4><ul>${evid.map(e => `<li>${e}</li>`).join('')}</ul></div>
-        <div><h4>3 · Qué beneficios puede dar</h4><ul>${r.benef.map(x => `<li>${esc(x)}</li>`).join('')}</ul></div>
-        <div><h4>4 · Qué falta saber</h4><ul>${r.falta.map(x => `<li>${esc(x)}</li>`).join('')}</ul></div>
-        <div><h4>5 · Riesgos para revisar en el lugar</h4><ul>${r.riesgo.map(x => `<li>${esc(x)}</li>`).join('')}</ul></div>
-      </div>
-      ${bloqueSeguro}
+      ${resumenGP}
+      <details class="rot-mas"><summary>${esc(TEXTOS_REPORTE.verDetalle)}</summary>
+        <div class="rot-detalle">
+          <div class="seq">${seq}</div>
+          <div class="prio-rows">${pr}</div>
+          <div class="expo">
+            <div><b>${m.pelados}</b><span>meses de suelo pelado</span></div>
+            <div><b>${nf(m.calor,1)}</b><span>días de más de 40 °C con cultivo en pie</span></div>
+            <div><b>${nf(m.tormentas,1)}</b><span>tormentas fuertes sobre suelo pelado</span></div>
+          </div>
+          ${bloqueTrade}
+          ${bloqueRiesgo}
+          <ul class="reglas">${reg}</ul>
+          <div class="cinco">
+            <div><h4>1 · Por qué se sugiere</h4><p>${esc(r.porque)}</p></div>
+            <div><h4>2 · Qué evidencia la respalda</h4><ul>${evid.map(e => `<li>${e}</li>`).join('')}</ul></div>
+            <div><h4>3 · Qué beneficios puede dar</h4><ul>${r.benef.map(x => `<li>${esc(x)}</li>`).join('')}</ul></div>
+            <div><h4>4 · Qué falta saber</h4><ul>${r.falta.map(x => `<li>${esc(x)}</li>`).join('')}</ul></div>
+            <div><h4>5 · Riesgos para revisar en el lugar</h4><ul>${r.riesgo.map(x => `<li>${esc(x)}</li>`).join('')}</ul></div>
+          </div>
+          ${bloqueSeguro}
+        </div>
+      </details>
     </article>`;
   }).join('');
 }
@@ -1002,6 +1016,10 @@ document.addEventListener('click', e => {
 
 /* ---------- Reporte (D-31): cabecera, conclusiones, PDF y compartir. Diseño 4.6 ---------- */
 const TEXTOS_REPORTE = {
+  // D-42: tarjetas de las alternativas
+  verDetalle: 'Ver todo el detalle', ganaPoco: 'Poco, frente a lo que hacés hoy', gana: 'Gana', paga: 'Paga',
+  puntoPartida: 'Es tu punto de partida: las otras rotaciones se comparan contra esta.',
+  tiraAria: 'Meses de suelo pelado: {meses}', tiraAriaSin: 'Sin meses de suelo pelado',
   sub: 'Zona {num} · {riego} · {hacienda} · {mes} de {anio}',
   conRiego: 'con riego', sinRiego: 'sin riego', conHacienda: 'con hacienda', sinHacienda: 'sin hacienda',
   concl: {
