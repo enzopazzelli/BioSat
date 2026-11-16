@@ -660,3 +660,17 @@ Según la página oficial de premios (`NASA Space Apps Challenge - awards.mhtml`
   - **Arreglo:** las rutas apuntan a `../../data/imagenes/`, en los 3 lugares de `app.js`, en la imagen del encabezado (`index.html`) y en las 4 del lote (`repo-lots.js`). Se borró la copia de `z1_verano_rgb.png`, que quedó sin uso. Así hay una sola copia de cada imagen, y si el pipeline la vuelve a generar, la página la toma.
   - **Pruebas:** `tests/experiencia.test.js` (2) comprueba que exista cada imagen que pide el código (5 zonas × verano e invierno × RGB y NDVI, el encabezado y el lote). Falló antes del arreglo (faltaban 19 imágenes de zona y las 4 del lote) y pasa después. **191 de JS en verde.** En Chrome a 390 px, sin imágenes rotas en Inicio (3 de 3) ni en Análisis (5 de 5) y sin errores de JavaScript.
   - **Para Vale:** para que su página ande en Pages, cualquier archivo nuevo que use tiene que estar en el repo o leerse de `data/`.
+- **D-48 (Autocompletar para grabar el video en la página de Vale, 15/11, 23:00):**
+  - **Por qué:** Enzo pidió "un autocompletar rápido a la experiencia de Vale para poder grabar un video más rápido". Diseño: `docs/superpowers/specs/2026-11-15-autocompletar-experiencia-design.md`. Plan: `docs/superpowers/plans/2026-11-15-autocompletar-experiencia.md`.
+  - **Qué hace:** con `?demo=1` en la dirección (por ejemplo, `web/experiencia/?demo=1` o `?lang=en&demo=1`), aparece un botón "Autocompletar (demo)" en "Nuevo campo" y otro en "Nueva observación". Llenan los campos, pero no guardan: guardar queda a cargo de quien graba, así el video muestra el recorrido. Sin `?demo=1`, el botón no existe.
+    - **Campo:** "Lote Capital · Zona 1", con las coordenadas del centro del lote `capital_zona1` (−28.0129, −64.2297), donde cae el `NDVI.tif` real del ingeniero. Al subir ese TIFF, la página muestra la comparación con Sentinel-2 y Landsat. El cultivo queda vacío, porque no se sabe qué hay sembrado, y la nota dice que es un campo de ejemplo.
+    - **Observación:** fuente "Dron" y sector "Norte" ("North" en inglés). Está escrita como una tarea ("Recorrer el sector norte", "Revisar en el campo la cobertura…"), no como un hallazgo: no dice qué hay en el lote (D-33).
+  - **Cómo:** un archivo nuevo, `web/experiencia/demo-autocompletar.js`, cargado después de `app.js`. El código de Vale no cambia, salvo esa línea del `index.html`. El botón sigue el idioma de la página: observa el atributo `lang` de `<html>`.
+  - **Pruebas:** 5 nuevas en `tests/experiencia.test.js`, que fallaron antes de escribir el archivo:
+    - solo se activa con `demo=1`;
+    - el campo es de la Zona 1 y sus coordenadas caen dentro del recuadro del lote, leído de `repo-lots.js`;
+    - la observación es del dron y dice qué revisar;
+    - castellano e inglés tienen las mismas claves;
+    - `index.html` lo carga después de `app.js` y no trae el botón escrito.
+  - **196 de JS en verde.** En Chrome a 390 px, con `?demo=1` los dos botones llenan los formularios y pasan al inglés con el idioma; sin `?demo=1` no existen. Sin errores de JavaScript.
+  - **El TIFF no se autocompleta:** el navegador obliga a elegirlo a mano, y en el video tiene que ser el `NDVI.tif` real.
