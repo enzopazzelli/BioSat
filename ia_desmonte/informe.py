@@ -59,8 +59,7 @@ def generar():
     s.append('## 1. En pocas palabras\n')
     s.append('- Todos los números de suelo, desmonte, zonificación, suelo pelado e imágenes salen de **fuentes públicas y '
              'citables**, procesadas con Google Earth Engine y Python. No hay datos simulados.')
-    s.append('- El prototipo anterior usaba datos simulados y quedó archivado en '
-             '[`archivo/prototipo-ia-simulado/`](../archivo/prototipo-ia-simulado/LEEME-PRIMERO.md). Sus métricas no se usan.')
+    s.append('- Un primer prototipo usó datos simulados: se retiró del repositorio y sus métricas no se usan.')
     s.append('- Cada dato lleva su **confianza** (alta, media o baja) con el criterio de la sección 9.')
     s.append(f'- El modelo de desmontes se prueba con **años que no vio** ({desm["meta"]["validacion"]}). '
              f'{ev["justificacion_metodo"]}\n')
@@ -139,8 +138,8 @@ def generar():
                  f'pero al predecir la década siguiente baja a {_n(el["auc"])}: el patrón del desmonte cambió entre '
                  'los dos períodos. Una hipótesis, que este trabajo no prueba, es la entrada en vigencia de la Ley de '
                  'Bosques (26.331) y el ordenamiento territorial de la provincia hacia 2009-2010. Por eso el riesgo por '
-                 'zona sirve para **comparar zonas**, no como pronóstico exacto de cada lote. Plan para probar la '
-                 'hipótesis: [`validacion-ley-de-bosques`](superpowers/plans/2026-11-15-validacion-ley-de-bosques.md).\n')
+                 'zona sirve para **comparar zonas**, no como pronóstico exacto de cada lote. Probar la '
+                 'hipótesis queda como trabajo futuro.\n')
     s.append(f'**Riesgo por zona** ({desm["meta"]["horizonte_riesgo"]}):\n')
     s.append(_tabla(['Zona', 'Riesgo medio', 'Puntos de monte', 'Confianza'],
                     [[NOMBRE_ZONA[z], _n(desm['zonas'][z]['riesgo_medio_0_1'], 3), desm['zonas'][z]['riesgo_n'],

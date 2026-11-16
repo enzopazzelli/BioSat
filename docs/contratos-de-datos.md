@@ -1,8 +1,8 @@
 # Contratos de datos — BioSat
 
-> **Para qué sirve:** cada frente del [PLAN](../PLAN.md) produce un archivo en `data/` y la app solo lee esos archivos. Si todos respetamos estos formatos, cada uno trabaja en paralelo sin esperar al otro.
+> **Para qué sirve:** cada parte del trabajo produce un archivo en `data/` y la app solo lee esos archivos. Si todos respetamos estos formatos, cada uno trabaja en paralelo sin esperar al otro.
 > **Regla de oro:** si un dato falta, va `null` y la app muestra "sin dato". **Nunca se completa con un número inventado ni de ejemplo.**
-> **Cambios:** si necesitás cambiar un formato, avisá al equipo y anotalo en la [bitácora](reglas-y-bitacora.md).
+> **Cambios:** si cambia un formato, se actualiza este documento en el mismo cambio.
 
 Todos los archivos:
 
@@ -222,7 +222,7 @@ Las 3 rotaciones de cada zona, con los 5 puntos que pide la NASA y los datos que
 ```
 
 - Cada zona tiene **exactamente 3 rotaciones**: una con `"tipo": "actual"` y dos con `"tipo": "alternativa"`.
-- `seccion` es la de [`documentacion-tecnica-agronomica.md`](documentacion-tecnica-agronomica.md):
+- `seccion` es la sección de cultivo:
   - **A:** gramíneas.
   - **B:** leguminosas.
   - **C:** raíces profundas.
@@ -269,50 +269,9 @@ Las exporta [`scripts/gee_exportar_zonas.js`](../scripts/gee_exportar_zonas.js) 
 
 ---
 
-## 6. Kit Arduino (F6 · Sara) · archivado (D-44)
+## 6. Kit Arduino (retirado)
 
-> **Archivado el 15/11 (D-44).** La app ya no lee este contrato: no carga el lector ni `arduino_bandejas_demo.json`. Todo quedó en [`archivo/kit-arduino/`](../archivo/kit-arduino/README.md) (las rutas de abajo son las de antes). Se deja escrito por si el kit se retoma. El dato de hoy del lote sale del vuelo del dron, que cada uno abre desde su equipo (D-38 a D-40; el recorte satelital del lote está en §12).
-
-### Línea por puerto serie (9600 baudios, una cada 2 segundos)
-
-```json
-{"t":12345,"agua_raw":512,"temp_suelo_c":41.2,"temp_aire_c":33.0,"hum_aire_pct":28,"luz_raw":870,"semaforo":"rojo"}
-```
-
-- **`agua_raw` y `luz_raw`:** son lecturas crudas de 0 a 1023. La app las traduce con los umbrales calibrados en las bandejas.
-- **`semaforo`:** puede ser `"verde"`, `"amarillo"` o `"rojo"`.
-
-### Lector para la app: `arduino/lector-web-serial.js` (Sara)
-
-La app lo carga si existe y habilita el botón "Conectar Arduino por USB". Ya está hecho (`arduino/lector-web-serial.js`, con pruebas). `conectar()` vuelve apenas abre el puerto y las lecturas siguen llegando a `alLeer`. Tiene que dejar disponible este objeto:
-
-```js
-window.BioSatArduino = {
-  soportado: () => 'serial' in navigator,   // true en Chrome o Edge
-  conectar: async (alLeer) => { /* pide el puerto, abre a 9600 baudios y llama alLeer(lectura) con cada línea JSON */ },
-  desconectar: async () => { /* cierra el puerto */ }
-};
-```
-
-- `lectura` es el objeto de la línea JSON de arriba (`temp_suelo_c`, `agua_raw`, `luz_raw`, `temp_aire_c`, `hum_aire_pct`, `semaforo`).
-- Si el archivo no existe o el navegador no tiene Web Serial, la app usa las lecturas grabadas.
-
-### Respaldo: `data/arduino_bandejas_demo.json`
-
-Lecturas **reales** grabadas durante la calibración. La app las usa si el Arduino no está conectado.
-
-- **`meta.umbrales`:** puede traer `{"conductividad_salitre_raw": N}`, el valor de `agua_raw` desde el que la bandeja avisa posible salitre. Lo usa la pantalla del kit (`web/kit.html`); si falta, toma 700.
-
-```json
-{
-  "meta": { "fuente": "Kit Arduino BioSat", "fecha": "2026-11-15", "notas": "umbrales usados: ..." },
-  "bandejas": {
-    "A_pelada_seca": [ { "t": 0, "agua_raw": null, "temp_suelo_c": null, "temp_aire_c": null, "hum_aire_pct": null, "luz_raw": null, "semaforo": null } ],
-    "B_salitrosa": [],
-    "C_rastrojo": []
-  }
-}
-```
+La app ya no usa el kit Arduino: el dato del lote sale del vuelo del dron (§12). Este contrato se retiró del repositorio.
 
 ---
 
@@ -431,7 +390,7 @@ El contorno de Santiago del Estero con sus 27 departamentos, pintados por zona, 
 
 ## 10. `data/meteomatics_santiago_zonas.json` (pronóstico de 7 días · Santi, en la app desde D-34)
 
-Pronóstico diario de Meteomatics (modelo europeo ECMWF, 9 km) para el punto de cada zona. Lo genera [`scripts/descargar_meteomatics.py`](../scripts/descargar_meteomatics.py) y lo renueva todos los días el workflow `.github/workflows/actualizar-meteomatics.yml` (06:00 de Argentina). Detalle de los 10 parámetros en [`integracion-meteomatics.md`](integracion-meteomatics.md).
+Pronóstico diario de Meteomatics (modelo europeo ECMWF, 9 km) para el punto de cada zona. Lo genera [`scripts/descargar_meteomatics.py`](../scripts/descargar_meteomatics.py) y lo renueva todos los días el workflow `.github/workflows/actualizar-meteomatics.yml` (06:00 de Argentina).
 
 ```json
 {
