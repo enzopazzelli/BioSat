@@ -639,3 +639,17 @@ Según la página oficial de premios (`NASA Space Apps Challenge - awards.mhtml`
     - Zona 5: + Frías (Choya) y San Pedro de Guasayán (Guasayán).
   - **Hallazgo, sin cambiar:** dos de las localidades que ya tenía la Zona 2 caen en departamentos que el mapa pinta de otra zona: **Bandera** es la cabecera de Belgrano (Zona 4 en el mapa) y **Sachayoj** está en Alberdi (Zona 3). Puede ser a propósito (las zonas van por característica, no por límite), pero alguien que toca su pueblo en el mapa ve otra zona. Lo decide Vale o Enzo.
   - **Pruebas:** `tests/vistas.test.js` suma una (cada zona con al menos 5 localidades, sin repetir entre zonas); falló antes del cambio. **189 de JS en verde.** Revisado a 390 px: la pregunta 1 y el encabezado del Inicio, sin desbordes ni errores.
+- **D-46 (Se integra la propuesta de experiencia de Vale, sin el login, 15/11, 22:10):**
+  - **Qué es:** el commit `7ec505b` de Vale (rama `vale-rotaciones`, 21:39). Es una página aparte, `web/experiencia/`, con tres vistas: Inicio (las 5 zonas en imágenes Landsat), Mis campos y Análisis (la zona en números, el mes a mes, la imagen del dron, las observaciones, las rotaciones para conversar y el historial). No toca la app actual: solo suma 15 archivos. La app no la enlaza; se abre en `web/experiencia/`.
+  - **Decisión de Enzo:** integrarla ya y **ocultar el login**. La página tiene "Iniciar sesión" y "Crear cuenta", con email y contraseña, que mandan los datos a `/api/auth/...` y `/api/state`. En GitHub Pages no hay un servidor que los reciba: el login nunca funcionaría, y alguien podría escribir una contraseña real en un formulario que no lleva a ningún lado.
+  - **Cómo se ocultó:** con una regla al final de `web/experiencia/styles.css` (`#accountButton,#signOutButton,#authDialog{display:none!important}`), sin borrar el código de Vale. La página queda en modo invitado. Para volver a mostrar el login cuando haya servidor, se borra esa regla.
+  - **Revisado:**
+    - el merge solo suma la carpeta nueva;
+    - pasan las 189 pruebas de JS y las 50 de Python;
+    - a 390 px y a 1440 px no hay errores de JavaScript ni nada que se salga de la pantalla;
+    - no menciona el kit, y el campo de ejemplo ("El Algarrobal") está marcado como ejemplo (D-33).
+  - **Para Vale (sin cambiar):**
+    - **Datos copiados:** `repo-data.js` y `repo-lots.js` son una copia de los JSON de `data/` (commit `63c12a7`, del 14/11). Si un dato cambia, esa página queda desactualizada: conviene leer `../../data/`, como la app.
+    - **Letra chica:** hay textos de 10 y 11 px (`calc(10px * var(--font-scale))` en `evidence.css` y `regional.css`). D-42 pide 12 px como mínimo.
+    - **Modo invitado:** solo guarda las preferencias de accesibilidad. Los campos que se cargan se pierden al recargar la página.
+    - **Copias de bibliotecas:** `vendor/geotiff.js` y `vendor/proj4.js` repiten las de `web/vendor/`.
