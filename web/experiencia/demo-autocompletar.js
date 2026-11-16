@@ -3,8 +3,8 @@
    Guardar queda a cargo de quien graba, así el video muestra el recorrido. Sin ?demo=1 no se crea nada.
    Diseño: docs/superpowers/specs/2026-11-15-autocompletar-experiencia-design.md */
 (function () {
-  // Centro del recorte satelital del lote capital_zona1 (D-40), donde cae el NDVI.tif real del ingeniero:
-  // con este campo, al subir ese TIFF la página muestra la comparación con Sentinel-2 y Landsat.
+  // Centro del recorte satelital del lote capital_zona1 (D-40), donde cae el NDVI.tif real del ingeniero.
+  // (La comparación con Sentinel-2 y Landsat la elige la página por los bordes del TIFF, no por este campo.)
   const CAMPO = {
     nombre: 'Lote Capital · Zona 1',
     zona: 'zona_1_riego_salitre',
@@ -37,7 +37,7 @@
 
   const TEXTOS = {es: {boton: 'Autocompletar (demo)'}, en: {boton: 'Autofill (demo)'}};
 
-  // true solo si la dirección trae demo=1 (también junto con otros parámetros, como lang=en).
+  // true solo si la dirección trae demo=1 (también junto con otros parámetros).
   function activo(search) {
     return new URLSearchParams(search || '').get('demo') === '1';
   }
@@ -89,9 +89,12 @@
     if (!activo(location.search)) return;
     const acciones = document.querySelector('#fieldForm .form-actions');
     if (acciones && !document.getElementById('demoAutocompletarCampo')) acciones.appendChild(boton('demoAutocompletarCampo', llenarCampo));
+    // En el diálogo de la observación va en una fila propia, arriba de Cancelar y Guardar: adentro de esa fila
+    // (flex, sin salto de línea) desbordaba el diálogo a 390 px en castellano.
     const cancelar = document.getElementById('cancelObservation');
     if (cancelar && !document.getElementById('demoAutocompletarObs')) {
-      cancelar.parentNode.insertBefore(boton('demoAutocompletarObs', llenarObservacion), cancelar);
+      const fila = cancelar.parentNode;
+      fila.parentNode.insertBefore(boton('demoAutocompletarObs', llenarObservacion), fila);
     }
     rotular();
     // La página cambia el idioma poniendo lang en <html>: el botón lo sigue.

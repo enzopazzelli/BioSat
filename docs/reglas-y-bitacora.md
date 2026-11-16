@@ -662,8 +662,8 @@ Según la página oficial de premios (`NASA Space Apps Challenge - awards.mhtml`
   - **Para Vale:** para que su página ande en Pages, cualquier archivo nuevo que use tiene que estar en el repo o leerse de `data/`.
 - **D-48 (Autocompletar para grabar el video en la página de Vale, 15/11, 23:00):**
   - **Por qué:** Enzo pidió "un autocompletar rápido a la experiencia de Vale para poder grabar un video más rápido". Diseño: `docs/superpowers/specs/2026-11-15-autocompletar-experiencia-design.md`. Plan: `docs/superpowers/plans/2026-11-15-autocompletar-experiencia.md`.
-  - **Qué hace:** con `?demo=1` en la dirección (por ejemplo, `web/experiencia/?demo=1` o `?lang=en&demo=1`), aparece un botón "Autocompletar (demo)" en "Nuevo campo" y otro en "Nueva observación". Llenan los campos, pero no guardan: guardar queda a cargo de quien graba, así el video muestra el recorrido. Sin `?demo=1`, el botón no existe.
-    - **Campo:** "Lote Capital · Zona 1", con las coordenadas del centro del lote `capital_zona1` (−28.0129, −64.2297), donde cae el `NDVI.tif` real del ingeniero. Al subir ese TIFF, la página muestra la comparación con Sentinel-2 y Landsat. El cultivo queda vacío, porque no se sabe qué hay sembrado, y la nota dice que es un campo de ejemplo.
+  - **Qué hace:** con `?demo=1` en la dirección (`web/experiencia/?demo=1`; para grabar en inglés, tocar EN en la página, porque `?lang` no le cambia el idioma), aparece un botón "Autocompletar (demo)" en "Nuevo campo" y otro en "Nueva observación". Llenan los campos, pero no guardan: guardar queda a cargo de quien graba, así el video muestra el recorrido. Sin `?demo=1`, el botón no existe.
+    - **Campo:** "Lote Capital · Zona 1", con las coordenadas del centro del lote `capital_zona1` (−28.0129, −64.2297), donde cae el `NDVI.tif` real del ingeniero. La comparación con Sentinel-2 y Landsat aparece al subir ese TIFF, pero la elige la página por los bordes del TIFF, no por el campo. El cultivo queda vacío, porque no se sabe qué hay sembrado, y la nota dice que es un campo de ejemplo.
     - **Observación:** fuente "Dron" y sector "Norte" ("North" en inglés). Está escrita como una tarea ("Recorrer el sector norte", "Revisar en el campo la cobertura…"), no como un hallazgo: no dice qué hay en el lote (D-33).
   - **Cómo:** un archivo nuevo, `web/experiencia/demo-autocompletar.js`, cargado después de `app.js`. El código de Vale no cambia, salvo esa línea del `index.html`. El botón sigue el idioma de la página: observa el atributo `lang` de `<html>`.
   - **Pruebas:** 5 nuevas en `tests/experiencia.test.js`, que fallaron antes de escribir el archivo:
@@ -673,4 +673,7 @@ Según la página oficial de premios (`NASA Space Apps Challenge - awards.mhtml`
     - castellano e inglés tienen las mismas claves;
     - `index.html` lo carga después de `app.js` y no trae el botón escrito.
   - **196 de JS en verde.** En Chrome a 390 px, con `?demo=1` los dos botones llenan los formularios y pasan al inglés con el idioma; sin `?demo=1` no existen. Sin errores de JavaScript.
+  - **Revisión final (revisor independiente):**
+    - el botón de la observación, adentro de la fila de Cancelar y Guardar, desbordaba el diálogo a 390 px en castellano: 30 px medidos en Chrome. Ahora va en una fila propia, arriba de esos botones, y el desborde es de 0;
+    - **pendiente menor:** si se toca "Editar" en un campo y después "Autocompletar", al guardar se pisa ese campo.
   - **El TIFF no se autocompleta:** el navegador obliga a elegirlo a mano, y en el video tiene que ser el `NDVI.tif` real.

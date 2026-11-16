@@ -11,7 +11,7 @@ Para grabar el recorrido de `web/experiencia/` (D-46) sin tipear en vivo. Es una
 - **Un botón "Autocompletar"** en el formulario "Nuevo campo" y en el diálogo "Nueva observación". Llena los campos; guardar queda en manos de quien graba, así el video muestra el recorrido.
 - **Campo:**
   - nombre "Lote Capital · Zona 1", zona 1;
-  - latitud −28.0129 y longitud −64.2297, el centro del recorte satelital del lote `capital_zona1` (D-40), donde cae el `NDVI.tif` real del ingeniero. Así, al subir ese TIFF, la página muestra la comparación con Sentinel-2 y Landsat;
+  - latitud −28.0129 y longitud −64.2297, el centro del recorte satelital del lote `capital_zona1` (D-40), donde cae el `NDVI.tif` real del ingeniero (corrección: la comparación con Sentinel-2 y Landsat la elige la página por los bordes del TIFF, no por el campo);
   - cultivo vacío (no se sabe cuál es) y una nota que dice que es un campo de ejemplo para la demo.
 - **Observación:** fuente "Dron", sector "Norte", y un resumen y un detalle escritos como algo para revisar en el campo, no como un hallazgo (D-33).
 - **Solo con `?demo=1`** en la dirección. Sin ese parámetro, el botón no existe en la página.
