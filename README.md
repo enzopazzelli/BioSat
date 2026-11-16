@@ -149,12 +149,12 @@ Sale solo de las casillas sin tildar de cada plan. Panorama completo y riesgos: 
 **Últimas decisiones:**
 
 <!-- AUTO:DECISIONES:INICIO -->
+- **D-46**: Se integra la propuesta de experiencia de Vale, sin el login, 15/11, 22:10
 - **D-45**: Más localidades debajo de cada zona, 15/11, 20:30
 - **D-44**: El kit Arduino se archiva y el dron toma su lugar, 15/11, 20:00
 - **D-43**: El kit Arduino sale de la app mientras se termina de armar, 15/11, 18:15
 - **D-42**: Tarjetas de las alternativas, barras de lo que se gana y se paga, y accesibilidad
 - **D-41**: Clases del ingeniero
-- **D-40**: Rótulo honesto de Landsat y recorte satelital del lote
 
 Todas las decisiones están en la [bitácora](docs/reglas-y-bitacora.md).
 <!-- AUTO:DECISIONES:FIN -->
@@ -277,7 +277,7 @@ BioSat/
 │       ├── dron_sin_coordenadas.tif
 │       ├── generar_tif_prueba.py
 │       └── lotes/ (4 archivos)
-└── web/ (48 archivos)                                        <-- App web BioSat (abrir con un servidor: ver Inicio rápido)
+└── web/ (63 archivos)                                        <-- App web BioSat (abrir con un servidor: ver Inicio rápido)
 ```
 <!-- AUTO:ESTRUCTURA:FIN -->
 
