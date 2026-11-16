@@ -7,7 +7,7 @@
 ## 1. En pocas palabras
 
 - Todos los números de suelo, desmonte, zonificación, suelo pelado e imágenes salen de **fuentes públicas y citables**, procesadas con Google Earth Engine y Python. No hay datos simulados.
-- El prototipo anterior usaba datos simulados y quedó archivado en [`archivo/prototipo-ia-simulado/`](../archivo/prototipo-ia-simulado/LEEME-PRIMERO.md). Sus métricas no se usan.
+- Un primer prototipo usó datos simulados: se retiró del repositorio y sus métricas no se usan.
 - Cada dato lleva su **confianza** (alta, media o baja) con el criterio de la sección 9.
 - El modelo de desmontes se prueba con **años que no vio** (entrena con monte y predictores al 2008 y desmonte 2009-2015; prueba con monte y predictores al 2015 y desmonte 2016-2025). Se eligió random forest porque tiene el AUC más alto en la validación cruzada del entrenamiento (0,78, contra 0,77 de gradient boosting y 0,71 de regresión logística). En la prueba 2016-2025, que no se usó para elegir, mide AUC 0,63 (gradient boosting 0,63, regresión logística 0,62).
 
@@ -97,7 +97,7 @@ Entre paréntesis, el rango del 10 al 90 % de los píxeles: muestra cuánto var�
 
 Se eligió random forest porque tiene el AUC más alto en la validación cruzada del entrenamiento (0,78, contra 0,77 de gradient boosting y 0,71 de regresión logística). En la prueba 2016-2025, que no se usó para elegir, mide AUC 0,63 (gradient boosting 0,63, regresión logística 0,62).
 
-**Cómo leer la diferencia.** Dentro de su época el modelo distingue bien (0,78), pero al predecir la década siguiente baja a 0,63: el patrón del desmonte cambió entre los dos períodos. Una hipótesis, que este trabajo no prueba, es la entrada en vigencia de la Ley de Bosques (26.331) y el ordenamiento territorial de la provincia hacia 2009-2010. Por eso el riesgo por zona sirve para **comparar zonas**, no como pronóstico exacto de cada lote. Plan para probar la hipótesis: [`validacion-ley-de-bosques`](superpowers/plans/2026-11-15-validacion-ley-de-bosques.md).
+**Cómo leer la diferencia.** Dentro de su época el modelo distingue bien (0,78), pero al predecir la década siguiente baja a 0,63: el patrón del desmonte cambió entre los dos períodos. Una hipótesis, que este trabajo no prueba, es la entrada en vigencia de la Ley de Bosques (26.331) y el ordenamiento territorial de la provincia hacia 2009-2010. Por eso el riesgo por zona sirve para **comparar zonas**, no como pronóstico exacto de cada lote. Probar la hipótesis queda como trabajo futuro.
 
 **Riesgo por zona** (probabilidad de que un píxel de monte se desmonte en los próximos ~10 años si sigue el patrón 2016-2025):
 

@@ -1,196 +1,114 @@
 # BioSat — Field Shift: Adapting Farms with NASA Data
 
 > **NASA Space Apps Challenge 2026** · Desafío: *Field Shift: Adapting Farms with NASA Data*
-> Sede: **Santiago del Estero, Argentina** · Equipo: **BioSat**
+> Sede: **Santiago del Estero, Argentina** · Equipo: **BioSat** (Enzo, Santi, Vale y Sara)
+
+- **App:** https://enzopazzelli.github.io/BioSat/web/ · en inglés: https://enzopazzelli.github.io/BioSat/web/?lang=en
+- **Reporte completo:** https://enzopazzelli.github.io/BioSat/web/#reporte · **Vista detallada:** https://enzopazzelli.github.io/BioSat/web/completo.html
+- **Propuesta de experiencia (prototipo):** https://enzopazzelli.github.io/BioSat/web/experiencia/
+
+**English summary.** BioSat is a free, mobile-first web app that helps farmers in Santiago del Estero (Argentina's dry Chaco) choose crop rotations that keep the soil covered and cope with heat, drought, frost and salinity. It combines NASA POWER climate data and Landsat imagery with regional soil data, a 7-day forecast and the farmer's own drone flights. All data comes from public, citable sources. Machine-learning models are reported with their real scores, and the app always shows where each number comes from. It supports the agronomist; it never replaces them.
 
 ---
 
-## En pocas palabras
+## El problema
 
-**Qué vamos a hacer:** una app web que ayuda a un productor de **Santiago del Estero** a elegir una **rotación de cultivos** que cuide su suelo y aguante el calor extremo, la sequía y el salitre.
+En Santiago del Estero, el invierno y la primavera son secos, y en verano se pasan los 40 °C. Después de la cosecha, muchos lotes quedan sin cobertura durante meses: el sol calienta el suelo, el viento lo erosiona y, donde se riega, la evaporación sube el salitre de una napa poco profunda. El suelo pelado también deja menos pasto para la hacienda en la seca, mientras el monte nativo sigue retrocediendo. El productor decide qué sembrar con poca información local, y la mayoría de las herramientas globales no están pensadas para esta región.
 
-**En qué consiste:** el productor elige su zona y lo que le importa (agua, salitre, suelo, forraje, ingreso). La app le muestra:
-- **El calendario de su lote:** cuándo hace demasiado calor, cuándo hiela, cuándo falta agua y cuándo el suelo queda pelado.
-- **3 rotaciones comparadas:** su rotación actual y 2 alternativas. Cada una explica por qué se sugiere, qué evidencia la respalda, qué beneficios tiene, qué falta saber y qué riesgos debe revisar un agrónomo local.
-- **Un simulador:** "¿y si llueve menos o hace más calor?".
+## Qué hace BioSat
 
-Y el dato de hoy de **tu lote**: la app abre la imagen de tu **vuelo de dron** (un .tif que no sale de tu equipo) y muestra el NDVI, la superficie sin cobertura vegetal activa y los sectores para recorrer (D-38 a D-40 y D-44).
+- **Cuatro preguntas para empezar:** dónde está el campo (en un mapa real de las 5 zonas de la provincia), con qué cuenta el productor (riego, hacienda, maquinaria) y qué le preocupa (agua, salitre, suelo, forraje o ingreso).
+- **Inicio:**
+  - el semáforo de su zona en el mes, con cuatro señales: lluvia contra evapotranspiración de referencia (ET0), días de más de 35 °C, heladas y lotes sin cobertura vegetal activa vistos por Landsat;
+  - la tarjeta **"Tu lote, desde el dron"**;
+  - la rotación que mejor encaja, la próxima siembra, los meses de suelo pelado y el pronóstico de 7 días.
+- **Tu lote, desde el dron:** el productor abre su propio vuelo (GeoTIFF) y la app lo lee en el navegador. El archivo no sale del equipo.
+  - Calcula el NDVI y el porcentaje del lote sin cobertura activa, y permite marcar los sectores para recorrer.
+  - Si hay un recorte satelital preparado del lote (hoy, un lote piloto), compara el vuelo con Sentinel-2 (10 m) y Landsat (30 m) en la misma superficie.
+  - La tarjeta siempre muestra la fecha del vuelo.
+- **Reporte completo,** que se guarda en PDF o se comparte por WhatsApp. Tiene 6 secciones:
+  1. el año mes a mes;
+  2. su rotación contra 2 alternativas, con lo que gana y lo que paga cada una (15 rotaciones, 3 por zona);
+  3. un simulador con menos lluvia y hasta +2,5 °C;
+  4. el suelo, el monte y el riesgo de desmonte desde el satélite;
+  5. una lista para charlar con el ingeniero;
+  6. de dónde sale cada dato.
+- **Castellano e inglés,** con el botón ES/EN o `?lang=en`.
 
-**Qué consume:**
+## Datos
 
-| Entrada | Fuente | Para qué |
+| Dato | Fuente | Para qué |
 |---|---|---|
-| Clima diario 1981-2025 | NASA POWER (API abierta) | Calor, heladas, lluvia y balance de agua por zona |
-| Imágenes de 30 m | Landsat 5/7/8/9 (NASA/USGS) | Meses de suelo pelado y visor del lote |
-| Historia de desmontes | LART desde 1976 (si se consigue) · MapBiomas Chaco · Hansen | Etiquetas del modelo predictivo de desmontes |
-| Suelo y paisaje (38 variables, 500 m) | AIZAL V4 (SoilGrids, TerraClimate, OSM) | pH, textura, carbono, nitrógeno, distancias; zonificación y predictores del desmonte |
-| Pronóstico a 7-10 días | Meteomatics (ECMWF, cuenta del hackathon) | Alertas de helada y lluvia próximas (en integración) |
-| Imagen de dron | El vuelo de cada productor (GeoTIFF RGB o multiespectral), leído en el navegador | El lote a centímetros: NDVI, cobertura activa y sectores para revisar. Reemplaza al kit Arduino, archivado (D-44) |
-| El productor | Entrevista y formulario de la app | Rotación actual, prioridades y límites (riego, maquinaria, mercado) |
+| Clima diario 1981-2025 (~50 km) | **NASA POWER** | Calor, heladas, lluvia y balance de agua por zona |
+| Imágenes 2000-2025 (30 m) | **Landsat 5, 7, 8 y 9**, Collection 2 Level-2 (**NASA/USGS**) | Meses sin cobertura activa (2021-2025) y el visor |
+| Relieve (30 m) | **NASADEM** (NASA) | Pendiente |
+| Desmontes 2001-2025 (30 m) | Hansen Global Forest Change v1.13 (University of Maryland, a partir de Landsat) | Historia, % de monte y etiquetas del modelo |
+| Pronóstico de 7 días (9 km) | Meteomatics (modelo ECMWF) | "Esta semana en tu zona" |
+| Imagen del lote piloto (10 m) | Copernicus Sentinel-2 (ESA) | Comparación con el dron |
+| Variables del Gran Chaco | AIZAL V4 (AIZAL-IA, proyecto Euroclima+ "Vivir y Producir en el Bosque Chaqueño") | Marco de variables de clima y suelo (B03-B18) para la zonificación y los indicadores de suelo |
+| Suelo 0-30 cm (250 m) | SoilGrids 2.0 (ISRIC) | pH, textura, carbono, nitrógeno y densidad aparente |
+| Clima 1991-2020 (4 km) | TerraClimate (University of Idaho) | Zonificación y déficit hídrico |
+| Cobertura 2021 (10 m) | ESA WorldCover v200 | Dónde hay cultivos y pastizales |
+| Caminos, áreas protegidas y población | GRIP4, WDPA (UNEP-WCMC) y WorldPop | Predictores del modelo de desmonte |
+| Límites de departamentos | geoBoundaries (IGN Argentina) | Las 5 zonas y el mapa |
+| Rotaciones | Equipo BioSat, revisadas por un productor de la Zona 5 | Las zonas 1 a 4 todavía no están validadas, y la app lo dice |
+| Vuelo de dron | El GeoTIFF de cada productor | NDVI del lote, a centímetros |
 
-**Cómo funciona, técnicamente:**
-1. **Datos:** scripts en Python bajan y resumen cada fuente en archivos JSON por zona (`data/`, ver [contratos](docs/contratos-de-datos.md)).
-2. **IA:** con las variables de AIZAL se **zonifica la provincia** (k-means) y se entrena un **modelo predictivo de desmontes por zona**. Se comparan una regresión logística, un random forest y un modelo temporal (LSTM o Transformer), validados con años que el modelo no vio. Los meses de suelo pelado salen de Landsat con un método simple.
-3. **Motor de reglas transparente:** usa secciones de cultivo (A gramíneas, B leguminosas, C raíces profundas, D coberturas) y las prioridades del productor para ordenar las rotaciones **y explicar por qué**.
-4. **App web estática** (HTML + JavaScript): se publica en GitHub Pages, funciona sin internet y abre la imagen del dron en el navegador, sin subirla.
+Las capas satelitales y de suelo se procesaron en **Google Earth Engine**. Las imágenes Landsat del visor son composiciones de mediana hechas ahí.
 
-**Por qué es diferente y qué aporta:**
-- **Hecha para un lugar real:** está pensada para las 5 zonas de Santiago del Estero, con las rotaciones de la Zona 5 revisadas por un productor de la zona (las otras cuatro, todavía sin validar). No es un mapa genérico "para cualquier punto del mundo".
-- **Espacio + tierra:** une los datos satelitales de la NASA con mediciones en el suelo, en vivo.
-- **IA que se puede medir:** no da por buena la IA; la compara contra un método simple y muestra los números.
-- **Suelo del Gran Chaco:** usa datos locales de suelo (AIZAL), que fuera de EE. UU. casi nadie tiene a mano.
-- **Honesta:** cada dato muestra su fuente y su incertidumbre, los dilemas quedan a la vista (por ejemplo, una cobertura protege el suelo pero gasta agua) y la herramienta **apoya, no reemplaza** al productor ni al agrónomo.
+## Cómo funciona
 
----
+- **Cobertura del suelo:**
+  - se toma el NDVI mensual de Landsat 2021-2025 en 600 puntos al azar sobre cultivos de cada zona;
+  - un mes cuenta como "sin cobertura activa" cuando al menos la mitad de los puntos tiene NDVI menor a 0,25;
+  - se prueba también con 0,20 y 0,30, y la app avisa cuánto cambia el resultado según el umbral.
+- **Zonificación:** un k-means con k = 5 sobre las variables de clima y suelo de AIZAL, tomadas de sus fuentes originales. Da una silueta de 0,27. Es una zonificación del equipo, no la oficial de AIZAL.
+- **Riesgo de desmonte:**
+  - se compararon regresión logística, random forest y gradient boosting, y se eligió random forest (AUC 0,78 en validación cruzada);
+  - en años que el modelo no vio (2016-2025) baja a AUC 0,63, así que se usa para **comparar zonas**, no para predecir un lote;
+  - la app muestra esos números.
+- **Rotaciones:** un motor de reglas a la vista ordena las rotaciones según las prioridades del productor y explica por qué.
+- **Sin datos inventados:** si un dato falta, la app dice "sin dato".
 
-## Estado del proyecto
+Detalle completo, con métricas y limitaciones: [`docs/datos-y-metodos.md`](docs/datos-y-metodos.md). Formato de cada archivo de `data/`: [`docs/contratos-de-datos.md`](docs/contratos-de-datos.md).
 
-Avance de cada integrante, contado desde las casillas de su plan en [`planes/`](planes/README.md). Se actualiza cuando cada uno integra su rama a `main`. **Panorama completo, con lo que falta y los riesgos: [docs/estado-del-proyecto.md](docs/estado-del-proyecto.md).**
+## Uso de inteligencia artificial
 
-<!-- AUTO:AVANCE:INICIO -->
-| Persona | Rama | Avance | Tareas |
-|---|---|---|---|
-| [Enzo · Integración y app](planes/1-enzo.md) | `enzo-app` | `▓▓▓▓▓▓▓▓▓░` 86% | 54/63 |
-| [Santi · Suelo, satélite e IA](planes/2-santi.md) | `santi-datos-ia` | `▓▓▓▓▓▓▓▓░░` 76% | 22/29 |
-| [Vale · Campo y agronomía](planes/3-vale.md) | `vale-rotaciones` | `▓▓▓▓▓▓▓░░░` 72% | 18/25 |
-| [Sara · Relato y entrega](planes/4-sara.md) | `sara-arduino-entrega` | `▓▓▓░░░░░░░` 26% | 5/19 |
-| **Total** | | `▓▓▓▓▓▓▓░░░` **73%** | **99/136** |
-<!-- AUTO:AVANCE:FIN -->
+- **En el producto:** los modelos k-means y random forest (scikit-learn) descritos arriba, con sus métricas.
+- **En la investigación:** Antigravity (Google).
+- **En el desarrollo:** Claude (Anthropic), con Claude Code, y Codex (OpenAI) ayudaron a programar, a escribir los scripts de datos y las pruebas, a documentar y a traducir.
+- **Revisión y origen de los datos:** el equipo revisó todo lo que hicieron estas herramientas. Los datos salen de las fuentes citadas, no de la IA, y las imágenes de la app son de Landsat, Sentinel-2 y vuelos de dron reales.
 
-### Lo más urgente
+## Limitaciones
 
-1. **Kit Arduino: archivado (D-44).** Enzo decidió trabajar con imágenes de dron: el kit (programas, lector, pantalla y guías) quedó en [`archivo/kit-arduino/`](archivo/kit-arduino/README.md) y el Inicio muestra la tarjeta "Tu lote, desde el dron" en su lugar. **La entrega** (guion, video y página del proyecto) sigue sin empezar.
-2. **La app muestra cosas que no son ciertas (D-33). Para quien lo tome antes de las 15:00 (Vale preguntó).**
-   - **El problema:** el semáforo y la sección 4 dicen "suelo pelado", pero el satélite (NDVI < 0,25) no lo distingue del rastrojo ni del pasto seco. Además, el número depende mucho del umbral: en la Zona 2, en noviembre, da 11 %, 84 % o 92 % de lotes con NDVI 0,20, 0,25 o 0,30. También hay otras cosas falsas:
-     - la tabla de métodos muestra "CNN + LSTM" y "CNN + Transformer", que nunca se corrieron;
-     - hay textos que nombran MapBiomas y LART, que no se usan;
-     - los grupos AIZAL no tienen nombre.
-   - **Formas de arreglarlo:**
-     1. Llamarlo por lo que mide, "lotes sin verde (pelados o con rastrojo seco)". **Es la recomendada:** unos 45 min.
-     2. Mostrar la duda, con el rango de los 3 umbrales.
-     3. Sacar el suelo pelado del semáforo.
+- El clima y las señales del satélite son promedios de la zona, no mediciones del lote.
+- El NDVI no distingue el suelo descubierto del rastrojo seco.
+- SoilGrids es un modelo global: no reemplaza un análisis de suelo.
+- Hansen mide pérdida de cobertura arbórea, que no es lo mismo que desmonte legal.
+- La herramienta **apoya, no reemplaza,** el criterio del productor y del ingeniero.
 
-     Con cualquiera, se corrigen la tabla y los textos y se ponen nombres a los grupos (Santi o Vale los confirman).
-   - **Plan con los pasos y los lugares exactos del código:** [`docs/superpowers/plans/2026-11-15-app-sin-datos-falsos.md`](docs/superpowers/plans/2026-11-15-app-sin-datos-falsos.md).
-3. **Datos reales de Earth Engine (D-30):** suelo, desmontes, zonificación, suelo pelado e imágenes ahora salen de fuentes reales (`ia_desmonte/`). **Las métricas del pitch cambian:** usar solo las de [`docs/datos-y-metodos.md`](docs/datos-y-metodos.md). El visor de Earth Engine sigue sin publicar.
-4. **Vale: confirmar `requiere_hacienda` y el permiso del productor.** Enzo completó 7 valores según el texto de cada rotación, y la entrevista deja pendiente el permiso por escrito para usar sus frases.
-5. **Enzo: probar la app nueva sin internet en el celular y ensayar la demo con un vuelo de dron real en la pantalla grande.**
-   - La app para el celular (D-31) ya está en `main` y se probó en un celular de verdad.
-   - Con D-34, el Inicio va en dos columnas en la PC y el pronóstico de Meteomatics entra en la app. Se renueva solo todos los días a las 06:00; el secreto ya está cargado.
-   - Con D-35, el botón `ES | EN` pasa a inglés el asistente, el Inicio, el marco del Reporte, el kit y la guía del campo. Para mandarle la app a un jurado: `https://enzopazzelli.github.io/BioSat/web/?lang=en`. Lo que sigue en español (el cuerpo del Reporte y la vista detallada) lo avisa en inglés.
+## Correrla en la compu
 
-### Lo que falta, por persona
+La app es estática (HTML y JavaScript). Hay que abrirla con un servidor local, porque el navegador no deja leer los JSON si se abre el HTML con doble clic:
 
-Sale solo de las casillas sin tildar de cada plan. Panorama completo y riesgos: [docs/estado-del-proyecto.md](docs/estado-del-proyecto.md).
+```bash
+python -m http.server 8000
+# y abrir http://localhost:8000/web/
+```
 
-<!-- AUTO:PENDIENTE:INICIO -->
-<details>
-<summary><b>Enzo</b>: 9 pendientes (<a href="planes/1-enzo.md">plan completo</a>)</summary>
-
-- Último merge de funciones a `main` _(Congelamiento)_
-- Revisar el README final con Sara _(Entrega)_
-- Dejar `main` estable con la app publicada _(Entrega)_
-- Idioma, etapa 2: el cuerpo del Reporte (textos dentro de `app.js`), los plegables, la vista detallada y los textos largos de las rotaciones (con la revisión de Vale) _(Sugerencias de la organización)_
-- Mostrar en la app y en el README el link del visor de Earth Engine cuando Santi lo publique _(Agregadas por Enzo)_
-- Cerrar `PLAN.md`: contestar las preguntas abiertas (el kit y la guía ya no van: se archivaron, D-44) _(Agregadas por Enzo)_
-- Probar de nuevo la app publicada en el celular y sin internet después del último merge _(Agregadas por Enzo)_
-- Probarlo en un celular de verdad _(Lector de imágenes de dron)_
-- Cargar los cortes reales del ingeniero y anotar el resultado _(Clases del ingeniero)_
-
-</details>
-
-<details>
-<summary><b>Santi</b>: 7 pendientes (<a href="planes/2-santi.md">plan completo</a>)</summary>
-
-- Correr `scripts/gee_visor_biosat.js`, publicarlo como Earth Engine App y pasarles el link a Enzo y a Sara _(Checkpoint 1)_
-- Sumar lo que responda la profesora al audio y al documento _(Congelamiento)_
-- Pasarle a Sara las métricas, el mapa de riesgo, una captura del visor y la comparación 2000 contra 2025 _(Congelamiento)_
-- Opcional: usar los embeddings AlphaEarth como variable extra del modelo o de la zonificación _(Congelamiento)_
-- Ayudar con el video y la página: explicar el modelo en 20 segundos _(Entrega)_
-- En `scripts/descargar_meteomatics.py`, cambiar `wind_speed_10m:ms` (instantáneo, a las 21 h de Argentina) por `wind_speed_mean_10m_24h:ms`, el promedio del día. Sin eso, la tarjeta de la... _(Agregadas por Enzo)_
-- Confirmar con la documentación o el soporte de Meteomatics si `frost_warning_24h:idx` mira las 24 h anteriores o las siguientes. Hoy la app la cuenta como de las 24 h anteriores, como los... _(Agregadas por Enzo)_
-
-</details>
-
-<details>
-<summary><b>Vale</b>: 7 pendientes (<a href="planes/3-vale.md">plan completo</a>)</summary>
-
-- Revisar la parte agronómica del guion y participar del ensayo _(Entrega)_
-- Confirmar los 7 `requiere_hacienda` que completó Enzo en `data/rotaciones_santiago.json` (Zona 3 las 3, Zona 4 alternativa 2, Zona 5 las 3) _(Agregadas por Enzo)_
-- Conseguir por escrito el permiso del productor para nombrar el campo y usar sus frases (la entrevista lo deja pendiente) _(Agregadas por Enzo)_
-- Validar las zonas 1 a 4 con un productor o un agrónomo del INTA, o dejarlas "sin validar" a propósito y decirlo en la presentación _(Agregadas por Enzo)_
-- Corregir en la evidencia de la Zona 5 el dato que cita humedad en raíces: hoy apunta a los meses de clima, que no tienen ese campo _(Agregadas por Enzo)_
-- Revisar los 15 nombres de las rotaciones en inglés (`web/textos-en.js`, sección `rotaciones`, D-35): los tradujo el equipo y falta tu revisión agronómica _(Agregadas por Enzo)_
-- Subir la minuta original del ingeniero (`minuta_mejoras_app_drones_sensores_2026-11-15.md`), que la hoja de ruta cita como base y no está en el repositorio _(Agregadas por Enzo)_
-
-</details>
-
-<details>
-<summary><b>Sara</b>: 14 pendientes (<a href="planes/4-sara.md">plan completo</a>)</summary>
-
-- Pasarte a tu rama (`git switch sara-arduino-entrega`) _(Hito 0)_
-- Confirmar la hora exacta y el formato de la entrega en la guía del participante (desde el celular, porque en la PC falla el sitio) y avisar al grupo _(Hito 0)_
-- Guion borrador de 2-3 minutos con el zoom de escalas del video de la NASA (50 km → 500 m → 30 m → 1 m² → el productor) y los 4 verbos _(Checkpoint 1)_
-- Buscar una foto de astronauta del Chaco santiagueño (eol.jsc.nasa.gov) _(Checkpoint 2)_
-- Preparar la comparación 2000 contra 2025 de Campo Gallo (desmonte) para el pitch _(Checkpoint 2)_
-- Video o diapositivas, según el formato que pidan _(Congelamiento)_
-- Borrador de la página del proyecto en Space Apps: resumen, datos de la NASA usados, links al repo y a la app _(Congelamiento)_
-- Declarar el uso de herramientas de IA, si la guía lo pide _(Congelamiento)_
-- Revisar las reglas de uso de marcas (logos de la NASA) _(Congelamiento)_
-- Hacer 2 ensayos completos de la demo con todo el equipo _(Entrega)_
-- Revisar el README final con Enzo _(Entrega)_
-- Subir la entrega con margen antes del cierre _(Entrega)_
-- Crear la carpeta `entrega/` con el guion, el video o las diapositivas y la página del proyecto _(Agregadas por Enzo)_
-- Cerrar el guion con "cómo seguimos" (D-37): de la zona al lote, con el dron como el escalón que sigue después de Landsat. Base: `docs/superpowers/plans/2026-11-15-hoja-de-ruta-producto-vi... _(Agregadas por Enzo)_
-
-</details>
-<!-- AUTO:PENDIENTE:FIN -->
-
-**Últimas decisiones:**
-
-<!-- AUTO:DECISIONES:INICIO -->
-- **D-48**: Autocompletar para grabar el video en la página de Vale, 15/11, 23:00
-- **D-47**: Las imágenes Landsat de la página de Vale no se veían, 15/11, 22:30
-- **D-46**: Se integra la propuesta de experiencia de Vale, sin el login, 15/11, 22:10
-- **D-45**: Más localidades debajo de cada zona, 15/11, 20:30
-- **D-44**: El kit Arduino se archiva y el dron toma su lugar, 15/11, 20:00
-- **D-43**: El kit Arduino sale de la app mientras se termina de armar, 15/11, 18:15
-
-Todas las decisiones están en la [bitácora](docs/reglas-y-bitacora.md).
-<!-- AUTO:DECISIONES:FIN -->
-
----
-
-## Equipo
-
-| # | Quién | Rol | Frentes | Rama | Plan |
-|---|---|---|---|---|---|
-| 1 | Enzo | Integración y app | F1 Clima · F5 App y motor | `enzo-app` | [planes/1-enzo.md](planes/1-enzo.md) |
-| 2 | Santi | Suelo, satélite e IA | F2 Suelo y zonificación AIZAL · F3 Modelo de desmontes | `santi-datos-ia` | [planes/2-santi.md](planes/2-santi.md) |
-| 3 | Vale | Campo y agronomía | F4 Rotaciones | `vale-rotaciones` | [planes/3-vale.md](planes/3-vale.md) |
-| 4 | Sara | Relato y entrega | F7 Entrega (coordina) · ~~F6 Arduino~~ (archivado, D-44) | `sara-arduino-entrega` | [planes/4-sara.md](planes/4-sara.md) |
-
-Cómo trabajamos en paralelo (ramas, reglas e hitos de integración): **[planes/README.md](planes/README.md)**.
-
-El detalle de tareas, la ruta de trabajo y los diagramas están en **[PLAN.md](PLAN.md)**.
-
----
+- **Pruebas** (Node 22): `node --test tests/*.test.js` · Python: `python -m pytest ia_desmonte/pruebas scripts/pruebas`
+- **Clima de NASA POWER** (no necesita cuenta): `python scripts/descargar_nasa_power.py`
+- **Datos de Earth Engine:** `ia_desmonte/` (ver su README). Necesita un proyecto de Google Earth Engine.
+- **Ver la app como en un celular de 390 px:** `node scripts/captura-movil.mjs "http://localhost:8000/web/" inicio.png`
 
 ## Estructura del repositorio
 
 <!-- AUTO:ESTRUCTURA:INICIO -->
 ```text
 BioSat/
-├── CONTEXTO.md                                               <-- Contexto inicial del 13/11 (histórico)
-├── ESTRUCTURA_DATOS.md                                       <-- Arquitectura de datos y módulos AIZAL
 ├── NASA Space Apps Challenge - awards.mhtml                  <-- Premios globales y datos del equipo
 ├── NASA Space Apps Challenge.mhtml                           <-- Recursos oficiales (pestaña Resources)
-├── NASA Space Apps Challenge.pdf                             <-- Enunciado oficial (pestaña Details)
-├── PLAN.md                                                   <-- Plan de trabajo: roles, ruta y tareas
 ├── README.md                                                 <-- Portada del proyecto (se actualiza sola)
-├── archivo/                                                  <-- Material archivado que no alimenta la app
-│   ├── kit-arduino/ (28 archivos)                            <-- Kit Arduino archivado el 15/11 (D-44): programas, lector, pantalla del kit y guías; ver su README.md
-│   └── prototipo-ia-simulado/ (38 archivos)                  <-- Primer prototipo de IA con datos SIMULADOS (no se usa; ver LEEME-PRIMERO.md)
 ├── data/                                                     <-- Datos y contratos JSON que lee la app
 │   ├── clima_zonas.json                                      <-- Clima NASA POWER 1981-2025 de las 5 zonas (lo lee la app)
 │   ├── desmonte_zonas.json                                   <-- Desmontes Hansen 2001-2025, modelo validado en el tiempo y riesgo por zona · real
@@ -210,7 +128,14 @@ BioSat/
 │   │   ├── 05_Logistica_Antropico_y_Servicios/ (2 archivos)  <-- B26-B29, B32-B37: caminos, población
 │   │   └── 06_Embeddings_IA_AlphaEarth/ (2 archivos)         <-- Embeddings AlphaEarth 64D (DeepMind)
 │   └── imagenes/ (29 archivos)                               <-- Compuestos de mediana Landsat del visor y mapa de la zonificación (Earth Engine)
-├── docs/ (49 archivos)                                       <-- Documentación del equipo
+├── docs/                                                     <-- Documentación del equipo
+│   ├── contratos-de-datos.md                                 <-- Formato de los JSON que comparten los frentes
+│   └── datos-y-metodos.md                                    <-- Fuentes, métodos, métricas reales y limitaciones de los datos (se genera solo)
+├── entrega/                                                  <-- Material para la presentación y la entrega
+│   ├── guion-video-2m-app.md                                 <-- BioSat · Guion del video de 2 minutos: la app (web/)
+│   ├── guion-video-2m-experiencia.md                         <-- BioSat · Guion del video de 2 minutos: la página de Vale ...
+│   ├── guion-video-30s-v2.md                                 <-- BioSat · Guion del video de 30 segundos · versión 2 (15/1...
+│   └── texto-pdf.md                                          <-- Texto para el PDF de la entrega (Space Apps 2026)
 ├── ia_desmonte/                                              <-- Pipeline de datos reales con Earth Engine: suelo, desmontes, zonificación, suelo pelado e imágenes
 │   ├── __init__.py
 │   ├── comun.py
@@ -238,12 +163,6 @@ BioSat/
 │   │   ├── test_zonas.py
 │   │   └── test_zonificacion.py
 │   └── salidas/ (12 archivos)                                <-- Muestras de Earth Engine y registro de la corrida (permiten reentrenar sin cuenta)
-├── planes/                                                   <-- Plan de cada integrante y cómo trabajamos en ramas
-│   ├── 1-enzo.md                                             <-- Plan de Enzo · integración y app (rama enzo-app)
-│   ├── 2-santi.md                                            <-- Plan de Santi · suelo, satélite e IA (rama santi-datos-ia)
-│   ├── 3-vale.md                                             <-- Plan de Vale · campo y agronomía (rama vale-rotaciones)
-│   ├── 4-sara.md                                             <-- Plan de Sara · relato y entrega (el kit se archivó, D-44)
-│   └── README.md                                             <-- Objetivo común, ramas, reglas e hitos de integración
 ├── scripts/                                                  <-- Herramientas para bajar y procesar datos
 │   ├── actualizar_readme.py                                  <-- Regenera las secciones automáticas del README
 │   ├── captura-movil.mjs                                     <-- Captura la app emulando un celular de 390 px, u otro ancho con ANCHO (Chrome)
@@ -282,85 +201,4 @@ BioSat/
 ```
 <!-- AUTO:ESTRUCTURA:FIN -->
 
----
-
-## Inicio rápido
-
-**Ver la app publicada:** https://enzopazzelli.github.io/BioSat/web/
-
-- **Imagen de dron:** en el Inicio, "Abrir un vuelo de dron" (o en el Reporte, sección 4). Para probar sin un vuelo propio: `tests/fixtures/dron_ndvi_4326.tif`.
-- La pantalla del kit y la guía "Del kit al campo" se archivaron con el kit (D-44).
-- **Reporte completo:** https://enzopazzelli.github.io/BioSat/web/#reporte · **Vista detallada** (la página de antes): https://enzopazzelli.github.io/BioSat/web/completo.html
-- **Saltear el asistente** (para links de demo): agregar `?asistente=0` a la dirección.
-
-**Pruebas** (Node 22): `node --test tests/*.test.js` · **Ver la app como en un celular de 390 px** (con la app servida): `node scripts/captura-movil.mjs "http://localhost:8000/web/" inicio.png`
-
-**Bajar y resumir el clima de NASA POWER** (no necesita cuenta; genera `data/clima_zonas.json`):
-
-```bash
-python scripts/descargar_nasa_power.py
-```
-
-**Ver la app en tu compu.** Hay que abrirla con un servidor local, porque el navegador no deja leer los JSON si abrís el HTML con doble clic:
-
-```bash
-python -m http.server 8000
-# y abrir http://localhost:8000/web/
-```
-
-**Google Earth Engine** (se pegan en el [Code Editor](https://code.earthengine.google.com) y se corren con "Run"):
-
-- `scripts/gee_visor_biosat.js`: visor GIS de la provincia (2000 contra 2025, NDVI, suelo pelado, desmonte, zonas IA). Se puede publicar como Earth Engine App.
-- `scripts/gee_exportar_zonas.js`: estadísticas e imágenes por zona para la app.
-- `scripts/gee_zonas_y_desmonte.js`: zonificación con AIZAL (k-means) y modelo predictivo de desmontes con validación temporal.
-- `scripts/earth_engine_embeddings.js`: compara embeddings AlphaEarth entre años.
-
-**Actualizar este README a mano** (normalmente no hace falta, ver abajo):
-
-```bash
-python scripts/actualizar_readme.py
-```
-
----
-
-## Documentación
-
-| Para… | Leer |
-|---|---|
-| Ver cómo viene todo y qué falta | [docs/estado-del-proyecto.md](docs/estado-del-proyecto.md) |
-| Tener toda la memoria de lo que hay en el repo | [docs/memoria-del-proyecto.md](docs/memoria-del-proyecto.md) |
-| Saber qué hacer y quién lo hace | [PLAN.md](PLAN.md) |
-| Saber el formato de los datos compartidos | [docs/contratos-de-datos.md](docs/contratos-de-datos.md) |
-| Entender el desafío | [docs/resena-desafio.md](docs/resena-desafio.md) · [docs/recursos-desafio.md](docs/recursos-desafio.md) |
-| Ver los datos y su arquitectura | [ESTRUCTURA_DATOS.md](ESTRUCTURA_DATOS.md) · [catálogo AIZAL](data/datos_cruzados_aizal/CATALOGO_MAESTRO_VARIABLES.md) · [análisis NASA](docs/analisis-datos-nasa-santiago.md) |
-| Entender la agronomía y las reglas | [docs/documentacion-tecnica-agronomica.md](docs/documentacion-tecnica-agronomica.md) · [docs/zonas-santiago-y-kit-arduino.md](docs/zonas-santiago-y-kit-arduino.md) |
-| Conocer las reglas del equipo y las decisiones | [docs/reglas-y-bitacora.md](docs/reglas-y-bitacora.md) · [docs/glosario.md](docs/glosario.md) |
-| Ver la entrevista al productor de la Zona 5 | [docs/entrevista-productor-bella-criolla.md](docs/entrevista-productor-bella-criolla.md) |
-| Ver el modelo de IA de desmontes | [ia_desmonte/README.md](ia_desmonte/README.md) · [docs/integracion-meteomatics.md](docs/integracion-meteomatics.md) |
-| Ver el contexto del primer día | [CONTEXTO.md](CONTEXTO.md) |
-
----
-
-## Cómo se mantiene actualizado este README
-
-Las secciones **Estado del proyecto**, **Lo que falta**, **Últimas decisiones** y **Estructura del repositorio** se generan solas:
-
-- **Cuándo:** en cada `push` a `main`, GitHub Actions corre [`scripts/actualizar_readme.py`](scripts/actualizar_readme.py) y, si algo cambió, sube el README actualizado.
-- **Lo que falta:** las casillas sin tildar de cada plan, agrupadas por persona.
-- **Avance:** sale de las casillas `- [ ]` / `- [x]` de los planes de [`planes/`](planes/README.md).
-- **Decisiones:** salen de la [bitácora](docs/reglas-y-bitacora.md).
-- **Estructura:** sale de los archivos del repo. Para darle descripción a un archivo nuevo, agregalo en `DESCRIPCIONES` dentro del script.
-- **Qué no tocar a mano:** lo que está entre las marcas `<!-- AUTO:... -->`, porque se pisa. El resto del README sí se edita a mano.
-- **Después de un push:** como el robot puede subir un commit, traé `main` antes de tu próximo push:
-  - si solo tenés commits comunes, `git pull --rebase`;
-  - **si tenés un merge sin subir** (por ejemplo, integraste la rama de otro), usá `git pull --ff-only` o `git pull --rebase=merges`. `git pull --rebase` a secas aplana el merge y reescribe los commits de la otra persona: su rama deja de figurar como integrada y le genera conflictos (pasó el 15/11 con la rama de Vale; se arregló con `git merge -s ours`).
-
----
-
-## Reglas rápidas para colaborar
-
-1. **Antes de empezar:** leer [planes/README.md](planes/README.md), tu plan y [docs/contratos-de-datos.md](docs/contratos-de-datos.md). Los agentes de IA también.
-2. **Ramas y archivos:** cada uno trabaja en su rama y en sus archivos; nadie sube directo a `main`. Se integra con un *Pull Request* en cada hito.
-3. **Para traer lo de los demás:** `git fetch origin && git merge origin/main`. Commits chicos y sin la línea `Co-Authored-By`.
-4. **Datos faltantes:** van como `null`. **Nunca inventar números.**
-5. **Registro:** cada decisión va a la bitácora y cada término nuevo al glosario.
+> La sección de estructura la actualiza `scripts/actualizar_readme.py`. Un workflow de GitHub Actions la corre después de cada push a `main`.

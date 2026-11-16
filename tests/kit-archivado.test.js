@@ -1,6 +1,6 @@
-// D-44: el kit Arduino se archivó (archivo/kit-arduino/) y el dron toma su lugar en el Inicio.
-// Estas pruebas cuidan que nada de la app vuelva a cargar o enlazar el kit, y que el dron esté donde estaba la sonda.
-// Para volver a usar el kit: archivo/kit-arduino/README.md y docs/reglas-y-bitacora.md, D-44.
+// D-44: el kit Arduino se retiró de la app y el dron toma su lugar en el Inicio. El código del kit ya no está
+// en el repositorio. Estas pruebas cuidan que nada de la app vuelva a cargar o enlazar el kit, y que el dron esté
+// donde estaba la sonda.
 const test = require('node:test');
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
@@ -13,11 +13,9 @@ const leer = (f) => fs.readFileSync(path.join(WEB, f), 'utf8');
 const existe = (r) => fs.existsSync(path.join(RAIZ, r));
 const index = leer('index.html'), app = leer('app.js');
 
-test('los archivos del kit están en archivo/kit-arduino/ y ya no en la app', () => {
+test('los archivos del kit ya no están en la app', () => {
   for (const r of ['arduino', 'web/kit.html', 'web/kit.js', 'web/kit.css', 'web/kit-logica.js', 'web/campo.html',
-    'web/campo.css', 'data/arduino_bandejas_demo.json']) assert.ok(!existe(r), `${r} tendría que estar archivado`);
-  for (const r of ['archivo/kit-arduino/README.md', 'archivo/kit-arduino/arduino/lector-web-serial.js',
-    'archivo/kit-arduino/web/kit.html', 'archivo/kit-arduino/data/arduino_bandejas_demo.json']) assert.ok(existe(r), r);
+    'web/campo.css', 'data/arduino_bandejas_demo.json']) assert.ok(!existe(r), `${r} no tendría que estar en la app`);
 });
 
 test('ninguna página ni script de la app carga o enlaza el kit', () => {
