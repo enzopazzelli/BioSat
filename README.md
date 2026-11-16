@@ -149,12 +149,12 @@ Sale solo de las casillas sin tildar de cada plan. Panorama completo y riesgos: 
 **Últimas decisiones:**
 
 <!-- AUTO:DECISIONES:INICIO -->
+- **D-47**: Las imágenes Landsat de la página de Vale no se veían, 15/11, 22:30
 - **D-46**: Se integra la propuesta de experiencia de Vale, sin el login, 15/11, 22:10
 - **D-45**: Más localidades debajo de cada zona, 15/11, 20:30
 - **D-44**: El kit Arduino se archiva y el dron toma su lugar, 15/11, 20:00
 - **D-43**: El kit Arduino sale de la app mientras se termina de armar, 15/11, 18:15
 - **D-42**: Tarjetas de las alternativas, barras de lo que se gana y se paga, y accesibilidad
-- **D-41**: Clases del ingeniero
 
 Todas las decisiones están en la [bitácora](docs/reglas-y-bitacora.md).
 <!-- AUTO:DECISIONES:FIN -->
@@ -260,6 +260,7 @@ BioSat/
 │   ├── asistente-logica.test.js
 │   ├── datos-contratos.test.js                               <-- Prueba la forma de los datos reales de ia_desmonte/
 │   ├── dron-logica.test.js
+│   ├── experiencia.test.js
 │   ├── frases-logica.test.js
 │   ├── idioma-logica.test.js                                 <-- Prueba la lógica del idioma: solo español e inglés (D-35)
 │   ├── inicio-logica.test.js                                 <-- Prueba el semáforo, la próxima siembra y el WhatsApp del Inicio
@@ -277,7 +278,7 @@ BioSat/
 │       ├── dron_sin_coordenadas.tif
 │       ├── generar_tif_prueba.py
 │       └── lotes/ (4 archivos)
-└── web/ (63 archivos)                                        <-- App web BioSat (abrir con un servidor: ver Inicio rápido)
+└── web/ (62 archivos)                                        <-- App web BioSat (abrir con un servidor: ver Inicio rápido)
 ```
 <!-- AUTO:ESTRUCTURA:FIN -->
 
