@@ -208,7 +208,7 @@
     const zoneId=ZONES[heroSlide],number=heroSlide+1;
     if(!zoneId)return;
     const scene=SCENES?.['z'+number]?.verano;
-    $('#heroSatellite').src=`images/z${number}_verano_rgb.png`;
+    $('#heroSatellite').src=`../../data/imagenes/z${number}_verano_rgb.png`;
     $('#heroSatellite').alt=fmt(t('heroImageAlt'),{zone:zoneName(zoneId)});
     $('#heroSlideCount').textContent=`${String(number).padStart(2,'0')} / ${String(ZONES.length).padStart(2,'0')}`;
     $('#heroZoneName').textContent=zoneName(zoneId);
@@ -237,7 +237,7 @@
     const zoneNumber=ZONES.indexOf(select.value)+1;
     const season=$('#simSeason').value;
     const scene=SCENES?.['z'+zoneNumber]?.[season];
-    const base=`images/z${zoneNumber}_${season}_`;
+    const base=`../../data/imagenes/z${zoneNumber}_${season}_`;
     $('#simRgb').src=base+'rgb.png';
     $('#simNdvi').src=base+'ndvi.png';
     $('#simRgb').alt=`${t('simRgb')} · ${zoneName(select.value)} · ${season}`;
@@ -278,7 +278,7 @@
   function renderZoneVisual(zoneId){
     const number=ZONES.indexOf(zoneId)+1;if(!number)return;
     const version=REPO?.commit?.slice(0,12)||'63c12a7';
-    const base=`images/z${number}_${zoneSeason}_`;
+    const base=`../../data/imagenes/z${number}_${zoneSeason}_`;
     $('#zoneSeason').value=zoneSeason;
     $('#zoneRgb').src=base+'rgb.png?v='+version;
     $('#zoneNdvi').src=base+'ndvi.png?v='+version;

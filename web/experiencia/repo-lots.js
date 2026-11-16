@@ -15,16 +15,16 @@ window.BIOSAT_LOTS_DATA = [
         "date": "2026-07-17",
         "resolutionM": 10,
         "cleanFraction": 1.0,
-        "rgb": "images/lotes/capital_zona1/s2_rgb.png",
-        "ndvi": "images/lotes/capital_zona1/s2_ndvi.png"
+        "rgb": "../../data/imagenes/lotes/capital_zona1/s2_rgb.png",
+        "ndvi": "../../data/imagenes/lotes/capital_zona1/s2_ndvi.png"
       },
       "l8": {
         "scene": "1_LC08_230079_20260716",
         "date": "2026-07-16",
         "resolutionM": 30,
         "cleanFraction": 1.0,
-        "rgb": "images/lotes/capital_zona1/l8_rgb.png",
-        "ndvi": "images/lotes/capital_zona1/l8_ndvi.png"
+        "rgb": "../../data/imagenes/lotes/capital_zona1/l8_rgb.png",
+        "ndvi": "../../data/imagenes/lotes/capital_zona1/l8_ndvi.png"
       }
     },
     "reasons": {}

@@ -1,153 +1,306 @@
-<!doctype html>
-<html lang="es">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <meta name="theme-color" content="#12261f">
-  <title>BioSat · Propuesta de experiencia</title>
-  <meta name="description" content="BioSat: campos, TIFF, contexto regional, observaciones e historial.">
-  <link rel="stylesheet" href="styles.css">
-  <link rel="stylesheet" href="regional.css">
-  <link rel="stylesheet" href="evidence.css">
-  <script src="repo-data.js" defer></script>
-  <script src="repo-images.js" defer></script>
-  <script src="repo-lots.js" defer></script>
-  <script src="vendor/geotiff.js" defer></script>
-  <script src="vendor/proj4.js" defer></script>
-  <script src="tiff-preview.js" defer></script>
-  <script src="regional.js" defer></script>
-  <script src="preview-cache.js" defer></script>
-  <script src="upload-file.js" defer></script>
-  <script src="app.js" defer></script>
-</head>
-<body>
-  <div class="app-shell">
-    <header class="topbar">
-      <a class="brand" href="#inicio" aria-label="BioSat, inicio">
-        <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 40 40"><path d="M6 26c10 0 13-5 17-16 1 11 4 15 11 16-7 1-11 4-12 10-2-7-6-10-16-10Z"/><circle cx="24" cy="14" r="2"/></svg></span>
-        <span><strong>BioSat</strong><small data-i18n="brandSub">Inteligencia para cada campo</small></span>
-      </a>
-      <nav class="desktop-nav" aria-label="Principal">
-        <button class="nav-link active" data-view="inicio" data-i18n="navHome">Inicio</button>
-        <button class="nav-link" data-view="campos" data-i18n="navFields">Mis campos</button>
-        <button class="nav-link" data-view="analisis" data-i18n="navAnalysis">Análisis</button>
-      </nav>
-      <div class="top-actions">
-        <button id="accountButton" class="account-button" type="button">Explorar sin guardar</button>
-        <button id="signOutButton" class="signout-button" type="button" hidden data-i18n="signOut">Cerrar sesión</button>
-        <button id="langToggle" class="language" type="button" aria-label="Change language">EN <span aria-hidden="true">↗</span></button>
-        <div class="accessibility-wrap">
-          <button id="accessibilityToggle" class="language accessibility-toggle" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="accessibilityMenu" data-i18n-aria="accessTitle"><span aria-hidden="true">◐</span></button>
-          <div id="accessibilityMenu" class="accessibility-menu" hidden>
-            <strong data-i18n="accessTitle">Accesibilidad</strong>
-            <fieldset><legend data-i18n="themeTitle">Apariencia</legend><div class="preference-options"><button type="button" data-theme="light" data-i18n="lightTheme">Claro</button><button type="button" data-theme="dark" data-i18n="darkTheme">Oscuro</button></div></fieldset>
-            <fieldset><legend data-i18n="fontTitle">Tamaño de letra</legend><div class="preference-options"><button type="button" data-font-size="normal" data-i18n="fontNormal">Normal</button><button type="button" data-font-size="large" data-i18n="fontLarge">Grande</button><button type="button" data-font-size="xlarge" data-i18n="fontXLarge">Muy grande</button></div></fieldset>
-          </div>
-        </div>
-      </div>
-    </header>
-
-    <main id="main">
-      <section id="view-inicio" class="view home-view" aria-labelledby="homeTitle">
-        <div class="hero">
-          <div class="hero-copy">
-            <div class="eyebrow"><span class="spark"></span><span data-i18n="eyebrow">Una nueva manera de mirar tu campo</span></div>
-            <h1 id="homeTitle" data-i18n-html="heroTitle">Tus datos, <em>más claros.</em><br>Tu campo, mejor entendido.</h1>
-            <p class="hero-lede" data-i18n="heroText">Reuní imágenes, mediciones y observaciones en un mismo lugar. Identificá qué sector conviene revisar y conservá la historia de cada campo.</p>
-            <div class="hero-actions">
-              <button class="button button-primary" type="button" data-view="campos"><span data-i18n="createField">Crear mi campo</span><span aria-hidden="true">↗</span></button>
-              <button class="button button-quiet" type="button" data-view="analisis"><span data-i18n="exploreDemo">Explorar la vista</span><span aria-hidden="true">→</span></button>
-            </div>
-            <div class="hero-foot"><span class="hero-line"></span><span data-i18n="heroFoot">Primero el contexto. Después, el detalle que necesitás.</span></div>
-          </div>
-          <div class="hero-visual hero-carousel" aria-roledescription="carrusel" aria-label="Cinco zonas en imágenes satelitales">
-            <img id="heroSatellite" class="hero-satellite" src="images/z1_verano_rgb.png" alt="Imagen satelital de la zona 1">
-            <div class="hero-image-shade"></div>
-            <div class="hero-carousel-top"><span class="hero-source-badge" data-i18n="heroSatelliteBadge">LANDSAT · CONTEXTO REGIONAL</span><span id="heroSlideCount" class="hero-slide-count">01 / 05</span></div>
-            <div class="hero-carousel-bottom"><span class="hero-zone-label" data-i18n="heroZoneLabel">ZONA DE REFERENCIA</span><h2 id="heroZoneName"></h2><p id="heroImageMeta"></p><div class="hero-carousel-actions"><div class="hero-dots" id="heroDots" aria-label="Elegir zona"></div><div class="hero-arrows"><button id="heroPrev" type="button" aria-label="Imagen anterior">‹</button><button id="heroNext" type="button" aria-label="Imagen siguiente">›</button></div></div><a id="heroSourceLink" class="hero-source-link" href="#" target="_blank" rel="noopener noreferrer" data-i18n="heroViewSource">Ver imagen original ↗</a></div>
-          </div>
-        </div>
-        <div class="home-flow">
-          <div class="flow-intro"><span class="section-kicker" data-i18n="howLabel">CÓMO SE USA</span><h2 data-i18n="flowTitle">Una experiencia que acompaña la decisión.</h2></div>
-          <div class="flow-steps">
-            <article class="flow-step"><span class="step-num">01</span><div class="step-icon">⌖</div><h3 data-i18n="step1Title">Ubicá tu campo</h3><p data-i18n="step1Text">Elegí la zona y agregá una ubicación si la tenés. Podés guardar más de un campo.</p></article>
-            <article class="flow-step"><span class="step-num">02</span><div class="step-icon">▧</div><h3 data-i18n="step2Title">Sumá evidencia</h3><p data-i18n="step2Text">Adjuntá un TIFF del dron y registrá observaciones. Cada archivo queda asociado al campo.</p></article>
-            <article class="flow-step"><span class="step-num">03</span><div class="step-icon">✳</div><h3 data-i18n="step3Title">Revisá lo importante</h3><p data-i18n="step3Text">Leé las tarjetas principales y abrí solo las que necesitan un análisis más profundo.</p></article>
-          </div>
-        </div>
-        <div class="truth-note"><span class="truth-icon">i</span><p data-i18n="prototypeNote">Los datos del repositorio representan zonas, no tu lote. Los TIFF se guardan aquí, pero todavía no generan un análisis en este prototipo.</p></div>
-        <section class="simulation" aria-labelledby="simulationTitle">
-          <div class="simulation-heading"><div><span class="section-kicker" data-i18n="simKicker">EJEMPLO DE USO</span><h2 id="simulationTitle" data-i18n="simTitle">De los datos a una decisión posible.</h2><p data-i18n="simIntro">Elegí una zona para comparar datos regionales e imágenes y decidir qué verificar en el campo.</p></div><span class="sim-pill" data-i18n="simBadge">EJEMPLO · NO ES UNA RECOMENDACIÓN</span></div>
-          <div class="simulation-grid">
-            <div class="sim-story"><div class="sim-toolbar"><label><span data-i18n="simZone">Zona de referencia</span><select id="simZone"></select></label><span class="sim-source">NASA POWER · SoilGrids · Landsat</span></div><div class="sim-evidence" id="simEvidence"></div><div class="sim-images"><div class="sim-image-heading"><strong data-i18n="simImagesTitle">Imágenes para contrastar</strong><select id="simSeason"><option value="invierno" data-i18n="simWinter">Invierno 2025</option><option value="verano" data-i18n="simSummer">Verano 2024–2025</option></select></div><div class="sim-image-grid"><figure><img id="simRgb" alt=""><figcaption data-i18n="simRgb">Color real · Landsat</figcaption></figure><figure><img id="simNdvi" alt=""><figcaption data-i18n="simNdvi">NDVI · Landsat</figcaption></figure></div><p id="simImageSource"></p></div><div class="sim-decision"><strong data-i18n="simDecisionTitle">Qué haría el productor</strong><p data-i18n="simDecision">Revisar un sector con el asesor y un muestreo de suelo antes de decidir una aplicación. El TIFF aportaría detalle cuando exista un procesador de imágenes validado.</p></div></div>
-          </div>
-        </section>
-      </section>
-
-      <section id="view-campos" class="view workspace-view" hidden aria-labelledby="fieldsTitle">
-        <div class="page-heading"><div><span class="section-kicker" data-i18n="myWorkspace">MI ESPACIO</span><h1 id="fieldsTitle" data-i18n="fieldsTitle">Mis campos</h1><p data-i18n="fieldsLead">Guardá los datos básicos de cada campo y volvé a ellos cuando lo necesites.</p></div><span class="heading-icon">⌖</span></div>
-        <div class="fields-layout">
-          <div class="panel fields-panel"><div class="panel-title-row"><h2 data-i18n="savedFields">Campos guardados</h2><span class="count" id="fieldCount">0</span></div><div id="fieldsList" class="fields-list"></div><div class="local-notice"><span>◌</span><span data-i18n="localSave">Guardado solo en este navegador. No se sincroniza con otros dispositivos.</span></div></div>
-          <div class="panel form-panel"><div class="panel-title-row"><div><span class="tiny-label" data-i18n="fieldCard">FICHA DE CAMPO</span><h2 id="fieldFormTitle" data-i18n="newField">Nuevo campo</h2></div><span class="form-ornament">✳</span></div>
-            <form id="fieldForm" novalidate>
-              <input type="hidden" id="fieldId">
-              <label><span data-i18n="nameLabel">Nombre del campo <b>*</b></span><input id="fieldName" type="text" required maxlength="60" placeholder="Ej. El Algarrobal" data-i18n-placeholder="namePlaceholder"></label>
-              <div class="form-grid"><label><span data-i18n="zoneLabel">Zona <b>*</b></span><select id="fieldZone" required></select></label><label><span data-i18n="cropLabel">Cultivo / uso</span><input id="fieldCrop" type="text" maxlength="60" placeholder="Ej. Soja, ganadería" data-i18n-placeholder="cropPlaceholder"></label></div>
-              <div class="form-divider"><span data-i18n="geoOptional">Ubicación opcional</span><small data-i18n="geoHint">Si conocés el punto del campo, agregá sus coordenadas.</small></div>
-              <div class="form-grid"><label><span data-i18n="latLabel">Latitud</span><input id="fieldLat" type="number" min="-90" max="90" step="any" placeholder="-27.6500"></label><label><span data-i18n="lonLabel">Longitud</span><input id="fieldLon" type="number" min="-180" max="180" step="any" placeholder="-62.4200"></label></div>
-              <button class="locate-button" type="button" id="locateButton"><span>◎</span><span data-i18n="useDeviceLocation">Usar ubicación actual del dispositivo</span></button>
-              <p class="form-hint" data-i18n="geoClarification">La ubicación del dispositivo solo sirve si estás en el campo. Más adelante se podrá dibujar el límite real del lote.</p>
-              <label><span data-i18n="notesLabel">Notas del campo</span><textarea id="fieldNotes" rows="3" maxlength="1000" placeholder="Información que querés recordar…" data-i18n-placeholder="notesPlaceholder"></textarea></label>
-              <div class="form-actions"><button class="button button-primary" type="submit"><span id="saveFieldText" data-i18n="saveField">Guardar campo</span><span aria-hidden="true">→</span></button><button class="button button-secondary" type="button" id="resetField" data-i18n="clearForm">Limpiar</button></div>
-            </form>
-          </div>
-        </div>
-      </section>
-
-      <section id="view-analisis" class="view workspace-view" hidden aria-labelledby="analysisTitle">
-        <div class="page-heading analysis-heading"><div><span class="section-kicker" data-i18n="fieldIntelligence">INTELIGENCIA DE CAMPO</span><h1 id="analysisTitle" data-i18n="analysisTitle">Tu campo, de un vistazo.</h1><p data-i18n="analysisLead">Elegí un campo para ver sus archivos, observaciones e historial.</p></div><div class="select-wrap"><label for="activeField" data-i18n="selectedField">CAMPO SELECCIONADO</label><select id="activeField"></select></div></div>
-        <div id="analysisEmpty" class="panel empty-analysis" hidden><div class="empty-art">⌖</div><h2 data-i18n="noFieldsTitle">Empezá por tu primer campo</h2><p data-i18n="noFieldsText">Después podrás asociar archivos y observaciones a ese lugar.</p><button class="button button-primary" type="button" data-view="campos" data-i18n="createField">Crear mi campo</button></div>
-        <div id="analysisContent">
-          <div class="field-summary"><div><span class="field-kicker" data-i18n="currentField">CAMPO ACTIVO</span><h2 id="summaryName"></h2><p id="summaryMeta"></p></div><div class="summary-badges"><span class="soft-badge" id="summaryZone"></span><span class="soft-badge accent" id="summaryCoords"></span></div></div>
-          <div id="demoBanner" class="demo-banner" hidden><span>✳</span><span data-i18n="demoBanner">Campo de ejemplo. Los datos regionales que aparecen abajo sí vienen del repositorio; no son mediciones de este lote.</span></div>
-          <section class="regional-panel panel" aria-labelledby="regionalTitle"><div class="panel-title-row"><div><span class="tiny-label" data-i18n="regionalLabel">DATOS DEL REPOSITORIO · CONTEXTO DE ZONA</span><h2 id="regionalTitle" data-i18n="regionalTitle">La zona en números</h2></div><span class="repo-pill" id="repoCommit"></span></div><div id="regionalStats" class="regional-stats"></div><div class="rain-heading"><strong data-i18n="rainChartTitle">Lluvia media por mes</strong><span data-i18n="rainChartPeriod">NASA POWER · 2021–2025</span></div><div id="rainChart" class="rain-chart" role="img"></div><p class="regional-foot" data-i18n="regionalFoot">Valores de referencia regional. El clima representa un punto por zona, no una medición dentro del campo.</p></section>
-          <section class="monthly-section" aria-labelledby="monthlyTitle"><div class="content-topline monthly-heading"><div><span class="section-kicker" data-i18n="monthlyLabel">TU AÑO · DATOS DE LA ZONA</span><h2 id="monthlyTitle" data-i18n="monthlyTitle">Mes a mes, cuando lo necesites</h2><p data-i18n="monthlyLead">Abrí un mes para consultar clima, cobertura y la rotación de referencia.</p></div><div class="monthly-period" role="group" aria-label="Período de referencia"><button type="button" data-month-period="recent" aria-pressed="true" data-i18n="monthlyRecent">2021–2025</button><button type="button" data-month-period="normal" aria-pressed="false" data-i18n="monthlyNormal">1991–2020</button></div></div><div id="monthlyCards" class="monthly-grid"></div><p class="monthly-foot" data-i18n="monthlyFoot">Promedios históricos regionales; no son un pronóstico ni mediciones del lote. La cobertura satelital corresponde a 2021–2025 en ambos períodos.</p></section>
-          <div class="analysis-grid">
-            <div class="map-panel panel">
-              <div class="panel-title-row"><div><span class="tiny-label" data-i18n="visualContext">CONTEXTO VISUAL</span><h2 data-i18n="fieldView">Vista del campo</h2></div><span class="map-chip" data-i18n="regionalImageBadge">Imagen regional</span></div>
-              <div class="zone-visual" id="zoneVisual">
-                <div class="zone-visual-head"><strong data-i18n="zoneImagesTitle">Imágenes de la zona</strong><label><span data-i18n="zoneSeasonLabel">Temporada</span><select id="zoneSeason"><option value="verano" data-i18n="simSummer">Verano 2024–2025</option><option value="invierno" data-i18n="simWinter">Invierno 2025</option></select></label></div>
-                <div class="zone-visual-grid"><figure><img id="zoneRgb" alt="" loading="lazy" decoding="async"><figcaption data-i18n="simRgb">Color real · Landsat</figcaption></figure><figure><img id="zoneNdvi" alt="" loading="lazy" decoding="async"><figcaption data-i18n="simNdvi">NDVI · Landsat</figcaption></figure></div>
-                <p class="zone-visual-source" id="zoneVisualSource"></p>
-                <p class="zone-visual-limit" data-i18n="zoneVisualLimit">Estas imágenes representan la zona, no tu lote. El TIFF del dron se muestra arriba cuando lo adjuntás.</p>
-              </div>
-            </div>
-            <div class="upload-panel panel">
-              <div class="panel-title-row"><div><span class="tiny-label" data-i18n="addEvidence">SUMAR EVIDENCIA</span><h2 data-i18n="droneUpload">Imagen del dron</h2></div><span class="upload-icon">▧</span></div>
-              <label class="dropzone" id="dropzone"><input id="tiffInput" type="file" accept=".tif,.tiff,image/tiff" multiple><span class="dropzone-icon">⇧</span><strong data-i18n="dropTitle">Arrastrá un TIFF o buscá en tu equipo</strong><small data-i18n="dropSub">GeoTIFF / TIFF · uno o más archivos</small><span class="dropzone-button" data-i18n="chooseFiles">Elegir archivos</span></label>
-              <p class="upload-warning" data-i18n="uploadWarning">El TIFF queda asociado a tu campo. La vista se prepara mientras se sube el archivo.</p>
-              <div id="uploadProgress" class="upload-progress" role="status" aria-live="polite" hidden><span id="uploadProgressText"></span><span class="upload-meter"><i id="uploadMeterFill"></i></span></div>
-              <p class="cache-explainer" data-i18n="cacheExplainer">Las vistas generadas se guardan en este dispositivo para abrirlas más rápido. Con cuenta, también se conservan en la nube.</p>
-              <div class="uploaded-heading"><strong data-i18n="attachedFiles">Archivos adjuntos</strong><span id="fileCount">0</span></div><div id="filesList" class="files-list"></div>
-              <div id="tiffPreview" class="tiff-preview" hidden><strong data-i18n="tiffPreviewTitle">Vista del TIFF cargado</strong><div id="tiffPreviewBody"></div></div>
-              <div id="lotMatches" class="lot-matches" hidden><strong data-i18n="lotImagesTitle">Satélite del lote</strong><div id="lotMatchesBody"></div></div>
-            </div>
-          </div>
-          <div class="content-topline"><div><span class="section-kicker" data-i18n="regionalCardsLabel">LECTURAS REGIONALES</span><h2 data-i18n="regionalCardsTitle">Qué dicen los datos de tu zona</h2><p data-i18n="regionalCardsLead">Compará los indicadores y abrí cada tarjeta para ver cifras, método y límites.</p></div></div>
-          <div id="regionalCards" class="observation-grid"></div>
-          <div class="content-topline personal-heading"><div><span class="section-kicker" data-i18n="observationsLabel">OBSERVACIONES DEL CAMPO</span><h2 data-i18n="observationsTitle">Lo que registraste</h2><p data-i18n="observationsLead">Estas notas pertenecen al campo seleccionado y quedan en su historial.</p></div><button class="button button-outline" id="addObservation" type="button"><span>＋</span><span data-i18n="addObservation">Agregar observación</span></button></div>
-          <div id="observationsList" class="observation-grid"></div>
-          <div class="rotations-section"><div class="content-topline"><div><span class="section-kicker" data-i18n="rotationsLabel">ALTERNATIVAS DE LA ZONA</span><h2 data-i18n="rotationsTitle">Rotaciones para conversar</h2><p id="rotationsDisclaimer"></p></div></div><div id="rotationsList" class="rotation-grid"></div></div>
-          <div class="history-section"><div class="content-topline"><div><span class="section-kicker" data-i18n="historyLabel">TRAZABILIDAD</span><h2 data-i18n="historyTitle">Historial del campo</h2><p data-i18n="historyLead">Las acciones se ordenan por fecha para que puedas volver a ver qué cambió.</p></div><span class="history-symbol">↺</span></div><div id="historyList" class="timeline"></div></div>
-        </div>
-      </section>
-    </main>
-
-    <nav class="mobile-nav" aria-label="Navegación móvil"><button data-view="inicio" class="active"><span>⌂</span><small data-i18n="navHome">Inicio</small></button><button data-view="campos"><span>⌖</span><small data-i18n="navFields">Mis campos</small></button><button data-view="analisis"><span>▦</span><small data-i18n="navAnalysis">Análisis</small></button></nav>
-    <div id="toast" class="toast" role="status" aria-live="polite"></div>
-  </div>
-
-  <dialog id="observationDialog" class="observation-dialog"><form id="observationForm" method="dialog"><div class="dialog-head"><div><span class="tiny-label" data-i18n="newObservationLabel">NUEVA OBSERVACIÓN</span><h2 data-i18n="observationDialogTitle">Registrar un hallazgo</h2></div><button type="button" id="closeObservation" class="icon-button" aria-label="Cerrar">×</button></div><p data-i18n="manualNotice">Registrá una observación manual. La interpretación de imágenes del dron requerirá un servicio de procesamiento.</p><label><span data-i18n="obsTitleLabel">Título <b>*</b></span><input id="obsTitle" required maxlength="90"></label><div class="form-grid"><label><span data-i18n="obsSourceLabel">Fuente</span><select id="obsSource"><option value="field"></option><option value="drone"></option><option value="satellite"></option><option value="other"></option></select></label><label><span data-i18n="obsSectorLabel">Sector</span><input id="obsSector" maxlength="50" placeholder="Ej. Norte" data-i18n-placeholder="sectorPlaceholder"></label></div><label><span data-i18n="obsSummaryLabel">Resumen <b>*</b></span><textarea id="obsSummary" required rows="2" maxlength="280"></textarea></label><label><span data-i18n="obsDetailLabel">Detalle y próximo paso</span><textarea id="obsDetail" rows="4" maxlength="1200"></textarea></label><div class="dialog-actions"><button type="button" class="button button-secondary" id="cancelObservation" data-i18n="cancel">Cancelar</button><button type="submit" class="button button-primary" data-i18n="saveObservation">Guardar observación</button></div></form></dialog>
-  <dialog id="authDialog" class="observation-dialog auth-dialog" aria-labelledby="authTitle"><form id="authForm"><div class="dialog-head"><div><span class="tiny-label" data-i18n="authKicker">TU CUENTA</span><h2 id="authTitle" data-i18n="authLogin">Iniciar sesión</h2></div><button type="button" id="closeAuth" class="icon-button" data-i18n-aria="close">×</button></div><div class="auth-tabs" role="tablist"><button type="button" id="loginTab" role="tab" aria-selected="true" data-auth-mode="login" data-i18n="authLogin">Iniciar sesión</button><button type="button" id="registerTab" role="tab" aria-selected="false" data-auth-mode="register" data-i18n="authRegister">Crear cuenta</button></div><label id="displayNameWrap" hidden><span data-i18n="authName">Tu nombre</span><input id="authName" autocomplete="name" maxlength="80"></label><label><span data-i18n="authEmail">Correo electrónico</span><input id="authEmail" type="email" autocomplete="email" required maxlength="254"></label><label><span data-i18n="authPassword">Contraseña</span><input id="authPassword" type="password" autocomplete="current-password" required minlength="12" maxlength="128"></label><label id="confirmWrap" hidden><span data-i18n="authConfirm">Repetir contraseña</span><input id="authConfirm" type="password" autocomplete="new-password" minlength="12" maxlength="128"></label><p id="authHelp" class="auth-help" data-i18n="authHelp">Ingresá con tu cuenta para conservar campos e historial en cualquier dispositivo.</p><p id="authStatus" class="auth-status" role="alert" aria-live="assertive" hidden></p><button id="authSubmit" class="button button-primary" type="submit" data-i18n="authLogin">Iniciar sesión</button><button id="continueGuest" class="button button-secondary" type="button" data-i18n="authGuest">Seguir sin guardar</button></form></dialog>
-<script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a5b26f8978977a5c',t:'MTc5NDc4OTUzNg=='};var l=window.parent.location,o;try{o=new URL(l.origin).origin}catch(e){try{o=new URL(new URL(l.href).origin).origin}catch(e){o=''}}var u='/cdn-cgi/challenge-platform/scripts/jsd/main.js?ray=a5b26f8978977a5c',a=document.createElement('script');a.src=o?new URL(u,o).href:u;document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
-</html>
+<!doctype html>
+
+<html lang="es">
+
+<head>
+
+  <meta charset="utf-8">
+
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+
+  <meta name="theme-color" content="#12261f">
+
+  <title>BioSat · Propuesta de experiencia</title>
+
+  <meta name="description" content="BioSat: campos, TIFF, contexto regional, observaciones e historial.">
+
+  <link rel="stylesheet" href="styles.css">
+
+  <link rel="stylesheet" href="regional.css">
+
+  <link rel="stylesheet" href="evidence.css">
+
+  <script src="repo-data.js" defer></script>
+
+  <script src="repo-images.js" defer></script>
+
+  <script src="repo-lots.js" defer></script>
+
+  <script src="vendor/geotiff.js" defer></script>
+
+  <script src="vendor/proj4.js" defer></script>
+
+  <script src="tiff-preview.js" defer></script>
+
+  <script src="regional.js" defer></script>
+
+  <script src="preview-cache.js" defer></script>
+
+  <script src="upload-file.js" defer></script>
+
+  <script src="app.js" defer></script>
+
+</head>
+
+<body>
+
+  <div class="app-shell">
+
+    <header class="topbar">
+
+      <a class="brand" href="#inicio" aria-label="BioSat, inicio">
+
+        <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 40 40"><path d="M6 26c10 0 13-5 17-16 1 11 4 15 11 16-7 1-11 4-12 10-2-7-6-10-16-10Z"/><circle cx="24" cy="14" r="2"/></svg></span>
+
+        <span><strong>BioSat</strong><small data-i18n="brandSub">Inteligencia para cada campo</small></span>
+
+      </a>
+
+      <nav class="desktop-nav" aria-label="Principal">
+
+        <button class="nav-link active" data-view="inicio" data-i18n="navHome">Inicio</button>
+
+        <button class="nav-link" data-view="campos" data-i18n="navFields">Mis campos</button>
+
+        <button class="nav-link" data-view="analisis" data-i18n="navAnalysis">Análisis</button>
+
+      </nav>
+
+      <div class="top-actions">
+
+        <button id="accountButton" class="account-button" type="button">Explorar sin guardar</button>
+
+        <button id="signOutButton" class="signout-button" type="button" hidden data-i18n="signOut">Cerrar sesión</button>
+
+        <button id="langToggle" class="language" type="button" aria-label="Change language">EN <span aria-hidden="true">↗</span></button>
+
+        <div class="accessibility-wrap">
+
+          <button id="accessibilityToggle" class="language accessibility-toggle" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="accessibilityMenu" data-i18n-aria="accessTitle"><span aria-hidden="true">◐</span></button>
+
+          <div id="accessibilityMenu" class="accessibility-menu" hidden>
+
+            <strong data-i18n="accessTitle">Accesibilidad</strong>
+
+            <fieldset><legend data-i18n="themeTitle">Apariencia</legend><div class="preference-options"><button type="button" data-theme="light" data-i18n="lightTheme">Claro</button><button type="button" data-theme="dark" data-i18n="darkTheme">Oscuro</button></div></fieldset>
+
+            <fieldset><legend data-i18n="fontTitle">Tamaño de letra</legend><div class="preference-options"><button type="button" data-font-size="normal" data-i18n="fontNormal">Normal</button><button type="button" data-font-size="large" data-i18n="fontLarge">Grande</button><button type="button" data-font-size="xlarge" data-i18n="fontXLarge">Muy grande</button></div></fieldset>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </header>
+
+
+
+    <main id="main">
+
+      <section id="view-inicio" class="view home-view" aria-labelledby="homeTitle">
+
+        <div class="hero">
+
+          <div class="hero-copy">
+
+            <div class="eyebrow"><span class="spark"></span><span data-i18n="eyebrow">Una nueva manera de mirar tu campo</span></div>
+
+            <h1 id="homeTitle" data-i18n-html="heroTitle">Tus datos, <em>más claros.</em><br>Tu campo, mejor entendido.</h1>
+
+            <p class="hero-lede" data-i18n="heroText">Reuní imágenes, mediciones y observaciones en un mismo lugar. Identificá qué sector conviene revisar y conservá la historia de cada campo.</p>
+
+            <div class="hero-actions">
+
+              <button class="button button-primary" type="button" data-view="campos"><span data-i18n="createField">Crear mi campo</span><span aria-hidden="true">↗</span></button>
+
+              <button class="button button-quiet" type="button" data-view="analisis"><span data-i18n="exploreDemo">Explorar la vista</span><span aria-hidden="true">→</span></button>
+
+            </div>
+
+            <div class="hero-foot"><span class="hero-line"></span><span data-i18n="heroFoot">Primero el contexto. Después, el detalle que necesitás.</span></div>
+
+          </div>
+
+          <div class="hero-visual hero-carousel" aria-roledescription="carrusel" aria-label="Cinco zonas en imágenes satelitales">
+
+            <img id="heroSatellite" class="hero-satellite" src="../../data/imagenes/z1_verano_rgb.png" alt="Imagen satelital de la zona 1">
+
+            <div class="hero-image-shade"></div>
+
+            <div class="hero-carousel-top"><span class="hero-source-badge" data-i18n="heroSatelliteBadge">LANDSAT · CONTEXTO REGIONAL</span><span id="heroSlideCount" class="hero-slide-count">01 / 05</span></div>
+
+            <div class="hero-carousel-bottom"><span class="hero-zone-label" data-i18n="heroZoneLabel">ZONA DE REFERENCIA</span><h2 id="heroZoneName"></h2><p id="heroImageMeta"></p><div class="hero-carousel-actions"><div class="hero-dots" id="heroDots" aria-label="Elegir zona"></div><div class="hero-arrows"><button id="heroPrev" type="button" aria-label="Imagen anterior">‹</button><button id="heroNext" type="button" aria-label="Imagen siguiente">›</button></div></div><a id="heroSourceLink" class="hero-source-link" href="#" target="_blank" rel="noopener noreferrer" data-i18n="heroViewSource">Ver imagen original ↗</a></div>
+
+          </div>
+
+        </div>
+
+        <div class="home-flow">
+
+          <div class="flow-intro"><span class="section-kicker" data-i18n="howLabel">CÓMO SE USA</span><h2 data-i18n="flowTitle">Una experiencia que acompaña la decisión.</h2></div>
+
+          <div class="flow-steps">
+
+            <article class="flow-step"><span class="step-num">01</span><div class="step-icon">⌖</div><h3 data-i18n="step1Title">Ubicá tu campo</h3><p data-i18n="step1Text">Elegí la zona y agregá una ubicación si la tenés. Podés guardar más de un campo.</p></article>
+
+            <article class="flow-step"><span class="step-num">02</span><div class="step-icon">▧</div><h3 data-i18n="step2Title">Sumá evidencia</h3><p data-i18n="step2Text">Adjuntá un TIFF del dron y registrá observaciones. Cada archivo queda asociado al campo.</p></article>
+
+            <article class="flow-step"><span class="step-num">03</span><div class="step-icon">✳</div><h3 data-i18n="step3Title">Revisá lo importante</h3><p data-i18n="step3Text">Leé las tarjetas principales y abrí solo las que necesitan un análisis más profundo.</p></article>
+
+          </div>
+
+        </div>
+
+        <div class="truth-note"><span class="truth-icon">i</span><p data-i18n="prototypeNote">Los datos del repositorio representan zonas, no tu lote. Los TIFF se guardan aquí, pero todavía no generan un análisis en este prototipo.</p></div>
+
+        <section class="simulation" aria-labelledby="simulationTitle">
+
+          <div class="simulation-heading"><div><span class="section-kicker" data-i18n="simKicker">EJEMPLO DE USO</span><h2 id="simulationTitle" data-i18n="simTitle">De los datos a una decisión posible.</h2><p data-i18n="simIntro">Elegí una zona para comparar datos regionales e imágenes y decidir qué verificar en el campo.</p></div><span class="sim-pill" data-i18n="simBadge">EJEMPLO · NO ES UNA RECOMENDACIÓN</span></div>
+
+          <div class="simulation-grid">
+
+            <div class="sim-story"><div class="sim-toolbar"><label><span data-i18n="simZone">Zona de referencia</span><select id="simZone"></select></label><span class="sim-source">NASA POWER · SoilGrids · Landsat</span></div><div class="sim-evidence" id="simEvidence"></div><div class="sim-images"><div class="sim-image-heading"><strong data-i18n="simImagesTitle">Imágenes para contrastar</strong><select id="simSeason"><option value="invierno" data-i18n="simWinter">Invierno 2025</option><option value="verano" data-i18n="simSummer">Verano 2024–2025</option></select></div><div class="sim-image-grid"><figure><img id="simRgb" alt=""><figcaption data-i18n="simRgb">Color real · Landsat</figcaption></figure><figure><img id="simNdvi" alt=""><figcaption data-i18n="simNdvi">NDVI · Landsat</figcaption></figure></div><p id="simImageSource"></p></div><div class="sim-decision"><strong data-i18n="simDecisionTitle">Qué haría el productor</strong><p data-i18n="simDecision">Revisar un sector con el asesor y un muestreo de suelo antes de decidir una aplicación. El TIFF aportaría detalle cuando exista un procesador de imágenes validado.</p></div></div>
+
+          </div>
+
+        </section>
+
+      </section>
+
+
+
+      <section id="view-campos" class="view workspace-view" hidden aria-labelledby="fieldsTitle">
+
+        <div class="page-heading"><div><span class="section-kicker" data-i18n="myWorkspace">MI ESPACIO</span><h1 id="fieldsTitle" data-i18n="fieldsTitle">Mis campos</h1><p data-i18n="fieldsLead">Guardá los datos básicos de cada campo y volvé a ellos cuando lo necesites.</p></div><span class="heading-icon">⌖</span></div>
+
+        <div class="fields-layout">
+
+          <div class="panel fields-panel"><div class="panel-title-row"><h2 data-i18n="savedFields">Campos guardados</h2><span class="count" id="fieldCount">0</span></div><div id="fieldsList" class="fields-list"></div><div class="local-notice"><span>◌</span><span data-i18n="localSave">Guardado solo en este navegador. No se sincroniza con otros dispositivos.</span></div></div>
+
+          <div class="panel form-panel"><div class="panel-title-row"><div><span class="tiny-label" data-i18n="fieldCard">FICHA DE CAMPO</span><h2 id="fieldFormTitle" data-i18n="newField">Nuevo campo</h2></div><span class="form-ornament">✳</span></div>
+
+            <form id="fieldForm" novalidate>
+
+              <input type="hidden" id="fieldId">
+
+              <label><span data-i18n="nameLabel">Nombre del campo <b>*</b></span><input id="fieldName" type="text" required maxlength="60" placeholder="Ej. El Algarrobal" data-i18n-placeholder="namePlaceholder"></label>
+
+              <div class="form-grid"><label><span data-i18n="zoneLabel">Zona <b>*</b></span><select id="fieldZone" required></select></label><label><span data-i18n="cropLabel">Cultivo / uso</span><input id="fieldCrop" type="text" maxlength="60" placeholder="Ej. Soja, ganadería" data-i18n-placeholder="cropPlaceholder"></label></div>
+
+              <div class="form-divider"><span data-i18n="geoOptional">Ubicación opcional</span><small data-i18n="geoHint">Si conocés el punto del campo, agregá sus coordenadas.</small></div>
+
+              <div class="form-grid"><label><span data-i18n="latLabel">Latitud</span><input id="fieldLat" type="number" min="-90" max="90" step="any" placeholder="-27.6500"></label><label><span data-i18n="lonLabel">Longitud</span><input id="fieldLon" type="number" min="-180" max="180" step="any" placeholder="-62.4200"></label></div>
+
+              <button class="locate-button" type="button" id="locateButton"><span>◎</span><span data-i18n="useDeviceLocation">Usar ubicación actual del dispositivo</span></button>
+
+              <p class="form-hint" data-i18n="geoClarification">La ubicación del dispositivo solo sirve si estás en el campo. Más adelante se podrá dibujar el límite real del lote.</p>
+
+              <label><span data-i18n="notesLabel">Notas del campo</span><textarea id="fieldNotes" rows="3" maxlength="1000" placeholder="Información que querés recordar…" data-i18n-placeholder="notesPlaceholder"></textarea></label>
+
+              <div class="form-actions"><button class="button button-primary" type="submit"><span id="saveFieldText" data-i18n="saveField">Guardar campo</span><span aria-hidden="true">→</span></button><button class="button button-secondary" type="button" id="resetField" data-i18n="clearForm">Limpiar</button></div>
+
+            </form>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+
+      <section id="view-analisis" class="view workspace-view" hidden aria-labelledby="analysisTitle">
+
+        <div class="page-heading analysis-heading"><div><span class="section-kicker" data-i18n="fieldIntelligence">INTELIGENCIA DE CAMPO</span><h1 id="analysisTitle" data-i18n="analysisTitle">Tu campo, de un vistazo.</h1><p data-i18n="analysisLead">Elegí un campo para ver sus archivos, observaciones e historial.</p></div><div class="select-wrap"><label for="activeField" data-i18n="selectedField">CAMPO SELECCIONADO</label><select id="activeField"></select></div></div>
+
+        <div id="analysisEmpty" class="panel empty-analysis" hidden><div class="empty-art">⌖</div><h2 data-i18n="noFieldsTitle">Empezá por tu primer campo</h2><p data-i18n="noFieldsText">Después podrás asociar archivos y observaciones a ese lugar.</p><button class="button button-primary" type="button" data-view="campos" data-i18n="createField">Crear mi campo</button></div>
+
+        <div id="analysisContent">
+
+          <div class="field-summary"><div><span class="field-kicker" data-i18n="currentField">CAMPO ACTIVO</span><h2 id="summaryName"></h2><p id="summaryMeta"></p></div><div class="summary-badges"><span class="soft-badge" id="summaryZone"></span><span class="soft-badge accent" id="summaryCoords"></span></div></div>
+
+          <div id="demoBanner" class="demo-banner" hidden><span>✳</span><span data-i18n="demoBanner">Campo de ejemplo. Los datos regionales que aparecen abajo sí vienen del repositorio; no son mediciones de este lote.</span></div>
+
+          <section class="regional-panel panel" aria-labelledby="regionalTitle"><div class="panel-title-row"><div><span class="tiny-label" data-i18n="regionalLabel">DATOS DEL REPOSITORIO · CONTEXTO DE ZONA</span><h2 id="regionalTitle" data-i18n="regionalTitle">La zona en números</h2></div><span class="repo-pill" id="repoCommit"></span></div><div id="regionalStats" class="regional-stats"></div><div class="rain-heading"><strong data-i18n="rainChartTitle">Lluvia media por mes</strong><span data-i18n="rainChartPeriod">NASA POWER · 2021–2025</span></div><div id="rainChart" class="rain-chart" role="img"></div><p class="regional-foot" data-i18n="regionalFoot">Valores de referencia regional. El clima representa un punto por zona, no una medición dentro del campo.</p></section>
+
+          <section class="monthly-section" aria-labelledby="monthlyTitle"><div class="content-topline monthly-heading"><div><span class="section-kicker" data-i18n="monthlyLabel">TU AÑO · DATOS DE LA ZONA</span><h2 id="monthlyTitle" data-i18n="monthlyTitle">Mes a mes, cuando lo necesites</h2><p data-i18n="monthlyLead">Abrí un mes para consultar clima, cobertura y la rotación de referencia.</p></div><div class="monthly-period" role="group" aria-label="Período de referencia"><button type="button" data-month-period="recent" aria-pressed="true" data-i18n="monthlyRecent">2021–2025</button><button type="button" data-month-period="normal" aria-pressed="false" data-i18n="monthlyNormal">1991–2020</button></div></div><div id="monthlyCards" class="monthly-grid"></div><p class="monthly-foot" data-i18n="monthlyFoot">Promedios históricos regionales; no son un pronóstico ni mediciones del lote. La cobertura satelital corresponde a 2021–2025 en ambos períodos.</p></section>
+
+          <div class="analysis-grid">
+
+            <div class="map-panel panel">
+
+              <div class="panel-title-row"><div><span class="tiny-label" data-i18n="visualContext">CONTEXTO VISUAL</span><h2 data-i18n="fieldView">Vista del campo</h2></div><span class="map-chip" data-i18n="regionalImageBadge">Imagen regional</span></div>
+
+              <div class="zone-visual" id="zoneVisual">
+
+                <div class="zone-visual-head"><strong data-i18n="zoneImagesTitle">Imágenes de la zona</strong><label><span data-i18n="zoneSeasonLabel">Temporada</span><select id="zoneSeason"><option value="verano" data-i18n="simSummer">Verano 2024–2025</option><option value="invierno" data-i18n="simWinter">Invierno 2025</option></select></label></div>
+
+                <div class="zone-visual-grid"><figure><img id="zoneRgb" alt="" loading="lazy" decoding="async"><figcaption data-i18n="simRgb">Color real · Landsat</figcaption></figure><figure><img id="zoneNdvi" alt="" loading="lazy" decoding="async"><figcaption data-i18n="simNdvi">NDVI · Landsat</figcaption></figure></div>
+
+                <p class="zone-visual-source" id="zoneVisualSource"></p>
+
+                <p class="zone-visual-limit" data-i18n="zoneVisualLimit">Estas imágenes representan la zona, no tu lote. El TIFF del dron se muestra arriba cuando lo adjuntás.</p>
+
+              </div>
+
+            </div>
+
+            <div class="upload-panel panel">
+
+              <div class="panel-title-row"><div><span class="tiny-label" data-i18n="addEvidence">SUMAR EVIDENCIA</span><h2 data-i18n="droneUpload">Imagen del dron</h2></div><span class="upload-icon">▧</span></div>
+
+              <label class="dropzone" id="dropzone"><input id="tiffInput" type="file" accept=".tif,.tiff,image/tiff" multiple><span class="dropzone-icon">⇧</span><strong data-i18n="dropTitle">Arrastrá un TIFF o buscá en tu equipo</strong><small data-i18n="dropSub">GeoTIFF / TIFF · uno o más archivos</small><span class="dropzone-button" data-i18n="chooseFiles">Elegir archivos</span></label>
+
+              <p class="upload-warning" data-i18n="uploadWarning">El TIFF queda asociado a tu campo. La vista se prepara mientras se sube el archivo.</p>
+
+              <div id="uploadProgress" class="upload-progress" role="status" aria-live="polite" hidden><span id="uploadProgressText"></span><span class="upload-meter"><i id="uploadMeterFill"></i></span></div>
+
+              <p class="cache-explainer" data-i18n="cacheExplainer">Las vistas generadas se guardan en este dispositivo para abrirlas más rápido. Con cuenta, también se conservan en la nube.</p>
+
+              <div class="uploaded-heading"><strong data-i18n="attachedFiles">Archivos adjuntos</strong><span id="fileCount">0</span></div><div id="filesList" class="files-list"></div>
+
+              <div id="tiffPreview" class="tiff-preview" hidden><strong data-i18n="tiffPreviewTitle">Vista del TIFF cargado</strong><div id="tiffPreviewBody"></div></div>
+
+              <div id="lotMatches" class="lot-matches" hidden><strong data-i18n="lotImagesTitle">Satélite del lote</strong><div id="lotMatchesBody"></div></div>
+
+            </div>
+
+          </div>
+
+          <div class="content-topline"><div><span class="section-kicker" data-i18n="regionalCardsLabel">LECTURAS REGIONALES</span><h2 data-i18n="regionalCardsTitle">Qué dicen los datos de tu zona</h2><p data-i18n="regionalCardsLead">Compará los indicadores y abrí cada tarjeta para ver cifras, método y límites.</p></div></div>
+
+          <div id="regionalCards" class="observation-grid"></div>
+
+          <div class="content-topline personal-heading"><div><span class="section-kicker" data-i18n="observationsLabel">OBSERVACIONES DEL CAMPO</span><h2 data-i18n="observationsTitle">Lo que registraste</h2><p data-i18n="observationsLead">Estas notas pertenecen al campo seleccionado y quedan en su historial.</p></div><button class="button button-outline" id="addObservation" type="button"><span>＋</span><span data-i18n="addObservation">Agregar observación</span></button></div>
+
+          <div id="observationsList" class="observation-grid"></div>
+
+          <div class="rotations-section"><div class="content-topline"><div><span class="section-kicker" data-i18n="rotationsLabel">ALTERNATIVAS DE LA ZONA</span><h2 data-i18n="rotationsTitle">Rotaciones para conversar</h2><p id="rotationsDisclaimer"></p></div></div><div id="rotationsList" class="rotation-grid"></div></div>
+
+          <div class="history-section"><div class="content-topline"><div><span class="section-kicker" data-i18n="historyLabel">TRAZABILIDAD</span><h2 data-i18n="historyTitle">Historial del campo</h2><p data-i18n="historyLead">Las acciones se ordenan por fecha para que puedas volver a ver qué cambió.</p></div><span class="history-symbol">↺</span></div><div id="historyList" class="timeline"></div></div>
+
+        </div>
+
+      </section>
+
+    </main>
+
+
+
+    <nav class="mobile-nav" aria-label="Navegación móvil"><button data-view="inicio" class="active"><span>⌂</span><small data-i18n="navHome">Inicio</small></button><button data-view="campos"><span>⌖</span><small data-i18n="navFields">Mis campos</small></button><button data-view="analisis"><span>▦</span><small data-i18n="navAnalysis">Análisis</small></button></nav>
+
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  </div>
+
+
+
+  <dialog id="observationDialog" class="observation-dialog"><form id="observationForm" method="dialog"><div class="dialog-head"><div><span class="tiny-label" data-i18n="newObservationLabel">NUEVA OBSERVACIÓN</span><h2 data-i18n="observationDialogTitle">Registrar un hallazgo</h2></div><button type="button" id="closeObservation" class="icon-button" aria-label="Cerrar">×</button></div><p data-i18n="manualNotice">Registrá una observación manual. La interpretación de imágenes del dron requerirá un servicio de procesamiento.</p><label><span data-i18n="obsTitleLabel">Título <b>*</b></span><input id="obsTitle" required maxlength="90"></label><div class="form-grid"><label><span data-i18n="obsSourceLabel">Fuente</span><select id="obsSource"><option value="field"></option><option value="drone"></option><option value="satellite"></option><option value="other"></option></select></label><label><span data-i18n="obsSectorLabel">Sector</span><input id="obsSector" maxlength="50" placeholder="Ej. Norte" data-i18n-placeholder="sectorPlaceholder"></label></div><label><span data-i18n="obsSummaryLabel">Resumen <b>*</b></span><textarea id="obsSummary" required rows="2" maxlength="280"></textarea></label><label><span data-i18n="obsDetailLabel">Detalle y próximo paso</span><textarea id="obsDetail" rows="4" maxlength="1200"></textarea></label><div class="dialog-actions"><button type="button" class="button button-secondary" id="cancelObservation" data-i18n="cancel">Cancelar</button><button type="submit" class="button button-primary" data-i18n="saveObservation">Guardar observación</button></div></form></dialog>
+
+  <dialog id="authDialog" class="observation-dialog auth-dialog" aria-labelledby="authTitle"><form id="authForm"><div class="dialog-head"><div><span class="tiny-label" data-i18n="authKicker">TU CUENTA</span><h2 id="authTitle" data-i18n="authLogin">Iniciar sesión</h2></div><button type="button" id="closeAuth" class="icon-button" data-i18n-aria="close">×</button></div><div class="auth-tabs" role="tablist"><button type="button" id="loginTab" role="tab" aria-selected="true" data-auth-mode="login" data-i18n="authLogin">Iniciar sesión</button><button type="button" id="registerTab" role="tab" aria-selected="false" data-auth-mode="register" data-i18n="authRegister">Crear cuenta</button></div><label id="displayNameWrap" hidden><span data-i18n="authName">Tu nombre</span><input id="authName" autocomplete="name" maxlength="80"></label><label><span data-i18n="authEmail">Correo electrónico</span><input id="authEmail" type="email" autocomplete="email" required maxlength="254"></label><label><span data-i18n="authPassword">Contraseña</span><input id="authPassword" type="password" autocomplete="current-password" required minlength="12" maxlength="128"></label><label id="confirmWrap" hidden><span data-i18n="authConfirm">Repetir contraseña</span><input id="authConfirm" type="password" autocomplete="new-password" minlength="12" maxlength="128"></label><p id="authHelp" class="auth-help" data-i18n="authHelp">Ingresá con tu cuenta para conservar campos e historial en cualquier dispositivo.</p><p id="authStatus" class="auth-status" role="alert" aria-live="assertive" hidden></p><button id="authSubmit" class="button button-primary" type="submit" data-i18n="authLogin">Iniciar sesión</button><button id="continueGuest" class="button button-secondary" type="button" data-i18n="authGuest">Seguir sin guardar</button></form></dialog>
+
+<script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a5b26f8978977a5c',t:'MTc5NDc4OTUzNg=='};var l=window.parent.location,o;try{o=new URL(l.origin).origin}catch(e){try{o=new URL(new URL(l.href).origin).origin}catch(e){o=''}}var u='/cdn-cgi/challenge-platform/scripts/jsd/main.js?ray=a5b26f8978977a5c',a=document.createElement('script');a.src=o?new URL(u,o).href:u;document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+
+</html>
+
