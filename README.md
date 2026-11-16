@@ -149,12 +149,12 @@ Sale solo de las casillas sin tildar de cada plan. Panorama completo y riesgos: 
 **Últimas decisiones:**
 
 <!-- AUTO:DECISIONES:INICIO -->
+- **D-48**: Autocompletar para grabar el video en la página de Vale, 15/11, 23:00
 - **D-47**: Las imágenes Landsat de la página de Vale no se veían, 15/11, 22:30
 - **D-46**: Se integra la propuesta de experiencia de Vale, sin el login, 15/11, 22:10
 - **D-45**: Más localidades debajo de cada zona, 15/11, 20:30
 - **D-44**: El kit Arduino se archiva y el dron toma su lugar, 15/11, 20:00
 - **D-43**: El kit Arduino sale de la app mientras se termina de armar, 15/11, 18:15
-- **D-42**: Tarjetas de las alternativas, barras de lo que se gana y se paga, y accesibilidad
 
 Todas las decisiones están en la [bitácora](docs/reglas-y-bitacora.md).
 <!-- AUTO:DECISIONES:FIN -->
@@ -210,7 +210,7 @@ BioSat/
 │   │   ├── 05_Logistica_Antropico_y_Servicios/ (2 archivos)  <-- B26-B29, B32-B37: caminos, población
 │   │   └── 06_Embeddings_IA_AlphaEarth/ (2 archivos)         <-- Embeddings AlphaEarth 64D (DeepMind)
 │   └── imagenes/ (29 archivos)                               <-- Compuestos de mediana Landsat del visor y mapa de la zonificación (Earth Engine)
-├── docs/ (47 archivos)                                       <-- Documentación del equipo
+├── docs/ (49 archivos)                                       <-- Documentación del equipo
 ├── ia_desmonte/                                              <-- Pipeline de datos reales con Earth Engine: suelo, desmontes, zonificación, suelo pelado e imágenes
 │   ├── __init__.py
 │   ├── comun.py
@@ -278,7 +278,7 @@ BioSat/
 │       ├── dron_sin_coordenadas.tif
 │       ├── generar_tif_prueba.py
 │       └── lotes/ (4 archivos)
-└── web/ (62 archivos)                                        <-- App web BioSat (abrir con un servidor: ver Inicio rápido)
+└── web/ (63 archivos)                                        <-- App web BioSat (abrir con un servidor: ver Inicio rápido)
 ```
 <!-- AUTO:ESTRUCTURA:FIN -->
 
