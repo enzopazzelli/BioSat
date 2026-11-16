@@ -131,11 +131,6 @@ BioSat/
 ├── docs/                                                     <-- Documentación del equipo
 │   ├── contratos-de-datos.md                                 <-- Formato de los JSON que comparten los frentes
 │   └── datos-y-metodos.md                                    <-- Fuentes, métodos, métricas reales y limitaciones de los datos (se genera solo)
-├── entrega/                                                  <-- Material para la presentación y la entrega
-│   ├── guion-video-2m-app.md                                 <-- BioSat · Guion del video de 2 minutos: la app (web/)
-│   ├── guion-video-2m-experiencia.md                         <-- BioSat · Guion del video de 2 minutos: la página de Vale ...
-│   ├── guion-video-30s-v2.md                                 <-- BioSat · Guion del video de 30 segundos · versión 2 (15/1...
-│   └── texto-pdf.md                                          <-- Texto para el PDF de la entrega (Space Apps 2026)
 ├── ia_desmonte/                                              <-- Pipeline de datos reales con Earth Engine: suelo, desmontes, zonificación, suelo pelado e imágenes
 │   ├── __init__.py
 │   ├── comun.py
