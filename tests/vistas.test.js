@@ -268,3 +268,15 @@ test('los scripts de la app se pueden interpretar sin errores de sintaxis', () =
     assert.doesNotThrow(() => new Function(leer(f)), f);
   }
 });
+
+test('cada zona muestra al menos 5 localidades debajo de su característica, sin repetir entre zonas', () => {
+  const zonas = [...app.matchAll(/(zona_\d_\w+):\{num:\d[^\n]*?zona:'([^']+)'/g)];
+  assert.equal(zonas.length, 5);
+  const todas = [];
+  for (const [, id, texto] of zonas) {
+    const locs = texto.split(' · ');
+    assert.ok(locs.length >= 5, `${id}: ${locs.length} localidades`);
+    todas.push(...locs);
+  }
+  assert.equal(new Set(todas).size, todas.length, 'una localidad aparece en dos zonas');
+});

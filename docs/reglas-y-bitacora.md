@@ -629,3 +629,13 @@ Según la página oficial de premios (`NASA Space Apps Challenge - awards.mhtml`
   - **Para avisar:**
     - **Vale:** su rediseño (todavía no subido) toca los mismos archivos. Al integrarlo, no volver a meter el botón de la sonda, la sección 5 ni el panel del sensor, y conservar la tarjeta del dron. Su guion del video tiene que dejar el kit: la escena del kit "a 42 °C" y la "Pantalla 2 (Kit Arduino)" ya no van (ver la nota del guion, arriba).
     - **Sara:** el frente F6 se archivó. Su plan sigue con el relato y la entrega (F7). Las casillas del kit sin hacer quedaron tachadas y ya no cuentan en el avance.
+- **D-45 (Más localidades debajo de cada zona, 15/11, 20:30):**
+  - **Por qué:** Enzo pidió sumar al menos 2 localidades más debajo de cada una de las 5 zonas, para que más productores reconozcan la suya en la pregunta 1 del asistente.
+  - **Qué cambió:** el campo `zona` de `ZONAS` en `web/app.js`, que muestran la pregunta 1 y el encabezado del Inicio. Ahora hay 5 por zona; la Zona 3 tenía 2 y sumó 3. Cada localidad nueva está en un departamento que figura en el campo `deptos` de su zona y que el mapa del asistente (`data/santiago_mapa.json`) pinta del mismo color:
+    - Zona 1: + Fernández (Robles) y Clodomira (Banda);
+    - Zona 2: + Tintina (Moreno) y Suncho Corral (Juan F. Ibarra);
+    - Zona 3: + Nueva Esperanza (Pellegrini), Pampa de los Guanacos (Copo) y La Cañada (Figueroa);
+    - Zona 4: + Selva (Rivadavia) y Villa Unión (Mitre);
+    - Zona 5: + Frías (Choya) y San Pedro de Guasayán (Guasayán).
+  - **Hallazgo, sin cambiar:** dos de las localidades que ya tenía la Zona 2 caen en departamentos que el mapa pinta de otra zona: **Bandera** es la cabecera de Belgrano (Zona 4 en el mapa) y **Sachayoj** está en Alberdi (Zona 3). Puede ser a propósito (las zonas van por característica, no por límite), pero alguien que toca su pueblo en el mapa ve otra zona. Lo decide Vale o Enzo.
+  - **Pruebas:** `tests/vistas.test.js` suma una (cada zona con al menos 5 localidades, sin repetir entre zonas); falló antes del cambio. **189 de JS en verde.** Revisado a 390 px: la pregunta 1 y el encabezado del Inicio, sin desbordes ni errores.

@@ -24,9 +24,9 @@ Avance contado de las casillas de los planes: **Enzo 86%, Santi 76%, Vale 72%, S
 
 ## 2. Qué funciona hoy en la app
 
-Las **188 pruebas automáticas de la app** (`node --test "tests/*.test.js"`) y las 48 de `ia_desmonte/pruebas` están en verde, con D-33, D-36 a D-41 y D-44 incluidos (bajaron de 227 porque las del kit se archivaron con él). La versión nueva se revisó a 390 px con `scripts/captura-movil.mjs` y en un celular de verdad. **Falta probarla sin internet en el celular.**
+Las **189 pruebas automáticas de la app** (`node --test "tests/*.test.js"`) y las 48 de `ia_desmonte/pruebas` están en verde, con D-33, D-36 a D-41 y D-44 incluidos (bajaron de 227 porque las del kit se archivaron con él). La versión nueva se revisó a 390 px con `scripts/captura-movil.mjs` y en un celular de verdad. **Falta probarla sin internet en el celular.**
 
-- **Asistente de inicio:** 4 preguntas con el mapa real de Santiago del Estero. La pregunta 1 nombra la característica de la zona y abajo sus localidades.
+- **Asistente de inicio:** 4 preguntas con el mapa real de Santiago del Estero. La pregunta 1 nombra la característica de la zona y abajo sus localidades (5 por zona desde D-45).
 - **Inicio** (`web/index.html`): semáforo de la zona en el mes actual (lo típico), la tarjeta **"Tu lote, desde el dron"** (D-44: fecha del vuelo, NDVI mediano, % sin cobertura activa y sectores para revisar; si el vuelo es de otro mes, lo dice), lo que mejor encaja con la próxima siembra y la tira de 12 meses, y la barra con "Abrir un vuelo de dron" y WhatsApp.
 - **Reporte** (`#reporte`): 6 secciones (la de la sonda se archivó con el kit, D-44), cada una con su conclusión como título y un plegable "Para tu ingeniero". Guardar PDF y Compartir.
 - **Vista detallada** (`web/completo.html`): la página de antes, con todo lo que tenía:
