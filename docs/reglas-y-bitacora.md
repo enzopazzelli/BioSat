@@ -653,3 +653,10 @@ Según la página oficial de premios (`NASA Space Apps Challenge - awards.mhtml`
     - **Letra chica:** hay textos de 10 y 11 px (`calc(10px * var(--font-scale))` en `evidence.css` y `regional.css`). D-42 pide 12 px como mínimo.
     - **Modo invitado:** solo guarda las preferencias de accesibilidad. Los campos que se cargan se pierden al recargar la página.
     - **Copias de bibliotecas:** `vendor/geotiff.js` y `vendor/proj4.js` repiten las de `web/vendor/`.
+- **D-47 (Las imágenes Landsat de la página de Vale no se veían, 15/11, 22:30):**
+  - **Síntoma:** Enzo avisó que en `web/experiencia/` (D-46), ya publicada, no se veían las imágenes Landsat.
+  - **Causa:** el código buscaba las imágenes en su propia carpeta `web/experiencia/images/`, pero el commit de Vale trajo solo una (`z1_verano_rgb.png`). En GitHub Pages, las otras 19 imágenes de las zonas y las 4 del recorte del lote daban 404. Las mismas imágenes están en `data/imagenes/`, que es donde las genera `ia_desmonte` y de donde las lee la app.
+  - **Por qué Vale no lo vio:** su página está hecha para correr con un servidor propio. Pide `/api/repo`, `/api/state` y un `zone-cache-sw.js` que no está en el repo. Esas dos cosas tienen respaldo y fallan sin romper la página; las imágenes no lo tienen.
+  - **Arreglo:** las rutas apuntan a `../../data/imagenes/`, en los 3 lugares de `app.js`, en la imagen del encabezado (`index.html`) y en las 4 del lote (`repo-lots.js`). Se borró la copia de `z1_verano_rgb.png`, que quedó sin uso. Así hay una sola copia de cada imagen, y si el pipeline la vuelve a generar, la página la toma.
+  - **Pruebas:** `tests/experiencia.test.js` (2) comprueba que exista cada imagen que pide el código (5 zonas × verano e invierno × RGB y NDVI, el encabezado y el lote). Falló antes del arreglo (faltaban 19 imágenes de zona y las 4 del lote) y pasa después. **191 de JS en verde.** En Chrome a 390 px, sin imágenes rotas en Inicio (3 de 3) ni en Análisis (5 de 5) y sin errores de JavaScript.
+  - **Para Vale:** para que su página ande en Pages, cualquier archivo nuevo que use tiene que estar en el repo o leerse de `data/`.
